@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:tasky_app/managers/auth_manager.dart';
+
+final AuthManager _authManager = GetIt.I.get<AuthManager>();
 
 class LoginView extends StatelessWidget {
   @override
@@ -64,8 +68,7 @@ class LoginView extends StatelessWidget {
                   ],
                 ),
               ),
-              onPressed: () =>
-                  Navigator.pushNamed(context, '/organizationView'),
+              onPressed: () =>_authManager.loginUser(),
               shape: RoundedRectangleBorder(
                   side: BorderSide(color: Colors.grey, width: .5),
                   borderRadius: BorderRadius.circular(45)),

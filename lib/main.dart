@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
       themeMode: ThemeMode.system,
       onGenerateRoute: Routes.generateRoute,
       debugShowCheckedModeBanner: false,
-      initialRoute: '/',
+      initialRoute: '/loginView',
       localeResolutionCallback:
           (Locale locale, Iterable<Locale> supportedLocales) {
         return locale;

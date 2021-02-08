@@ -1,9 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+import 'package:tasky_app/managers/auth_manager.dart';
 import 'package:tasky_app/routes.dart';
+import 'package:tasky_app/services/auth_service.dart';
 
 import 'shared_widgets/custom_theme.dart';
 
-void main() {
+GetIt locator = GetIt.instance;
+
+setupSingletons() async {
+  locator.registerLazySingleton<AuthService>(() => AuthService());
+  locator.registerLazySingleton<AuthManager>(() => AuthManager());
+}
+
+main() async {
+  await setupSingletons();
   runApp(MyApp());
 }
 

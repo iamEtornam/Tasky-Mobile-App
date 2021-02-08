@@ -23,17 +23,21 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  crypto: ^2.1.5
   cupertino_icons: ^1.0.0
   dotted_border: ^1.0.7
+  firebase_auth: ^0.20.0+1
   flutter_icons: ^1.1.0
+  flutter_image_stack: ^0.0.3
   flutter_svg: ^0.19.1
+  get_it: ^5.0.6
   google_fonts: ^1.1.2
+  google_sign_in: ^4.5.9
+  http: ^0.12.2
   intl: ^0.16.1
   sample_data: ^0.1.0
+  sign_in_with_apple: ^2.5.4
   time_ago_provider: ^3.2.0
-  flutter_image_stack:
-    git:
-      url: git://github.com/RegNex/flutter_image_stack.git
 
 dev_dependencies:
   flutter_test:

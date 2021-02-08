@@ -12,11 +12,17 @@ class CustomAppBarWidget extends StatelessWidget
     return AppBar(
       centerTitle: false,
       leading: Center(
-        child: CircleAvatar(
-          radius: 16,
-          backgroundImage:
-              ExactAssetImage('assets/avatar.png',),
-              backgroundColor: Colors.primaries[Random().nextInt(Colors.primaries.length)].withOpacity(.4),
+        child: InkWell(
+          onTap: () => Navigator.of(context).pushNamed('/accountView'),
+          child: CircleAvatar(
+            radius: 16,
+            backgroundImage: ExactAssetImage(
+              'assets/avatar.png',
+            ),
+            backgroundColor: Colors
+                .primaries[Random().nextInt(Colors.primaries.length)]
+                .withOpacity(.4),
+          ),
         ),
       ),
       title: Text(

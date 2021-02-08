@@ -1,6 +1,6 @@
 # tasky_app
 
-A new Flutter project.
+A project management mobile app
 
 <p align="center">
 
@@ -12,7 +12,7 @@ A new Flutter project.
 
 </p>
 
-This project is an implementation of a Design i found on [Uplabs.com](https://www.uplabs.com/posts/xten-vpn) by [Blackhole Design](https://www.uplabs.com/blackhole)
+This project is an implementation of a Design i found on [uigaints.com](https://uigiants.com/etsadhakal8888?posts=1129-Easy-Task-Create-Assign-UX) by [Ashish Dhakal](https://uigiants.com/etsadhakal8888)
 
 ## Art
 
@@ -20,12 +20,16 @@ This project is an implementation of a Design i found on [Uplabs.com](https://ww
 <br>
    
 <tr>
-    <td><img align="left" src="https://raw.githubusercontent.com/RegNex/Tasky/master/screenshots/art_1.png" width="200" height="400"/></td>
-    <td><img src="https://raw.githubusercontent.com/RegNex/Tasky/master/screenshots/art_2.png" width="200" height="400"/></td> 
+    <td><img align="left" src="https://raw.githubusercontent.com/RegNex/Tasky/master/screenshots/screenshot_1.png" width="200" height="400"/></td>
+    <td><img src="https://raw.githubusercontent.com/RegNex/Tasky/master/screenshots/screenshot_2.png" width="200" height="400"/></td> 
 </tr>
 <tr>
-    <td><img align="left" src="https://raw.githubusercontent.com/RegNex/Tasky/master/screenshots/art_3.png" width="200" height="400"/></td>
-    <td><img src="https://raw.githubusercontent.com/RegNex/Tasky/master/screenshots/art_4.png" width="200" height="400"/></td> 
+    <td><img align="left" src="https://raw.githubusercontent.com/RegNex/Tasky/master/screenshots/screenshot_3.png" width="200" height="400"/></td>
+    <td><img src="https://raw.githubusercontent.com/RegNex/Tasky/master/screenshots/screenshot_4.png" width="200" height="400"/></td> 
+</tr>
+<tr>
+    <td><img align="left" src="https://raw.githubusercontent.com/RegNex/Tasky/master/screenshots/screenshot_5.png" width="200" height="400"/></td>
+    <td><img src="https://raw.githubusercontent.com/RegNex/Tasky/master/screenshots/screenshot_6.png" width="200" height="400"/></td> 
 </tr>
 
 ## Getting Started
@@ -61,7 +65,7 @@ C:\path\to\project> flutter run
 ## Build release version
 
 ```
-run: flutter build <OS PLATFORM> e.g flutter build ios
+run: flutter build <OS PLATFORM> e.g flutter build ios --release
 ```
 
 
@@ -88,7 +92,7 @@ What things you need to run the app
 * Android Studio/Vscode/Intellij IDE
 * Flutter SDK
 * Android SDK
-* MacBook
+* MacBook / Windows / Linux
 ```
 
 ## How to contribute
@@ -114,15 +118,15 @@ What things you need to run the app
 
 ## Inspiration
 
-**Blackhole Design**
+**Ashish Dhakal**
 
-- [**https://www.uplabs.com/blackhole**](https://www.uplabs.com/posts/xten-vpn)
+- [**https://uigiants.com/etsadhakal8888**](https://uigiants.com/etsadhakal8888?posts=1129-Easy-Task-Create-Assign-UX)
 
 ## License
 
 MIT License
 
-Copyright (c) 2020 Etornam Sunu
+Copyright (c) 2021 Etornam Sunu
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

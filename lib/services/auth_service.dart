@@ -11,8 +11,10 @@ import 'package:tasky_app/utils/network_utils/custom_http_client.dart';
 import 'package:tasky_app/utils/network_utils/endpoints.dart';
 
 final CustomHttpClient _customHttpClient = GetIt.I.get<CustomHttpClient>();
+  final FirebaseAuth auth = FirebaseAuth.instance;
 
 class AuthService {
+  
   Future<UserCredential> signInWithGoogle() async {
     // Trigger the authentication flow
     final GoogleSignInAccount googleUser = await GoogleSignIn().signIn();
@@ -28,7 +30,7 @@ class AuthService {
     );
 
     // Once signed in, return the UserCredential
-    return await FirebaseAuth.instance.signInWithCredential(credential);
+    return await auth.signInWithCredential(credential);
   }
 
   /// Generates a cryptographically secure random nonce, to be included in a
@@ -73,7 +75,7 @@ class AuthService {
 
     // Sign in the user with Firebase. If the nonce we generated earlier does
     // not match the nonce in `appleCredential.identityToken`, sign in will fail.
-    return await FirebaseAuth.instance.signInWithCredential(oauthCredential);
+    return await auth.signInWithCredential(oauthCredential);
   }
 
   Future<Response> sendTokenToBackend({String token}) async {

@@ -68,7 +68,15 @@ class LoginView extends StatelessWidget {
                   ],
                 ),
               ),
-              onPressed: () =>_authManager.loginUser(),
+              onPressed: () async {
+                bool isSuccess = await _authManager.loginUserwithGoogle();
+                if (isSuccess) {
+                  Navigator.pushNamedAndRemoveUntil(
+                      context, '/organizationView', (route) => false);
+                } else {
+                  //TODO: ERROR
+                }
+              },
               shape: RoundedRectangleBorder(
                   side: BorderSide(color: Colors.grey, width: .5),
                   borderRadius: BorderRadius.circular(45)),
@@ -100,7 +108,7 @@ class LoginView extends StatelessWidget {
                   ],
                 ),
               ),
-              onPressed: () => Navigator.pushNamed(context, '/organizationView'),
+              onPressed: () => _authManager.loginUserwithApple(),
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(45)),
             ),

@@ -26,7 +26,9 @@ dependencies:
   crypto: ^2.1.5
   cupertino_icons: ^1.0.0
   dotted_border: ^1.0.7
+  firebase_analytics: ^7.0.1
   firebase_auth: ^0.20.0+1
+  firebase_core: ^0.7.0
   flutter_icons: ^1.1.0
   flutter_image_stack: ^0.0.3
   flutter_svg: ^0.19.1

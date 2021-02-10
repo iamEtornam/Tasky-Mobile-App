@@ -95,7 +95,7 @@ class _OrganizationViewState extends State<OrganizationView> {
                       context: context, message: _userManager.message);
                   Future.delayed(Duration(seconds: 3), () {
                     Navigator.pushNamedAndRemoveUntil(
-                        context, '/organizationView', (route) => false);
+                        context, '/', (route) => false);
                   });
                 } else {
                   uiUtilities.actionAlertWidget(

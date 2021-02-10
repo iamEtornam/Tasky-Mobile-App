@@ -1,25 +1,38 @@
 import 'dart:convert';
 
+import 'package:apple_sign_in/apple_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart';
 import 'package:tasky_app/services/auth_service.dart';
+import 'package:tasky_app/utils/local_storage.dart';
+import 'package:tasky_app/models/user.dart' as Member;
 
 final AuthService _authService = GetIt.I.get<AuthService>();
+final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
 
 class AuthManager with ChangeNotifier {
+  Future<bool> get appleSignInAvailable => AppleSignIn.isAvailable();
   String _message = '';
+  bool _isLoading = false;
 
   String get message => _message;
+  bool get isLoading => _isLoading;
 
   setMessage(String message) {
     _message = message;
     notifyListeners();
   }
 
+  setisLoading(bool isLoading) {
+    _isLoading = isLoading;
+    notifyListeners();
+  }
+
   Future<bool> loginUserwithGoogle() async {
     bool isSuccessful = false;
+    setisLoading(true);
     await _authService
         .signInWithGoogle()
         .then((UserCredential googleUserCredential) async {
@@ -31,8 +44,21 @@ class AuthManager with ChangeNotifier {
             await _authService.sendTokenToBackend(token: token);
         int statusCode = _response.statusCode;
         Map<String, dynamic> body = json.decode(_response.body);
-
-        if (statusCode == 200) {
+        Member.User member = Member.User.fromMap(body);
+        setisLoading(false);
+        if (statusCode == 201) {
+          await _localStorage.saveUserInfo(
+              id: member.data.id,
+              name: member.data.name,
+              picture: member.data.picture,
+              userId: member.data.userId,
+              email: member.data.email,
+              signInProvider: member.data.signInProvider,
+              authToken: member.data.authToken,
+              organizationId: member.data.organizationId,
+              department: member.data.department,
+              fcmToken: member.data.fcmToken,
+              phoneNumber: member.data.phoneNumber);
           isSuccessful = true;
           setMessage(body['message']);
         } else {
@@ -47,9 +73,11 @@ class AuthManager with ChangeNotifier {
     }).catchError((onError) {
       isSuccessful = false;
       setMessage('$onError');
+      setisLoading(false);
     }).timeout(Duration(seconds: 60), onTimeout: () {
       isSuccessful = false;
       setMessage('Timeout! Check your internet connection.');
+      setisLoading(false);
     });
     return isSuccessful;
   }
@@ -57,33 +85,78 @@ class AuthManager with ChangeNotifier {
   Future<bool> loginUserwithApple() async {
     bool isSuccessful = false;
 
-    await _authService
-        .signInWithApple()
-        .then((UserCredential googleUserCredential) async {
-      if (googleUserCredential != null) {
-        print('userCredential is working');
-        User user = auth.currentUser;
-        String token = await user.getIdToken();
-        print('''$token''');
-        Response _response =
-            await _authService.sendTokenToBackend(token: token);
-        if (_response.statusCode == 200) {
-          print('body: ${_response.body}');
-          isSuccessful = true;
-        } else {
-          print(_response.body);
+    if (await appleSignInAvailable) {
+      final AuthorizationResult result = await AppleSignIn.performRequests([
+        AppleIdRequest(requestedScopes: [Scope.email, Scope.fullName])
+      ]);
+
+      switch (result.status) {
+        case AuthorizationStatus.authorized:
+          await _authService
+              .signInWithApple()
+              .then((appleUserCredential) async {
+            if (appleUserCredential != null) {
+              User user = auth.currentUser;
+              String token = await user.getIdToken();
+
+              Response _response =
+                  await _authService.sendTokenToBackend(token: token);
+              int statusCode = _response.statusCode;
+              Map<String, dynamic> body = json.decode(_response.body);
+              Member.User member = Member.User.fromMap(body);
+              setisLoading(false);
+              if (statusCode == 201) {
+                await _localStorage.saveUserInfo(
+                    id: member.data.id,
+                    name: member.data.name,
+                    picture: member.data.picture,
+                    userId: member.data.userId,
+                    email: member.data.email,
+                    signInProvider: member.data.signInProvider,
+                    authToken: member.data.authToken,
+                    organizationId: member.data.organizationId,
+                    department: member.data.department,
+                    fcmToken: member.data.fcmToken,
+                    phoneNumber: member.data.phoneNumber);
+                isSuccessful = true;
+                setMessage(body['message']);
+              } else {
+                print(_response.body);
+                isSuccessful = false;
+                setMessage(body['message']);
+              }
+            } else {
+              print('userCredential is null');
+              isSuccessful = false;
+              setMessage('Authentication failed. Try gain!');
+            }
+          }).catchError((onError) {
+            print('userCredential $onError');
+            isSuccessful = false;
+            setMessage('$onError');
+            setisLoading(false);
+          }).timeout(Duration(seconds: 60), onTimeout: () {
+            isSuccessful = false;
+            setMessage('Timeout! Check your internet connection.');
+            setisLoading(false);
+          });
+          break;
+        case AuthorizationStatus.cancelled:
           isSuccessful = false;
-        }
-      } else {
-        print('userCredential is null');
-        isSuccessful = false;
+          setMessage(result.error.localizedFailureReason);
+          break;
+        case AuthorizationStatus.error:
+          print(result.error.localizedDescription);
+          isSuccessful = false;
+          setMessage(result.error.localizedDescription);
+          break;
       }
-    }).catchError((onError) {
-      print('userCredential $onError');
+    } else {
+      //no apple sign in
       isSuccessful = false;
-    }).timeout(Duration(seconds: 60), onTimeout: () {
-      isSuccessful = false;
-    });
+      setMessage('Apple sign in not supported!');
+      setisLoading(false);
+    }
     return isSuccessful;
   }
 }

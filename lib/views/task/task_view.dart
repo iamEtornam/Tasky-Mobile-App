@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_image_stack/flutter_image_stack.dart';
 import 'package:tasky_app/shared_widgets/custom_appbar_widget.dart';
 import 'package:tasky_app/shared_widgets/custom_checkbox_widget.dart';
-import 'package:tasky_app/utils/custom_colors.dart';
+import 'package:tasky_app/utils/ui_utils/custom_colors.dart';
 
 class TaskView extends StatefulWidget {
   @override

@@ -75,10 +75,13 @@ class AccountView extends StatelessWidget {
                     .bodyText2
                     .copyWith(color: customGreyColor),
               ),
-              trailing: FlatButton(
-                  shape: RoundedRectangleBorder(
+              trailing: TextButton(
+    style: TextButton.styleFrom(
+shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30)),
-                  color: customRedColor,
+                  backgroundColor: customRedColor,
+    ),
+                  
                   onPressed: () {},
                   child: Text(
                     'Invite',
@@ -291,11 +294,14 @@ class AccountView extends StatelessWidget {
           SizedBox(
             height: 30,
           ),
-          FlatButton(
-              padding: EdgeInsets.all(10),
+          TextButton(
+                style: TextButton.styleFrom(
+padding: EdgeInsets.all(10),
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8)),
-              color: Theme.of(context).cardColor,
+              backgroundColor: Theme.of(context).cardColor,
+    ),
+              
               onPressed: () {},
               child: Text(
                 'Log out',

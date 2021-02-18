@@ -59,7 +59,8 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
               textInputAction: TextInputAction.next,
               keyboardType: TextInputType.multiline,
               maxLines: 4,
-              cursorColor: Theme.of(context).cursorColor,
+              cursorColor: Theme.of(context).textSelectionTheme.cursorColor,
+              
               enableInteractiveSelection: true,
               decoration: InputDecoration(
                   filled: false,
@@ -118,7 +119,7 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
                 textInputAction: TextInputAction.next,
                 keyboardType: TextInputType.datetime,
                 maxLines: 1,
-                cursorColor: Theme.of(context).cursorColor,
+                cursorColor: Theme.of(context).textSelectionTheme.cursorColor,
                 enableInteractiveSelection: true,
                 decoration: InputDecoration(
                     filled: false,
@@ -223,10 +224,14 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
               ),
             ),
             SizedBox(height: 45),
-            FlatButton(
-              shape: RoundedRectangleBorder(
+            TextButton(
+              style: TextButton.styleFrom(
+    shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8),
               ),
+              backgroundColor: Colors.black
+              ),
+          
               onPressed: () {},
               child: Padding(
                 padding: const EdgeInsets.all(12.0),
@@ -236,7 +241,7 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
                         .button
                         .copyWith(color: Colors.white)),
               ),
-              color: Colors.black,
+     
             ),
             SizedBox(height: 15),
           ],

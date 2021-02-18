@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:tasky_app/utils/custom_colors.dart';
+import 'package:tasky_app/utils/ui_utils/custom_colors.dart';
 import 'package:tasky_app/views/inbox/inbox_view.dart';
 import 'package:tasky_app/views/overview/over_view.dart';
 import 'package:tasky_app/views/account/account_view.dart';

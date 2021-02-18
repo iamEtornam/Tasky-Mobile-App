@@ -50,8 +50,14 @@ class LoginView extends StatelessWidget {
             SizedBox(
               height: 15,
             ),
-            FlatButton(
-              color: Colors.white,
+            TextButton(
+              style: TextButton.styleFrom(
+                padding: EdgeInsets.all(10),
+                shape: RoundedRectangleBorder(
+                    side: BorderSide(color: Colors.grey, width: .5),
+                    borderRadius: BorderRadius.circular(45)),
+                backgroundColor: Theme.of(context).cardColor,
+              ),
               child: Padding(
                 padding: const EdgeInsets.all(10.0),
                 child: _authManager.isLoading
@@ -97,17 +103,19 @@ class LoginView extends StatelessWidget {
                             context: context, message: _authManager.message);
                       }
                     },
-              shape: RoundedRectangleBorder(
-                  side: BorderSide(color: Colors.grey, width: .5),
-                  borderRadius: BorderRadius.circular(45)),
             ),
             SizedBox(
               height: 20,
             ),
             Visibility(
               visible: Platform.isIOS,
-              child: FlatButton(
-                color: Colors.black87,
+              child: TextButton(
+                style: TextButton.styleFrom(
+                  padding: EdgeInsets.all(10),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(45)),
+                  backgroundColor: Colors.black87,
+                ),
                 child: Padding(
                   padding: const EdgeInsets.all(10.0),
                   child: _authManager.isLoading
@@ -154,8 +162,6 @@ class LoginView extends StatelessWidget {
                               context: context, message: _authManager.message);
                         }
                       },
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(45)),
               ),
             ),
             SizedBox(

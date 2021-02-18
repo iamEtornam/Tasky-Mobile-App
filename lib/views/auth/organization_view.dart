@@ -84,7 +84,7 @@ class _OrganizationViewState extends State<OrganizationView> {
                     visible: _isSelected,
                     child: Padding(
                       padding: EdgeInsets.all(24),
-                      child: FlatButton(
+                      child: TextButton(
                         onPressed: _userManager.isLoading ? (){} :() async {
                           bool isSuccessful = await _userManager
                               .updateUserDepartment(department: null);
@@ -119,9 +119,13 @@ class _OrganizationViewState extends State<OrganizationView> {
                             ),
                           ),
                         ),
-                        color: customRedColor,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10)),
+                                        style: TextButton.styleFrom(
+padding: EdgeInsets.all(10),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8)),
+              backgroundColor: customRedColor,
+    ),
+        
                       ),
                     ),
                   )

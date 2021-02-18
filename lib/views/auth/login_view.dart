@@ -7,7 +7,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tasky_app/managers/auth_manager.dart';
-import 'package:tasky_app/utils/ui_utils.dart';
+import 'package:tasky_app/utils/ui_utils/ui_utils.dart';
 
 final AuthManager _authManager = GetIt.I.get<AuthManager>();
 

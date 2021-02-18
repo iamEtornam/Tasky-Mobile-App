@@ -5,8 +5,8 @@ import 'package:tasky_app/managers/organization_manager.dart';
 import 'package:tasky_app/managers/user_manager.dart';
 import 'package:tasky_app/models/organization.dart';
 import 'package:tasky_app/shared_widgets/custom_checkbox_widget.dart';
-import 'package:tasky_app/utils/custom_colors.dart';
-import 'package:tasky_app/utils/ui_utils.dart';
+import 'package:tasky_app/utils/ui_utils/custom_colors.dart';
+import 'package:tasky_app/utils/ui_utils/ui_utils.dart';
 
 final OrganizationManager _organizationManager =
     GetIt.I.get<OrganizationManager>();
@@ -20,7 +20,7 @@ class OrganizationView extends StatefulWidget {
 class _OrganizationViewState extends State<OrganizationView> {
   bool _isSelected = false;
   UniqueKey _uniqueKey = UniqueKey();
-   final UiUtilities uiUtilities = UiUtilities();
+  final UiUtilities uiUtilities = UiUtilities();
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +38,14 @@ class _OrganizationViewState extends State<OrganizationView> {
               if (snapshot.connectionState == ConnectionState.done &&
                   snapshot.data == null) {
                 return Column(
-                  children: [Text('No data')],
+                  children: [
+                    FlatButton(
+                        onPressed: () {
+                          Navigator.pushNamedAndRemoveUntil(
+                              context, '/', (route) => false);
+                        },
+                        child: Text('Next'))
+                  ],
                 );
               }
               return ListView(
@@ -85,47 +92,54 @@ class _OrganizationViewState extends State<OrganizationView> {
                     child: Padding(
                       padding: EdgeInsets.all(24),
                       child: TextButton(
-                        onPressed: _userManager.isLoading ? (){} :() async {
-                          bool isSuccessful = await _userManager
-                              .updateUserDepartment(department: null);
-                                 if (isSuccessful) {
-                  uiUtilities.actionAlertWidget(
-                      context: context, alertType: 'success');
-                  uiUtilities.alertNotification(
-                      context: context, message: _userManager.message);
-                  Future.delayed(Duration(seconds: 3), () {
-                    Navigator.pushNamedAndRemoveUntil(
-                        context, '/', (route) => false);
-                  });
-                } else {
-                  uiUtilities.actionAlertWidget(
-                      context: context, alertType: 'error');
-                  uiUtilities.alertNotification(
-                      context: context, message: _userManager.message);
-                }
-                        },
+                        onPressed: _userManager.isLoading
+                            ? () {}
+                            : () async {
+                                bool isSuccessful =
+                                    await _userManager.updateUserDepartment(
+                                        department: null); //Todo:
+                                if (isSuccessful) {
+                                  uiUtilities.actionAlertWidget(
+                                      context: context, alertType: 'success');
+                                  uiUtilities.alertNotification(
+                                      context: context,
+                                      message: _userManager.message);
+                                  Future.delayed(Duration(seconds: 3), () {
+                                    Navigator.pushNamedAndRemoveUntil(
+                                        context, '/', (route) => false);
+                                  });
+                                } else {
+                                  uiUtilities.actionAlertWidget(
+                                      context: context, alertType: 'error');
+                                  uiUtilities.alertNotification(
+                                      context: context,
+                                      message: _userManager.message);
+                                }
+                              },
                         child: Padding(
                           padding: const EdgeInsets.all(10.0),
                           child: SizedBox(
                             width: MediaQuery.of(context).size.width,
                             child: Center(
-                              child: _userManager.isLoading ? SpinKitSquareCircle(color: Colors.white, size: 40) : Text(
-                                'Continue',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .button
-                                    .copyWith(color: Colors.white),
-                              ),
+                              child: _userManager.isLoading
+                                  ? SpinKitSquareCircle(
+                                      color: Colors.white, size: 40)
+                                  : Text(
+                                      'Continue',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .button
+                                          .copyWith(color: Colors.white),
+                                    ),
                             ),
                           ),
                         ),
-                                        style: TextButton.styleFrom(
-padding: EdgeInsets.all(10),
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8)),
-              backgroundColor: customRedColor,
-    ),
-        
+                        style: TextButton.styleFrom(
+                          padding: EdgeInsets.all(10),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8)),
+                          backgroundColor: customRedColor,
+                        ),
                       ),
                     ),
                   )

@@ -3,7 +3,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
-import 'package:tasky_app/utils/custom_colors.dart';
+import 'package:tasky_app/utils/ui_utils/custom_colors.dart';
 
 class AccountView extends StatelessWidget {
   @override
@@ -76,12 +76,11 @@ class AccountView extends StatelessWidget {
                     .copyWith(color: customGreyColor),
               ),
               trailing: TextButton(
-    style: TextButton.styleFrom(
-shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30)),
-                  backgroundColor: customRedColor,
-    ),
-                  
+                  style: TextButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30)),
+                    backgroundColor: customRedColor,
+                  ),
                   onPressed: () {},
                   child: Text(
                     'Invite',
@@ -295,13 +294,12 @@ shape: RoundedRectangleBorder(
             height: 30,
           ),
           TextButton(
-                style: TextButton.styleFrom(
-padding: EdgeInsets.all(10),
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8)),
-              backgroundColor: Theme.of(context).cardColor,
-    ),
-              
+              style: TextButton.styleFrom(
+                padding: EdgeInsets.all(10),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8)),
+                backgroundColor: Theme.of(context).cardColor,
+              ),
               onPressed: () {},
               child: Text(
                 'Log out',

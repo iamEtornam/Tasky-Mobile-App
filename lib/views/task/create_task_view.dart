@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:intl/intl.dart';
-import 'package:tasky_app/utils/custom_colors.dart';
+import 'package:tasky_app/utils/ui_utils/custom_colors.dart';
 
 class CreateNewTaskView extends StatefulWidget {
   @override

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tasky_app/views/inbox/create_inbox_view.dart';
 
-import 'utils/custom_colors.dart';
+import 'utils/ui_utils/custom_colors.dart';
 import 'views/account/account_view.dart';
 import 'views/auth/login_view.dart';
 import 'views/auth/organization_view.dart';

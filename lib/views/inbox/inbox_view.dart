@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:sample_data/avatars.dart';
-import 'package:tasky_app/utils/custom_colors.dart';
+import 'package:tasky_app/utils/ui_utils/custom_colors.dart';
 import 'package:time_ago_provider/time_ago_provider.dart' as timeAgo;
 
 class InboxView extends StatefulWidget {

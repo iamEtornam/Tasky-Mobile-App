@@ -39,7 +39,7 @@ class _OrganizationViewState extends State<OrganizationView> {
                   snapshot.data == null) {
                 return Column(
                   children: [
-                    FlatButton(
+                    TextButton(
                         onPressed: () {
                           Navigator.pushNamedAndRemoveUntil(
                               context, '/', (route) => false);

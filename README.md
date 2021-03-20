@@ -16,7 +16,7 @@ This project is an implementation of a Design i found on [uigaints.com](https://
 
 ## Art
 
-<img src="https://raw.githubusercontent.com/RegNex/Tasky/main/screenshots/tasky.png" width="100%"  height="50%"/>
+<img src="https://github.com/RegNex/Tasky/blob/main/screenshots/tasky.png?raw=true" width="100%"  height="50%"/>
 <br>
    
 <tr>

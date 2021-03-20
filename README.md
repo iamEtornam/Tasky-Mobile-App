@@ -20,16 +20,16 @@ This project is an implementation of a Design i found on [uigaints.com](https://
 <br>
    
 <tr>
-    <td><img align="left" src="https://raw.githubusercontent.com/RegNex/Tasky/main/screenshots/screenshot_1.png" width="200" height="400"/></td>
-    <td><img src="https://raw.githubusercontent.com/RegNex/Tasky/main/screenshots/screenshot_2.png" width="200" height="400"/></td> 
+    <td><img align="left" src="https://github.com/RegNex/Tasky/blob/main/screenshots/screenshot_1.png?raw=true" width="200" height="400"/></td>
+    <td><img src="https://github.com/RegNex/Tasky/blob/main/screenshots/screenshot_2.png?raw=true" width="200" height="400"/></td> 
 </tr>
 <tr>
-    <td><img align="left" src="https://raw.githubusercontent.com/RegNex/Tasky/main/screenshots/screenshot_3.png" width="200" height="400"/></td>
-    <td><img src="https://raw.githubusercontent.com/RegNex/Tasky/main/screenshots/screenshot_4.png" width="200" height="400"/></td> 
+    <td><img align="left" src="https://github.com/RegNex/Tasky/blob/main/screenshots/screenshot_3.png?raw=true" width="200" height="400"/></td>
+    <td><img src="https://github.com/RegNex/Tasky/blob/main/screenshots/screenshot_4.png?raw=true" width="200" height="400"/></td> 
 </tr>
 <tr>
-    <td><img align="left" src="https://raw.githubusercontent.com/RegNex/Tasky/main/screenshots/screenshot_5.png" width="200" height="400"/></td>
-    <td><img src="https://raw.githubusercontent.com/RegNex/Tasky/main/screenshots/screenshot_6.png" width="200" height="400"/></td> 
+    <td><img align="left" src="https://github.com/RegNex/Tasky/blob/main/screenshots/screenshot_5.png?raw=true" width="200" height="400"/></td>
+    <td><img src="https://github.com/RegNex/Tasky/blob/main/screenshots/screenshot_6.png?raw=true" width="200" height="400"/></td> 
 </tr>
 
 ## Getting Started

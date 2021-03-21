@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
+import 'package:tasky_app/models/user.dart';
 
 class LocalStorage {
   final String _tasky = 'tasky';
@@ -30,6 +31,33 @@ class LocalStorage {
     await box.put('isAuth', true);
   }
 
+  Future<Data> getUserInfo() async {
+    final Box box = await Hive.openBox(_tasky);
+    int id = await box.get('id');
+    String name = await box.get('name');
+    String picture = await box.get('picture');
+    String userId = await box.get('user_id');
+    String email = await box.get('email');
+    String signInProvider = await box.get('sign_in_provider');
+    String authToken = await box.get('auth_token');
+    int organizationId = await box.get('organizationId');
+    String department = await box.get('department');
+    String fcmToken = await box.get('fcm_token');
+    String phoneNumber = await box.get('phone_number');
+    return Data(
+        authToken: authToken,
+        department: department,
+        email: email,
+        fcmToken: fcmToken,
+        id: id,
+        name: name,
+        organizationId: organizationId,
+        phoneNumber: phoneNumber,
+        picture: picture,
+        userId: userId,
+        signInProvider: signInProvider);
+  }
+
   Future<int> getId() async {
     final Box box = await Hive.openBox(_tasky);
     return await box.get('id');
@@ -50,8 +78,14 @@ class LocalStorage {
     return await box.get('user_id');
   }
 
-    Future<int> getOrganizationId() async {
+  Future<int> getOrganizationId() async {
     final Box box = await Hive.openBox(_tasky);
     return await box.get('organizationId');
   }
+
+    Future<String> authToken() async {
+    final Box box = await Hive.openBox(_tasky);
+    return await box.get('auth_token');
+  }
+
 }

@@ -1,12 +1,25 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_icons/flutter_icons.dart';
+import 'package:flutter_image_stack/flutter_image_stack.dart';
+import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:tasky_app/managers/organization_manager.dart';
+import 'package:tasky_app/managers/task_manager.dart';
+import 'package:tasky_app/models/member.dart';
+import 'package:tasky_app/models/user.dart';
 import 'package:tasky_app/utils/ui_utils/custom_colors.dart';
+import 'package:tasky_app/utils/ui_utils/ui_utils.dart';
+
+final OrganizationManager _organizationManager =
+    GetIt.I.get<OrganizationManager>();
+final TaskManager _taskManager = GetIt.I.get<TaskManager>();
 
 class CreateNewTaskView extends StatefulWidget {
   @override
@@ -14,9 +27,18 @@ class CreateNewTaskView extends StatefulWidget {
 }
 
 class _CreateNewTaskViewState extends State<CreateNewTaskView> {
-  FocusNode taskFocusNode = FocusNode();
+  final UiUtilities uiUtilities = UiUtilities();
+  static GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final FocusNode taskFocusNode = FocusNode();
   bool isSwitched = false;
-  DateTime _dueDate;
+  final TextEditingController descriptionTextEditingController =
+      TextEditingController();
+  final TextEditingController departmentTextEditingController =
+      TextEditingController();
+  final TextEditingController dueDateTextEditingController =
+      TextEditingController();
+  final DateFormat dateFormat = DateFormat('yyyy-MM-dd HH:mm');
+  DateTime dueDate;
 
   @override
   void initState() {
@@ -40,6 +62,7 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
         ),
       ),
       body: Form(
+        key: _formKey,
         child: ListView(
           padding: EdgeInsets.all(24),
           children: [
@@ -54,6 +77,7 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
               height: 15,
             ),
             TextFormField(
+              controller: descriptionTextEditingController,
               focusNode: taskFocusNode,
               style: Theme.of(context).textTheme.bodyText1,
               textInputAction: TextInputAction.next,
@@ -107,10 +131,10 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
                 await pickDateTime(context);
               },
               child: TextFormField(
-                controller: TextEditingController(
-                    text: _dueDate == null
-                        ? ''
-                        : DateFormat('dd MMM yyyy, hh:mm a').format(_dueDate)),
+                onTap: () async {
+                  await pickDateTime(context);
+                },
+                controller: dueDateTextEditingController,
                 style: Theme.of(context)
                     .textTheme
                     .bodyText1
@@ -197,29 +221,98 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
             SizedBox(
               height: 15,
             ),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: GestureDetector(
-                onTap: () async {},
-                child: DottedBorder(
-                  borderType: BorderType.Circle,
-                  radius: Radius.circular(6),
-                  color: customGreyColor,
-                  dashPattern: [6, 3, 6, 3],
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.all(Radius.circular(45)),
-                    child: Container(
-                      height: 45,
-                      width: 45,
-                      color: customGreyColor.withOpacity(.2),
-                      child: Center(
-                          child: Icon(
-                        MaterialIcons.person_add,
+            _taskManager.assignees.isEmpty ? FutureBuilder<Member>(
+                future: _organizationManager.getOrganizationMembers(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting &&
+                      !snapshot.hasData) {
+                    return CupertinoActivityIndicator();
+                  }
+                  if (snapshot.connectionState == ConnectionState.done &&
+                      !snapshot.hasData) {
+                    return Align(
+                      alignment: Alignment.centerLeft,
+                      child: DottedBorder(
+                        borderType: BorderType.Circle,
+                        radius: Radius.circular(6),
                         color: customGreyColor,
-                      )),
+                        dashPattern: [6, 3, 6, 3],
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.all(Radius.circular(45)),
+                          child: Container(
+                            height: 45,
+                            width: 45,
+                            color: customGreyColor.withOpacity(.2),
+                            child: Center(
+                                child: Icon(
+                              MaterialIcons.person_add,
+                              color: customGreyColor,
+                            )),
+                          ),
+                        ),
+                      ),
+                    );
+                  }
+
+                  return Align(
+                    alignment: Alignment.centerLeft,
+                    child: GestureDetector(
+                      onTap: () async {
+                        if (Platform.isIOS) {
+                          showCupertinoModalBottomSheet(
+                            context: context,
+                            builder: (context) {
+                              return TaskAssigneeWidget(
+                                data: snapshot.data,
+                              );
+                            },
+                          );
+                        } else {
+                          showMaterialModalBottomSheet(
+                            context: context,
+                            builder: (context) {
+                              return TaskAssigneeWidget(
+                                data: snapshot.data,
+                              );
+                            },
+                          );
+                        }
+                      },
+                      child: DottedBorder(
+                        borderType: BorderType.Circle,
+                        radius: Radius.circular(6),
+                        color: customGreyColor,
+                        dashPattern: [6, 3, 6, 3],
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.all(Radius.circular(45)),
+                          child: Container(
+                            height: 45,
+                            width: 45,
+                            color: customGreyColor.withOpacity(.2),
+                            child: Center(
+                                child: Icon(
+                              MaterialIcons.person_add,
+                              color: customGreyColor,
+                            )),
+                          ),
+                        ),
+                      ),
                     ),
-                  ),
-                ),
+                  );
+                }) :       Padding(
+              padding: const EdgeInsets.only(left: 100.0),
+              child: FlutterImageStack(
+                imageList: _taskManager.imagesList,
+                extraCountTextStyle: Theme.of(context).textTheme.subtitle2,
+                imageBorderColor: Theme.of(context).scaffoldBackgroundColor,
+                imageRadius: 25,
+                imageCount: _taskManager.assignees
+                    .length,
+                imageBorderWidth: 1,
+                backgroundColor: Colors
+                    .primaries[Random().nextInt(Colors.primaries.length)]
+                    .withOpacity(.5),
+                totalCount: _taskManager.assignees.length - 1,
               ),
             ),
             SizedBox(height: 45),
@@ -229,7 +322,15 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
                     borderRadius: BorderRadius.circular(8),
                   ),
                   backgroundColor: Colors.black),
-              onPressed: () {},
+              onPressed: () {
+                if (_formKey.currentState.validate()) {
+                } else {
+                  uiUtilities.actionAlertWidget(
+                      context: context, alertType: 'error');
+                  uiUtilities.alertNotification(
+                      context: context, message: 'Fields cannot be empty');
+                }
+              },
               child: Padding(
                 padding: const EdgeInsets.all(12.0),
                 child: Text('Create Task',
@@ -259,7 +360,9 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
                 onDateTimeChanged: (picked) {
                   if (picked != null)
                     setState(() {
-                      _dueDate = picked;
+                      dueDate = picked;
+                      dueDateTextEditingController.text =
+                          dateFormat.format(dueDate);
                     });
                 },
                 initialDateTime: DateTime.now(),
@@ -285,10 +388,118 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
 
         if (timeOfDay != null && picked != null)
           setState(() {
-            _dueDate = DateTime(picked.year, picked.month, picked.day,
+            dueDate = DateTime(picked.year, picked.month, picked.day,
                 timeOfDay.hour, timeOfDay.minute);
+            dueDateTextEditingController.text = dateFormat.format(dueDate);
           });
       }
     }
+  }
+}
+
+class TaskAssigneeWidget extends StatefulWidget {
+  final Member data;
+  TaskAssigneeWidget({
+    Key key,
+    @required this.data,
+  }) : super(key: key);
+
+  @override
+  _TaskAssigneeWidgetState createState() => _TaskAssigneeWidgetState();
+}
+
+class _TaskAssigneeWidgetState extends State<TaskAssigneeWidget> {
+  bool isChecked = false;
+  List<Data> users = [];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Column(
+        children: [
+          SizedBox(
+            height: 14,
+          ),
+          Container(
+            height: 8,
+            width: 50,
+            decoration: BoxDecoration(
+                color: Colors.grey, borderRadius: BorderRadius.circular(45)),
+          ),
+          ListView(
+            shrinkWrap: true,
+            padding: EdgeInsets.all(24),
+            controller: ModalScrollController.of(context),
+            children: List.generate(widget.data.data.length, (index) {
+              return Material(
+                child: ListTile(
+                  leading: CircleAvatar(
+                    radius: 20,
+                    backgroundImage:
+                        NetworkImage('${widget.data.data[index].picture}'),
+                  ),
+                  title: Text(
+                    '${widget.data.data[index].name}',
+                    style: Theme.of(context).textTheme.bodyText1,
+                  ),
+                  trailing: GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        isChecked = !isChecked;
+                        if (users.contains(widget.data.data[index])) {
+                          users.remove(widget.data.data[index]);
+                        } else {
+                          users.add(widget.data.data[index]);
+                        }
+                      });
+                    },
+                    child: Material(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(45),
+                          side: BorderSide(
+                              color: isChecked
+                                  ? Colors.transparent
+                                  : customGreyColor)),
+                      child: CircleAvatar(
+                        radius: 12,
+                        backgroundColor:
+                            isChecked ? Colors.green : Colors.transparent,
+                        child: Icon(
+                          Icons.check,
+                          color: isChecked ? Colors.white : customGreyColor,
+                          size: 18,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              );
+            }),
+          ),
+          SizedBox(
+            height: 25,
+          ),
+          TextButton(
+            style: TextButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                backgroundColor: Colors.black),
+            onPressed: () {
+              _taskManager.setAssignees(users);
+            },
+            child: Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: Text('Done',
+                  style: Theme.of(context)
+                      .textTheme
+                      .button
+                      .copyWith(color: Colors.white)),
+            ),
+          ),
+          SizedBox(height: 15),
+        ],
+      ),
+    );
   }
 }

@@ -32,7 +32,7 @@ dependencies:
   firebase_core: ^0.7.0
   flutter_custom_dialog: ^1.0.20
   flutter_icons: ^1.1.0
-  flutter_image_stack: ^0.0.4
+  flutter_image_stack: ^0.0.3
   flutter_spinkit: ^4.1.2+1
   flutter_svg: ^0.19.1
   get_it: ^5.0.6
@@ -40,6 +40,7 @@ dependencies:
   google_sign_in: ^4.5.9
   hive: ^1.4.4+1
   hive_flutter: ^0.3.1
+  modal_bottom_sheet: ^1.0.0
   http: ^0.12.2
   image_cropper: ^1.3.1
   image_picker: ^0.6.7+22

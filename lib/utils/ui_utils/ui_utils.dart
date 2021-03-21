@@ -1,7 +1,15 @@
+import 'dart:io';
+
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_dialog/flutter_custom_dialog.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:image_cropper/image_cropper.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:image_picker/image_picker.dart' as ImagePicker;
+
+import 'custom_colors.dart';
+
 
 class UiUtilities {
   actionAlertWidget(
@@ -60,5 +68,43 @@ alertNotification({@required String message, @required BuildContext context}) {
       borderRadius: 10,
       duration: Duration(seconds: 4),
       align: Alignment.topCenter);
+}
+
+Future<PickedFile> getImage({@required ImagePicker.ImageSource imageSource}) async {
+  return await ImagePicker.ImagePicker().getImage(source: imageSource);
+}
+
+Future<File> getCroppedFile({String file}) async {
+  return await ImageCropper.cropImage(
+      sourcePath: file,
+      compressFormat: ImageCompressFormat.png,
+      compressQuality: 70,
+      aspectRatioPresets: Platform.isAndroid
+          ? [
+              CropAspectRatioPreset.square,
+              CropAspectRatioPreset.ratio3x2,
+              CropAspectRatioPreset.original,
+              CropAspectRatioPreset.ratio4x3,
+              CropAspectRatioPreset.ratio16x9
+            ]
+          : [
+              CropAspectRatioPreset.original,
+              CropAspectRatioPreset.square,
+              CropAspectRatioPreset.ratio3x2,
+              CropAspectRatioPreset.ratio4x3,
+              CropAspectRatioPreset.ratio5x3,
+              CropAspectRatioPreset.ratio5x4,
+              CropAspectRatioPreset.ratio7x5,
+              CropAspectRatioPreset.ratio16x9
+            ],
+      androidUiSettings: AndroidUiSettings(
+          toolbarTitle: 'Crop Image',
+          toolbarColor: customRedColor,
+          toolbarWidgetColor: Colors.white,
+          initAspectRatio: CropAspectRatioPreset.original,
+          lockAspectRatio: false),
+      iosUiSettings: IOSUiSettings(
+        title: 'Crop Image',
+      ));
 }
 }

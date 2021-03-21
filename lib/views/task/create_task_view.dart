@@ -251,7 +251,6 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
   }
 
   pickDateTime(BuildContext context) async {
-    print('click');
     if (Platform.isIOS) {
       showModalBottomSheet(
           context: context,

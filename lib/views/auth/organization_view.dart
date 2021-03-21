@@ -1,16 +1,19 @@
+import 'dart:io';
+import 'dart:math';
+
+import 'package:bot_toast/bot_toast.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get_it/get_it.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:tasky_app/managers/organization_manager.dart';
-import 'package:tasky_app/managers/user_manager.dart';
-import 'package:tasky_app/models/organization.dart';
-import 'package:tasky_app/shared_widgets/custom_checkbox_widget.dart';
+import 'package:tasky_app/shared_widgets/custom_bottom_sheet_widget.dart';
 import 'package:tasky_app/utils/ui_utils/custom_colors.dart';
 import 'package:tasky_app/utils/ui_utils/ui_utils.dart';
+import 'package:textfield_tags/textfield_tags.dart';
 
 final OrganizationManager _organizationManager =
     GetIt.I.get<OrganizationManager>();
-final UserManager _userManager = GetIt.I.get<UserManager>();
 
 class OrganizationView extends StatefulWidget {
   @override
@@ -18,198 +21,254 @@ class OrganizationView extends StatefulWidget {
 }
 
 class _OrganizationViewState extends State<OrganizationView> {
-  bool _isSelected = false;
-  UniqueKey _uniqueKey = UniqueKey();
   final UiUtilities uiUtilities = UiUtilities();
+  static GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  TextEditingController nameTextEditingController = TextEditingController();
+  List<String> departments = [];
+  final nameFocusNode = FocusNode();
+  File _imageFile;
+  List<Options> options;
+
+  getProfileFromCamera() async {
+    await uiUtilities
+        .getImage(imageSource: ImageSource.camera)
+        .then((file) async {
+      File croppedFile = await uiUtilities.getCroppedFile(file: file.path);
+
+      if (croppedFile != null) {
+        setState(() {
+          _imageFile = croppedFile;
+        });
+      }
+    });
+  }
+
+  getProfileFromGallery() async {
+    await uiUtilities
+        .getImage(imageSource: ImageSource.gallery)
+        .then((file) async {
+      File croppedFile = await uiUtilities.getCroppedFile(file: file.path);
+
+      if (croppedFile != null) {
+        setState(() {
+          _imageFile = croppedFile;
+        });
+      }
+    });
+  }
+
+  @override
+  void initState() {
+    options = [
+      Options(
+          label: 'Select from Camera',
+          onTap: () {
+            Navigator.pop(context);
+            getProfileFromCamera();
+          }),
+      Options(
+          label: 'Select from Gallery',
+          onTap: () {
+            Navigator.pop(context);
+            getProfileFromGallery();
+          }),
+    ];
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
       body: SafeArea(
-        child: FutureBuilder<Organization>(
-            future: _organizationManager.getOrganization(),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting &&
-                  snapshot.data == null) {
-                return SpinKitDoubleBounce(color: customRedColor, size: 50);
-              }
-
-              if (snapshot.connectionState == ConnectionState.done &&
-                  snapshot.data == null) {
-                return Column(
-                  children: [
-                    FlatButton(
-                        onPressed: () {
-                          Navigator.pushNamedAndRemoveUntil(
-                              context, '/', (route) => false);
-                        },
-                        child: Text('Next'))
-                  ],
-                );
-              }
-              return ListView(
-                shrinkWrap: true,
-                children: [
-                  Center(
-                      child: Text(
-                    snapshot.data.data.name,
-                    style: Theme.of(context)
-                        .textTheme
-                        .headline5
-                        .copyWith(fontWeight: FontWeight.bold),
-                  )),
-                  Center(
-                      child: Text(
-                    'Select your department',
-                    style: Theme.of(context).textTheme.subtitle1.copyWith(
-                        fontWeight: FontWeight.normal, color: Colors.grey),
-                  )),
-                  ListView.separated(
-                    key: _uniqueKey,
-                    shrinkWrap: true,
-                    padding: EdgeInsets.all(24),
-                    itemBuilder: (context, index) => OrganizationCard(
-                        organization: snapshot.data.data.department[index],
-                        isSelected: _isSelected,
-                        onTap: () {
-                          setState(() {
-                            if (_isSelected) {
-                              _isSelected = false;
-                            } else {
-                              _isSelected = true;
-                            }
-                          });
-                        }),
-                    separatorBuilder: (context, index) => SizedBox(
-                      height: 10,
-                    ),
-                    itemCount: snapshot.data.data.department.length,
-                  ),
-                  Spacer(),
-                  Visibility(
-                    visible: _isSelected,
-                    child: Padding(
-                      padding: EdgeInsets.all(24),
-                      child: TextButton(
-                        onPressed: _userManager.isLoading
-                            ? () {}
-                            : () async {
-                                bool isSuccessful =
-                                    await _userManager.updateUserDepartment(
-                                        department: null); //Todo:
-                                if (isSuccessful) {
-                                  uiUtilities.actionAlertWidget(
-                                      context: context, alertType: 'success');
-                                  uiUtilities.alertNotification(
-                                      context: context,
-                                      message: _userManager.message);
-                                  Future.delayed(Duration(seconds: 3), () {
-                                    Navigator.pushNamedAndRemoveUntil(
-                                        context, '/', (route) => false);
-                                  });
-                                } else {
-                                  uiUtilities.actionAlertWidget(
-                                      context: context, alertType: 'error');
-                                  uiUtilities.alertNotification(
-                                      context: context,
-                                      message: _userManager.message);
-                                }
-                              },
-                        child: Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: SizedBox(
-                            width: MediaQuery.of(context).size.width,
-                            child: Center(
-                              child: _userManager.isLoading
-                                  ? SpinKitSquareCircle(
-                                      color: Colors.white, size: 40)
-                                  : Text(
-                                      'Continue',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .button
-                                          .copyWith(color: Colors.white),
-                                    ),
-                            ),
-                          ),
-                        ),
-                        style: TextButton.styleFrom(
-                          padding: EdgeInsets.all(10),
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8)),
-                          backgroundColor: customRedColor,
-                        ),
-                      ),
-                    ),
-                  )
-                ],
-              );
-            }),
-      ),
-    );
-  }
-}
-
-/// Cardview for organization
-class OrganizationCard extends StatelessWidget {
-  const OrganizationCard({
-    Key key,
-    @required this.organization,
-    @required this.onTap,
-    this.isSelected,
-  }) : super(key: key);
-
-  final bool isSelected;
-  final String organization;
-  final Function onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        onTap();
-      },
-      child: Card(
-        elevation: 0,
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
-            side: BorderSide(
-              width: .2,
-              color: customGreyColor,
+          child: Form(
+        key: _formKey,
+        child: ListView(
+          padding: EdgeInsets.all(24),
+          children: [
+            Center(
+              child: CircleAvatar(
+                backgroundColor: Colors
+                    .primaries[Random().nextInt(Colors.primaries.length)]
+                    .withOpacity(.2),
+                radius: 60,
+                backgroundImage: _imageFile == null
+                    ? ExactAssetImage('assets/avatar.png')
+                    : FileImage(_imageFile),
+              ),
+            ),
+            SizedBox(
+              height: 7,
+            ),
+            Center(
+                child: TextButton(
+              child: Text(
+                'update profile photo',
+                style: Theme.of(context).textTheme.subtitle2.copyWith(
+                    fontWeight: FontWeight.w600, color: customRedColor),
+              ),
+              onPressed: () {
+                Platform.isIOS
+                    ? showCupertinoModalPopup<void>(
+                        context: context,
+                        builder: (context) {
+                          return CustomBottomSheetWidget(
+                            options: options,
+                          );
+                        })
+                    : showModalBottomSheet<void>(
+                        context: context,
+                        builder: (context) {
+                          return CustomBottomSheetWidget(
+                            height: 205,
+                            options: options,
+                          );
+                        });
+              },
             )),
-        child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Row(
-            children: [
-              CustomCheckBox(
-                isChecked: isSelected,
-                onTap: (value) {
-                  onTap();
-                },
-                uncheckedColor: customGreyColor,
-                checkedColor: Colors.green,
-                size: 27,
-                checkedWidget: Icon(
-                  Icons.check,
-                  size: 20,
-                  color: Colors.green,
-                ),
-              ),
-              SizedBox(
-                width: 15,
-              ),
-              Text(
-                organization,
-                style: Theme.of(context)
+            SizedBox(
+              height: 20,
+            ),
+            TextFormField(
+              controller: nameTextEditingController,
+              focusNode: nameFocusNode,
+              style: Theme.of(context).textTheme.bodyText1,
+              textInputAction: TextInputAction.next,
+              keyboardType: TextInputType.name,
+              autofillHints: [AutofillHints.organizationName],
+              maxLines: 1,
+              cursorColor: Theme.of(context).textSelectionTheme.cursorColor,
+              enableInteractiveSelection: true,
+              decoration: InputDecoration(
+                  filled: false,
+                  hintText: 'Organization Name',
+                  enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: customGreyColor)),
+                  focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: customGreyColor)),
+                  border: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.black)),
+                  hintStyle: Theme.of(context)
+                      .textTheme
+                      .bodyText1
+                      .copyWith(color: Colors.grey)),
+              validator: (value) {
+                if (value.isEmpty) {
+                  return 'Organization Name cannot be Empty';
+                }
+                return null;
+              },
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            TextFieldTags(
+              textFieldStyler: TextFieldStyler(
+                helperText: '',
+                cursorColor: Theme.of(context).textSelectionTheme.cursorColor,
+                hintStyle: Theme.of(context)
                     .textTheme
                     .bodyText1
-                    .copyWith(fontWeight: FontWeight.w600),
-              )
-            ],
-          ),
+                    .copyWith(color: Colors.grey),
+                hintText: 'Organization Department',
+                textFieldBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: customGreyColor)),
+                textStyle: Theme.of(context).textTheme.bodyText1,
+                textFieldEnabledBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: customGreyColor)),
+                textFieldFocusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: customGreyColor)),
+              ),
+              //[tagsStyler] is required and shall not be null
+              tagsStyler: TagsStyler(
+                //These are properties you can tweek for customization of tags
+                tagTextStyle: Theme.of(context)
+                    .textTheme
+                    .bodyText1
+                    .copyWith(color: Colors.white),
+                tagDecoration: BoxDecoration(
+                  color: customRedColor,
+                  borderRadius: BorderRadius.circular(5.0),
+                ),
+                tagCancelIcon:
+                    Icon(Icons.cancel, size: 18.0, color: Colors.white),
+                tagPadding: const EdgeInsets.all(8.0),
+
+                // EdgeInsets tagPadding = const EdgeInsets.all(4.0),
+                // EdgeInsets tagMargin = const EdgeInsets.symmetric(horizontal: 4.0),
+                // BoxDecoration tagDecoration = const BoxDecoration(color: Color.fromARGB(255, 74, 137, 92)),
+                // TextStyle tagTextStyle,
+                // Icon tagCancelIcon = const Icon(Icons.cancel, size: 18.0, color: Colors.green)
+                // isHashTag: true,
+              ),
+              onTag: (tag) {
+                //This give you tags entered
+                print('onTag ' + tag);
+                setState(() {
+                  departments.add(tag);
+                });
+              },
+              onDelete: (tag) {
+                print('onDelete ' + tag);
+                setState(() {
+                  departments.remove(tag);
+                });
+              },
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            TextButton(
+              onPressed: () async {
+                if (_formKey.currentState.validate()) {
+                  BotToast.showLoading(
+                      allowClick: false,
+                      clickClose: false,
+                      backButtonBehavior: BackButtonBehavior.ignore);
+                  bool isCreated =
+                      await _organizationManager.createOrganization(
+                          image: _imageFile,
+                          name: nameTextEditingController.text,
+                          department: departments);
+                  BotToast.closeAllLoading();
+                  if (isCreated) {
+                    uiUtilities.alertNotification(
+                        context: context,
+                        message: _organizationManager.message);
+                    Future.delayed(Duration(seconds: 3), () {
+                      Navigator.pushNamedAndRemoveUntil(
+                          context, '/', (route) => false);
+                    });
+                  } else {
+                    uiUtilities.actionAlertWidget(
+                        context: context, alertType: 'error');
+                    uiUtilities.alertNotification(
+                        context: context,
+                        message: _organizationManager.message);
+                  }
+                } else {
+                  uiUtilities.actionAlertWidget(
+                      context: context, alertType: 'error');
+                  uiUtilities.alertNotification(
+                      context: context, message: 'Fields cannot be Empty!');
+                }
+              },
+              child: Text(
+                'Create Organization',
+                style: Theme.of(context)
+                    .textTheme
+                    .button
+                    .copyWith(color: Colors.white),
+              ),
+              style: TextButton.styleFrom(
+                  backgroundColor: customRedColor,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  )),
+            )
+          ],
         ),
-      ),
+      )),
     );
   }
 }

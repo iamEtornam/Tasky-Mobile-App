@@ -10,4 +10,13 @@ class UserService {
     return await _customHttpClient.putRequest(
         path: updateDepartmentPath, body: {'department': department});
   }
+
+  Future<Response> getUserInformationRequest() async {
+    return await _customHttpClient.getRequest(getUserInformationPath);
+  }
+
+  Future<Response> inviteMembersRequest({List<String> emails}) async {
+    return await _customHttpClient
+        .postRequest(path: inviteMembersPath, body: {'emails': emails});
+  }
 }

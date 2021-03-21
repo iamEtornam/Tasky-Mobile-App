@@ -6,5 +6,7 @@ final String updateDepartmentPath = '$baseUrl/updateUserDepartment';
 final String createOrganizationPath = '$baseUrl/createOrganization';
 final String getUserInformationPath = '$baseUrl/getUserInformation';
 final String inviteMembersPath = '$baseUrl/inviteMembers';
+final String createTaskPath = '$baseUrl/createTask';
+String listMembersPath(int organizationId) => '$baseUrl/listMembers/$organizationId';
 final String fileUploaderPath =
     'http://tasty-file-uploader.us-east-2.elasticbeanstalk.com/api/v0/upload';

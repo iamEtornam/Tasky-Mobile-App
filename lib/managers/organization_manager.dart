@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:tasky_app/models/member.dart';
 import 'package:tasky_app/models/organization.dart';
 import 'package:tasky_app/services/organization_service.dart';
 import 'package:tasky_app/utils/local_storage.dart';
@@ -104,5 +105,33 @@ class OrganizationManager with ChangeNotifier {
       isCreated = false;
     }
     return isCreated;
+  }
+
+    Future<Member> getOrganizationMembers() async {
+    Member _member;
+    setisLoading(true);
+    int organizationID = await _localStorage.getOrganizationId();
+    await _organizationService
+        .getMemberListRequest(organizationId: organizationID)
+        .then((response) {
+      int statusCode = response.statusCode;
+      Map<String, dynamic> body = json.decode(response.body);
+      setMessage(body['message']);
+      setisLoading(false);
+      if (statusCode == 200) {
+        _member = Member.fromMap(body);
+      } else {
+        _member = null;
+      }
+    }).catchError((onError) {
+      _member = null;
+      setMessage('$onError');
+      setisLoading(false);
+    }).timeout(Duration(seconds: 60), onTimeout: () {
+      _member = null;
+      setMessage('Timeout! Check your internet connection.');
+      setisLoading(false);
+    });
+    return _member;
   }
 }

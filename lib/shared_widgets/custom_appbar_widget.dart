@@ -1,6 +1,10 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+import 'package:tasky_app/utils/local_storage.dart';
+
+final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
 
 class CustomAppBarWidget extends StatelessWidget
     implements PreferredSizeWidget {
@@ -14,15 +18,30 @@ class CustomAppBarWidget extends StatelessWidget
       leading: Center(
         child: InkWell(
           onTap: () => Navigator.of(context).pushNamed('/accountView'),
-          child: CircleAvatar(
-            radius: 16,
-            backgroundImage: ExactAssetImage(
-              'assets/avatar.png',
-            ),
-            backgroundColor: Colors
-                .primaries[Random().nextInt(Colors.primaries.length)]
-                .withOpacity(.4),
-          ),
+          child: StreamBuilder<String>(
+              stream: _localStorage.getPicture().asStream(),
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) {
+                  return CircleAvatar(
+                    radius: 16,
+                    backgroundImage: ExactAssetImage(
+                      'assets/avatar.png',
+                    ),
+                    backgroundColor: Colors
+                        .primaries[Random().nextInt(Colors.primaries.length)]
+                        .withOpacity(.4),
+                  );
+                }
+                return CircleAvatar(
+                  radius: 16,
+                  backgroundImage: NetworkImage(
+                    '${snapshot.data}',
+                  ),
+                  backgroundColor: Colors
+                      .primaries[Random().nextInt(Colors.primaries.length)]
+                      .withOpacity(.4),
+                );
+              }),
         ),
       ),
       title: Text(

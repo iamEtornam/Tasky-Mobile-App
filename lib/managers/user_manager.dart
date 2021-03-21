@@ -66,4 +66,66 @@ class UserManager with ChangeNotifier {
     });
     return isSuccessful;
   }
+
+  Future<User> getUserInformation() async {
+    User user;
+    setisLoading(true);
+    await _userService.getUserInformationRequest().then((response) async {
+      int statusCode = response.statusCode;
+      Map<String, dynamic> body = json.decode(response.body);
+      setMessage(body['message']);
+      setisLoading(false);
+      if (statusCode == 200) {
+        User _user = User.fromMap(body);
+        await _localStorage.saveUserInfo(
+            id: _user.data.id,
+            name: _user.data.name,
+            picture: _user.data.picture,
+            userId: _user.data.userId,
+            email: _user.data.email,
+            signInProvider: _user.data.signInProvider,
+            authToken: _user.data.authToken,
+            organizationId: _user.data.organizationId,
+            department: _user.data.department,
+            fcmToken: _user.data.fcmToken,
+            phoneNumber: _user.data.phoneNumber);
+        user = _user;
+      } else {
+        user = null;
+      }
+    }).catchError((onError) {
+      user = null;
+      setMessage('$onError');
+      setisLoading(false);
+    }).timeout(Duration(seconds: 60), onTimeout: () {
+      user = null;
+      setMessage('Timeout! Check your internet connection.');
+      setisLoading(false);
+    });
+    return user;
+  }
+
+  Future<bool> inviteMember({@required List<String> emails}) async {
+    bool isSent = false;
+    await _userService.inviteMembersRequest(emails: emails).then((response) {
+      int statusCode = response.statusCode;
+      Map<String, dynamic> body = json.decode(response.body);
+      setMessage(body['message']);
+      setisLoading(false);
+      if (statusCode == 200) {
+        isSent = true;
+      } else {
+        isSent = false;
+      }
+    }).catchError((onError) {
+      isSent = false;
+      setMessage('$onError');
+      setisLoading(false);
+    }).timeout(Duration(seconds: 60), onTimeout: () {
+      isSent = false;
+      setMessage('Timeout! Check your internet connection.');
+      setisLoading(false);
+    });
+    return isSent;
+  }
 }

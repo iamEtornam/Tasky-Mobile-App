@@ -1,12 +1,23 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:logger/logger.dart';
+import 'package:get_it/get_it.dart';
+import 'package:tasky_app/managers/organization_manager.dart';
+import 'package:tasky_app/managers/user_manager.dart';
+import 'package:tasky_app/models/organization.dart';
+import 'package:tasky_app/utils/local_storage.dart';
 import 'package:tasky_app/utils/ui_utils/custom_colors.dart';
+import 'package:tasky_app/utils/ui_utils/ui_utils.dart';
 import 'package:tasky_app/views/inbox/inbox_view.dart';
 import 'package:tasky_app/views/overview/over_view.dart';
 import 'package:tasky_app/views/account/account_view.dart';
 import 'package:tasky_app/views/task/task_view.dart';
+
+final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
+final OrganizationManager _organizationManager =
+    GetIt.I.get<OrganizationManager>();
+final UserManager _userManager = GetIt.I.get<UserManager>();
 
 class DashboardView extends StatefulWidget {
   @override
@@ -14,7 +25,8 @@ class DashboardView extends StatefulWidget {
 }
 
 class _DashboardViewState extends State<DashboardView> {
-  final Logger _logger = Logger();
+  final UiUtilities uiUtilities = UiUtilities();
+  String department;
   int _currentIndex = 0;
   final List<Widget> _pages = [
     OverView(),
@@ -31,10 +43,7 @@ class _DashboardViewState extends State<DashboardView> {
 
   @override
   void initState() {
-    final auth = FirebaseAuth.instance;
-    auth.authStateChanges().listen((event) {
-      _logger.d(event.getIdToken());
-    });
+    checkAuth();
     super.initState();
   }
 
@@ -95,5 +104,123 @@ class _DashboardViewState extends State<DashboardView> {
         ],
       ),
     );
+  }
+
+  void getUserDepartment() async {
+    Organization organization = await _organizationManager.getOrganization();
+    _localStorage.getUserInfo().then((data) {
+      if (data.department == null)
+        showDialog(
+            context: context,
+            child: AlertDialog(
+              title: Text(
+                'Update your department',
+                style: Theme.of(context)
+                    .textTheme
+                    .button
+                    .copyWith(fontWeight: FontWeight.w600),
+              ),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10)),
+              content: SizedBox(
+                height: 150,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Material(
+                      elevation: 0,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          side: BorderSide(color: Colors.grey, width: 1)),
+                      child: Padding(
+                        padding: const EdgeInsets.all(5.0),
+                        child: DropdownButton<String>(
+                          style: Theme.of(context).textTheme.bodyText1,
+                          hint: Text(
+                            'Select your department',
+                            style: Theme.of(context).textTheme.bodyText1,
+                          ),
+                          value: department,
+                          onChanged: (value) {
+                            setState(() {
+                              department = value;
+                            });
+                          },
+                          items: organization.data.department.map((value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(
+                                '$value',
+                                style: Theme.of(context).textTheme.bodyText1,
+                              ),
+                            );
+                          }).toList(),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    TextButton(
+                        style: TextButton.styleFrom(
+                            backgroundColor: customRedColor,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8))),
+                        onPressed: () async {
+                          Navigator.pop(context);
+                          if (department == null) {
+                            uiUtilities.actionAlertWidget(
+                                context: context, alertType: 'error');
+                            uiUtilities.alertNotification(
+                                context: context,
+                                message: 'Select a department');
+                          } else {
+                            BotToast.showLoading(
+                                allowClick: false,
+                                clickClose: false,
+                                backButtonBehavior: BackButtonBehavior.ignore);
+                            bool isUpdated = await _userManager
+                                .updateUserDepartment(department: department);
+                            BotToast.closeAllLoading();
+                            if (isUpdated) {
+                              uiUtilities.actionAlertWidget(
+                                  context: context, alertType: 'success');
+                              uiUtilities.alertNotification(
+                                  context: context,
+                                  message: _userManager.message);
+                            } else {
+                              uiUtilities.actionAlertWidget(
+                                  context: context, alertType: 'error');
+                              uiUtilities.alertNotification(
+                                  context: context,
+                                  message: _userManager.message);
+                            }
+                          }
+                        },
+                        child: Text(
+                          'Update department',
+                          style: Theme.of(context)
+                              .textTheme
+                              .button
+                              .copyWith(color: Colors.white),
+                        ))
+                  ],
+                ),
+              ),
+            ));
+    });
+  }
+
+  void checkAuth() async {
+    final FirebaseAuth _auth = FirebaseAuth.instance;
+    _auth.userChanges().listen((user) {
+      if (user != null) {
+        getUserDepartment();
+      } else {
+        Navigator.pushNamedAndRemoveUntil(
+            context, '/loginView', (route) => false);
+      }
+    });
   }
 }

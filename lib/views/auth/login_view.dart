@@ -1,15 +1,18 @@
 import 'dart:io';
 
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tasky_app/managers/auth_manager.dart';
+import 'package:tasky_app/models/user.dart';
+import 'package:tasky_app/utils/local_storage.dart';
 import 'package:tasky_app/utils/ui_utils/ui_utils.dart';
 
 final AuthManager _authManager = GetIt.I.get<AuthManager>();
+final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
 
 class LoginView extends StatelessWidget {
   final UiUtilities uiUtilities = UiUtilities();
@@ -52,57 +55,61 @@ class LoginView extends StatelessWidget {
             ),
             TextButton(
               style: TextButton.styleFrom(
-                padding: EdgeInsets.all(10),
+                padding: EdgeInsets.only(left: 10, right: 10),
                 shape: RoundedRectangleBorder(
                     side: BorderSide(color: Colors.grey, width: .5),
                     borderRadius: BorderRadius.circular(45)),
-                backgroundColor: Theme.of(context).cardColor,
+                backgroundColor: Colors.white70,
               ),
               child: Padding(
                 padding: const EdgeInsets.all(10.0),
-                child: _authManager.isLoading
-                    ? SpinKitSquareCircle(color: Colors.white, size: 40)
-                    : Row(
-                        children: [
-                          SvgPicture.asset(
-                            'assets/ic_google.svg',
-                            width: 30,
-                            height: 30,
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Text(
-                            'Continue with Google',
-                            style: Theme.of(context)
-                                .textTheme
-                                .button
-                                .copyWith(color: Colors.black),
-                          ),
-                        ],
-                      ),
+                child: Row(
+                  children: [
+                    SvgPicture.asset(
+                      'assets/ic_google.svg',
+                      width: 30,
+                      height: 30,
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Text(
+                      'Continue with Google',
+                      style: Theme.of(context)
+                          .textTheme
+                          .button
+                          .copyWith(color: Colors.black),
+                    ),
+                  ],
+                ),
               ),
-              onPressed: _authManager.isLoading
-                  ? () {}
-                  : () async {
-                      bool isSuccess = await _authManager.loginUserwithGoogle();
+              onPressed: () async {
+                BotToast.showLoading(
+                    allowClick: false,
+                    clickClose: false,
+                    backButtonBehavior: BackButtonBehavior.ignore);
+                bool isSuccess = await _authManager.loginUserwithGoogle();
+                BotToast.closeAllLoading();
+                if (isSuccess) {
+                  Data data = await _localStorage.getUserInfo();
+                  uiUtilities.actionAlertWidget(
+                      context: context, alertType: 'success');
+                  uiUtilities.alertNotification(
+                      context: context, message: _authManager.message);
 
-                      if (isSuccess) {
-                        uiUtilities.actionAlertWidget(
-                            context: context, alertType: 'success');
-                        uiUtilities.alertNotification(
-                            context: context, message: _authManager.message);
-                        Future.delayed(Duration(seconds: 3), () {
-                          Navigator.pushNamedAndRemoveUntil(
-                              context, '/organizationView', (route) => false);
-                        });
-                      } else {
-                        uiUtilities.actionAlertWidget(
-                            context: context, alertType: 'error');
-                        uiUtilities.alertNotification(
-                            context: context, message: _authManager.message);
-                      }
-                    },
+                  Future.delayed(Duration(seconds: 3), () {
+                    Navigator.pushNamedAndRemoveUntil(
+                        context,
+                        data.organizationId == null ? '/organizationView' : '/',
+                        (route) => false);
+                  });
+                } else {
+                  uiUtilities.actionAlertWidget(
+                      context: context, alertType: 'error');
+                  uiUtilities.alertNotification(
+                      context: context, message: _authManager.message);
+                }
+              },
             ),
             SizedBox(
               height: 20,
@@ -111,57 +118,62 @@ class LoginView extends StatelessWidget {
               visible: Platform.isIOS,
               child: TextButton(
                 style: TextButton.styleFrom(
-                  padding: EdgeInsets.all(10),
+                  padding: EdgeInsets.only(left: 10, right: 10),
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(45)),
                   backgroundColor: Colors.black87,
                 ),
                 child: Padding(
                   padding: const EdgeInsets.all(10.0),
-                  child: _authManager.isLoading
-                      ? CupertinoActivityIndicator()
-                      : Row(
-                          children: [
-                            SvgPicture.asset(
-                              'assets/ic_apple.svg',
-                              width: 30,
-                              height: 30,
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Text(
-                              'Signin with Apple',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .button
-                                  .copyWith(color: Colors.white),
-                            ),
-                          ],
-                        ),
+                  child: Row(
+                    children: [
+                      SvgPicture.asset(
+                        'assets/ic_apple.svg',
+                        width: 30,
+                        height: 30,
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Text(
+                        'Signin with Apple',
+                        style: Theme.of(context)
+                            .textTheme
+                            .button
+                            .copyWith(color: Colors.white),
+                      ),
+                    ],
+                  ),
                 ),
-                onPressed: _authManager.isLoading
-                    ? () {}
-                    : () async {
-                        bool isSuccess =
-                            await _authManager.loginUserwithApple();
+                onPressed: () async {
+                  BotToast.showLoading(
+                      allowClick: false,
+                      clickClose: false,
+                      backButtonBehavior: BackButtonBehavior.ignore);
+                  bool isSuccess = await _authManager.loginUserwithApple();
+                  BotToast.closeAllLoading();
+                  if (isSuccess) {
+                    Data data = await _localStorage.getUserInfo();
+                    uiUtilities.actionAlertWidget(
+                        context: context, alertType: 'success');
+                    uiUtilities.alertNotification(
+                        context: context, message: _authManager.message);
 
-                        if (isSuccess) {
-                          uiUtilities.actionAlertWidget(
-                              context: context, alertType: 'success');
-                          uiUtilities.alertNotification(
-                              context: context, message: _authManager.message);
-                          Future.delayed(Duration(seconds: 3), () {
-                            Navigator.pushNamedAndRemoveUntil(
-                                context, '/organizationView', (route) => false);
-                          });
-                        } else {
-                          uiUtilities.actionAlertWidget(
-                              context: context, alertType: 'error');
-                          uiUtilities.alertNotification(
-                              context: context, message: _authManager.message);
-                        }
-                      },
+                    Future.delayed(Duration(seconds: 3), () {
+                      Navigator.pushNamedAndRemoveUntil(
+                          context,
+                          data.organizationId == null
+                              ? '/organizationView'
+                              : '/',
+                          (route) => false);
+                    });
+                  } else {
+                    uiUtilities.actionAlertWidget(
+                        context: context, alertType: 'error');
+                    uiUtilities.alertNotification(
+                        context: context, message: _authManager.message);
+                  }
+                },
               ),
             ),
             SizedBox(

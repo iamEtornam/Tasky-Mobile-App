@@ -45,10 +45,11 @@ main() async {
 
 class MyApp extends StatelessWidget {
   final FirebaseAnalytics _analytics = FirebaseAnalytics();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<User>(
-        stream: auth.authStateChanges(),
+        stream: _auth.authStateChanges(),
         builder: (context, snapshot) {
           return MaterialApp(
             title: 'Tasky',
@@ -59,6 +60,7 @@ class MyApp extends StatelessWidget {
             onGenerateRoute: Routes.generateRoute,
             debugShowCheckedModeBanner: false,
             onGenerateInitialRoutes: (_) {
+              print(snapshot.data);
               if (snapshot.data != null) {
                 return <Route>[
                   MaterialPageRoute(builder: (context) => DashboardView())

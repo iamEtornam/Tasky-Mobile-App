@@ -49,4 +49,8 @@ class OrganizationService {
 
     return response;
   }
+
+  Future<Response> getMemberListRequest({int organizationId}) async {
+    return await _customHttpClient.getRequest(listMembersPath(organizationId));
+  }
 }

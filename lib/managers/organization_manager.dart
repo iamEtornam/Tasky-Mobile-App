@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
@@ -53,5 +54,55 @@ class OrganizationManager with ChangeNotifier {
       setisLoading(false);
     });
     return _organization;
+  }
+
+  Future<String> updateOrganizationPicture(File imageFile) async {
+    String fileUrl;
+    await _organizationService
+        .fileUploaderRequest(file: imageFile)
+        .then((response) async {
+      Map<String, dynamic> body = json.decode(response.body);
+      print(body);
+      setMessage('${body['message']}');
+      if (response.statusCode == 200) {
+        fileUrl = body['fileUrl'];
+      } else {
+        fileUrl = null;
+      }
+    }).catchError((onError) {
+      debugPrint('error $onError');
+      setMessage('Something went wrong while uploading file');
+      fileUrl = null;
+    });
+    return fileUrl;
+  }
+
+  Future<bool> createOrganization(
+      {File image, String name, List<String> department}) async {
+    bool isCreated = false;
+    String fileUrl = await updateOrganizationPicture(image);
+    if (fileUrl != null) {
+      await _organizationService
+          .createOrganizationRequest(
+              department: department, imageUrl: fileUrl, name: name)
+          .then((response) {
+        int statusCode = response.statusCode;
+        print(statusCode);
+        Map<String, dynamic> body = json.decode(response.body);
+        setMessage('${body['message']}');
+        if (statusCode == 201) {
+          isCreated = true;
+        } else {
+          isCreated = false;
+        }
+      }).catchError((onError) {
+        setMessage('$onError');
+        isCreated = false;
+      });
+    } else {
+      setMessage('Something went wrong while uploading file');
+      isCreated = false;
+    }
+    return isCreated;
   }
 }

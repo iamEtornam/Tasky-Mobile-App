@@ -2,13 +2,7 @@
 //
 //     final user = userFromMap(jsonString);
 
-import 'dart:convert';
-
-import 'organization.dart';
-
-User userFromMap(String str) => User.fromMap(json.decode(str));
-
-String userToMap(User data) => json.encode(data.toMap());
+import 'organization.dart' as Org;
 
 class User {
     User({
@@ -60,12 +54,12 @@ class Data {
     String fcmToken;
     String authToken;
     String email;
-    String phoneNumber;
+    dynamic phoneNumber;
     String userId;
     String signInProvider;
     DateTime createdAt;
     DateTime updatedAt;
-    Organization organization;
+    Org.Data organization;
 
     factory Data.fromMap(Map<String, dynamic> json) => Data(
         id: json["id"] == null ? null : json["id"],
@@ -76,12 +70,12 @@ class Data {
         fcmToken: json["fcm_token"] == null ? null : json["fcm_token"],
         authToken: json["auth_token"] == null ? null : json["auth_token"],
         email: json["email"] == null ? null : json["email"],
-        phoneNumber: json["phone_number"] == null ? null : json["phone_number"],
+        phoneNumber: json["phone_number"],
         userId: json["user_id"] == null ? null : json["user_id"],
         signInProvider: json["sign_in_provider"] == null ? null : json["sign_in_provider"],
         createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
         updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
-        organization: json["organization"] == null ? null : Organization.fromMap(json["organization"]),
+        organization: json["organization"] == null ? null : Org.Data.fromMap(json["organization"]),
     );
 
     Map<String, dynamic> toMap() => {
@@ -93,7 +87,7 @@ class Data {
         "fcm_token": fcmToken == null ? null : fcmToken,
         "auth_token": authToken == null ? null : authToken,
         "email": email == null ? null : email,
-        "phone_number": phoneNumber == null ? null : phoneNumber,
+        "phone_number": phoneNumber,
         "user_id": userId == null ? null : userId,
         "sign_in_provider": signInProvider == null ? null : signInProvider,
         "createdAt": createdAt == null ? null : createdAt.toIso8601String(),

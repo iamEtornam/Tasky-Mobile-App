@@ -1,5 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:logger/logger.dart';
 import 'package:tasky_app/utils/ui_utils/custom_colors.dart';
 import 'package:tasky_app/views/inbox/inbox_view.dart';
 import 'package:tasky_app/views/overview/over_view.dart';
@@ -12,6 +14,7 @@ class DashboardView extends StatefulWidget {
 }
 
 class _DashboardViewState extends State<DashboardView> {
+  final Logger _logger = Logger();
   int _currentIndex = 0;
   final List<Widget> _pages = [
     OverView(),
@@ -24,6 +27,15 @@ class _DashboardViewState extends State<DashboardView> {
     setState(() {
       _currentIndex = index;
     });
+  }
+
+  @override
+  void initState() {
+    final auth = FirebaseAuth.instance;
+    auth.authStateChanges().listen((event) {
+      _logger.d(event.getIdToken());
+    });
+    super.initState();
   }
 
   @override

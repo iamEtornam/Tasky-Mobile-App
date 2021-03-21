@@ -2,6 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NSCameraUsageDescription</key>
+	<string>Tasky app requires access to your Camera in order for you to capture your Picture for your profile picture. It is secure and private.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Tasky app requires access to your Library in order for you to select a Picture for your profile picture. It is secure and private.</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>

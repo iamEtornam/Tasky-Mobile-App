@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get_it/get_it.dart';
+import 'package:groovin_widgets/groovin_widgets.dart';
 import 'package:tasky_app/managers/organization_manager.dart';
 import 'package:tasky_app/managers/user_manager.dart';
 import 'package:tasky_app/models/organization.dart';
@@ -253,27 +254,59 @@ class _DashboardViewState extends State<DashboardView> {
                           side: BorderSide(color: Colors.grey, width: 1)),
                       child: Padding(
                         padding: const EdgeInsets.all(5.0),
-                        child: DropdownButton<String>(
-                          style: Theme.of(context).textTheme.bodyText1,
+                        child: OutlineDropdownButton(
+                          inputDecoration: InputDecoration(
+                            alignLabelWithHint: true,
+                            hintStyle: Theme.of(context)
+                                .inputDecorationTheme
+                                .hintStyle,
+                            contentPadding: EdgeInsets.fromLTRB(15, 1, 15, 1),
+                            floatingLabelBehavior: FloatingLabelBehavior.auto,
+                            focusedBorder: Theme.of(context)
+                                .inputDecorationTheme
+                                .focusedBorder,
+                            enabledBorder: Theme.of(context)
+                                .inputDecorationTheme
+                                .enabledBorder,
+                            disabledBorder: Theme.of(context)
+                                .inputDecorationTheme
+                                .disabledBorder,
+                            errorBorder: Theme.of(context)
+                                .inputDecorationTheme
+                                .errorBorder,
+                            focusedErrorBorder: Theme.of(context)
+                                .inputDecorationTheme
+                                .focusedErrorBorder,
+                            fillColor: Theme.of(context)
+                                .inputDecorationTheme
+                                .fillColor,
+                            filled: true,
+                            labelStyle: Theme.of(context)
+                                .inputDecorationTheme
+                                .labelStyle,
+                            errorStyle: Theme.of(context)
+                                .inputDecorationTheme
+                                .errorStyle,
+                          ),
+                          items: organization.data.department
+                              .map((value) => DropdownMenuItem<String>(
+                                  value: '$value',
+                                  child: Text(
+                                    '$value',
+                                    style:
+                                        Theme.of(context).textTheme.bodyText1,
+                                  )))
+                              .toList(),
+                          value: department,
                           hint: Text(
                             'Select your department',
-                            style: Theme.of(context).textTheme.bodyText1,
+                            style: Theme.of(context).textTheme.bodyText2,
                           ),
-                          value: department,
                           onChanged: (value) {
                             setState(() {
                               department = value;
                             });
                           },
-                          items: organization.data.department.map((value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(
-                                '$value',
-                                style: Theme.of(context).textTheme.bodyText1,
-                              ),
-                            );
-                          }).toList(),
                         ),
                       ),
                     ),

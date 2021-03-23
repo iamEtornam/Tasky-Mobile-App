@@ -257,7 +257,7 @@ class HomeTaskCountCard extends StatelessWidget {
       elevation: 0.5,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       child: SizedBox(
-        height: 125,
+        height: 130,
         width: size.width / 3 - 32,
         child: Stack(
           children: [
@@ -273,13 +273,13 @@ class HomeTaskCountCard extends StatelessWidget {
                 child: ClipRRect(
               borderRadius: BorderRadius.circular(10),
               child: Container(
-                height: 125,
+                height: 130,
                 width: size.width / 3 - 32,
                 color: Colors.black87.withOpacity(.3),
               ),
             )),
             Padding(
-              padding: const EdgeInsets.all(12.0),
+              padding: const EdgeInsets.all(10.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,

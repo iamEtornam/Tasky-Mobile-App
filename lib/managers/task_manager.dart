@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:tasky_app/models/task.dart';
 import 'package:tasky_app/models/user.dart';
 import 'package:tasky_app/services/task_service.dart';
 import 'package:tasky_app/utils/local_storage.dart';
@@ -81,5 +82,31 @@ class TaskManager with ChangeNotifier {
       isSaved = false;
     });
     return isSaved;
+  }
+
+  Future<Task> getTasks() async {
+    Task task;
+    int organizationId = await _localStorage.getOrganizationId();
+    await _taskService.getTaskRequest(organizationId).then((response) {
+      int statusCode = response.statusCode;
+      Map<String, dynamic> body = json.decode(response.body);
+      setMessage(body['message']);
+      setisLoading(false);
+      print(body['message']);
+      if (statusCode == 201) {
+        task = Task.fromMap(body);
+      } else {
+        task = null;
+      }
+    }).catchError((onError) {
+      task = null;
+      setMessage('$onError');
+      setisLoading(false);
+    }).timeout(Duration(seconds: 60), onTimeout: () {
+      setMessage('Timeout! Check your internet connection.');
+      setisLoading(false);
+      task = null;
+    });
+    return task;
   }
 }

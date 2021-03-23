@@ -541,7 +541,7 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
                           context: context, message: _taskManager.message);
 
                       Future.delayed(Duration(seconds: 3), () {
-                        Navigator.pushReplacementNamed(context, '/taskView');
+                        Navigator.pushReplacementNamed(context, '/', arguments: 1);
                       });
                     } else {
                       uiUtilities.actionAlertWidget(

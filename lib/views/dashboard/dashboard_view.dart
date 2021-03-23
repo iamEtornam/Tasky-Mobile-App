@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -53,18 +54,19 @@ class _DashboardViewState extends State<DashboardView> {
 
   @override
   void initState() {
-    checkAuth();
     setState(() {
       _currentIndex = widget.currentIndex;
     });
+    checkAuth();
     initialNotification(context: context);
     uploadNotificationToken();
     super.initState();
   }
 
   void uploadNotificationToken() async {
+    print(_messaging);
     if (_messaging != null) {
-      _messaging?.getToken()?.then((token) async {
+      await _messaging.getToken().then((token) async {
         await _userManager.sendNotificationToken(token: token);
       });
     }
@@ -163,61 +165,63 @@ class _DashboardViewState extends State<DashboardView> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: _pages[_currentIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _currentIndex,
-        onTap: _onChanged,
-        selectedIconTheme:
-            Theme.of(context).iconTheme.copyWith(color: customRedColor),
-        selectedLabelStyle: Theme.of(context)
-            .textTheme
-            .bodyText2
-            .copyWith(color: customRedColor),
-        unselectedIconTheme:
-            Theme.of(context).iconTheme.copyWith(color: customGreyColor),
-        unselectedLabelStyle: Theme.of(context)
-            .textTheme
-            .bodyText2
-            .copyWith(color: customGreyColor),
-        type: BottomNavigationBarType.fixed,
-        showUnselectedLabels: true,
-        backgroundColor:
-            Theme.of(context).bottomNavigationBarTheme.backgroundColor,
-        selectedItemColor: customRedColor,
-        unselectedItemColor: customGreyColor,
-        items: [
-          BottomNavigationBarItem(
-              icon: SvgPicture.asset('assets/chart_pie.svg'),
-              label: 'Overview',
-              activeIcon: SvgPicture.asset(
-                'assets/chart_pie.svg',
-                color: customRedColor,
-              )),
-          BottomNavigationBarItem(
-              icon: SvgPicture.asset('assets/lightning_bolt.svg'),
-              label: 'Task',
-              activeIcon: SvgPicture.asset(
-                'assets/lightning_bolt.svg',
-                color: customRedColor,
-              )),
-          BottomNavigationBarItem(
-              icon: SvgPicture.asset('assets/inbox.svg'),
-              label: 'Inbox',
-              activeIcon: SvgPicture.asset(
-                'assets/inbox.svg',
-                color: customRedColor,
-              )),
-          BottomNavigationBarItem(
-              icon: SvgPicture.asset('assets/user_circle.svg'),
-              label: 'Account',
-              activeIcon: SvgPicture.asset(
-                'assets/user_circle.svg',
-                color: customRedColor,
-              ))
-        ],
-      ),
-    );
+    return _currentIndex == null
+        ? Scaffold(body: Center(child: CupertinoActivityIndicator()))
+        : Scaffold(
+            body: _pages[_currentIndex],
+            bottomNavigationBar: BottomNavigationBar(
+              currentIndex: _currentIndex,
+              onTap: _onChanged,
+              selectedIconTheme:
+                  Theme.of(context).iconTheme.copyWith(color: customRedColor),
+              selectedLabelStyle: Theme.of(context)
+                  .textTheme
+                  .bodyText2
+                  .copyWith(color: customRedColor),
+              unselectedIconTheme:
+                  Theme.of(context).iconTheme.copyWith(color: customGreyColor),
+              unselectedLabelStyle: Theme.of(context)
+                  .textTheme
+                  .bodyText2
+                  .copyWith(color: customGreyColor),
+              type: BottomNavigationBarType.fixed,
+              showUnselectedLabels: true,
+              backgroundColor:
+                  Theme.of(context).bottomNavigationBarTheme.backgroundColor,
+              selectedItemColor: customRedColor,
+              unselectedItemColor: customGreyColor,
+              items: [
+                BottomNavigationBarItem(
+                    icon: SvgPicture.asset('assets/chart_pie.svg'),
+                    label: 'Overview',
+                    activeIcon: SvgPicture.asset(
+                      'assets/chart_pie.svg',
+                      color: customRedColor,
+                    )),
+                BottomNavigationBarItem(
+                    icon: SvgPicture.asset('assets/lightning_bolt.svg'),
+                    label: 'Task',
+                    activeIcon: SvgPicture.asset(
+                      'assets/lightning_bolt.svg',
+                      color: customRedColor,
+                    )),
+                BottomNavigationBarItem(
+                    icon: SvgPicture.asset('assets/inbox.svg'),
+                    label: 'Inbox',
+                    activeIcon: SvgPicture.asset(
+                      'assets/inbox.svg',
+                      color: customRedColor,
+                    )),
+                BottomNavigationBarItem(
+                    icon: SvgPicture.asset('assets/user_circle.svg'),
+                    label: 'Account',
+                    activeIcon: SvgPicture.asset(
+                      'assets/user_circle.svg',
+                      color: customRedColor,
+                    ))
+              ],
+            ),
+          );
   }
 
   void getUserDepartment() async {

@@ -6,7 +6,6 @@ import 'package:tasky_app/utils/network_utils/endpoints.dart';
 final CustomHttpClient _customHttpClient = GetIt.I.get<CustomHttpClient>();
 
 class TaskService {
-  
   Future<Response> createTaskRequest(
       {String description,
       String dueDate,
@@ -26,5 +25,9 @@ class TaskService {
     };
     return await _customHttpClient.postRequest(
         path: createTaskPath, body: body);
+  }
+
+  Future<Response> getTaskRequest(int organizationId) async {
+    return await _customHttpClient.getRequest(getTaskPath(organizationId));
   }
 }

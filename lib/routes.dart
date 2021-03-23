@@ -12,7 +12,7 @@ class Routes {
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
       case '/':
-        final int currentIndex = settings.arguments;
+        final int currentIndex = settings.arguments ?? 0;
         return MaterialPageRoute(builder: (_) => DashboardView(currentIndex: currentIndex));
       case '/createNewTaskView':
         return MaterialPageRoute(builder: (_) => CreateNewTaskView());

@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "tasky_logo.png",
+      "filename" : "bg.jpg",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "tasky_logo-1.png",
+      "filename" : "bg-1.jpg",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "tasky_logo-2.png",
+      "filename" : "bg-2.jpg",
       "idiom" : "universal",
       "scale" : "3x"
     }

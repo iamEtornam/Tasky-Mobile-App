@@ -1,10 +1,16 @@
 import 'dart:math';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_stack/flutter_image_stack.dart';
+import 'package:get_it/get_it.dart';
+import 'package:tasky_app/managers/task_manager.dart';
+import 'package:tasky_app/models/task.dart';
 import 'package:tasky_app/shared_widgets/custom_appbar_widget.dart';
 import 'package:tasky_app/shared_widgets/custom_checkbox_widget.dart';
 import 'package:tasky_app/utils/ui_utils/custom_colors.dart';
+
+final TaskManager _taskManager = GetIt.I.get<TaskManager>();
 
 class TaskView extends StatefulWidget {
   @override
@@ -12,31 +18,31 @@ class TaskView extends StatefulWidget {
 }
 
 class _TaskViewState extends State<TaskView> {
-  final List<Map<String, dynamic>> data = [
-    {
-      'title': 'Provide design team content for next web seminar',
-      'isCompleted': true,
-      'date': DateTime.now().subtract(Duration(days: 10)),
-      'participants': [
-        "https://images.unsplash.com/photo-1458071103673-6a6e4c4a3413?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80",
-        "https://images.unsplash.com/photo-1518806118471-f28b20a1d79d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=400&q=80",
-        "https://images.unsplash.com/photo-1470406852800-b97e5d92e2aa?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80",
-        "https://images.unsplash.com/photo-1473700216830-7e08d47f858e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80"
-      ]
-    },
-    {
-      'title':
-          'Create a beautiful physical christmas card for upcoming christmas',
-      'isCompleted': false,
-      'date': DateTime.now().subtract(Duration(days: 5)),
-      'participants': [
-        "https://images.unsplash.com/photo-1458071103673-6a6e4c4a3413?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80",
-        "https://images.unsplash.com/photo-1518806118471-f28b20a1d79d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=400&q=80",
-        "https://images.unsplash.com/photo-1470406852800-b97e5d92e2aa?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80",
-        "https://images.unsplash.com/photo-1473700216830-7e08d47f858e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80"
-      ]
-    }
-  ];
+  // final List<Map<String, dynamic>> data = [
+  //   {
+  //     'title': 'Provide design team content for next web seminar',
+  //     'isCompleted': true,
+  //     'date': DateTime.now().subtract(Duration(days: 10)),
+  //     'participants': [
+  //       "https://images.unsplash.com/photo-1458071103673-6a6e4c4a3413?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80",
+  //       "https://images.unsplash.com/photo-1518806118471-f28b20a1d79d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=400&q=80",
+  //       "https://images.unsplash.com/photo-1470406852800-b97e5d92e2aa?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80",
+  //       "https://images.unsplash.com/photo-1473700216830-7e08d47f858e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80"
+  //     ]
+  //   },
+  //   {
+  //     'title':
+  //         'Create a beautiful physical christmas card for upcoming christmas',
+  //     'isCompleted': false,
+  //     'date': DateTime.now().subtract(Duration(days: 5)),
+  //     'participants': [
+  //       "https://images.unsplash.com/photo-1458071103673-6a6e4c4a3413?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80",
+  //       "https://images.unsplash.com/photo-1518806118471-f28b20a1d79d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=400&q=80",
+  //       "https://images.unsplash.com/photo-1470406852800-b97e5d92e2aa?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80",
+  //       "https://images.unsplash.com/photo-1473700216830-7e08d47f858e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80"
+  //     ]
+  //   }
+  // ];
 
   @override
   Widget build(BuildContext context) {
@@ -44,68 +50,92 @@ class _TaskViewState extends State<TaskView> {
       appBar: CustomAppBarWidget(
         title: 'Tasks',
       ),
-      body: ListView(
-        children: [
-          Divider(),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
-            child: Row(
+      body: StreamBuilder<Task>(
+          stream: _taskManager.getTasks().asStream(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting &&
+                !snapshot.hasData) {
+              return Center(child: CupertinoActivityIndicator());
+            }
+
+            if (snapshot.connectionState == ConnectionState.done &&
+                !snapshot.hasData) {
+              return Text('no data');
+            }
+
+            if (snapshot.data == null) {
+              return Text('no data');
+            }
+
+            return ListView(
               children: [
-                Icon(
-                  Icons.star_rate_rounded,
-                  color: Color.fromRGBO(245, 101, 101, 1),
-                ),
-                SizedBox(
-                  width: 10,
-                ),
-                Text(
-                  'Starred',
-                  style: Theme.of(context).textTheme.bodyText1,
-                )
-              ],
-            ),
-          ),
-          Divider(),
-          Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
-              child: Text(
-                'Tasks',
-                style: Theme.of(context).textTheme.bodyText1,
-              )),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24),
-            child: ListView.separated(
-                shrinkWrap: true,
-                itemBuilder: (context, index) {
-                  return TaskListTile(
-                    images: data[index]['participants'],
-                    taskTitle: data[index]['title'],
-                    isCompleted: data[index]['isCompleted'],
-                    onTap: (value) {
-                      setState(() {
-                        data[index]['isCompleted'] = value;
-                      });
-                    },
-                  );
-                },
-                separatorBuilder: (context, index) => Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 10),
-                      child: Divider(
-                        endIndent: 10,
-                        indent: 40,
+                Divider(),
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.star_rate_rounded,
+                        color: Color.fromRGBO(245, 101, 101, 1),
                       ),
-                    ),
-                itemCount: data.length),
-          ),
-        ],
-      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Text(
+                        'Starred',
+                        style: Theme.of(context).textTheme.bodyText1,
+                      )
+                    ],
+                  ),
+                ),
+                Divider(),
+                Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 24, vertical: 10),
+                    child: Text(
+                      'Tasks',
+                      style: Theme.of(context).textTheme.bodyText1,
+                    )),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 24),
+                  child: ListView.separated(
+                      shrinkWrap: true,
+                      itemBuilder: (context, index) {
+                        return TaskListTile(
+                          images: snapshot.data.data[index].participants,
+                          taskTitle: snapshot.data.data[index].description,
+                          isCompleted:
+                              snapshot.data.data[index].status == 'completed',
+                          onTap: (value) {
+                            setState(() {
+                              snapshot.data.data[index].status = value;
+                            });
+                            print(
+                                '@@@@@@@@@@@@@@@@@@ ${snapshot.data.data[index]}');
+                          },
+                        );
+                      },
+                      separatorBuilder: (context, index) => Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 10),
+                            child: Divider(
+                              endIndent: 10,
+                              indent: 40,
+                            ),
+                          ),
+                      itemCount: snapshot.data.data.length),
+                ),
+              ],
+            );
+          }),
       floatingActionButton: FloatingActionButton(
         backgroundColor: customRedColor,
         child: Icon(
           Icons.add,
           color: Colors.white,
         ),
-        onPressed: () => Navigator.pushReplacementNamed(context, '/createNewTaskView'),
+        onPressed: () =>
+            Navigator.pushReplacementNamed(context, '/createNewTaskView'),
       ),
     );
   }
@@ -177,8 +207,7 @@ class TaskListTile extends StatelessWidget {
                 extraCountTextStyle: Theme.of(context).textTheme.subtitle2,
                 imageBorderColor: Theme.of(context).scaffoldBackgroundColor,
                 imageRadius: 25,
-                imageCount: images
-                    .length,
+                imageCount: images.length,
                 imageBorderWidth: 1,
                 backgroundColor: Colors
                     .primaries[Random().nextInt(Colors.primaries.length)]

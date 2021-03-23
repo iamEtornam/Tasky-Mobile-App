@@ -2,12 +2,14 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:logger/logger.dart';
 import 'package:tasky_app/models/task.dart';
 import 'package:tasky_app/models/user.dart';
 import 'package:tasky_app/services/task_service.dart';
 import 'package:tasky_app/utils/local_storage.dart';
 
 class TaskManager with ChangeNotifier {
+  Logger logger = Logger();
   final TaskService _taskService = GetIt.I.get<TaskService>();
   final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
 
@@ -91,15 +93,17 @@ class TaskManager with ChangeNotifier {
       int statusCode = response.statusCode;
       Map<String, dynamic> body = json.decode(response.body);
       setMessage(body['message']);
+      logger.d(body['message']);
       setisLoading(false);
       print(body['message']);
-      if (statusCode == 201) {
+      if (statusCode == 200) {
         task = Task.fromMap(body);
       } else {
         task = null;
       }
     }).catchError((onError) {
       task = null;
+      logger.d('$onError');
       setMessage('$onError');
       setisLoading(false);
     }).timeout(Duration(seconds: 60), onTimeout: () {

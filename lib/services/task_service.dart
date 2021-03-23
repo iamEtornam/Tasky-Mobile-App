@@ -14,7 +14,7 @@ class TaskService {
       bool isReminder,
       int organizationId,
       int createdBy,
-      List<Map<String, dynamic>> assignees}) async {
+      List<int> assignees}) async {
     Map<String, dynamic> body = {
       'description': description,
       'due_date': dueDate,

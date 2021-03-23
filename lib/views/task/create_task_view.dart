@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:math';
 
+import 'package:bot_toast/bot_toast.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -49,103 +50,51 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: customRedColor,
-        iconTheme: IconThemeData(color: Colors.white),
-        title: Text(
-          'New Task',
-          style: Theme.of(context)
-              .textTheme
-              .headline6
-              .copyWith(fontWeight: FontWeight.bold, color: Colors.white),
+    return WillPopScope(
+      onWillPop: () async {
+        Navigator.pushReplacementNamed(context, '/', arguments: 1);
+        return true;
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: customRedColor,
+          iconTheme: IconThemeData(color: Colors.white),
+          leading: BackButton(color: Colors.white,onPressed: () => Navigator.pushReplacementNamed(context, '/', arguments: 1),),
+          title: Text(
+            'New Task',
+            style: Theme.of(context)
+                .textTheme
+                .headline6
+                .copyWith(fontWeight: FontWeight.bold, color: Colors.white),
+          ),
         ),
-      ),
-      body: Form(
-        key: _formKey,
-        child: ListView(
-          padding: EdgeInsets.all(24),
-          children: [
-            Text(
-              'What needs to be done ?',
-              style: Theme.of(context)
-                  .textTheme
-                  .bodyText1
-                  .copyWith(fontWeight: FontWeight.w600),
-            ),
-            SizedBox(
-              height: 15,
-            ),
-            TextFormField(
-              controller: descriptionTextEditingController,
-              focusNode: taskFocusNode,
-              style: Theme.of(context).textTheme.bodyText1,
-              textInputAction: TextInputAction.next,
-              keyboardType: TextInputType.multiline,
-              maxLines: 4,
-              cursorColor: Theme.of(context).textSelectionTheme.cursorColor,
-              enableInteractiveSelection: true,
-              decoration: InputDecoration(
-                  filled: false,
-                  hintText: 'Start Typing ...',
-                  enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: customGreyColor)),
-                  focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: customGreyColor)),
-                  border: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.black)),
-                  hintStyle: Theme.of(context)
-                      .textTheme
-                      .bodyText1
-                      .copyWith(color: Colors.grey)),
-              validator: (value) {
-                if (value.isEmpty) {
-                  return 'Field cannot be Empty';
-                }
-                return null;
-              },
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            Text(
-              'By when ?',
-              style: Theme.of(context)
-                  .textTheme
-                  .bodyText1
-                  .copyWith(fontWeight: FontWeight.w600),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Text(
-              'Due date & time',
-              style: Theme.of(context).textTheme.bodyText2.copyWith(
-                  fontWeight: FontWeight.normal, color: customGreyColor),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            InkWell(
-              onTap: () async {
-                await pickDateTime(context);
-              },
-              child: TextFormField(
-                onTap: () async {
-                  await pickDateTime(context);
-                },
-                controller: dueDateTextEditingController,
+        body: Form(
+          key: _formKey,
+          child: ListView(
+            padding: EdgeInsets.all(24),
+            children: [
+              Text(
+                'What needs to be done ?',
                 style: Theme.of(context)
                     .textTheme
                     .bodyText1
                     .copyWith(fontWeight: FontWeight.w600),
+              ),
+              SizedBox(
+                height: 15,
+              ),
+              TextFormField(
+                controller: descriptionTextEditingController,
+                focusNode: taskFocusNode,
+                style: Theme.of(context).textTheme.bodyText1,
                 textInputAction: TextInputAction.next,
-                keyboardType: TextInputType.datetime,
-                maxLines: 1,
+                keyboardType: TextInputType.multiline,
+                maxLines: 4,
                 cursorColor: Theme.of(context).textSelectionTheme.cursorColor,
                 enableInteractiveSelection: true,
                 decoration: InputDecoration(
                     filled: false,
+                    hintText: 'Start Typing ...',
                     enabledBorder: UnderlineInputBorder(
                         borderSide: BorderSide(color: customGreyColor)),
                     focusedBorder: UnderlineInputBorder(
@@ -155,11 +104,7 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
                     hintStyle: Theme.of(context)
                         .textTheme
                         .bodyText1
-                        .copyWith(color: Colors.grey),
-                    suffixIcon: Icon(
-                      Icons.arrow_forward,
-                      color: customGreyColor,
-                    )),
+                        .copyWith(color: Colors.grey)),
                 validator: (value) {
                   if (value.isEmpty) {
                     return 'Field cannot be Empty';
@@ -167,181 +112,281 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
                   return null;
                 },
               ),
-            ),
-            SizedBox(
-              height: 15,
-            ),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Set task reminder',
+              SizedBox(
+                height: 20,
+              ),
+              Text(
+                'By when ?',
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyText1
+                    .copyWith(fontWeight: FontWeight.w600),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Text(
+                'Due date & time',
+                style: Theme.of(context).textTheme.bodyText2.copyWith(
+                    fontWeight: FontWeight.normal, color: customGreyColor),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              InkWell(
+                onTap: () async {
+                  await pickDateTime(context);
+                },
+                child: TextFormField(
+                  onTap: () async {
+                    await pickDateTime(context);
+                  },
+                  controller: dueDateTextEditingController,
                   style: Theme.of(context)
                       .textTheme
                       .bodyText1
                       .copyWith(fontWeight: FontWeight.w600),
-                ),
-                Switch.adaptive(
-                  onChanged: (value) {
-                    setState(() {
-                      isSwitched = value;
-                    });
+                  textInputAction: TextInputAction.next,
+                  keyboardType: TextInputType.datetime,
+                  maxLines: 1,
+                  cursorColor: Theme.of(context).textSelectionTheme.cursorColor,
+                  enableInteractiveSelection: true,
+                  decoration: InputDecoration(
+                      filled: false,
+                      enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: customGreyColor)),
+                      focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: customGreyColor)),
+                      border: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.black)),
+                      hintStyle: Theme.of(context)
+                          .textTheme
+                          .bodyText1
+                          .copyWith(color: Colors.grey),
+                      suffixIcon: Icon(
+                        Icons.arrow_forward,
+                        color: customGreyColor,
+                      )),
+                  validator: (value) {
+                    if (value.isEmpty) {
+                      return 'Field cannot be Empty';
+                    }
+                    return null;
                   },
-                  value: isSwitched,
-                  activeColor: customRedColor,
-                  activeTrackColor: customRedColor.withOpacity(.5),
-                  inactiveThumbColor: customGreyColor,
-                  inactiveTrackColor: customGreyColor,
-                )
-              ],
-            ),
-            SizedBox(
-              height: 15,
-            ),
-            Divider(),
-            SizedBox(
-              height: 20,
-            ),
-            Text(
-              'By whom ?',
-              style: Theme.of(context)
-                  .textTheme
-                  .bodyText1
-                  .copyWith(fontWeight: FontWeight.w600),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Text(
-              'select Assignee',
-              style: Theme.of(context).textTheme.bodyText2.copyWith(
-                  fontWeight: FontWeight.normal, color: customGreyColor),
-            ),
-            SizedBox(
-              height: 15,
-            ),
-            _taskManager.assignees.isEmpty ? FutureBuilder<Member>(
-                future: _organizationManager.getOrganizationMembers(),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting &&
-                      !snapshot.hasData) {
-                    return CupertinoActivityIndicator();
-                  }
-                  if (snapshot.connectionState == ConnectionState.done &&
-                      !snapshot.hasData) {
-                    return Align(
-                      alignment: Alignment.centerLeft,
-                      child: DottedBorder(
-                        borderType: BorderType.Circle,
-                        radius: Radius.circular(6),
-                        color: customGreyColor,
-                        dashPattern: [6, 3, 6, 3],
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.all(Radius.circular(45)),
-                          child: Container(
-                            height: 45,
-                            width: 45,
-                            color: customGreyColor.withOpacity(.2),
-                            child: Center(
-                                child: Icon(
-                              MaterialIcons.person_add,
-                              color: customGreyColor,
-                            )),
-                          ),
-                        ),
-                      ),
-                    );
-                  }
-
-                  return Align(
-                    alignment: Alignment.centerLeft,
-                    child: GestureDetector(
-                      onTap: () async {
-                        if (Platform.isIOS) {
-                          showCupertinoModalBottomSheet(
-                            context: context,
-                            builder: (context) {
-                              return TaskAssigneeWidget(
-                                data: snapshot.data,
-                              );
-                            },
-                          );
-                        } else {
-                          showMaterialModalBottomSheet(
-                            context: context,
-                            builder: (context) {
-                              return TaskAssigneeWidget(
-                                data: snapshot.data,
-                              );
-                            },
-                          );
-                        }
-                      },
-                      child: DottedBorder(
-                        borderType: BorderType.Circle,
-                        radius: Radius.circular(6),
-                        color: customGreyColor,
-                        dashPattern: [6, 3, 6, 3],
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.all(Radius.circular(45)),
-                          child: Container(
-                            height: 45,
-                            width: 45,
-                            color: customGreyColor.withOpacity(.2),
-                            child: Center(
-                                child: Icon(
-                              MaterialIcons.person_add,
-                              color: customGreyColor,
-                            )),
-                          ),
-                        ),
-                      ),
-                    ),
-                  );
-                }) :       Padding(
-              padding: const EdgeInsets.only(left: 100.0),
-              child: FlutterImageStack(
-                imageList: _taskManager.imagesList,
-                extraCountTextStyle: Theme.of(context).textTheme.subtitle2,
-                imageBorderColor: Theme.of(context).scaffoldBackgroundColor,
-                imageRadius: 25,
-                imageCount: _taskManager.assignees
-                    .length,
-                imageBorderWidth: 1,
-                backgroundColor: Colors
-                    .primaries[Random().nextInt(Colors.primaries.length)]
-                    .withOpacity(.5),
-                totalCount: _taskManager.assignees.length - 1,
+                ),
               ),
-            ),
-            SizedBox(height: 45),
-            TextButton(
-              style: TextButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  backgroundColor: Colors.black),
-              onPressed: () {
-                if (_formKey.currentState.validate()) {
-                } else {
-                  uiUtilities.actionAlertWidget(
-                      context: context, alertType: 'error');
-                  uiUtilities.alertNotification(
-                      context: context, message: 'Fields cannot be empty');
-                }
-              },
-              child: Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: Text('Create Task',
+              SizedBox(
+                height: 15,
+              ),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Set task reminder',
                     style: Theme.of(context)
                         .textTheme
-                        .button
-                        .copyWith(color: Colors.white)),
+                        .bodyText1
+                        .copyWith(fontWeight: FontWeight.w600),
+                  ),
+                  Switch.adaptive(
+                    onChanged: (value) {
+                      setState(() {
+                        isSwitched = value;
+                      });
+                    },
+                    value: isSwitched,
+                    activeColor: customRedColor,
+                    activeTrackColor: customRedColor.withOpacity(.5),
+                    inactiveThumbColor: customGreyColor,
+                    inactiveTrackColor: customGreyColor,
+                  )
+                ],
               ),
-            ),
-            SizedBox(height: 15),
-          ],
+              SizedBox(
+                height: 15,
+              ),
+              Divider(),
+              SizedBox(
+                height: 20,
+              ),
+              Text(
+                'By whom ?',
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyText1
+                    .copyWith(fontWeight: FontWeight.w600),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Text(
+                'select Assignee',
+                style: Theme.of(context).textTheme.bodyText2.copyWith(
+                    fontWeight: FontWeight.normal, color: customGreyColor),
+              ),
+              SizedBox(
+                height: 15,
+              ),
+              _taskManager.assignees.isEmpty
+                  ? FutureBuilder<Member>(
+                      future: _organizationManager.getOrganizationMembers(),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                                ConnectionState.waiting &&
+                            !snapshot.hasData) {
+                          return CupertinoActivityIndicator();
+                        }
+                        if (snapshot.connectionState == ConnectionState.done &&
+                            !snapshot.hasData) {
+                          return Align(
+                            alignment: Alignment.centerLeft,
+                            child: DottedBorder(
+                              borderType: BorderType.Circle,
+                              radius: Radius.circular(6),
+                              color: customGreyColor,
+                              dashPattern: [6, 3, 6, 3],
+                              child: ClipRRect(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(45)),
+                                child: Container(
+                                  height: 45,
+                                  width: 45,
+                                  color: customGreyColor.withOpacity(.2),
+                                  child: Center(
+                                      child: Icon(
+                                    MaterialIcons.person_add,
+                                    color: customGreyColor,
+                                  )),
+                                ),
+                              ),
+                            ),
+                          );
+                        }
+
+                        return Align(
+                          alignment: Alignment.centerLeft,
+                          child: GestureDetector(
+                            onTap: () async {
+                              if (Platform.isIOS) {
+                                showCupertinoModalBottomSheet(
+                                  context: context,
+                                  builder: (context) {
+                                    return TaskAssigneeWidget(
+                                      data: snapshot.data,
+                                    );
+                                  },
+                                );
+                              } else {
+                                showMaterialModalBottomSheet(
+                                  context: context,
+                                  builder: (context) {
+                                    return TaskAssigneeWidget(
+                                      data: snapshot.data,
+                                    );
+                                  },
+                                );
+                              }
+                            },
+                            child: DottedBorder(
+                              borderType: BorderType.Circle,
+                              radius: Radius.circular(6),
+                              color: customGreyColor,
+                              dashPattern: [6, 3, 6, 3],
+                              child: ClipRRect(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(45)),
+                                child: Container(
+                                  height: 45,
+                                  width: 45,
+                                  color: customGreyColor.withOpacity(.2),
+                                  child: Center(
+                                      child: Icon(
+                                    MaterialIcons.person_add,
+                                    color: customGreyColor,
+                                  )),
+                                ),
+                              ),
+                            ),
+                          ),
+                        );
+                      })
+                  : Padding(
+                      padding: const EdgeInsets.only(left: 100.0),
+                      child: FlutterImageStack(
+                        imageList: _taskManager.imagesList,
+                        extraCountTextStyle:
+                            Theme.of(context).textTheme.subtitle2,
+                        imageBorderColor:
+                            Theme.of(context).scaffoldBackgroundColor,
+                        imageRadius: 25,
+                        imageCount: _taskManager.assignees.length,
+                        imageBorderWidth: 1,
+                        backgroundColor: Colors.primaries[
+                                Random().nextInt(Colors.primaries.length)]
+                            .withOpacity(.5),
+                        totalCount: _taskManager.assignees.length - 1,
+                      ),
+                    ),
+              SizedBox(height: 45),
+              TextButton(
+                style: TextButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    backgroundColor: Colors.black),
+                onPressed: () async {
+                  if (_formKey.currentState.validate()) {
+                    BotToast.showLoading(
+                        allowClick: false,
+                        clickClose: false,
+                        backButtonBehavior: BackButtonBehavior.ignore);
+                    List<int> userIds = [];
+                    _taskManager.assignees.forEach((element) {
+                      userIds.add(element.id);
+                    });
+
+                    bool isSaved = await _taskManager.createTask(
+                        department: departmentTextEditingController.text,
+                        description: descriptionTextEditingController.text,
+                        dueDate: dueDateTextEditingController.text,
+                        shouldSetReminder: isSwitched,
+                        assignees: userIds);
+                    BotToast.closeAllLoading();
+                    if (isSaved) {
+                      uiUtilities.actionAlertWidget(
+                          context: context, alertType: 'success');
+                      uiUtilities.alertNotification(
+                          context: context, message: _taskManager.message);
+
+                      Future.delayed(Duration(seconds: 3), () {
+                        Navigator.pushReplacementNamed(context, '/taskView');
+                      });
+                    } else {
+                      uiUtilities.actionAlertWidget(
+                          context: context, alertType: 'error');
+                      uiUtilities.alertNotification(
+                          context: context, message: _taskManager.message);
+                    }
+                  } else {
+                    uiUtilities.actionAlertWidget(
+                        context: context, alertType: 'error');
+                    uiUtilities.alertNotification(
+                        context: context, message: 'Fields cannot be empty');
+                  }
+                },
+                child: Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Text('Create Task',
+                      style: Theme.of(context)
+                          .textTheme
+                          .button
+                          .copyWith(color: Colors.white)),
+                ),
+              ),
+              SizedBox(height: 15),
+            ],
+          ),
         ),
       ),
     );

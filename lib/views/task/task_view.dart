@@ -105,7 +105,7 @@ class _TaskViewState extends State<TaskView> {
           Icons.add,
           color: Colors.white,
         ),
-        onPressed: () => Navigator.pushNamed(context, '/createNewTaskView'),
+        onPressed: () => Navigator.pushReplacementNamed(context, '/createNewTaskView'),
       ),
     );
   }

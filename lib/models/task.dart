@@ -1,6 +1,6 @@
 import 'package:tasky_app/models/user.dart' as User;
 
-import 'organization.dart';
+import 'organization.dart' as Org;
 
 class Task {
   Task({
@@ -58,7 +58,7 @@ class Datum {
   String department;
   DateTime createdAt;
   DateTime updatedAt;
-  Organization organization;
+  Org.Data organization;
   User.Data creator;
   String status;
 
@@ -87,7 +87,7 @@ class Datum {
             : DateTime.parse(json["updatedAt"]),
         organization: json["organization"] == null
             ? null
-            : Organization.fromMap(json["organization"]),
+            : Org.Data.fromMap(json["organization"]),
         creator:
             json["creator"] == null ? null : User.Data.fromMap(json["creator"]),
       );

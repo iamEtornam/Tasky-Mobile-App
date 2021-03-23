@@ -9,11 +9,13 @@ import 'package:flutter/services.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:flutter_image_stack/flutter_image_stack.dart';
 import 'package:get_it/get_it.dart';
+import 'package:groovin_widgets/groovin_widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:tasky_app/managers/organization_manager.dart';
 import 'package:tasky_app/managers/task_manager.dart';
 import 'package:tasky_app/models/member.dart';
+import 'package:tasky_app/models/organization.dart' as Org;
 import 'package:tasky_app/models/user.dart';
 import 'package:tasky_app/utils/ui_utils/custom_colors.dart';
 import 'package:tasky_app/utils/ui_utils/ui_utils.dart';
@@ -34,12 +36,11 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
   bool isSwitched = false;
   final TextEditingController descriptionTextEditingController =
       TextEditingController();
-  final TextEditingController departmentTextEditingController =
-      TextEditingController();
   final TextEditingController dueDateTextEditingController =
       TextEditingController();
   final DateFormat dateFormat = DateFormat('yyyy-MM-dd HH:mm');
   DateTime dueDate;
+  String departmentTextEditingController;
 
   @override
   void initState() {
@@ -59,7 +60,11 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
         appBar: AppBar(
           backgroundColor: customRedColor,
           iconTheme: IconThemeData(color: Colors.white),
-          leading: BackButton(color: Colors.white,onPressed: () => Navigator.pushReplacementNamed(context, '/', arguments: 1),),
+          leading: BackButton(
+            color: Colors.white,
+            onPressed: () =>
+                Navigator.pushReplacementNamed(context, '/', arguments: 1),
+          ),
           title: Text(
             'New Task',
             style: Theme.of(context)
@@ -89,6 +94,7 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
                 style: Theme.of(context).textTheme.bodyText1,
                 textInputAction: TextInputAction.next,
                 keyboardType: TextInputType.multiline,
+                textCapitalization: TextCapitalization.sentences,
                 maxLines: 4,
                 cursorColor: Theme.of(context).textSelectionTheme.cursorColor,
                 enableInteractiveSelection: true,
@@ -146,7 +152,7 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
                       .textTheme
                       .bodyText1
                       .copyWith(fontWeight: FontWeight.w600),
-                  textInputAction: TextInputAction.next,
+                  textInputAction: TextInputAction.done,
                   keyboardType: TextInputType.datetime,
                   maxLines: 1,
                   cursorColor: Theme.of(context).textSelectionTheme.cursorColor,
@@ -174,6 +180,171 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
                     return null;
                   },
                 ),
+              ),
+              SizedBox(
+                height: 15,
+              ),
+              Text(
+                'Which department?',
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyText1
+                    .copyWith(fontWeight: FontWeight.w600),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              FutureBuilder<Org.Organization>(
+                  future: _organizationManager.getOrganization(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting &&
+                        !snapshot.hasData) {
+                      return OutlineDropdownButton(
+                        inputDecoration: InputDecoration(
+                          alignLabelWithHint: true,
+                          hintStyle: Theme.of(context)
+                              .textTheme
+                              .bodyText2
+                              .copyWith(
+                                  fontWeight: FontWeight.normal,
+                                  color: customGreyColor),
+                          contentPadding: EdgeInsets.fromLTRB(15, 1, 15, 1),
+                          floatingLabelBehavior: FloatingLabelBehavior.auto,
+                          focusedBorder: Theme.of(context)
+                              .inputDecorationTheme
+                              .focusedBorder,
+                          enabledBorder: Theme.of(context)
+                              .inputDecorationTheme
+                              .enabledBorder,
+                          disabledBorder: Theme.of(context)
+                              .inputDecorationTheme
+                              .disabledBorder,
+                          errorBorder: Theme.of(context)
+                              .inputDecorationTheme
+                              .errorBorder,
+                          focusedErrorBorder: Theme.of(context)
+                              .inputDecorationTheme
+                              .focusedErrorBorder,
+                          fillColor:
+                              Theme.of(context).inputDecorationTheme.fillColor,
+                          filled: true,
+                          labelStyle:
+                              Theme.of(context).inputDecorationTheme.labelStyle,
+                          errorStyle:
+                              Theme.of(context).inputDecorationTheme.errorStyle,
+                        ),
+                        items: [],
+                        hint: Text(
+                          'Select your department',
+                          style: Theme.of(context).textTheme.bodyText2,
+                        ),
+                        onChanged: (value) {},
+                      );
+                    }
+
+                    if (snapshot.connectionState == ConnectionState.done &&
+                        snapshot.data == null) {
+                      return OutlineDropdownButton(
+                        inputDecoration: InputDecoration(
+                          alignLabelWithHint: true,
+                          hintStyle: Theme.of(context)
+                              .textTheme
+                              .bodyText2
+                              .copyWith(
+                                  fontWeight: FontWeight.normal,
+                                  color: customGreyColor),
+                          contentPadding: EdgeInsets.fromLTRB(15, 1, 15, 1),
+                          floatingLabelBehavior: FloatingLabelBehavior.auto,
+                          focusedBorder: Theme.of(context)
+                              .inputDecorationTheme
+                              .focusedBorder,
+                          enabledBorder: Theme.of(context)
+                              .inputDecorationTheme
+                              .enabledBorder,
+                          disabledBorder: Theme.of(context)
+                              .inputDecorationTheme
+                              .disabledBorder,
+                          errorBorder: Theme.of(context)
+                              .inputDecorationTheme
+                              .errorBorder,
+                          focusedErrorBorder: Theme.of(context)
+                              .inputDecorationTheme
+                              .focusedErrorBorder,
+                          fillColor:
+                              Theme.of(context).inputDecorationTheme.fillColor,
+                          filled: true,
+                          labelStyle:
+                              Theme.of(context).inputDecorationTheme.labelStyle,
+                          errorStyle:
+                              Theme.of(context).inputDecorationTheme.errorStyle,
+                        ),
+                        items: [],
+                        hint: Text(
+                          'Select your department',
+                          style: Theme.of(context).textTheme.bodyText2,
+                        ),
+                        onChanged: (value) {},
+                      );
+                    }
+
+                    return OutlineDropdownButton(
+                      inputDecoration: InputDecoration(
+                        alignLabelWithHint: true,
+                        hintStyle: Theme.of(context)
+                            .textTheme
+                            .bodyText2
+                            .copyWith(
+                                fontWeight: FontWeight.normal,
+                                color: customGreyColor),
+                        contentPadding: EdgeInsets.fromLTRB(15, 1, 15, 1),
+                        floatingLabelBehavior: FloatingLabelBehavior.auto,
+                        focusedBorder: Theme.of(context)
+                            .inputDecorationTheme
+                            .focusedBorder,
+                        enabledBorder: Theme.of(context)
+                            .inputDecorationTheme
+                            .enabledBorder,
+                        disabledBorder: Theme.of(context)
+                            .inputDecorationTheme
+                            .disabledBorder,
+                        errorBorder:
+                            Theme.of(context).inputDecorationTheme.errorBorder,
+                        focusedErrorBorder: Theme.of(context)
+                            .inputDecorationTheme
+                            .focusedErrorBorder,
+                        fillColor:
+                            Theme.of(context).inputDecorationTheme.fillColor,
+                        filled: true,
+                        labelStyle:
+                            Theme.of(context).inputDecorationTheme.labelStyle,
+                        errorStyle:
+                            Theme.of(context).inputDecorationTheme.errorStyle,
+                      ),
+                      items: snapshot.data.data.department
+                          .map((value) => DropdownMenuItem<String>(
+                              value: '$value',
+                              child: Text(
+                                '$value',
+                                style: Theme.of(context).textTheme.bodyText1,
+                              )))
+                          .toList(),
+                      value: departmentTextEditingController,
+                      hint: Text(
+                        'Select your department',
+                        style: Theme.of(context).textTheme.bodyText2,
+                      ),
+                      onChanged: (value) {
+                        setState(() {
+                          departmentTextEditingController = value;
+                        });
+                      },
+                    );
+                  }),
+              SizedBox(
+                height: 10,
+              ),
+              Divider(
+                color: Colors.grey,
               ),
               SizedBox(
                 height: 15,
@@ -228,8 +399,32 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
               SizedBox(
                 height: 15,
               ),
-              _taskManager.assignees.isEmpty
-                  ? FutureBuilder<Member>(
+              Row(
+                children: [
+                  _taskManager.assignees.isEmpty
+                      ? Padding(
+                          padding: EdgeInsets.only(
+                              left: _taskManager.assignees.length < 3
+                                  ? 35
+                                  : 100.0),
+                          child: FlutterImageStack(
+                            imageList: _taskManager.imagesList,
+                            extraCountTextStyle:
+                                Theme.of(context).textTheme.subtitle2,
+                            imageBorderColor:
+                                Theme.of(context).scaffoldBackgroundColor,
+                            imageRadius: 40,
+                            imageCount: _taskManager.assignees.length,
+                            imageBorderWidth: 1,
+                            showTotalCount: true,
+                            backgroundColor: Colors.primaries[
+                                    Random().nextInt(Colors.primaries.length)]
+                                .withOpacity(.5),
+                            totalCount: _taskManager.assignees.length - 1,
+                          ),
+                        )
+                      : SizedBox.shrink(),
+                  FutureBuilder<Member>(
                       future: _organizationManager.getOrganizationMembers(),
                       builder: (context, snapshot) {
                         if (snapshot.connectionState ==
@@ -264,30 +459,30 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
                           );
                         }
 
-                        return Align(
-                          alignment: Alignment.centerLeft,
-                          child: GestureDetector(
-                            onTap: () async {
-                              if (Platform.isIOS) {
-                                showCupertinoModalBottomSheet(
-                                  context: context,
-                                  builder: (context) {
-                                    return TaskAssigneeWidget(
-                                      data: snapshot.data,
-                                    );
-                                  },
-                                );
-                              } else {
-                                showMaterialModalBottomSheet(
-                                  context: context,
-                                  builder: (context) {
-                                    return TaskAssigneeWidget(
-                                      data: snapshot.data,
-                                    );
-                                  },
-                                );
-                              }
-                            },
+                        return GestureDetector(
+                          onTap: () async {
+                            if (Platform.isIOS) {
+                              showCupertinoModalBottomSheet(
+                                context: context,
+                                builder: (context) {
+                                  return TaskAssigneeWidget(
+                                    data: snapshot.data,
+                                  );
+                                },
+                              );
+                            } else {
+                              showMaterialModalBottomSheet(
+                                context: context,
+                                builder: (context) {
+                                  return TaskAssigneeWidget(
+                                    data: snapshot.data,
+                                  );
+                                },
+                              );
+                            }
+                          },
+                          child: Align(
+                            alignment: Alignment.centerLeft,
                             child: DottedBorder(
                               borderType: BorderType.Circle,
                               radius: Radius.circular(6),
@@ -311,24 +506,9 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
                           ),
                         );
                       })
-                  : Padding(
-                      padding: const EdgeInsets.only(left: 100.0),
-                      child: FlutterImageStack(
-                        imageList: _taskManager.imagesList,
-                        extraCountTextStyle:
-                            Theme.of(context).textTheme.subtitle2,
-                        imageBorderColor:
-                            Theme.of(context).scaffoldBackgroundColor,
-                        imageRadius: 25,
-                        imageCount: _taskManager.assignees.length,
-                        imageBorderWidth: 1,
-                        backgroundColor: Colors.primaries[
-                                Random().nextInt(Colors.primaries.length)]
-                            .withOpacity(.5),
-                        totalCount: _taskManager.assignees.length - 1,
-                      ),
-                    ),
-              SizedBox(height: 45),
+                ],
+              ),
+              SizedBox(height: 25),
               TextButton(
                 style: TextButton.styleFrom(
                     shape: RoundedRectangleBorder(
@@ -347,11 +527,12 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
                     });
 
                     bool isSaved = await _taskManager.createTask(
-                        department: departmentTextEditingController.text,
-                        description: descriptionTextEditingController.text,
-                        dueDate: dueDateTextEditingController.text,
-                        shouldSetReminder: isSwitched,
-                        assignees: userIds);
+                      department: departmentTextEditingController,
+                      description: descriptionTextEditingController.text,
+                      dueDate: dueDateTextEditingController.text,
+                      shouldSetReminder: isSwitched,
+                      assignees: userIds,
+                    );
                     BotToast.closeAllLoading();
                     if (isSaved) {
                       uiUtilities.actionAlertWidget(
@@ -454,8 +635,8 @@ class TaskAssigneeWidget extends StatefulWidget {
 }
 
 class _TaskAssigneeWidgetState extends State<TaskAssigneeWidget> {
-  bool isChecked = false;
   List<Data> users = [];
+  bool isChecked = false;
 
   @override
   Widget build(BuildContext context) {
@@ -476,48 +657,21 @@ class _TaskAssigneeWidgetState extends State<TaskAssigneeWidget> {
             padding: EdgeInsets.all(24),
             controller: ModalScrollController.of(context),
             children: List.generate(widget.data.data.length, (index) {
-              return Material(
-                child: ListTile(
-                  leading: CircleAvatar(
-                    radius: 20,
-                    backgroundImage:
-                        NetworkImage('${widget.data.data[index].picture}'),
-                  ),
-                  title: Text(
-                    '${widget.data.data[index].name}',
-                    style: Theme.of(context).textTheme.bodyText1,
-                  ),
-                  trailing: GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        isChecked = !isChecked;
-                        if (users.contains(widget.data.data[index])) {
-                          users.remove(widget.data.data[index]);
-                        } else {
-                          users.add(widget.data.data[index]);
-                        }
-                      });
-                    },
-                    child: Material(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(45),
-                          side: BorderSide(
-                              color: isChecked
-                                  ? Colors.transparent
-                                  : customGreyColor)),
-                      child: CircleAvatar(
-                        radius: 12,
-                        backgroundColor:
-                            isChecked ? Colors.green : Colors.transparent,
-                        child: Icon(
-                          Icons.check,
-                          color: isChecked ? Colors.white : customGreyColor,
-                          size: 18,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
+              return AssigneeTileWidget(
+                isChecked:
+                    _taskManager.assignees.contains(widget.data.data[index]),
+                selectedUser: widget.data.data[index],
+                onTap: (Data user) {
+                  setState(() {
+                    if (users.contains(user)) {
+                      users.remove(user);
+                    } else {
+                      users.add(user);
+                    }
+                  });
+                  _taskManager.setAssignees(users);
+                  print(_taskManager.assignees);
+                },
               );
             }),
           ),
@@ -532,6 +686,12 @@ class _TaskAssigneeWidgetState extends State<TaskAssigneeWidget> {
                 backgroundColor: Colors.black),
             onPressed: () {
               _taskManager.setAssignees(users);
+              setState(() {
+                
+              });
+              if (_taskManager.assignees.isNotEmpty) {
+                Navigator.pop(context);
+              }
             },
             child: Padding(
               padding: const EdgeInsets.all(12.0),
@@ -544,6 +704,52 @@ class _TaskAssigneeWidgetState extends State<TaskAssigneeWidget> {
           ),
           SizedBox(height: 15),
         ],
+      ),
+    );
+  }
+}
+
+class AssigneeTileWidget extends StatelessWidget {
+  const AssigneeTileWidget(
+      {Key key,
+      @required this.onTap,
+      @required this.selectedUser,
+      @required this.isChecked})
+      : super(key: key);
+  final bool isChecked;
+  final Data selectedUser;
+  final Function onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      leading: CircleAvatar(
+        radius: 20,
+        backgroundImage: NetworkImage('${selectedUser.picture}'),
+      ),
+      title: Text(
+        '${selectedUser.name}',
+        style: Theme.of(context).textTheme.bodyText1,
+      ),
+      trailing: GestureDetector(
+        onTap: () {
+          onTap(selectedUser);
+        },
+        child: Material(
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(45),
+              side: BorderSide(
+                  color: isChecked ? Colors.transparent : customGreyColor)),
+          child: CircleAvatar(
+            radius: 12,
+            backgroundColor: isChecked ? Colors.green : Colors.transparent,
+            child: Icon(
+              Icons.check,
+              color: isChecked ? Colors.white : customGreyColor,
+              size: 18,
+            ),
+          ),
+        ),
       ),
     );
   }

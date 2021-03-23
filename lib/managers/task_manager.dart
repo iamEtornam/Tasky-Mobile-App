@@ -42,11 +42,11 @@ class TaskManager with ChangeNotifier {
   }
 
   Future<bool> createTask(
-      {String description,
-      String department,
-      String dueDate,
-      bool shouldSetReminder,
-      List<int> assignees}) async {
+      {@required String description,
+      @required String department,
+      @required String dueDate,
+      @required bool shouldSetReminder,
+      @required List<int> assignees}) async {
     setisLoading(true);
     bool isSaved = false;
     int userId = await _localStorage.getId();
@@ -65,6 +65,7 @@ class TaskManager with ChangeNotifier {
       Map<String, dynamic> body = json.decode(response.body);
       setMessage(body['message']);
       setisLoading(false);
+      print(body['message']);
       if (statusCode == 201) {
         isSaved = true;
       } else {

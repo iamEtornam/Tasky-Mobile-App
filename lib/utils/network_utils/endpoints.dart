@@ -10,3 +10,4 @@ final String createTaskPath = '$baseUrl/createTask';
 String listMembersPath(int organizationId) => '$baseUrl/listMembers/$organizationId';
 final String fileUploaderPath =
     'http://tasty-file-uploader.us-east-2.elasticbeanstalk.com/api/v0/upload';
+final String updateTokenPath = '$baseUrl/updateUserToken';

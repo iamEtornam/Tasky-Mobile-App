@@ -19,4 +19,9 @@ class UserService {
     return await _customHttpClient
         .postRequest(path: inviteMembersPath, body: {'emails': emails});
   }
+
+  Future<Response> sendNotificationTokenRequest({String token}) async {
+    return await _customHttpClient
+        .putRequest(path: updateTokenPath, body: {'fcm_token': token});
+  }
 }

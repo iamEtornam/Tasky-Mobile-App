@@ -1,6 +1,11 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:bot_toast/bot_toast.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get_it/get_it.dart';
 import 'package:tasky_app/managers/organization_manager.dart';
@@ -14,6 +19,7 @@ import 'package:tasky_app/views/overview/over_view.dart';
 import 'package:tasky_app/views/account/account_view.dart';
 import 'package:tasky_app/views/task/task_view.dart';
 
+final FirebaseMessaging _messaging = FirebaseMessaging.instance;
 final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
 final OrganizationManager _organizationManager =
     GetIt.I.get<OrganizationManager>();
@@ -25,6 +31,7 @@ class DashboardView extends StatefulWidget {
 }
 
 class _DashboardViewState extends State<DashboardView> {
+  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
   final UiUtilities uiUtilities = UiUtilities();
   String department;
   int _currentIndex = 0;
@@ -44,7 +51,108 @@ class _DashboardViewState extends State<DashboardView> {
   @override
   void initState() {
     checkAuth();
+    initialNotification(context: context);
+    uploadNotificationToken();
     super.initState();
+  }
+
+  void uploadNotificationToken() async {
+    if (_messaging != null) {
+      _messaging?.getToken()?.then((token) async {
+        await _userManager.sendNotificationToken(token: token);
+      });
+    }
+  }
+
+  Future onSelectNotification(String payload) async {
+    debugPrint("payload : $payload");
+  }
+
+  initialNotification({@required BuildContext context}) async {
+    flutterLocalNotificationsPlugin = new FlutterLocalNotificationsPlugin();
+    var android = new AndroidInitializationSettings('@mipmap/launcher_icon');
+    var iOS = new IOSInitializationSettings(
+        defaultPresentAlert: true,
+        defaultPresentBadge: true,
+        defaultPresentSound: true);
+    var initSettings = new InitializationSettings(android: android, iOS: iOS);
+    flutterLocalNotificationsPlugin.initialize(initSettings,
+        onSelectNotification: onSelectNotification);
+
+    if (Platform.isIOS) {
+      await _messaging.requestPermission(
+        alert: true,
+        announcement: true,
+        badge: true,
+        carPlay: true,
+        criticalAlert: true,
+        provisional: true,
+        sound: true,
+      );
+
+      await _messaging.setForegroundNotificationPresentationOptions(
+        alert: true, // Required to display a heads up notification
+        badge: true,
+        sound: true,
+      );
+    }
+
+    var androidNotificationDetails = new AndroidNotificationDetails(
+        'tasky', 'Tasky', 'Notifications from Tasky app',
+        priority: Priority.high, importance: Importance.max);
+    var iOSNotificationDetails = new IOSNotificationDetails();
+    var platform = new NotificationDetails(
+        android: androidNotificationDetails, iOS: iOSNotificationDetails);
+
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
+      RemoteNotification notification = message.notification;
+      // If `onMessage` is triggered with a notification, construct our own
+      // local notification to show to users using the created channel.
+      if (notification != null) {
+        await flutterLocalNotificationsPlugin.show(
+            0, notification.title, notification.body, platform,
+            payload: json.encode(message.data));
+      }
+    });
+
+    // Get any messages which caused the application to open from
+    // a terminated state.
+    await _messaging
+        .getInitialMessage()
+        .then((RemoteMessage initialMessage) async {
+      // ignore: null_aware_in_condition
+      if (initialMessage != null) {
+        var androidNotificationDetails = new AndroidNotificationDetails(
+            'tasky', 'Tasky', 'Notifications from Tasky app',
+            priority: Priority.high, importance: Importance.max);
+        var iOSNotificationDetails = new IOSNotificationDetails();
+        var platform = new NotificationDetails(
+            android: androidNotificationDetails, iOS: iOSNotificationDetails);
+        await flutterLocalNotificationsPlugin.show(
+            0,
+            initialMessage.notification.title,
+            initialMessage.notification.body,
+            platform,
+            payload: json.encode(initialMessage.data));
+      }
+    });
+
+    // Also handle any interaction when the app is in the background via a
+    // Stream listener
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) async {
+      if (message != null) {
+        var androidNotificationDetails = new AndroidNotificationDetails(
+            'tasky', 'Tasky', 'Notifications from Tasky app',
+            priority: Priority.high, importance: Importance.max);
+        var iOSNotificationDetails = new IOSNotificationDetails();
+        var platform = new NotificationDetails(
+            android: androidNotificationDetails, iOS: iOSNotificationDetails);
+
+        await flutterLocalNotificationsPlugin.show(
+            0, message.notification.title, message.notification.body, platform,
+            payload: json.encode(message.data));
+      }
+    });
   }
 
   @override

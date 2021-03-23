@@ -131,4 +131,8 @@ class UserManager with ChangeNotifier {
     });
     return isSent;
   }
+
+  sendNotificationToken({String token}) async {
+    await _userService.sendNotificationTokenRequest(token: token);
+  }
 }

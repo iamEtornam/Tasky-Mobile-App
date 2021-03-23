@@ -109,7 +109,7 @@ class _TaskViewState extends State<TaskView> {
                               snapshot.data.data[index].status == 'completed',
                           onTap: (value) {
                             setState(() {
-                              snapshot.data.data[index].status = value;
+                              snapshot.data.data[index].status = value ? 'complete' : 'todo';
                             });
                             print(
                                 '@@@@@@@@@@@@@@@@@@ ${snapshot.data.data[index]}');

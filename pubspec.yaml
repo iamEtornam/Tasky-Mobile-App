@@ -36,6 +36,7 @@ dependencies:
   flutter_icons: ^1.1.0
   flutter_image_stack: ^0.0.3
   flutter_local_notifications: ^3.0.3
+  groovin_widgets: ^1.6.1
   flutter_spinkit: ^4.1.2+1
   flutter_svg: ^0.19.1
   get_it: ^5.0.6

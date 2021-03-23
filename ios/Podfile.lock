@@ -16,6 +16,12 @@ PODS:
     - FirebaseAnalytics (= 7.3.0)
   - Firebase/CoreOnly (7.3.0):
     - FirebaseCore (= 7.3.0)
+  - Firebase/Crashlytics (7.3.0):
+    - Firebase/CoreOnly
+    - FirebaseCrashlytics (~> 7.3.0)
+  - Firebase/Messaging (7.3.0):
+    - Firebase/CoreOnly
+    - FirebaseMessaging (~> 7.3.0)
   - firebase_analytics (7.0.1):
     - Firebase/Analytics (= 7.3.0)
     - firebase_core
@@ -26,6 +32,13 @@ PODS:
     - Flutter
   - firebase_core (0.7.0):
     - Firebase/CoreOnly (= 7.3.0)
+    - Flutter
+  - firebase_crashlytics (0.4.0-1):
+    - Firebase/Crashlytics (= 7.3.0)
+    - firebase_core
+  - firebase_messaging (8.0.0-dev.15):
+    - Firebase/Messaging (= 7.3.0)
+    - firebase_core
     - Flutter
   - FirebaseAnalytics (7.3.0):
     - FirebaseCore (~> 7.0)
@@ -50,13 +63,33 @@ PODS:
     - GoogleUtilities/Environment (~> 7.0)
     - GoogleUtilities/Logger (~> 7.0)
     - nanopb (~> 2.30906.0)
+  - FirebaseCrashlytics (7.3.0):
+    - FirebaseCore (~> 7.0)
+    - FirebaseInstallations (~> 7.0)
+    - GoogleDataTransport (~> 8.0)
+    - nanopb (~> 2.30906.0)
+    - PromisesObjC (~> 1.2)
   - FirebaseInstallations (7.6.0):
     - FirebaseCore (~> 7.0)
     - GoogleUtilities/Environment (~> 7.0)
     - GoogleUtilities/UserDefaults (~> 7.0)
     - PromisesObjC (~> 1.2)
+  - FirebaseInstanceID (7.8.0):
+    - FirebaseCore (~> 7.0)
+    - FirebaseInstallations (~> 7.0)
+    - GoogleUtilities/Environment (~> 7.0)
+    - GoogleUtilities/UserDefaults (~> 7.0)
+  - FirebaseMessaging (7.3.0):
+    - FirebaseCore (~> 7.0)
+    - FirebaseInstanceID (~> 7.0)
+    - GoogleUtilities/AppDelegateSwizzler (~> 7.0)
+    - GoogleUtilities/Environment (~> 7.0)
+    - GoogleUtilities/Reachability (~> 7.0)
+    - GoogleUtilities/UserDefaults (~> 7.0)
   - Flutter (1.0.0)
   - flutter_custom_dialog (0.0.1):
+    - Flutter
+  - flutter_local_notifications (0.0.1):
     - Flutter
   - google_sign_in (0.0.1):
     - Flutter
@@ -120,8 +153,11 @@ DEPENDENCIES:
   - firebase_analytics (from `.symlinks/plugins/firebase_analytics/ios`)
   - firebase_auth (from `.symlinks/plugins/firebase_auth/ios`)
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
+  - firebase_crashlytics (from `.symlinks/plugins/firebase_crashlytics/ios`)
+  - firebase_messaging (from `.symlinks/plugins/firebase_messaging/ios`)
   - Flutter (from `Flutter`)
   - flutter_custom_dialog (from `.symlinks/plugins/flutter_custom_dialog/ios`)
+  - flutter_local_notifications (from `.symlinks/plugins/flutter_local_notifications/ios`)
   - google_sign_in (from `.symlinks/plugins/google_sign_in/ios`)
   - image_cropper (from `.symlinks/plugins/image_cropper/ios`)
   - image_picker (from `.symlinks/plugins/image_picker/ios`)
@@ -135,7 +171,10 @@ SPEC REPOS:
     - FirebaseAuth
     - FirebaseCore
     - FirebaseCoreDiagnostics
+    - FirebaseCrashlytics
     - FirebaseInstallations
+    - FirebaseInstanceID
+    - FirebaseMessaging
     - GoogleAppMeasurement
     - GoogleDataTransport
     - GoogleSignIn
@@ -155,10 +194,16 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/firebase_auth/ios"
   firebase_core:
     :path: ".symlinks/plugins/firebase_core/ios"
+  firebase_crashlytics:
+    :path: ".symlinks/plugins/firebase_crashlytics/ios"
+  firebase_messaging:
+    :path: ".symlinks/plugins/firebase_messaging/ios"
   Flutter:
     :path: Flutter
   flutter_custom_dialog:
     :path: ".symlinks/plugins/flutter_custom_dialog/ios"
+  flutter_local_notifications:
+    :path: ".symlinks/plugins/flutter_local_notifications/ios"
   google_sign_in:
     :path: ".symlinks/plugins/google_sign_in/ios"
   image_cropper:
@@ -175,13 +220,19 @@ SPEC CHECKSUMS:
   firebase_analytics: 41043f6e14fc9bc27c3f05217ab7f2b0ad9b41eb
   firebase_auth: b55e5136528dced982022ee073ed4b48f15c055c
   firebase_core: 91b27774a52f41f8b58484a75edf71197ac01c59
+  firebase_crashlytics: e6ecb908f6249ce3757d18a812819a41495bf1cb
+  firebase_messaging: caf0273c76e54f0a10dfe5048ac47b89e75bb78a
   FirebaseAnalytics: 2580c2d62535ae7b644143d48941fcc239ea897a
   FirebaseAuth: c224a0cf1afa0949bd5c7bfcf154b4f5ce8ddef2
   FirebaseCore: 4d3c72622ce0e2106aaa07bb4b2935ba2c370972
   FirebaseCoreDiagnostics: d50e11039e5984d92c8a512be2395f13df747350
+  FirebaseCrashlytics: d31325312c92e2cb2f0386d589b9aa44e303d99b
   FirebaseInstallations: 6e4e77396559bc2ae0504823837ed737b1c7e47f
-  Flutter: 434fef37c0980e73bb6479ef766c45957d4b510c
+  FirebaseInstanceID: aaecc93b4528bbcafea12c477e26827719ca1183
+  FirebaseMessaging: 68d1bcb14880189558a8ae57167abe0b7e417232
+  Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
   flutter_custom_dialog: c0d222a3c35af5b57581e54ef8784c94037cd2ec
+  flutter_local_notifications: 0c0b1ae97e741e1521e4c1629a459d04b9aec743
   google_sign_in: 6bd214b9c154f881422f5fe27b66aaa7bbd580cc
   GoogleAppMeasurement: 8d3c0aeede16ab7764144b5a4ca8e1d4323841b7
   GoogleDataTransport: 116c84c4bdeb76be2a7a46de51244368f9794eab

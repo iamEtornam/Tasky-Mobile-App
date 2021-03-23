@@ -26,6 +26,9 @@ final OrganizationManager _organizationManager =
 final UserManager _userManager = GetIt.I.get<UserManager>();
 
 class DashboardView extends StatefulWidget {
+  final int currentIndex;
+
+  const DashboardView({Key key, this.currentIndex = 0}) : super(key: key);
   @override
   _DashboardViewState createState() => _DashboardViewState();
 }
@@ -34,7 +37,7 @@ class _DashboardViewState extends State<DashboardView> {
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
   final UiUtilities uiUtilities = UiUtilities();
   String department;
-  int _currentIndex = 0;
+  int _currentIndex;
   final List<Widget> _pages = [
     OverView(),
     TaskView(),
@@ -51,6 +54,9 @@ class _DashboardViewState extends State<DashboardView> {
   @override
   void initState() {
     checkAuth();
+    setState(() {
+      _currentIndex = widget.currentIndex;
+    });
     initialNotification(context: context);
     uploadNotificationToken();
     super.initState();
@@ -217,7 +223,7 @@ class _DashboardViewState extends State<DashboardView> {
   void getUserDepartment() async {
     Organization organization = await _organizationManager.getOrganization();
     _localStorage.getUserInfo().then((data) {
-      if (data.department == null)
+      if (data.department == null && organization != null)
         showDialog(
             context: context,
             child: AlertDialog(

@@ -83,9 +83,8 @@ class LocalStorage {
     return await box.get('organizationId');
   }
 
-    Future<String> authToken() async {
+  Future<String> authToken() async {
     final Box box = await Hive.openBox(_tasky);
     return await box.get('auth_token');
   }
-
 }

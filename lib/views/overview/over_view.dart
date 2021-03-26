@@ -1,34 +1,22 @@
 import 'dart:math';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:get_it/get_it.dart';
+import 'package:strings/strings.dart';
+import 'package:tasky_app/managers/task_manager.dart';
+import 'package:tasky_app/models/task.dart';
 import 'package:tasky_app/shared_widgets/custom_appbar_widget.dart';
 import 'package:tasky_app/utils/ui_utils/custom_colors.dart';
+import 'package:tasky_app/utils/ui_utils/ui_utils.dart';
+
+final TaskManager _taskManager = GetIt.I.get<TaskManager>();
 
 class OverView extends StatelessWidget {
   final ScrollController _scrollController = ScrollController();
-  final List<Map<String, dynamic>> data = [
-    {
-      'title': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
-      'time': '12:00 PM',
-      'priority': 'Low'
-    },
-    {
-      'title': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
-      'time': '12:30 PM',
-      'priority': 'High'
-    },
-    {
-      'title': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
-      'time': '4:00 PM',
-      'priority': 'Medium'
-    },
-    {
-      'title': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
-      'time': '2:00 PM',
-      'priority': 'High'
-    }
-  ];
+
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
@@ -106,19 +94,41 @@ class OverView extends StatelessWidget {
                   ),
                 )),
           ),
-          SizedBox(height: 10,),
-          ListView.builder(
-              controller: _scrollController,
-              shrinkWrap: true,
-              itemBuilder: (context, index) {
-                return HomeTaskSummary(
-                  size: size,
-                  priority: data[index]['priority'],
-                  time: data[index]['time'],
-                  title: data[index]['title'],
-                );
-              },
-              itemCount: data.length)
+          SizedBox(
+            height: 10,
+          ),
+          StreamBuilder<Task>(
+              stream: _taskManager.getTasks().asStream(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting &&
+                    !snapshot.hasData) {
+                  return Center(child: CupertinoActivityIndicator());
+                }
+
+                if (snapshot.connectionState == ConnectionState.done &&
+                    !snapshot.hasData) {
+                  return Text('no data');
+                }
+
+                if (snapshot.data == null) {
+                  return Text('no data');
+                }
+                return ListView.builder(
+                    controller: _scrollController,
+                    shrinkWrap: true,
+                    itemBuilder: (context, index) {
+                      String date = snapshot.data.data[index].dueDate;
+                      List<String> dateList = date.split(' ');
+                      return HomeTaskSummary(
+                        size: size,
+                        priority: camelize(snapshot.data.data[index].priorityLevel),
+                        time:
+                            '${UiUtilities().twenty4to12conventer(dateList[1])}',
+                        title: snapshot.data.data[index].description,
+                      );
+                    },
+                    itemCount: snapshot.data.data.length);
+              })
         ],
       ),
     );

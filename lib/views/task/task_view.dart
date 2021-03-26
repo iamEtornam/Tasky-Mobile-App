@@ -201,7 +201,7 @@ class TaskListTile extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Padding(
-              padding: const EdgeInsets.only(left: 100.0),
+              padding: EdgeInsets.only(left: images.length > 2 ? 100.0 : 60),
               child: FlutterImageStack(
                 imageList: images,
                 extraCountTextStyle: Theme.of(context).textTheme.subtitle2,

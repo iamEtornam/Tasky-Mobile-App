@@ -107,4 +107,47 @@ Future<File> getCroppedFile({String file}) async {
         title: 'Crop Image',
       ));
 }
+
+String twenty4to12conventer(String unformattedTime) {
+  List<String> _time = unformattedTime.split(':');
+    String time;
+    switch (int.parse(_time[0])) {
+      case 13:
+        time = '1:${_time[1]} PM';
+        break;
+      case 14:
+        time = '2:${_time[1]} PM';
+        break;
+      case 15:
+        time = '3:${_time[1]} PM';
+        break;
+      case 16:
+        time = '4:${_time[1]} PM';
+        break;
+      case 17:
+        time = '5:${_time[1]} PM';
+        break;
+      case 18:
+        time = '6:${_time[1]} PM';
+        break;
+      case 19:
+        time = '7:${_time[1]} PM';
+        break;
+      case 20:
+        time = '8:${_time[1]} PM';
+        break;
+      case 21:
+        time = '9:${_time[1]} PM';
+        break;
+      case 22:
+        time = '10:${_time[1]} PM';
+        break;
+      case 23:
+        time = '11:${_time[1]} PM';
+        break;
+    default:
+     return '$unformattedTime AM';
+    }
+    return time;
+}
 }

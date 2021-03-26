@@ -8,10 +8,12 @@ import 'package:flutter_icons/flutter_icons.dart';
 import 'package:get_it/get_it.dart';
 import 'package:tasky_app/managers/user_manager.dart';
 import 'package:tasky_app/models/user.dart';
+import 'package:tasky_app/utils/local_storage.dart';
 import 'package:tasky_app/utils/ui_utils/custom_colors.dart';
 import 'package:textfield_tags/textfield_tags.dart';
 
 final UserManager _userManager = GetIt.I.get<UserManager>();
+final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
 
 class AccountView extends StatefulWidget {
   @override
@@ -514,8 +516,9 @@ class _AccountViewState extends State<AccountView> {
                     allowClick: false,
                     clickClose: false,
                     backButtonBehavior: BackButtonBehavior.ignore);
-                fb.FirebaseAuth firebaseAuth = fb.FirebaseAuth.instance;
-                firebaseAuth.signOut().then((_) {
+                final fb.FirebaseAuth firebaseAuth = fb.FirebaseAuth.instance;
+                firebaseAuth.signOut().then((_) async {
+                  await _localStorage.clearStorage();
                   BotToast.closeAllLoading();
                   Navigator.pushNamedAndRemoveUntil(
                       context, '/loginView', (route) => false);

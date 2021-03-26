@@ -87,4 +87,9 @@ class LocalStorage {
     final Box box = await Hive.openBox(_tasky);
     return await box.get('auth_token');
   }
+
+    Future<int> clearStorage() async {
+    final Box box = await Hive.openBox(_tasky);
+    return await box.clear();
+  }
 }

@@ -9,6 +9,7 @@ import 'package:tasky_app/managers/task_manager.dart';
 import 'package:tasky_app/models/task.dart';
 import 'package:tasky_app/models/task_statistic.dart';
 import 'package:tasky_app/shared_widgets/custom_appbar_widget.dart';
+import 'package:tasky_app/shared_widgets/empty_widget.dart';
 import 'package:tasky_app/utils/ui_utils/custom_colors.dart';
 import 'package:tasky_app/utils/ui_utils/ui_utils.dart';
 
@@ -27,7 +28,28 @@ class OverView extends StatelessWidget {
       body: ListView(
         controller: _scrollController,
         children: [
-          Container(
+
+          StreamBuilder<TaskStatistic>(
+              stream: _taskManager.getTaskStatistics().asStream(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting &&
+                    !snapshot.hasData) {
+                  return LinearProgressIndicator(
+                    minHeight: 2,
+                  );
+                }
+
+                if (snapshot.connectionState == ConnectionState.done &&
+                    !snapshot.hasData) {
+                  return SizedBox.shrink();
+                }
+
+                if (snapshot.data == null) {
+                  return SizedBox.shrink();
+                }
+                return Column(
+                  children: [
+                              Container(
             color: customGreyColor.withOpacity(.1),
             height: 45,
             width: size.width,
@@ -44,57 +66,42 @@ class OverView extends StatelessWidget {
                   ),
                 )),
           ),
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: SizedBox(
-              child: StreamBuilder<TaskStatistic>(
-                  stream: _taskManager.getTaskStatistics().asStream(),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting &&
-                        !snapshot.hasData) {
-                      return Center(child: CupertinoActivityIndicator());
-                    }
-
-                    if (snapshot.connectionState == ConnectionState.done &&
-                        !snapshot.hasData) {
-                      //TODO:
-                      return Text('no data');
-                    }
-
-                    if (snapshot.data == null) {
-                      return Text('no data');
-                    }
-                    return Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        HomeTaskCountCard(
-                            size: size,
-                            count: snapshot.data.data.first.todo,
-                            desc: 'To Do',
-                            image: 'dots.png',
-                            color: Colors.primaries[
-                                Random().nextInt(Colors.primaries.length)]),
-                        HomeTaskCountCard(
-                            size: size,
-                            count: snapshot.data.data.first.inProgress,
-                            desc: 'In Progress',
-                            image: 'circles.png',
-                            color: Colors.primaries[
-                                Random().nextInt(Colors.primaries.length)]),
-                        HomeTaskCountCard(
-                          size: size,
-                          count: snapshot.data.data.first.completed,
-                          desc: 'Done',
-                          image: 'layers.png',
-                          color: Colors.primaries[
-                              Random().nextInt(Colors.primaries.length)],
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: SizedBox(
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            HomeTaskCountCard(
+                                size: size,
+                                count: snapshot.data.data[0].todo,
+                                desc: 'To Do',
+                                image: 'dots.png',
+                                color: Colors.primaries[
+                                    Random().nextInt(Colors.primaries.length)]),
+                            HomeTaskCountCard(
+                                size: size,
+                                count: snapshot.data.data[1].inProgress,
+                                desc: 'In Progress',
+                                image: 'circles.png',
+                                color: Colors.primaries[
+                                    Random().nextInt(Colors.primaries.length)]),
+                            HomeTaskCountCard(
+                              size: size,
+                              count: snapshot.data.data[2].completed,
+                              desc: 'Done',
+                              image: 'layers.png',
+                              color: Colors.primaries[
+                                  Random().nextInt(Colors.primaries.length)],
+                            ),
+                          ],
                         ),
-                      ],
-                    );
-                  }),
-            ),
-          ),
+                      ),
+                    ),
+                  ],
+                );
+              }),
           Container(
             color: customGreyColor.withOpacity(.1),
             height: 45,
@@ -125,12 +132,19 @@ class OverView extends StatelessWidget {
 
                 if (snapshot.connectionState == ConnectionState.done &&
                     !snapshot.hasData) {
-                  //TODO:
-                  return Text('no data');
+                  return EmptyWidget(
+                    imageAsset: 'no_task.png',
+                    message:
+                        'Tasks aasigned to you and tasks created for you appears here.',
+                  );
                 }
 
                 if (snapshot.data == null) {
-                  return Text('no data');
+                  return EmptyWidget(
+                    imageAsset: 'no_task.png',
+                    message:
+                        'Tasks aasigned to you and tasks created for you appears here.',
+                  );
                 }
                 return ListView.builder(
                     controller: _scrollController,

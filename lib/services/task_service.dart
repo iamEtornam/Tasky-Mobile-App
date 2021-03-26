@@ -19,7 +19,7 @@ class TaskService {
       'due_date': dueDate,
       'is_reminder': isReminder,
       'assignees': assignees,
-      'organization_id': organizationId,
+      'organizationId': organizationId,
       'created_by': createdBy,
       'team': team
     };

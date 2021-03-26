@@ -34,7 +34,7 @@ class Data {
         this.name,
         this.picture,
         this.organizationId,
-        this.department,
+        this.team,
         this.fcmToken,
         this.authToken,
         this.email,
@@ -50,7 +50,7 @@ class Data {
     String name;
     String picture;
     int organizationId;
-    String department;
+    String team;
     String fcmToken;
     String authToken;
     String email;
@@ -66,7 +66,7 @@ class Data {
         name: json["name"] == null ? null : json["name"],
         picture: json["picture"] == null ? null : json["picture"],
         organizationId: json["organizationId"] == null ? null : json["organizationId"],
-        department: json["department"] == null ? null : json["department"],
+        team: json["team"] == null ? null : json["team"],
         fcmToken: json["fcm_token"] == null ? null : json["fcm_token"],
         authToken: json["auth_token"] == null ? null : json["auth_token"],
         email: json["email"] == null ? null : json["email"],
@@ -83,7 +83,7 @@ class Data {
         "name": name == null ? null : name,
         "picture": picture == null ? null : picture,
         "organizationId": organizationId == null ? null : organizationId,
-        "department": department == null ? null : department,
+        "team": team == null ? null : team,
         "fcm_token": fcmToken == null ? null : fcmToken,
         "auth_token": authToken == null ? null : authToken,
         "email": email == null ? null : email,

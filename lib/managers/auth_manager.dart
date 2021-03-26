@@ -61,7 +61,7 @@ class AuthManager with ChangeNotifier {
                 signInProvider: member.data.signInProvider,
                 authToken: member.data.authToken,
                 organizationId: member.data.organizationId,
-                department: member.data.department,
+                team: member.data.team,
                 fcmToken: member.data.fcmToken,
                 phoneNumber: member.data.phoneNumber);
             setMessage(body['message']);
@@ -125,7 +125,7 @@ class AuthManager with ChangeNotifier {
                     signInProvider: member.data.signInProvider,
                     authToken: member.data.authToken,
                     organizationId: member.data.organizationId,
-                    department: member.data.department,
+                    team: member.data.team,
                     fcmToken: member.data.fcmToken,
                     phoneNumber: member.data.phoneNumber);
                 isSuccessful = true;

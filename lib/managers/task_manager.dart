@@ -46,7 +46,7 @@ class TaskManager with ChangeNotifier {
 
   Future<bool> createTask(
       {@required String description,
-      @required String department,
+      @required String team,
       @required String dueDate,
       @required bool shouldSetReminder,
       @required List<int> assignees}) async {
@@ -56,7 +56,7 @@ class TaskManager with ChangeNotifier {
     int organizationId = await _localStorage.getOrganizationId();
     await _taskService
         .createTaskRequest(
-            department: department,
+            team: team,
             dueDate: dueDate,
             createdBy: userId,
             assignees: assignees,

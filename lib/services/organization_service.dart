@@ -18,11 +18,11 @@ class OrganizationService {
   }
 
   Future<Response> createOrganizationRequest(
-      {String imageUrl, String name, List<String> department}) async {
+      {String imageUrl, String name, List<String> teams}) async {
     Map<String, dynamic> body = {
       "name": name,
       "logo": imageUrl,
-      "department": department
+      "teams": teams
     };
     print(body);
     return await _customHttpClient.postRequest(

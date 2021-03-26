@@ -9,7 +9,7 @@ class TaskService {
   Future<Response> createTaskRequest(
       {String description,
       String dueDate,
-      String department,
+      String team,
       bool isReminder,
       int organizationId,
       int createdBy,
@@ -21,7 +21,7 @@ class TaskService {
       'assignees': assignees,
       'organization_id': organizationId,
       'created_by': createdBy,
-      'department': department
+      'team': team
     };
     return await _customHttpClient.postRequest(
         path: createTaskPath, body: body);

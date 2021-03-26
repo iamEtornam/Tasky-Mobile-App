@@ -13,7 +13,7 @@ class LocalStorage {
       @required String signInProvider,
       @required String authToken,
       @required int organizationId,
-      @required String department,
+      @required String team,
       @required String fcmToken,
       @required String phoneNumber}) async {
     final Box box = await Hive.openBox(_tasky);
@@ -25,7 +25,7 @@ class LocalStorage {
     await box.put('sign_in_provider', signInProvider);
     await box.put('auth_token', authToken);
     await box.put('organizationId', organizationId);
-    await box.put('department', department);
+    await box.put('team', team);
     await box.put('fcm_token', fcmToken);
     await box.put('phone_number', phoneNumber);
     await box.put('isAuth', true);
@@ -41,12 +41,12 @@ class LocalStorage {
     String signInProvider = await box.get('sign_in_provider');
     String authToken = await box.get('auth_token');
     int organizationId = await box.get('organizationId');
-    String department = await box.get('department');
+    String team = await box.get('team');
     String fcmToken = await box.get('fcm_token');
     String phoneNumber = await box.get('phone_number');
     return Data(
         authToken: authToken,
-        department: department,
+        team: team,
         email: email,
         fcmToken: fcmToken,
         id: id,

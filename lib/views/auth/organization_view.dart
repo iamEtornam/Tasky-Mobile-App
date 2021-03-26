@@ -24,7 +24,7 @@ class _OrganizationViewState extends State<OrganizationView> {
   final UiUtilities uiUtilities = UiUtilities();
   static GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   TextEditingController nameTextEditingController = TextEditingController();
-  List<String> departments = [];
+  List<String> teams = [];
   final nameFocusNode = FocusNode();
   File _imageFile;
   List<Options> options;
@@ -170,7 +170,7 @@ class _OrganizationViewState extends State<OrganizationView> {
                     .textTheme
                     .bodyText1
                     .copyWith(color: Colors.grey),
-                hintText: 'Organization Department',
+                hintText: 'Organization Teams',
                 textFieldBorder: UnderlineInputBorder(
                     borderSide: BorderSide(color: customGreyColor)),
                 textStyle: Theme.of(context).textTheme.bodyText1,
@@ -205,13 +205,13 @@ class _OrganizationViewState extends State<OrganizationView> {
                 //This give you tags entered
                 print('onTag ' + tag);
                 setState(() {
-                  departments.add(tag);
+                  teams.add(tag);
                 });
               },
               onDelete: (tag) {
                 print('onDelete ' + tag);
                 setState(() {
-                  departments.remove(tag);
+                  teams.remove(tag);
                 });
               },
             ),
@@ -229,7 +229,7 @@ class _OrganizationViewState extends State<OrganizationView> {
                       await _organizationManager.createOrganization(
                           image: _imageFile,
                           name: nameTextEditingController.text,
-                          department: departments);
+                          teams: teams);
                   BotToast.closeAllLoading();
                   if (isCreated) {
                     uiUtilities.alertNotification(

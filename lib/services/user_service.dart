@@ -6,9 +6,9 @@ import 'package:tasky_app/utils/network_utils/endpoints.dart';
 final CustomHttpClient _customHttpClient = GetIt.I.get<CustomHttpClient>();
 
 class UserService {
-  Future<Response> updateUserDepartmentRequest({String department}) async {
+  Future<Response> updateUserTeamRequest({String team}) async {
     return await _customHttpClient.putRequest(
-        path: updateDepartmentPath, body: {'department': department});
+        path: updateTeamPath, body: {'team': team});
   }
 
   Future<Response> getUserInformationRequest() async {

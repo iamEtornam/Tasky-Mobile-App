@@ -40,7 +40,7 @@ class Datum {
       this.participants,
       this.organizationId,
       this.createdBy,
-      this.department,
+      this.team,
       this.createdAt,
       this.updatedAt,
       this.organization,
@@ -55,7 +55,7 @@ class Datum {
   List<String> participants;
   int organizationId;
   int createdBy;
-  String department;
+  String team;
   DateTime createdAt;
   DateTime updatedAt;
   Org.Data organization;
@@ -78,7 +78,7 @@ class Datum {
         organizationId:
             json["organizationId"] == null ? null : json["organizationId"],
         createdBy: json["created_by"] == null ? null : json["created_by"],
-        department: json["department"] == null ? null : json["department"],
+        team: json["team"] == null ? null : json["team"],
         createdAt: json["createdAt"] == null
             ? null
             : DateTime.parse(json["createdAt"]),
@@ -102,7 +102,7 @@ class Datum {
             : List<dynamic>.from(assignees.map((x) => x.toMap())),
         "organizationId": organizationId == null ? null : organizationId,
         "created_by": createdBy == null ? null : createdBy,
-        "department": department == null ? null : department,
+        "team": team == null ? null : team,
         "status": status == null ? null : status,
         "createdAt": createdAt == null ? null : createdAt.toIso8601String(),
         "updatedAt": updatedAt == null ? null : updatedAt.toIso8601String(),

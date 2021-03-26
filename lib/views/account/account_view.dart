@@ -19,7 +19,7 @@ class AccountView extends StatefulWidget {
 }
 
 class _AccountViewState extends State<AccountView> {
-  List<String> departments = [];
+  List<String> teams = [];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -248,13 +248,13 @@ class _AccountViewState extends State<AccountView> {
                                               //This give you tags entered
                                               print('onTag ' + tag);
                                               setState(() {
-                                                departments.add(tag);
+                                                teams.add(tag);
                                               });
                                             },
                                             onDelete: (tag) {
                                               print('onDelete ' + tag);
                                               setState(() {
-                                                departments.remove(tag);
+                                                teams.remove(tag);
                                               });
                                             },
                                           ),

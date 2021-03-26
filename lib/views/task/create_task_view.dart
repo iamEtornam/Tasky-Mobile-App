@@ -40,7 +40,7 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
       TextEditingController();
   final DateFormat dateFormat = DateFormat('yyyy-MM-dd HH:mm');
   DateTime dueDate;
-  String departmentTextEditingController;
+  String teamTextEditingController;
 
   @override
   void initState() {
@@ -185,7 +185,7 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
                 height: 15,
               ),
               Text(
-                'Which department?',
+                'Which team?',
                 style: Theme.of(context)
                     .textTheme
                     .bodyText1
@@ -235,7 +235,7 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
                         ),
                         items: [],
                         hint: Text(
-                          'Select your department',
+                          'Select your team',
                           style: Theme.of(context).textTheme.bodyText2,
                         ),
                         onChanged: (value) {},
@@ -280,7 +280,7 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
                         ),
                         items: [],
                         hint: Text(
-                          'Select your department',
+                          'Select your team',
                           style: Theme.of(context).textTheme.bodyText2,
                         ),
                         onChanged: (value) {},
@@ -320,7 +320,7 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
                         errorStyle:
                             Theme.of(context).inputDecorationTheme.errorStyle,
                       ),
-                      items: snapshot.data.data.department
+                      items: snapshot.data.data.teams
                           .map((value) => DropdownMenuItem<String>(
                               value: '$value',
                               child: Text(
@@ -328,14 +328,14 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
                                 style: Theme.of(context).textTheme.bodyText1,
                               )))
                           .toList(),
-                      value: departmentTextEditingController,
+                      value: teamTextEditingController,
                       hint: Text(
-                        'Select your department',
+                        'Select your team',
                         style: Theme.of(context).textTheme.bodyText2,
                       ),
                       onChanged: (value) {
                         setState(() {
-                          departmentTextEditingController = value;
+                          teamTextEditingController = value;
                         });
                       },
                     );
@@ -527,7 +527,7 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
                     });
 
                     bool isSaved = await _taskManager.createTask(
-                      department: departmentTextEditingController,
+                      team: teamTextEditingController,
                       description: descriptionTextEditingController.text,
                       dueDate: dueDateTextEditingController.text,
                       shouldSetReminder: isSwitched,

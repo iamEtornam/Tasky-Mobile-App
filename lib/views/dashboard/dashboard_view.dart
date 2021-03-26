@@ -38,7 +38,7 @@ class DashboardView extends StatefulWidget {
 class _DashboardViewState extends State<DashboardView> {
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
   final UiUtilities uiUtilities = UiUtilities();
-  String department;
+  String team;
   int _currentIndex;
   final List<Widget> _pages = [
     OverView(),
@@ -225,15 +225,15 @@ class _DashboardViewState extends State<DashboardView> {
           );
   }
 
-  void getUserDepartment() async {
+  void getUserTeam() async {
     Organization organization = await _organizationManager.getOrganization();
     _localStorage.getUserInfo().then((data) {
-      if (data.department == null && organization != null)
+      if (data.team == null && organization != null)
         showDialog(
             context: context,
             child: AlertDialog(
               title: Text(
-                'Update your department',
+                'Update your Team',
                 style: Theme.of(context)
                     .textTheme
                     .button
@@ -288,7 +288,7 @@ class _DashboardViewState extends State<DashboardView> {
                                 .inputDecorationTheme
                                 .errorStyle,
                           ),
-                          items: organization.data.department
+                          items: organization.data.teams
                               .map((value) => DropdownMenuItem<String>(
                                   value: '$value',
                                   child: Text(
@@ -297,14 +297,14 @@ class _DashboardViewState extends State<DashboardView> {
                                         Theme.of(context).textTheme.bodyText1,
                                   )))
                               .toList(),
-                          value: department,
+                          value: team,
                           hint: Text(
-                            'Select your department',
+                            'Select your team',
                             style: Theme.of(context).textTheme.bodyText2,
                           ),
                           onChanged: (value) {
                             setState(() {
-                              department = value;
+                              team = value;
                             });
                           },
                         ),
@@ -320,19 +320,19 @@ class _DashboardViewState extends State<DashboardView> {
                                 borderRadius: BorderRadius.circular(8))),
                         onPressed: () async {
                           Navigator.pop(context);
-                          if (department == null) {
+                          if (team == null) {
                             uiUtilities.actionAlertWidget(
                                 context: context, alertType: 'error');
                             uiUtilities.alertNotification(
                                 context: context,
-                                message: 'Select a department');
+                                message: 'Select a team');
                           } else {
                             BotToast.showLoading(
                                 allowClick: false,
                                 clickClose: false,
                                 backButtonBehavior: BackButtonBehavior.ignore);
                             bool isUpdated = await _userManager
-                                .updateUserDepartment(department: department);
+                                .updateUserTeam(team: team);
                             BotToast.closeAllLoading();
                             if (isUpdated) {
                               uiUtilities.actionAlertWidget(
@@ -350,7 +350,7 @@ class _DashboardViewState extends State<DashboardView> {
                           }
                         },
                         child: Text(
-                          'Update department',
+                          'Update team',
                           style: Theme.of(context)
                               .textTheme
                               .button
@@ -367,7 +367,7 @@ class _DashboardViewState extends State<DashboardView> {
     final FirebaseAuth _auth = FirebaseAuth.instance;
     _auth.userChanges().listen((user) {
       if (user != null) {
-        getUserDepartment();
+        getUserTeam();
       } else {
         Navigator.pushNamedAndRemoveUntil(
             context, '/loginView', (route) => false);

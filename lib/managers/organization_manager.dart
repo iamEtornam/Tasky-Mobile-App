@@ -79,13 +79,13 @@ class OrganizationManager with ChangeNotifier {
   }
 
   Future<bool> createOrganization(
-      {File image, String name, List<String> department}) async {
+      {File image, String name, List<String> teams}) async {
     bool isCreated = false;
     String fileUrl = await updateOrganizationPicture(image);
     if (fileUrl != null) {
       await _organizationService
           .createOrganizationRequest(
-              department: department, imageUrl: fileUrl, name: name)
+              teams: teams, imageUrl: fileUrl, name: name)
           .then((response) {
         int statusCode = response.statusCode;
         print(statusCode);

@@ -28,11 +28,11 @@ class UserManager with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<bool> updateUserDepartment({@required String department}) async {
+  Future<bool> updateUserTeam({@required String team}) async {
     bool isSuccessful = false;
     setisLoading(true);
     await _userService
-        .updateUserDepartmentRequest(department: department)
+        .updateUserTeamRequest(team: team)
         .then((response) async {
       int statusCode = response.statusCode;
       Map<String, dynamic> body = json.decode(response.body);
@@ -49,7 +49,7 @@ class UserManager with ChangeNotifier {
             signInProvider: _user.data.signInProvider,
             authToken: _user.data.authToken,
             organizationId: _user.data.organizationId,
-            department: _user.data.department,
+            team: _user.data.team,
             fcmToken: _user.data.fcmToken,
             phoneNumber: _user.data.phoneNumber);
         isSuccessful = true;
@@ -89,7 +89,7 @@ class UserManager with ChangeNotifier {
             signInProvider: _user.data.signInProvider,
             authToken: _user.data.authToken,
             organizationId: _user.data.organizationId,
-            department: _user.data.department,
+            team: _user.data.team,
             fcmToken: _user.data.fcmToken,
             phoneNumber: _user.data.phoneNumber);
         user = _user;

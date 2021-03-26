@@ -39,7 +39,7 @@ class Data {
         this.id,
         this.name,
         this.logo,
-        this.department,
+        this.teams,
         this.createdAt,
         this.updatedAt,
         this.members,
@@ -48,7 +48,7 @@ class Data {
     int id;
     String name;
     String logo;
-    List<String> department;
+    List<String> teams;
     DateTime createdAt;
     DateTime updatedAt;
     List<User> members;
@@ -57,7 +57,7 @@ class Data {
         id: json["id"] == null ? null : json["id"],
         name: json["name"] == null ? null : json["name"],
         logo: json["logo"] == null ? null : json["logo"],
-        department: json["department"] == null ? null : List<String>.from(json["department"].map((x) => x)),
+        teams: json["teams"] == null ? null : List<String>.from(json["teams"].map((x) => x)),
         createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
         updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
         members: json["members"] == null ? null : List<User>.from(json["members"].map((x) => User.fromMap(x))),
@@ -67,7 +67,7 @@ class Data {
         "id": id == null ? null : id,
         "name": name == null ? null : name,
         "logo": logo == null ? null : logo,
-        "department": department == null ? null : List<dynamic>.from(department.map((x) => x)),
+        "teams": teams == null ? null : List<dynamic>.from(teams.map((x) => x)),
         "createdAt": createdAt == null ? null : createdAt.toIso8601String(),
         "updatedAt": updatedAt == null ? null : updatedAt.toIso8601String(),
         "members": members == null ? null : List<dynamic>.from(members.map((x) => x.toMap())),

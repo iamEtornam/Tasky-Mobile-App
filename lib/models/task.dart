@@ -41,6 +41,7 @@ class Datum {
       this.organizationId,
       this.createdBy,
       this.team,
+      this.priorityLevel,
       this.createdAt,
       this.updatedAt,
       this.organization,
@@ -56,6 +57,7 @@ class Datum {
   int organizationId;
   int createdBy;
   String team;
+  String priorityLevel;
   DateTime createdAt;
   DateTime updatedAt;
   Org.Data organization;
@@ -79,6 +81,8 @@ class Datum {
             json["organizationId"] == null ? null : json["organizationId"],
         createdBy: json["created_by"] == null ? null : json["created_by"],
         team: json["team"] == null ? null : json["team"],
+        priorityLevel:
+            json["priority_level"] == null ? null : json["priority_level"],
         createdAt: json["createdAt"] == null
             ? null
             : DateTime.parse(json["createdAt"]),
@@ -103,6 +107,7 @@ class Datum {
         "organizationId": organizationId == null ? null : organizationId,
         "created_by": createdBy == null ? null : createdBy,
         "team": team == null ? null : team,
+        "priority_level": priorityLevel == null ? null : priorityLevel,
         "status": status == null ? null : status,
         "createdAt": createdAt == null ? null : createdAt.toIso8601String(),
         "updatedAt": updatedAt == null ? null : updatedAt.toIso8601String(),

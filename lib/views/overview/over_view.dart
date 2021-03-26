@@ -266,7 +266,7 @@ class HomeTaskSummary extends StatelessWidget {
                     child: Text(title,
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
-                        style: Theme.of(context).textTheme.bodyText1),
+                        style: Theme.of(context).textTheme.bodyText1.copyWith(color: Colors.black)),
                   ),
                 ],
               )

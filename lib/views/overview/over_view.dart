@@ -3,11 +3,11 @@ import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get_it/get_it.dart';
 import 'package:strings/strings.dart';
 import 'package:tasky_app/managers/task_manager.dart';
 import 'package:tasky_app/models/task.dart';
+import 'package:tasky_app/models/task_statistic.dart';
 import 'package:tasky_app/shared_widgets/custom_appbar_widget.dart';
 import 'package:tasky_app/utils/ui_utils/custom_colors.dart';
 import 'package:tasky_app/utils/ui_utils/ui_utils.dart';
@@ -47,34 +47,52 @@ class OverView extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: SizedBox(
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  HomeTaskCountCard(
-                      size: size,
-                      count: Random().nextInt(50),
-                      desc: 'To Do',
-                      image: 'dots.png',
-                      color: Colors.primaries[
-                          Random().nextInt(Colors.primaries.length)]),
-                  HomeTaskCountCard(
-                      size: size,
-                      count: Random().nextInt(30),
-                      desc: 'In Progress',
-                      image: 'circles.png',
-                      color: Colors.primaries[
-                          Random().nextInt(Colors.primaries.length)]),
-                  HomeTaskCountCard(
-                    size: size,
-                    count: Random().nextInt(100),
-                    desc: 'Done',
-                    image: 'layers.png',
-                    color: Colors
-                        .primaries[Random().nextInt(Colors.primaries.length)],
-                  ),
-                ],
-              ),
+              child: StreamBuilder<TaskStatistic>(
+                  stream: _taskManager.getTaskStatistics().asStream(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting &&
+                        !snapshot.hasData) {
+                      return Center(child: CupertinoActivityIndicator());
+                    }
+
+                    if (snapshot.connectionState == ConnectionState.done &&
+                        !snapshot.hasData) {
+                      //TODO:
+                      return Text('no data');
+                    }
+
+                    if (snapshot.data == null) {
+                      return Text('no data');
+                    }
+                    return Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        HomeTaskCountCard(
+                            size: size,
+                            count: snapshot.data.data.first.todo,
+                            desc: 'To Do',
+                            image: 'dots.png',
+                            color: Colors.primaries[
+                                Random().nextInt(Colors.primaries.length)]),
+                        HomeTaskCountCard(
+                            size: size,
+                            count: snapshot.data.data.first.inProgress,
+                            desc: 'In Progress',
+                            image: 'circles.png',
+                            color: Colors.primaries[
+                                Random().nextInt(Colors.primaries.length)]),
+                        HomeTaskCountCard(
+                          size: size,
+                          count: snapshot.data.data.first.completed,
+                          desc: 'Done',
+                          image: 'layers.png',
+                          color: Colors.primaries[
+                              Random().nextInt(Colors.primaries.length)],
+                        ),
+                      ],
+                    );
+                  }),
             ),
           ),
           Container(
@@ -107,6 +125,7 @@ class OverView extends StatelessWidget {
 
                 if (snapshot.connectionState == ConnectionState.done &&
                     !snapshot.hasData) {
+                  //TODO:
                   return Text('no data');
                 }
 
@@ -121,7 +140,8 @@ class OverView extends StatelessWidget {
                       List<String> dateList = date.split(' ');
                       return HomeTaskSummary(
                         size: size,
-                        priority: camelize(snapshot.data.data[index].priorityLevel),
+                        priority:
+                            camelize(snapshot.data.data[index].priorityLevel),
                         time:
                             '${UiUtilities().twenty4to12conventer(dateList[1])}',
                         title: snapshot.data.data[index].description,

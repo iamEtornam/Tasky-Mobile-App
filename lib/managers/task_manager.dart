@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
 import 'package:tasky_app/models/task.dart';
+import 'package:tasky_app/models/task_statistic.dart';
 import 'package:tasky_app/models/user.dart';
 import 'package:tasky_app/services/task_service.dart';
 import 'package:tasky_app/utils/local_storage.dart';
@@ -112,5 +113,33 @@ class TaskManager with ChangeNotifier {
       task = null;
     });
     return task;
+  }
+
+   Future<TaskStatistic> getTaskStatistics() async {
+    TaskStatistic taskStatistic;
+    int userId = await _localStorage.getId();
+    await _taskService.getTaskStatisticsRequest(userId).then((response) {
+      int statusCode = response.statusCode;
+      Map<String, dynamic> body = json.decode(response.body);
+      setMessage(body['message']);
+      logger.d(body['message']);
+      setisLoading(false);
+      print(body['message']);
+      if (statusCode == 200) {
+        taskStatistic = TaskStatistic.fromMap(body);
+      } else {
+        taskStatistic = null;
+      }
+    }).catchError((onError) {
+      taskStatistic = null;
+      logger.d('$onError');
+      setMessage('$onError');
+      setisLoading(false);
+    }).timeout(Duration(seconds: 60), onTimeout: () {
+      setMessage('Timeout! Check your internet connection.');
+      setisLoading(false);
+      taskStatistic = null;
+    });
+    return taskStatistic;
   }
 }

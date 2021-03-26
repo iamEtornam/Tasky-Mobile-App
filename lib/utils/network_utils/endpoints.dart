@@ -13,3 +13,4 @@ final String fileUploaderPath =
     'http://tasty-file-uploader.us-east-2.elasticbeanstalk.com/api/v0/upload';
 final String updateTokenPath = '$baseUrl/updateUserToken';
 String getTaskPath(int organizationId) => '$baseUrl/getTasks/$organizationId';
+String getTaskStatisticsPath(int userId) => '$baseUrl/getTaskStatusCount/$userId';

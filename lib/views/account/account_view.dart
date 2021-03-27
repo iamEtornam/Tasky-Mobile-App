@@ -6,10 +6,12 @@ import 'package:firebase_auth/firebase_auth.dart' as fb;
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:get_it/get_it.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:tasky_app/managers/user_manager.dart';
 import 'package:tasky_app/models/user.dart';
 import 'package:tasky_app/utils/local_storage.dart';
 import 'package:tasky_app/utils/ui_utils/custom_colors.dart';
+import 'package:tasky_app/views/account/personal_account_view.dart';
 import 'package:textfield_tags/textfield_tags.dart';
 
 final UserManager _userManager = GetIt.I.get<UserManager>();
@@ -144,11 +146,32 @@ class _AccountViewState extends State<AccountView> {
                       height: 10,
                     ),
                     Center(
+                      child: InkWell(
+                        onTap: () {
+                            if (Platform.isIOS) {
+                              showCupertinoModalBottomSheet(
+                                context: context,
+                                builder: (context) {
+                                  return PersonalAccountView();
+                                },
+                              );
+                            } else {
+                              showMaterialModalBottomSheet(
+                                context: context,
+                                builder: (context) {
+                                  return PersonalAccountView();
+                                },
+                              );
+                            }
+                          },
                         child: Text(
-                      'View Profile',
-                      style: Theme.of(context).textTheme.bodyText2.copyWith(
-                          fontWeight: FontWeight.normal, color: customRedColor),
-                    )),
+                          'View Profile',
+                          style: Theme.of(context).textTheme.bodyText2.copyWith(
+                              fontWeight: FontWeight.normal,
+                              color: customRedColor),
+                        ),
+                      ),
+                    ),
                     SizedBox(
                       height: 25,
                     ),

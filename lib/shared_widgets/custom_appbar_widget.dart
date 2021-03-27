@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:tasky_app/utils/local_storage.dart';
+import 'package:tasky_app/views/search/search_view.dart';
 
 final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
 
@@ -52,8 +53,39 @@ class CustomAppBarWidget extends StatelessWidget
             .copyWith(fontWeight: FontWeight.bold),
       ),
       actions: [
-        IconButton(icon: Icon(Icons.search), onPressed: () {}),
-        IconButton(icon: Icon(Icons.more_vert), onPressed: () {}),
+        IconButton(
+            icon: Icon(Icons.search),
+            onPressed: () {
+              showSearch(
+                context: context,
+                delegate: SearchView(),
+              );
+            }),
+        PopupMenuButton(
+          itemBuilder: (context) {
+            var list = <PopupMenuEntry<Object>>[];
+            list.addAll([
+              PopupMenuItem(
+                child: Text("Share",
+                    style: Theme.of(context).textTheme.bodyText1),
+                value: 1,
+              ),
+              PopupMenuDivider(
+                height: 10,
+              ),
+              PopupMenuItem(
+                child: Text(
+                  "Invite",
+                  style: Theme.of(context).textTheme.bodyText1,
+                ),
+                value: 2,
+              )
+            ]);
+            return list;
+          },
+          onSelected: (value) {},
+          icon: Icon(Icons.more_vert),
+        )
       ],
     );
   }

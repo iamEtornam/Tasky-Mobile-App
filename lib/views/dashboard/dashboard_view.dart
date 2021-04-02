@@ -231,135 +231,137 @@ class _DashboardViewState extends State<DashboardView> {
       if (data.team == null && organization != null)
         showDialog(
             context: context,
-            child: AlertDialog(
-              title: Text(
-                'Update your Team',
-                style: Theme.of(context)
-                    .textTheme
-                    .button
-                    .copyWith(fontWeight: FontWeight.w600),
-              ),
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10)),
-              content: SizedBox(
-                height: 150,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Material(
-                      elevation: 0,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          side: BorderSide(color: Colors.grey, width: 1)),
-                      child: Padding(
-                        padding: const EdgeInsets.all(5.0),
-                        child: OutlineDropdownButton(
-                          inputDecoration: InputDecoration(
-                            alignLabelWithHint: true,
-                            hintStyle: Theme.of(context)
-                                .inputDecorationTheme
-                                .hintStyle,
-                            contentPadding: EdgeInsets.fromLTRB(15, 1, 15, 1),
-                            floatingLabelBehavior: FloatingLabelBehavior.auto,
-                            focusedBorder: Theme.of(context)
-                                .inputDecorationTheme
-                                .focusedBorder,
-                            enabledBorder: Theme.of(context)
-                                .inputDecorationTheme
-                                .enabledBorder,
-                            disabledBorder: Theme.of(context)
-                                .inputDecorationTheme
-                                .disabledBorder,
-                            errorBorder: Theme.of(context)
-                                .inputDecorationTheme
-                                .errorBorder,
-                            focusedErrorBorder: Theme.of(context)
-                                .inputDecorationTheme
-                                .focusedErrorBorder,
-                            fillColor: Theme.of(context)
-                                .inputDecorationTheme
-                                .fillColor,
-                            filled: true,
-                            labelStyle: Theme.of(context)
-                                .inputDecorationTheme
-                                .labelStyle,
-                            errorStyle: Theme.of(context)
-                                .inputDecorationTheme
-                                .errorStyle,
+            builder: (context) {
+              return AlertDialog(
+                title: Text(
+                  'Update your Team',
+                  style: Theme.of(context)
+                      .textTheme
+                      .button
+                      .copyWith(fontWeight: FontWeight.w600),
+                ),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10)),
+                content: SizedBox(
+                  height: 150,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Material(
+                        elevation: 0,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            side: BorderSide(color: Colors.grey, width: 1)),
+                        child: Padding(
+                          padding: const EdgeInsets.all(5.0),
+                          child: OutlineDropdownButton(
+                            inputDecoration: InputDecoration(
+                              alignLabelWithHint: true,
+                              hintStyle: Theme.of(context)
+                                  .inputDecorationTheme
+                                  .hintStyle,
+                              contentPadding: EdgeInsets.fromLTRB(15, 1, 15, 1),
+                              floatingLabelBehavior: FloatingLabelBehavior.auto,
+                              focusedBorder: Theme.of(context)
+                                  .inputDecorationTheme
+                                  .focusedBorder,
+                              enabledBorder: Theme.of(context)
+                                  .inputDecorationTheme
+                                  .enabledBorder,
+                              disabledBorder: Theme.of(context)
+                                  .inputDecorationTheme
+                                  .disabledBorder,
+                              errorBorder: Theme.of(context)
+                                  .inputDecorationTheme
+                                  .errorBorder,
+                              focusedErrorBorder: Theme.of(context)
+                                  .inputDecorationTheme
+                                  .focusedErrorBorder,
+                              fillColor: Theme.of(context)
+                                  .inputDecorationTheme
+                                  .fillColor,
+                              filled: true,
+                              labelStyle: Theme.of(context)
+                                  .inputDecorationTheme
+                                  .labelStyle,
+                              errorStyle: Theme.of(context)
+                                  .inputDecorationTheme
+                                  .errorStyle,
+                            ),
+                            items: organization.data.teams
+                                .map((value) => DropdownMenuItem<String>(
+                                    value: '$value',
+                                    child: Text(
+                                      '$value',
+                                      style:
+                                          Theme.of(context).textTheme.bodyText1,
+                                    )))
+                                .toList(),
+                            value: team,
+                            hint: Text(
+                              'Select your team',
+                              style: Theme.of(context).textTheme.bodyText2,
+                            ),
+                            onChanged: (value) {
+                              setState(() {
+                                team = value;
+                              });
+                            },
                           ),
-                          items: organization.data.teams
-                              .map((value) => DropdownMenuItem<String>(
-                                  value: '$value',
-                                  child: Text(
-                                    '$value',
-                                    style:
-                                        Theme.of(context).textTheme.bodyText1,
-                                  )))
-                              .toList(),
-                          value: team,
-                          hint: Text(
-                            'Select your team',
-                            style: Theme.of(context).textTheme.bodyText2,
-                          ),
-                          onChanged: (value) {
-                            setState(() {
-                              team = value;
-                            });
-                          },
                         ),
                       ),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    TextButton(
-                        style: TextButton.styleFrom(
-                            backgroundColor: customRedColor,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8))),
-                        onPressed: () async {
-                          Navigator.pop(context);
-                          if (team == null) {
-                            uiUtilities.actionAlertWidget(
-                                context: context, alertType: 'error');
-                            uiUtilities.alertNotification(
-                                context: context,
-                                message: 'Select a team');
-                          } else {
-                            BotToast.showLoading(
-                                allowClick: false,
-                                clickClose: false,
-                                backButtonBehavior: BackButtonBehavior.ignore);
-                            bool isUpdated = await _userManager
-                                .updateUserTeam(team: team);
-                            BotToast.closeAllLoading();
-                            if (isUpdated) {
-                              uiUtilities.actionAlertWidget(
-                                  context: context, alertType: 'success');
-                              uiUtilities.alertNotification(
-                                  context: context,
-                                  message: _userManager.message);
-                            } else {
+                      SizedBox(
+                        height: 10,
+                      ),
+                      TextButton(
+                          style: TextButton.styleFrom(
+                              backgroundColor: customRedColor,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8))),
+                          onPressed: () async {
+                            Navigator.pop(context);
+                            if (team == null) {
                               uiUtilities.actionAlertWidget(
                                   context: context, alertType: 'error');
                               uiUtilities.alertNotification(
-                                  context: context,
-                                  message: _userManager.message);
+                                  context: context, message: 'Select a team');
+                            } else {
+                              BotToast.showLoading(
+                                  allowClick: false,
+                                  clickClose: false,
+                                  backButtonBehavior:
+                                      BackButtonBehavior.ignore);
+                              bool isUpdated =
+                                  await _userManager.updateUserTeam(team: team);
+                              BotToast.closeAllLoading();
+                              if (isUpdated) {
+                                uiUtilities.actionAlertWidget(
+                                    context: context, alertType: 'success');
+                                uiUtilities.alertNotification(
+                                    context: context,
+                                    message: _userManager.message);
+                              } else {
+                                uiUtilities.actionAlertWidget(
+                                    context: context, alertType: 'error');
+                                uiUtilities.alertNotification(
+                                    context: context,
+                                    message: _userManager.message);
+                              }
                             }
-                          }
-                        },
-                        child: Text(
-                          'Update team',
-                          style: Theme.of(context)
-                              .textTheme
-                              .button
-                              .copyWith(color: Colors.white),
-                        ))
-                  ],
+                          },
+                          child: Text(
+                            'Update team',
+                            style: Theme.of(context)
+                                .textTheme
+                                .button
+                                .copyWith(color: Colors.white),
+                          ))
+                    ],
+                  ),
                 ),
-              ),
-            ));
+              );
+            });
     });
   }
 

@@ -1,4 +1,4 @@
-# tasky_app
+# Tasky Mobile App
 
 A project management mobile app
 

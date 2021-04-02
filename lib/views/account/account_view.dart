@@ -148,22 +148,22 @@ class _AccountViewState extends State<AccountView> {
                     Center(
                       child: InkWell(
                         onTap: () {
-                            if (Platform.isIOS) {
-                              showCupertinoModalBottomSheet(
-                                context: context,
-                                builder: (context) {
-                                  return PersonalAccountView();
-                                },
-                              );
-                            } else {
-                              showMaterialModalBottomSheet(
-                                context: context,
-                                builder: (context) {
-                                  return PersonalAccountView();
-                                },
-                              );
-                            }
-                          },
+                          if (Platform.isIOS) {
+                            showCupertinoModalBottomSheet(
+                              context: context,
+                              builder: (context) {
+                                return PersonalAccountView();
+                              },
+                            );
+                          } else {
+                            showMaterialModalBottomSheet(
+                              context: context,
+                              builder: (context) {
+                                return PersonalAccountView();
+                              },
+                            );
+                          }
+                        },
                         child: Text(
                           'View Profile',
                           style: Theme.of(context).textTheme.bodyText2.copyWith(
@@ -205,113 +205,121 @@ class _AccountViewState extends State<AccountView> {
                             onPressed: () {
                               showDialog(
                                   context: context,
-                                  child: AlertDialog(
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(10)),
-                                    content: SizedBox(
-                                      height: 150,
-                                      child: Column(
-                                        children: [
-                                          TextFieldTags(
-                                            textFieldStyler: TextFieldStyler(
-                                              helperText: '',
-                                              cursorColor: Theme.of(context)
-                                                  .textSelectionTheme
-                                                  .cursorColor,
-                                              hintStyle: Theme.of(context)
-                                                  .textTheme
-                                                  .bodyText1
-                                                  .copyWith(color: Colors.grey),
-                                              hintText: 'Emails',
-                                              textFieldBorder:
-                                                  UnderlineInputBorder(
-                                                      borderSide: BorderSide(
-                                                          color:
-                                                              customGreyColor)),
-                                              textStyle: Theme.of(context)
-                                                  .textTheme
-                                                  .bodyText1,
-                                              textFieldEnabledBorder:
-                                                  UnderlineInputBorder(
-                                                      borderSide: BorderSide(
-                                                          color:
-                                                              customGreyColor)),
-                                              textFieldFocusedBorder:
-                                                  UnderlineInputBorder(
-                                                      borderSide: BorderSide(
-                                                          color:
-                                                              customGreyColor)),
-                                            ),
-                                            //[tagsStyler] is required and shall not be null
-                                            tagsStyler: TagsStyler(
-                                              //These are properties you can tweek for customization of tags
-                                              tagTextStyle: Theme.of(context)
-                                                  .textTheme
-                                                  .bodyText1
-                                                  .copyWith(
-                                                      color: Colors.white),
-                                              tagDecoration: BoxDecoration(
-                                                color: customRedColor,
-                                                borderRadius:
-                                                    BorderRadius.circular(5.0),
+                                  builder: (context) {
+                                    return AlertDialog(
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10)),
+                                      content: SizedBox(
+                                        height: 150,
+                                        child: Column(
+                                          children: [
+                                            TextFieldTags(
+                                              textFieldStyler: TextFieldStyler(
+                                                helperText: '',
+                                                cursorColor: Theme.of(context)
+                                                    .textSelectionTheme
+                                                    .cursorColor,
+                                                hintStyle: Theme.of(context)
+                                                    .textTheme
+                                                    .bodyText1
+                                                    .copyWith(
+                                                        color: Colors.grey),
+                                                hintText: 'Emails',
+                                                textFieldBorder:
+                                                    UnderlineInputBorder(
+                                                        borderSide: BorderSide(
+                                                            color:
+                                                                customGreyColor)),
+                                                textStyle: Theme.of(context)
+                                                    .textTheme
+                                                    .bodyText1,
+                                                textFieldEnabledBorder:
+                                                    UnderlineInputBorder(
+                                                        borderSide: BorderSide(
+                                                            color:
+                                                                customGreyColor)),
+                                                textFieldFocusedBorder:
+                                                    UnderlineInputBorder(
+                                                        borderSide: BorderSide(
+                                                            color:
+                                                                customGreyColor)),
                                               ),
-                                              tagCancelIcon: Icon(Icons.cancel,
-                                                  size: 18.0,
-                                                  color: Colors.white),
-                                              tagPadding:
-                                                  const EdgeInsets.all(8.0),
-
-                                              // EdgeInsets tagPadding = const EdgeInsets.all(4.0),
-                                              // EdgeInsets tagMargin = const EdgeInsets.symmetric(horizontal: 4.0),
-                                              // BoxDecoration tagDecoration = const BoxDecoration(color: Color.fromARGB(255, 74, 137, 92)),
-                                              // TextStyle tagTextStyle,
-                                              // Icon tagCancelIcon = const Icon(Icons.cancel, size: 18.0, color: Colors.green)
-                                              // isHashTag: true,
-                                            ),
-                                            onTag: (tag) {
-                                              //This give you tags entered
-                                              print('onTag ' + tag);
-                                              setState(() {
-                                                teams.add(tag);
-                                              });
-                                            },
-                                            onDelete: (tag) {
-                                              print('onDelete ' + tag);
-                                              setState(() {
-                                                teams.remove(tag);
-                                              });
-                                            },
-                                          ),
-                                          SizedBox(
-                                            height: 10,
-                                          ),
-                                          TextButton(
-                                              style: TextButton.styleFrom(
-                                                  backgroundColor:
-                                                      customRedColor,
-                                                  shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            8),
-                                                  )),
-                                              onPressed: () {},
-                                              child: Padding(
-                                                padding: const EdgeInsets.only(
-                                                    left: 15, right: 15),
-                                                child: Text(
-                                                  'Invite email(s)',
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .button
-                                                      .copyWith(
-                                                          color: Colors.white),
+                                              //[tagsStyler] is required and shall not be null
+                                              tagsStyler: TagsStyler(
+                                                //These are properties you can tweek for customization of tags
+                                                tagTextStyle: Theme.of(context)
+                                                    .textTheme
+                                                    .bodyText1
+                                                    .copyWith(
+                                                        color: Colors.white),
+                                                tagDecoration: BoxDecoration(
+                                                  color: customRedColor,
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          5.0),
                                                 ),
-                                              ))
-                                        ],
+                                                tagCancelIcon: Icon(
+                                                    Icons.cancel,
+                                                    size: 18.0,
+                                                    color: Colors.white),
+                                                tagPadding:
+                                                    const EdgeInsets.all(8.0),
+
+                                                // EdgeInsets tagPadding = const EdgeInsets.all(4.0),
+                                                // EdgeInsets tagMargin = const EdgeInsets.symmetric(horizontal: 4.0),
+                                                // BoxDecoration tagDecoration = const BoxDecoration(color: Color.fromARGB(255, 74, 137, 92)),
+                                                // TextStyle tagTextStyle,
+                                                // Icon tagCancelIcon = const Icon(Icons.cancel, size: 18.0, color: Colors.green)
+                                                // isHashTag: true,
+                                              ),
+                                              onTag: (tag) {
+                                                //This give you tags entered
+                                                print('onTag ' + tag);
+                                                setState(() {
+                                                  teams.add(tag);
+                                                });
+                                              },
+                                              onDelete: (tag) {
+                                                print('onDelete ' + tag);
+                                                setState(() {
+                                                  teams.remove(tag);
+                                                });
+                                              },
+                                            ),
+                                            SizedBox(
+                                              height: 10,
+                                            ),
+                                            TextButton(
+                                                style: TextButton.styleFrom(
+                                                    backgroundColor:
+                                                        customRedColor,
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              8),
+                                                    )),
+                                                onPressed: () {},
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          left: 15, right: 15),
+                                                  child: Text(
+                                                    'Invite email(s)',
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .button
+                                                        .copyWith(
+                                                            color:
+                                                                Colors.white),
+                                                  ),
+                                                ))
+                                          ],
+                                        ),
                                       ),
-                                    ),
-                                  ));
+                                    );
+                                  });
                             },
                             child: Text(
                               'Invite',

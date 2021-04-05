@@ -8,6 +8,7 @@ import 'package:tasky_app/managers/task_manager.dart';
 import 'package:tasky_app/models/task.dart';
 import 'package:tasky_app/shared_widgets/custom_appbar_widget.dart';
 import 'package:tasky_app/shared_widgets/custom_checkbox_widget.dart';
+import 'package:tasky_app/shared_widgets/empty_widget.dart';
 import 'package:tasky_app/utils/ui_utils/custom_colors.dart';
 
 final TaskManager _taskManager = GetIt.I.get<TaskManager>();
@@ -60,11 +61,19 @@ class _TaskViewState extends State<TaskView> {
 
             if (snapshot.connectionState == ConnectionState.done &&
                 !snapshot.hasData) {
-              return Text('no data');
+                return EmptyWidget(
+                    imageAsset: 'no_task.png',
+                    message:
+                        'Tasks aasigned to you and tasks created for you appears here.',
+                  );
             }
 
             if (snapshot.data == null) {
-              return Text('no data');
+                return EmptyWidget(
+                    imageAsset: 'no_task.png',
+                    message:
+                        'Tasks aasigned to you and tasks created for you appears here.',
+                  );
             }
 
             return ListView(

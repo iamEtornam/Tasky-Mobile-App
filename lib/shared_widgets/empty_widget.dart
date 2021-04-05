@@ -9,23 +9,31 @@ class EmptyWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
     return Container(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Image.asset(
-            'assets/$imageAsset',
-            width: size.width / 2,
-            height: size.width / 2,
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          Text(
-            message,
-            style: Theme.of(context).textTheme.bodyText1,
-          )
-        ],
+      width: size.width,
+      height: size.height / 2,
+      child: Center(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset(
+              'assets/$imageAsset',
+              width: size.width / 2,
+              height: size.width / 2,
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 50),
+              child: Text(
+                message,
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.bodyText1,
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

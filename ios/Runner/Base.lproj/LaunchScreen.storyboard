@@ -19,19 +19,18 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFill" insetsLayoutMarginsFromSafeArea="NO" image="LaunchImage" translatesAutoresizingMaskIntoConstraints="NO" id="YRO-k0-Ey4">
-                                <rect key="frame" x="0.0" y="44" width="414" height="818"/>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="LaunchImage" translatesAutoresizingMaskIntoConstraints="NO" id="oqq-hf-Wv2">
+                                <rect key="frame" x="132" y="373" width="150" height="150"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" secondItem="YRO-k0-Ey4" secondAttribute="height" multiplier="207:409" id="iwm-vH-uCa"/>
+                                    <constraint firstAttribute="width" constant="150" id="GOb-Xj-B8c"/>
+                                    <constraint firstAttribute="height" constant="150" id="jKm-93-oAA"/>
                                 </constraints>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="YRO-k0-Ey4" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="lyM-vX-ZCR"/>
-                            <constraint firstItem="YRO-k0-Ey4" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="topMargin" id="p9s-ze-ilU"/>
-                            <constraint firstItem="YRO-k0-Ey4" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leadingMargin" constant="-20" id="qaP-8O-0vF"/>
-                            <constraint firstItem="YRO-k0-Ey4" firstAttribute="bottom" secondItem="Ze5-6b-2t3" secondAttribute="bottomMargin" id="s4S-Sm-wl8"/>
+                            <constraint firstItem="oqq-hf-Wv2" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="UoL-eM-DSm"/>
+                            <constraint firstItem="oqq-hf-Wv2" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="Xw1-9P-Vj9"/>
                         </constraints>
                     </view>
                 </viewController>
@@ -41,6 +40,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="LaunchImage" width="800" height="600"/>
+        <image name="LaunchImage" width="512" height="512"/>
     </resources>
 </document>

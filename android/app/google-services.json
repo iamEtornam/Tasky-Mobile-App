@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "997228587501",
+    "project_id": "tasky-manager-app",
+    "storage_bucket": "tasky-manager-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:997228587501:android:35e25abe5e337854f6dfe4",
+        "android_client_info": {
+          "package_name": "dev.etornam.tasky"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "997228587501-jbmin8dts1lrqmslnu18tnupo39beanr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBLxKESbe7Cu_ptwJYMTcQD9rNwWicxAuo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "997228587501-jbmin8dts1lrqmslnu18tnupo39beanr.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "997228587501-d4q7mtjlde3uvhdqs13o57n6iuelfcmn.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "dev.etornam.taskyApp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

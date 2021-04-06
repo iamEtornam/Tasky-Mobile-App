@@ -686,9 +686,7 @@ class _TaskAssigneeWidgetState extends State<TaskAssigneeWidget> {
                 backgroundColor: Colors.black),
             onPressed: () {
               _taskManager.setAssignees(users);
-              setState(() {
-                
-              });
+          
               if (_taskManager.assignees.isNotEmpty) {
                 Navigator.pop(context);
               }

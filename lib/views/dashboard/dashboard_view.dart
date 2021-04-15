@@ -22,6 +22,7 @@ import 'package:tasky_app/views/account/account_view.dart';
 import 'package:tasky_app/views/task/task_view.dart';
 
 final FirebaseMessaging _messaging = FirebaseMessaging.instance;
+final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
 final OrganizationManager _organizationManager =
     GetIt.I.get<OrganizationManager>();
@@ -65,8 +66,7 @@ class _DashboardViewState extends State<DashboardView> {
   }
 
   void uploadNotificationToken() async {
-    print(_messaging);
-    if (_messaging != null) {
+    if (_messaging != null && _firebaseAuth.currentUser != null) {
       await _messaging.getToken().then((token) async {
         await _userManager.sendNotificationToken(token: token);
       });

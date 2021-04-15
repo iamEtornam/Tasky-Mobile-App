@@ -115,7 +115,7 @@ class TaskManager with ChangeNotifier {
     return task;
   }
 
-   Future<TaskStatistic> getTaskStatistics() async {
+  Future<TaskStatistic> getTaskStatistics() async {
     TaskStatistic taskStatistic;
     int userId = await _localStorage.getId();
     await _taskService.getTaskStatisticsRequest(userId).then((response) {
@@ -141,5 +141,31 @@ class TaskManager with ChangeNotifier {
       taskStatistic = null;
     });
     return taskStatistic;
+  }
+
+  Future<bool> markTaskAsCompleted({int taskId, String status}) async {
+    bool isDone = false;
+    await _taskService
+        .markAsCompletedRequest(status: status, taskId: taskId)
+        .then((response) {
+      int statusCode = response.statusCode;
+      Map<String, dynamic> body = json.decode(response.body);
+      setMessage('${body['mesage']}');
+      if (statusCode == 200) {
+        isDone = true;
+      } else {
+        isDone = false;
+      }
+    }).catchError((onError) {
+      isDone = false;
+      logger.d('$onError');
+      setMessage('$onError');
+      setisLoading(false);
+    }).timeout(Duration(seconds: 60), onTimeout: () {
+      setMessage('Timeout! Check your internet connection.');
+      setisLoading(false);
+      isDone = false;
+    });
+    return isDone;
   }
 }

@@ -46,8 +46,8 @@ class AuthManager with ChangeNotifier {
               await _authService.sendTokenToBackend(token: token);
           int statusCode = _response.statusCode;
           Map<String, dynamic> body = json.decode(_response.body);
-          _logger.d('_response ${body['data']['auth_token']}');
-
+          _logger.d(body);
+          
           setisLoading(false);
           if (statusCode == 201) {
             Member.User member = Member.User.fromMap(body);

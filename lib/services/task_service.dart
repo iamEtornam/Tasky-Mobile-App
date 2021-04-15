@@ -31,7 +31,35 @@ class TaskService {
     return await _customHttpClient.getRequest(getTaskPath(organizationId));
   }
 
-    Future<Response> getTaskStatisticsRequest(int userId) async {
+  Future<Response> getTaskStatisticsRequest(int userId) async {
     return await _customHttpClient.getRequest(getTaskStatisticsPath(userId));
+  }
+
+  Future<Response> updateTaskRequest(
+      {int taskId,
+      String status,
+      String description,
+      String dueDate,
+      bool isReminder,
+      List<int> assignees,
+      String team,
+      String priorityLevel}) async {
+    Map body = {
+      'status': status,
+      'description': description,
+      'due_date': dueDate,
+      'is_reminder': isReminder,
+      'assignees': assignees,
+      'team': team,
+      'priority_level': priorityLevel
+    };
+    return await _customHttpClient.putRequest(
+        path: '$updateTaskPath/taskId', body: body);
+  }
+
+  Future<Response> markAsCompletedRequest({int taskId, String status}) async {
+    Map body = {'status': status};
+    return await _customHttpClient.putRequest(
+        path: '$updateTaskPath/taskId', body: body);
   }
 }

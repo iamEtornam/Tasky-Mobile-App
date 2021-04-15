@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_stack/flutter_image_stack.dart';
@@ -10,6 +11,7 @@ import 'package:tasky_app/shared_widgets/custom_appbar_widget.dart';
 import 'package:tasky_app/shared_widgets/custom_checkbox_widget.dart';
 import 'package:tasky_app/shared_widgets/empty_widget.dart';
 import 'package:tasky_app/utils/ui_utils/custom_colors.dart';
+import 'package:tasky_app/utils/ui_utils/ui_utils.dart';
 
 final TaskManager _taskManager = GetIt.I.get<TaskManager>();
 
@@ -19,6 +21,8 @@ class TaskView extends StatefulWidget {
 }
 
 class _TaskViewState extends State<TaskView> {
+  final UiUtilities uiUtilities = UiUtilities();
+  String _status;
   // final List<Map<String, dynamic>> data = [
   //   {
   //     'title': 'Provide design team content for next web seminar',
@@ -61,19 +65,19 @@ class _TaskViewState extends State<TaskView> {
 
             if (snapshot.connectionState == ConnectionState.done &&
                 !snapshot.hasData) {
-                return EmptyWidget(
-                    imageAsset: 'no_task.png',
-                    message:
-                        'Tasks aasigned to you and tasks created for you appears here.',
-                  );
+              return EmptyWidget(
+                imageAsset: 'no_task.png',
+                message:
+                    'Tasks aasigned to you and tasks created for you appears here.',
+              );
             }
 
             if (snapshot.data == null) {
-                return EmptyWidget(
-                    imageAsset: 'no_task.png',
-                    message:
-                        'Tasks aasigned to you and tasks created for you appears here.',
-                  );
+              return EmptyWidget(
+                imageAsset: 'no_task.png',
+                message:
+                    'Tasks aasigned to you and tasks created for you appears here.',
+              );
             }
 
             return ListView(
@@ -116,12 +120,72 @@ class _TaskViewState extends State<TaskView> {
                           taskTitle: snapshot.data.data[index].description,
                           isCompleted:
                               snapshot.data.data[index].status == 'completed',
-                          onTap: (value) {
+                          onTap: (bool value) {
                             setState(() {
-                              snapshot.data.data[index].status = value ? 'complete' : 'todo';
+                              snapshot.data.data[index].status =
+                                  value ? 'complete' : 'todo';
                             });
+
                             print(
                                 '@@@@@@@@@@@@@@@@@@ ${snapshot.data.data[index]}');
+                          },
+                          changeStatus: () async {
+                            showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return AlertDialog(
+                                    shape: StadiumBorder(),
+                                    content: SizedBox(
+                                      height: 150,
+                                      child: Column(
+                                        children: [
+                                          RadioListTile(
+                                              value: 'todo',
+                                              groupValue: 'status',
+                                              onChanged: (value) {
+                                                setState(() {
+                                                  _status = value;
+                                                });
+                                              }),
+                                               RadioListTile(
+                                              value: 'in progress',
+                                              groupValue: 'status',
+                                              onChanged: (value) {
+                                                setState(() {
+                                                  _status = value;
+                                                });
+                                              }),
+                                               RadioListTile(
+                                              value: 'completed',
+                                              groupValue: 'status',
+                                              onChanged: (value) {
+                                                setState(() {
+                                                  _status = value;
+                                                });
+                                              })
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                                });
+
+                            // BotToast.showLoading(
+                            //     allowClick: false,
+                            //     clickClose: false,
+                            //     backButtonBehavior: BackButtonBehavior.ignore);
+                            // bool isChanged =
+                            //     await _taskManager.markTaskAsCompleted(
+                            //         status: _status,
+                            //         taskId: snapshot.data.data[index].id);
+                            // BotToast.closeAllLoading();
+                            // if (isChanged) {
+                            // } else {
+                            //   uiUtilities.actionAlertWidget(
+                            //       context: context, alertType: 'error');
+                            //   uiUtilities.alertNotification(
+                            //       context: context,
+                            //       message: _taskManager.message);
+                            // }
                           },
                         );
                       },
@@ -158,12 +222,14 @@ class TaskListTile extends StatelessWidget {
     @required this.isCompleted,
     @required this.taskTitle,
     @required this.onTap,
+    @required this.changeStatus,
   }) : super(key: key);
 
   final List<String> images;
   final bool isCompleted;
   final String taskTitle;
   final Function onTap;
+  final Function changeStatus;
 
   @override
   Widget build(BuildContext context) {
@@ -236,9 +302,93 @@ class TaskListTile extends StatelessWidget {
                 SizedBox(
                   width: 10,
                 ),
-                Icon(
-                  Icons.more_vert,
-                  color: customGreyColor,
+                InkWell(
+                  onTap: () {
+                    showBottomSheet(
+                        context: context,
+                        elevation: 3,
+                        builder: (context) {
+                          return Container(
+                            height: 220,
+                            decoration: BoxDecoration(
+                                color: customRedColor,
+                                borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(10),
+                                    topRight: Radius.circular(10))),
+                            child: Column(
+                              children: [
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                Center(
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                        color: Colors.white70,
+                                        borderRadius:
+                                            BorderRadius.circular(45)),
+                                    height: 6,
+                                    width: 20,
+                                  ),
+                                ),
+                                ListTile(
+                                  onTap: () {
+                                    changeStatus();
+                                  },
+                                  title: Text(
+                                    'Mark as completed',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyText1
+                                        .copyWith(color: Colors.white),
+                                  ),
+                                  trailing: Icon(
+                                    Icons.check,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                Divider(
+                                  color: Colors.grey,
+                                  thickness: .5,
+                                ),
+                                ListTile(
+                                  title: Text(
+                                    'Edit Task',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyText1
+                                        .copyWith(color: Colors.white),
+                                  ),
+                                  trailing: Icon(
+                                    Icons.edit,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                Divider(
+                                  color: Colors.grey,
+                                  thickness: .5,
+                                ),
+                                ListTile(
+                                  title: Text(
+                                    'Delete',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyText1
+                                        .copyWith(color: Colors.white),
+                                  ),
+                                  trailing: Icon(
+                                    Icons.delete,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        });
+                  },
+                  child: Icon(
+                    Icons.more_vert,
+                    color: customGreyColor,
+                  ),
                 ),
               ],
             )

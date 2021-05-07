@@ -31,7 +31,6 @@ class CreateNewTaskView extends StatefulWidget {
 }
 
 class _CreateNewTaskViewState extends State<CreateNewTaskView> {
-    final Logger _logger = Logger();
   final UiUtilities uiUtilities = UiUtilities();
   static GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final FocusNode taskFocusNode = FocusNode();

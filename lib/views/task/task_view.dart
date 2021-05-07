@@ -23,31 +23,6 @@ class TaskView extends StatefulWidget {
 class _TaskViewState extends State<TaskView> {
   final UiUtilities uiUtilities = UiUtilities();
   String _status;
-  // final List<Map<String, dynamic>> data = [
-  //   {
-  //     'title': 'Provide design team content for next web seminar',
-  //     'isCompleted': true,
-  //     'date': DateTime.now().subtract(Duration(days: 10)),
-  //     'participants': [
-  //       "https://images.unsplash.com/photo-1458071103673-6a6e4c4a3413?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80",
-  //       "https://images.unsplash.com/photo-1518806118471-f28b20a1d79d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=400&q=80",
-  //       "https://images.unsplash.com/photo-1470406852800-b97e5d92e2aa?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80",
-  //       "https://images.unsplash.com/photo-1473700216830-7e08d47f858e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80"
-  //     ]
-  //   },
-  //   {
-  //     'title':
-  //         'Create a beautiful physical christmas card for upcoming christmas',
-  //     'isCompleted': false,
-  //     'date': DateTime.now().subtract(Duration(days: 5)),
-  //     'participants': [
-  //       "https://images.unsplash.com/photo-1458071103673-6a6e4c4a3413?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80",
-  //       "https://images.unsplash.com/photo-1518806118471-f28b20a1d79d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=400&q=80",
-  //       "https://images.unsplash.com/photo-1470406852800-b97e5d92e2aa?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80",
-  //       "https://images.unsplash.com/photo-1473700216830-7e08d47f858e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80"
-  //     ]
-  //   }
-  // ];
 
   @override
   Widget build(BuildContext context) {
@@ -120,14 +95,34 @@ class _TaskViewState extends State<TaskView> {
                           taskTitle: snapshot.data.data[index].description,
                           isCompleted:
                               snapshot.data.data[index].status == 'completed',
-                          onTap: (bool value) {
-                            setState(() {
-                              snapshot.data.data[index].status =
-                                  value ? 'complete' : 'todo';
-                            });
+                          onTap: (bool value) async {
 
-                            print(
-                                '@@@@@@@@@@@@@@@@@@ ${snapshot.data.data[index]}');
+                            BotToast.showLoading(
+                                allowClick: false,
+                                clickClose: false,
+                                backButtonBehavior: BackButtonBehavior.ignore);
+                            bool isChanged =
+                                await _taskManager.markTaskAsCompleted(
+                                    status: 'completed',
+                                    taskId: snapshot.data.data[index].id);
+                            BotToast.closeAllLoading();
+                            if (isChanged) {
+                              uiUtilities.actionAlertWidget(
+                                  context: context, alertType: 'success');
+                              uiUtilities.alertNotification(
+                                  context: context,
+                                  message: 'Marked as completed!');
+                              setState(() {
+                                snapshot.data.data[index].status =
+                                    value ? 'complete' : 'todo';
+                              });
+                            } else {
+                              uiUtilities.actionAlertWidget(
+                                  context: context, alertType: 'error');
+                              uiUtilities.alertNotification(
+                                  context: context,
+                                  message: _taskManager.message);
+                            }
                           },
                           changeStatus: () async {
                             showDialog(
@@ -147,7 +142,7 @@ class _TaskViewState extends State<TaskView> {
                                                   _status = value;
                                                 });
                                               }),
-                                               RadioListTile(
+                                          RadioListTile(
                                               value: 'in progress',
                                               groupValue: 'status',
                                               onChanged: (value) {
@@ -155,7 +150,7 @@ class _TaskViewState extends State<TaskView> {
                                                   _status = value;
                                                 });
                                               }),
-                                               RadioListTile(
+                                          RadioListTile(
                                               value: 'completed',
                                               groupValue: 'status',
                                               onChanged: (value) {
@@ -168,24 +163,6 @@ class _TaskViewState extends State<TaskView> {
                                     ),
                                   );
                                 });
-
-                            // BotToast.showLoading(
-                            //     allowClick: false,
-                            //     clickClose: false,
-                            //     backButtonBehavior: BackButtonBehavior.ignore);
-                            // bool isChanged =
-                            //     await _taskManager.markTaskAsCompleted(
-                            //         status: _status,
-                            //         taskId: snapshot.data.data[index].id);
-                            // BotToast.closeAllLoading();
-                            // if (isChanged) {
-                            // } else {
-                            //   uiUtilities.actionAlertWidget(
-                            //       context: context, alertType: 'error');
-                            //   uiUtilities.alertNotification(
-                            //       context: context,
-                            //       message: _taskManager.message);
-                            // }
                           },
                         );
                       },

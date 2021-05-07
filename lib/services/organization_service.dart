@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart';
+import 'package:logger/logger.dart';
 import 'package:path/path.dart';
 import 'package:tasky_app/utils/local_storage.dart';
 import 'package:tasky_app/utils/network_utils/custom_http_client.dart';
@@ -12,6 +13,8 @@ final CustomHttpClient _customHttpClient = GetIt.I.get<CustomHttpClient>();
 final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
 
 class OrganizationService {
+    final Logger _logger = Logger();
+    
   Future<Response> getOrganizationRequest({int organizationID}) async {
     return await _customHttpClient
         .getRequest('$organizationPath/$organizationID');
@@ -24,7 +27,7 @@ class OrganizationService {
       "logo": imageUrl,
       "teams": teams
     };
-    print(body);
+    _logger.d(body);
     return await _customHttpClient.postRequest(
         path: createOrganizationPath, body: body);
   }

@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:logger/logger.dart';
 import 'package:tasky_app/models/member.dart';
 import 'package:tasky_app/models/organization.dart';
 import 'package:tasky_app/services/organization_service.dart';
@@ -13,6 +14,7 @@ final OrganizationService _organizationService =
 final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
 
 class OrganizationManager with ChangeNotifier {
+  final Logger _logger = Logger();
   String _message = '';
   bool _isLoading = false;
 
@@ -63,7 +65,7 @@ class OrganizationManager with ChangeNotifier {
         .fileUploaderRequest(file: imageFile)
         .then((response) async {
       Map<String, dynamic> body = json.decode(response.body);
-      print(body);
+      _logger.d(body);
       setMessage('${body['message']}');
       if (response.statusCode == 200) {
         fileUrl = body['fileUrl'];
@@ -71,7 +73,7 @@ class OrganizationManager with ChangeNotifier {
         fileUrl = null;
       }
     }).catchError((onError) {
-      debugPrint('error $onError');
+      _logger.d('error $onError');
       setMessage('Something went wrong while uploading file');
       fileUrl = null;
     });
@@ -88,7 +90,7 @@ class OrganizationManager with ChangeNotifier {
               teams: teams, imageUrl: fileUrl, name: name)
           .then((response) {
         int statusCode = response.statusCode;
-        print(statusCode);
+        _logger.d(statusCode);
         Map<String, dynamic> body = json.decode(response.body);
         setMessage('${body['message']}');
         if (statusCode == 201) {
@@ -107,7 +109,7 @@ class OrganizationManager with ChangeNotifier {
     return isCreated;
   }
 
-    Future<Member> getOrganizationMembers() async {
+  Future<Member> getOrganizationMembers() async {
     Member _member;
     setisLoading(true);
     int organizationID = await _localStorage.getOrganizationId();

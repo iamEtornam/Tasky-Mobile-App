@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart';
+import 'package:logger/logger.dart';
 import 'package:tasky_app/utils/network_utils/custom_http_client.dart';
 import 'package:tasky_app/utils/network_utils/endpoints.dart';
 
@@ -10,6 +11,8 @@ final CustomHttpClient _customHttpClient = GetIt.I.get<CustomHttpClient>();
 final FirebaseAuth auth = FirebaseAuth.instance;
 
 class AuthService {
+  final Logger _logger = Logger();
+
   Future<UserCredential> signInWithGoogle() async {
     // Trigger the authentication flow
     final GoogleSignInAccount googleUser = await GoogleSignIn().signIn();
@@ -29,12 +32,11 @@ class AuthService {
   }
 
   Future<UserCredential> signInWithApple() async {
-
     final AuthorizationResult result = await AppleSignIn.performRequests([
       AppleIdRequest(requestedScopes: [Scope.email, Scope.fullName])
     ]);
     AppleIdCredential appleIdCredential = result.credential;
-    print(appleIdCredential.toString());
+    _logger.d(appleIdCredential.toString());
     OAuthProvider oAuthProvider = OAuthProvider('apple.com');
     OAuthCredential credential = oAuthProvider.credential(
       idToken: String.fromCharCodes(appleIdCredential.identityToken),

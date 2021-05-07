@@ -60,6 +60,6 @@ class TaskService {
   Future<Response> markAsCompletedRequest({int taskId, String status}) async {
     Map body = {'status': status};
     return await _customHttpClient.putRequest(
-        path: '$updateTaskPath/taskId', body: body);
+        path: '$updateTaskPath/$taskId', body: body);
   }
 }

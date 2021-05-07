@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:logger/logger.dart';
 import 'package:tasky_app/managers/organization_manager.dart';
 import 'package:tasky_app/shared_widgets/custom_bottom_sheet_widget.dart';
 import 'package:tasky_app/utils/ui_utils/custom_colors.dart';
@@ -21,6 +22,7 @@ class OrganizationView extends StatefulWidget {
 }
 
 class _OrganizationViewState extends State<OrganizationView> {
+  final Logger _logger = Logger();
   final UiUtilities uiUtilities = UiUtilities();
   static GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   TextEditingController nameTextEditingController = TextEditingController();
@@ -203,13 +205,13 @@ class _OrganizationViewState extends State<OrganizationView> {
               ),
               onTag: (tag) {
                 //This give you tags entered
-                print('onTag ' + tag);
+                _logger.d('onTag ' + tag);
                 setState(() {
                   teams.add(tag);
                 });
               },
               onDelete: (tag) {
-                print('onDelete ' + tag);
+                _logger.d('onDelete ' + tag);
                 setState(() {
                   teams.remove(tag);
                 });

@@ -10,6 +10,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get_it/get_it.dart';
 import 'package:groovin_widgets/groovin_widgets.dart';
+import 'package:logger/logger.dart';
 import 'package:tasky_app/managers/organization_manager.dart';
 import 'package:tasky_app/managers/user_manager.dart';
 import 'package:tasky_app/models/organization.dart';
@@ -37,6 +38,7 @@ class DashboardView extends StatefulWidget {
 }
 
 class _DashboardViewState extends State<DashboardView> {
+    final Logger _logger = Logger();
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
   final UiUtilities uiUtilities = UiUtilities();
   String team;
@@ -74,7 +76,7 @@ class _DashboardViewState extends State<DashboardView> {
   }
 
   Future onSelectNotification(String payload) async {
-    debugPrint("payload : $payload");
+    _logger.d("payload : $payload");
   }
 
   initialNotification({@required BuildContext context}) async {

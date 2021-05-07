@@ -11,6 +11,7 @@ import 'package:flutter_image_stack/flutter_image_stack.dart';
 import 'package:get_it/get_it.dart';
 import 'package:groovin_widgets/groovin_widgets.dart';
 import 'package:intl/intl.dart';
+import 'package:logger/logger.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:tasky_app/managers/organization_manager.dart';
 import 'package:tasky_app/managers/task_manager.dart';
@@ -30,6 +31,7 @@ class CreateNewTaskView extends StatefulWidget {
 }
 
 class _CreateNewTaskViewState extends State<CreateNewTaskView> {
+    final Logger _logger = Logger();
   final UiUtilities uiUtilities = UiUtilities();
   static GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final FocusNode taskFocusNode = FocusNode();
@@ -541,7 +543,8 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
                           context: context, message: _taskManager.message);
 
                       Future.delayed(Duration(seconds: 3), () {
-                        Navigator.pushReplacementNamed(context, '/', arguments: 1);
+                        Navigator.pushReplacementNamed(context, '/',
+                            arguments: 1);
                       });
                     } else {
                       uiUtilities.actionAlertWidget(
@@ -637,6 +640,7 @@ class TaskAssigneeWidget extends StatefulWidget {
 class _TaskAssigneeWidgetState extends State<TaskAssigneeWidget> {
   List<Data> users = [];
   bool isChecked = false;
+    final Logger _logger = Logger();
 
   @override
   Widget build(BuildContext context) {
@@ -670,7 +674,7 @@ class _TaskAssigneeWidgetState extends State<TaskAssigneeWidget> {
                     }
                   });
                   _taskManager.setAssignees(users);
-                  print(_taskManager.assignees);
+                  _logger.d(_taskManager.assignees);
                 },
               );
             }),
@@ -686,7 +690,7 @@ class _TaskAssigneeWidgetState extends State<TaskAssigneeWidget> {
                 backgroundColor: Colors.black),
             onPressed: () {
               _taskManager.setAssignees(users);
-          
+
               if (_taskManager.assignees.isNotEmpty) {
                 Navigator.pop(context);
               }

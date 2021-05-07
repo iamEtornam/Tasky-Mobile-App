@@ -6,6 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart' as fb;
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:get_it/get_it.dart';
+import 'package:logger/logger.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:tasky_app/managers/user_manager.dart';
 import 'package:tasky_app/models/user.dart';
@@ -23,7 +24,9 @@ class AccountView extends StatefulWidget {
 }
 
 class _AccountViewState extends State<AccountView> {
+  final Logger _logger = Logger();
   List<String> teams = [];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -275,13 +278,13 @@ class _AccountViewState extends State<AccountView> {
                                               ),
                                               onTag: (tag) {
                                                 //This give you tags entered
-                                                print('onTag ' + tag);
+                                                _logger.d('onTag ' + tag);
                                                 setState(() {
                                                   teams.add(tag);
                                                 });
                                               },
                                               onDelete: (tag) {
-                                                print('onDelete ' + tag);
+                                                _logger.d('onDelete ' + tag);
                                                 setState(() {
                                                   teams.remove(tag);
                                                 });

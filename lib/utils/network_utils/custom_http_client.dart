@@ -67,7 +67,7 @@ class CustomHttpClient {
 
     Response response =
         await put(path, body: jsonEncode(body), headers: await getHeaders());
-    debugPrint(response.body);
+    _logger.d(response.body);
     return response;
   }
 

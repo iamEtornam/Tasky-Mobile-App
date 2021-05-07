@@ -22,7 +22,6 @@ class TaskView extends StatefulWidget {
 
 class _TaskViewState extends State<TaskView> {
   final UiUtilities uiUtilities = UiUtilities();
-  String _status;
 
   @override
   Widget build(BuildContext context) {
@@ -96,7 +95,6 @@ class _TaskViewState extends State<TaskView> {
                           isCompleted:
                               snapshot.data.data[index].status == 'completed',
                           onTap: (bool value) async {
-
                             BotToast.showLoading(
                                 allowClick: false,
                                 clickClose: false,
@@ -137,26 +135,134 @@ class _TaskViewState extends State<TaskView> {
                                           RadioListTile(
                                               value: 'todo',
                                               groupValue: 'status',
-                                              onChanged: (value) {
-                                                setState(() {
-                                                  _status = value;
-                                                });
+                                              onChanged: (value) async {
+                                                BotToast.showLoading(
+                                                    allowClick: false,
+                                                    clickClose: false,
+                                                    backButtonBehavior:
+                                                        BackButtonBehavior
+                                                            .ignore);
+                                                bool isChanged =
+                                                    await _taskManager
+                                                        .markTaskAsCompleted(
+                                                            status: value,
+                                                            taskId: snapshot
+                                                                .data
+                                                                .data[index]
+                                                                .id);
+                                                BotToast.closeAllLoading();
+                                                if (isChanged) {
+                                                  uiUtilities.actionAlertWidget(
+                                                      context: context,
+                                                      alertType: 'success');
+                                                  uiUtilities.alertNotification(
+                                                      context: context,
+                                                      message:
+                                                          'Marked as completed!');
+                                                  setState(() {
+                                                    snapshot.data.data[index]
+                                                            .status =
+                                                        value
+                                                            ? 'complete'
+                                                            : 'todo';
+                                                  });
+                                                } else {
+                                                  uiUtilities.actionAlertWidget(
+                                                      context: context,
+                                                      alertType: 'error');
+                                                  uiUtilities.alertNotification(
+                                                      context: context,
+                                                      message:
+                                                          _taskManager.message);
+                                                }
                                               }),
                                           RadioListTile(
                                               value: 'in progress',
                                               groupValue: 'status',
-                                              onChanged: (value) {
-                                                setState(() {
-                                                  _status = value;
-                                                });
+                                              onChanged: (value) async {
+                                                BotToast.showLoading(
+                                                    allowClick: false,
+                                                    clickClose: false,
+                                                    backButtonBehavior:
+                                                        BackButtonBehavior
+                                                            .ignore);
+                                                bool isChanged =
+                                                    await _taskManager
+                                                        .markTaskAsCompleted(
+                                                            status: value,
+                                                            taskId: snapshot
+                                                                .data
+                                                                .data[index]
+                                                                .id);
+                                                BotToast.closeAllLoading();
+                                                if (isChanged) {
+                                                  uiUtilities.actionAlertWidget(
+                                                      context: context,
+                                                      alertType: 'success');
+                                                  uiUtilities.alertNotification(
+                                                      context: context,
+                                                      message:
+                                                          'Marked as completed!');
+                                                  setState(() {
+                                                    snapshot.data.data[index]
+                                                            .status =
+                                                        value
+                                                            ? 'complete'
+                                                            : 'todo';
+                                                  });
+                                                } else {
+                                                  uiUtilities.actionAlertWidget(
+                                                      context: context,
+                                                      alertType: 'error');
+                                                  uiUtilities.alertNotification(
+                                                      context: context,
+                                                      message:
+                                                          _taskManager.message);
+                                                }
                                               }),
                                           RadioListTile(
                                               value: 'completed',
                                               groupValue: 'status',
-                                              onChanged: (value) {
-                                                setState(() {
-                                                  _status = value;
-                                                });
+                                              onChanged: (value) async {
+                                                BotToast.showLoading(
+                                                    allowClick: false,
+                                                    clickClose: false,
+                                                    backButtonBehavior:
+                                                        BackButtonBehavior
+                                                            .ignore);
+                                                bool isChanged =
+                                                    await _taskManager
+                                                        .markTaskAsCompleted(
+                                                            status: value,
+                                                            taskId: snapshot
+                                                                .data
+                                                                .data[index]
+                                                                .id);
+                                                BotToast.closeAllLoading();
+                                                if (isChanged) {
+                                                  uiUtilities.actionAlertWidget(
+                                                      context: context,
+                                                      alertType: 'success');
+                                                  uiUtilities.alertNotification(
+                                                      context: context,
+                                                      message:
+                                                          'Marked as completed!');
+                                                  setState(() {
+                                                    snapshot.data.data[index]
+                                                            .status =
+                                                        value
+                                                            ? 'complete'
+                                                            : 'todo';
+                                                  });
+                                                } else {
+                                                  uiUtilities.actionAlertWidget(
+                                                      context: context,
+                                                      alertType: 'error');
+                                                  uiUtilities.alertNotification(
+                                                      context: context,
+                                                      message:
+                                                          _taskManager.message);
+                                                }
                                               })
                                         ],
                                       ),

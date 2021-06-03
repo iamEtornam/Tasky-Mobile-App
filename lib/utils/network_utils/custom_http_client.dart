@@ -39,7 +39,7 @@ class CustomHttpClient {
 
   Future<Response> getRequest(String path) async {
     _logger.d("$path");
-    return await get(path, headers: await getHeaders());
+    return await get(Uri.tryParse(path), headers: await getHeaders());
   }
 
   Future<Response> postRequest(
@@ -48,7 +48,7 @@ class CustomHttpClient {
     _logger.d(jsonEncode(body));
 
     Response response =
-        await post(path, body: jsonEncode(body), headers: await getHeaders());
+        await post(Uri.tryParse(path), body: jsonEncode(body), headers: await getHeaders());
     return response;
   }
 
@@ -57,7 +57,7 @@ class CustomHttpClient {
     _logger.d(path);
 
     Response response =
-        await post(path, body: jsonEncode(body), headers: await getHeaders());
+        await post(Uri.tryParse(path), body: jsonEncode(body), headers: await getHeaders());
     return response;
   }
 
@@ -66,7 +66,7 @@ class CustomHttpClient {
     _logger.d(path);
 
     Response response =
-        await put(path, body: jsonEncode(body), headers: await getHeaders());
+        await put(Uri.tryParse(path), body: jsonEncode(body), headers: await getHeaders());
     _logger.d(response.body);
     return response;
   }
@@ -76,13 +76,13 @@ class CustomHttpClient {
     _logger.d(path);
 
     Response response =
-        await patch(path, body: jsonEncode(body), headers: await getHeaders());
+        await patch(Uri.tryParse(path), body: jsonEncode(body), headers: await getHeaders());
     return response;
   }
 
   Future<Response> deleteRequest(String path) async {
     _logger.d(path);
-    Response response = await delete(path, headers: await getHeaders());
+    Response response = await delete(Uri.tryParse(path), headers: await getHeaders());
     return response;
   }
 }

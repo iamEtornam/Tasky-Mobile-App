@@ -127,12 +127,19 @@ class _TaskViewState extends State<TaskView> {
                                 context: context,
                                 builder: (context) {
                                   return AlertDialog(
-                                    shape: StadiumBorder(),
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(5)),
                                     content: SizedBox(
-                                      height: 150,
+                                      height: 170,
                                       child: Column(
                                         children: [
                                           RadioListTile(
+                                              title: Text(
+                                                'To do',
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .bodyText1,
+                                              ),
                                               value: 'todo',
                                               groupValue: 'status',
                                               onChanged: (value) async {
@@ -159,13 +166,15 @@ class _TaskViewState extends State<TaskView> {
                                                       context: context,
                                                       message:
                                                           'Marked as completed!');
-                                                  setState(() {
-                                                    snapshot.data.data[index]
-                                                            .status =
-                                                        value
-                                                            ? 'complete'
-                                                            : 'todo';
-                                                  });
+                                                  // setState(() {
+                                                  //   snapshot.data.data[index]
+                                                  //           .status =
+                                                  //       value
+                                                  //           ? 'complete'
+                                                  //           : 'todo';
+                                                  // });
+                                                  Navigator.pop(context);
+                                                  setState(() {});
                                                 } else {
                                                   uiUtilities.actionAlertWidget(
                                                       context: context,
@@ -177,9 +186,16 @@ class _TaskViewState extends State<TaskView> {
                                                 }
                                               }),
                                           RadioListTile(
+                                              title: Text(
+                                                'In Progress',
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .bodyText1,
+                                              ),
                                               value: 'in progress',
                                               groupValue: 'status',
                                               onChanged: (value) async {
+                                                Navigator.of(context).pop();
                                                 BotToast.showLoading(
                                                     allowClick: false,
                                                     clickClose: false,
@@ -203,13 +219,15 @@ class _TaskViewState extends State<TaskView> {
                                                       context: context,
                                                       message:
                                                           'Marked as completed!');
-                                                  setState(() {
-                                                    snapshot.data.data[index]
-                                                            .status =
-                                                        value
-                                                            ? 'complete'
-                                                            : 'todo';
-                                                  });
+                                                  // setState(() {
+                                                  //   snapshot.data.data[index]
+                                                  //           .status =
+                                                  //       value
+                                                  //           ? 'complete'
+                                                  //           : 'todo';
+                                                  // });
+
+                                                  setState(() {});
                                                 } else {
                                                   uiUtilities.actionAlertWidget(
                                                       context: context,
@@ -221,6 +239,12 @@ class _TaskViewState extends State<TaskView> {
                                                 }
                                               }),
                                           RadioListTile(
+                                              title: Text(
+                                                'Complete',
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .bodyText1,
+                                              ),
                                               value: 'completed',
                                               groupValue: 'status',
                                               onChanged: (value) async {
@@ -247,13 +271,16 @@ class _TaskViewState extends State<TaskView> {
                                                       context: context,
                                                       message:
                                                           'Marked as completed!');
-                                                  setState(() {
-                                                    snapshot.data.data[index]
-                                                            .status =
-                                                        value
-                                                            ? 'complete'
-                                                            : 'todo';
-                                                  });
+                                                  // setState(() {
+                                                  //   snapshot.data.data[index]
+                                                  //           .status =
+                                                  //       value
+                                                  //           ? 'complete'
+                                                  //           : 'todo';
+                                                  // });
+                                                  Navigator.pop(context);
+
+                                                  setState(() {});
                                                 } else {
                                                   uiUtilities.actionAlertWidget(
                                                       context: context,
@@ -387,12 +414,16 @@ class TaskListTile extends StatelessWidget {
                 ),
                 InkWell(
                   onTap: () {
-                    showBottomSheet(
+                    showModalBottomSheet(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(10),
+                                topRight: Radius.circular(10))),
                         context: context,
                         elevation: 3,
                         builder: (context) {
                           return Container(
-                            height: 220,
+                            height: 260,
                             decoration: BoxDecoration(
                                 color: customRedColor,
                                 borderRadius: BorderRadius.only(
@@ -410,15 +441,16 @@ class TaskListTile extends StatelessWidget {
                                         borderRadius:
                                             BorderRadius.circular(45)),
                                     height: 6,
-                                    width: 20,
+                                    width: 40,
                                   ),
                                 ),
                                 ListTile(
                                   onTap: () {
+                                    Navigator.pop(context);
                                     changeStatus();
                                   },
                                   title: Text(
-                                    'Mark as completed',
+                                    'Change status',
                                     style: Theme.of(context)
                                         .textTheme
                                         .bodyText1
@@ -434,6 +466,9 @@ class TaskListTile extends StatelessWidget {
                                   thickness: .5,
                                 ),
                                 ListTile(
+                                  onTap: () {
+                                    Navigator.pop(context);
+                                  },
                                   title: Text(
                                     'Edit Task',
                                     style: Theme.of(context)
@@ -451,6 +486,9 @@ class TaskListTile extends StatelessWidget {
                                   thickness: .5,
                                 ),
                                 ListTile(
+                                  onTap: () {
+                                    Navigator.pop(context);
+                                  },
                                   title: Text(
                                     'Delete',
                                     style: Theme.of(context)

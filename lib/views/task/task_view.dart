@@ -343,179 +343,191 @@ class TaskListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 5),
-              child: CustomCheckBox(
-                isChecked: isCompleted,
-                onTap: (value) {
-                  onTap(value);
-                },
-                uncheckedColor: customGreyColor,
-                checkedColor: Colors.green,
-                size: 27,
-                checkedWidget: Icon(
-                  Icons.check,
-                  size: 20,
-                  color: Colors.green,
-                ),
-              ),
-            ),
-            SizedBox(
-              width: 10,
-            ),
-            Expanded(
-              child: Text(
-                '$taskTitle',
-                style: Theme.of(context).textTheme.bodyText1.copyWith(
-                    decoration: isCompleted
-                        ? TextDecoration.lineThrough
-                        : TextDecoration.none),
-              ),
-            ),
-          ],
-        ),
-        SizedBox(
-          height: 6,
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Padding(
-              padding: EdgeInsets.only(left: images.length > 2 ? 100.0 : 60),
-              child: FlutterImageStack(
-                imageList: images,
-                extraCountTextStyle: Theme.of(context).textTheme.subtitle2,
-                imageBorderColor: Theme.of(context).scaffoldBackgroundColor,
-                imageRadius: 25,
-                imageCount: images.length,
-                imageBorderWidth: 1,
-                backgroundColor: Colors
-                    .primaries[Random().nextInt(Colors.primaries.length)]
-                    .withOpacity(.5),
-                totalCount: images.length,
-              ),
-            ),
-            Row(
-              children: [
-                Text(
-                  'Due next week',
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyText1
-                      .copyWith(color: customRedColor),
-                ),
-                SizedBox(
-                  width: 10,
-                ),
-                InkWell(
-                  onTap: () {
-                    showModalBottomSheet(
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(10),
-                                topRight: Radius.circular(10))),
-                        context: context,
-                        elevation: 3,
-                        builder: (context) {
-                          return Container(
-                            height: 260,
-                            decoration: BoxDecoration(
-                                color: customRedColor,
-                                borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(10),
-                                    topRight: Radius.circular(10))),
-                            child: Column(
-                              children: [
-                                SizedBox(
-                                  height: 10,
-                                ),
-                                Center(
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                        color: Colors.white70,
-                                        borderRadius:
-                                            BorderRadius.circular(45)),
-                                    height: 6,
-                                    width: 40,
-                                  ),
-                                ),
-                                ListTile(
-                                  onTap: () {
-                                    Navigator.pop(context);
-                                    changeStatus();
-                                  },
-                                  title: Text(
-                                    'Change status',
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyText1
-                                        .copyWith(color: Colors.white),
-                                  ),
-                                  trailing: Icon(
-                                    Icons.check,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                                Divider(
-                                  color: Colors.grey,
-                                  thickness: .5,
-                                ),
-                                ListTile(
-                                  onTap: () {
-                                    Navigator.pop(context);
-                                  },
-                                  title: Text(
-                                    'Edit Task',
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyText1
-                                        .copyWith(color: Colors.white),
-                                  ),
-                                  trailing: Icon(
-                                    Icons.edit,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                                Divider(
-                                  color: Colors.grey,
-                                  thickness: .5,
-                                ),
-                                ListTile(
-                                  onTap: () {
-                                    Navigator.pop(context);
-                                  },
-                                  title: Text(
-                                    'Delete',
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyText1
-                                        .copyWith(color: Colors.white),
-                                  ),
-                                  trailing: Icon(
-                                    Icons.delete,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          );
-                        });
+    return SizedBox(
+      height: 70,
+      child: Column(
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(top: 5),
+                child: CustomCheckBox(
+                  isChecked: isCompleted,
+                  onTap: (value) {
+                    onTap(value);
                   },
-                  child: Icon(
-                    Icons.more_vert,
-                    color: customGreyColor,
+                  uncheckedColor: customGreyColor,
+                  checkedColor: Colors.green,
+                  size: 27,
+                  checkedWidget: Icon(
+                    Icons.check,
+                    size: 20,
+                    color: Colors.green,
                   ),
                 ),
-              ],
-            )
-          ],
-        ),
-      ],
+              ),
+              SizedBox(
+                width: 10,
+              ),
+              Expanded(
+                child: Text(
+                  '$taskTitle',
+                  overflow: TextOverflow.ellipsis,
+                  style: Theme.of(context).textTheme.bodyText1.copyWith(
+                
+                      decoration: isCompleted
+                          ? TextDecoration.lineThrough
+                          : TextDecoration.none),
+                ),
+              ),
+            ],
+          ),
+          SizedBox(
+            height: 6,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Padding(
+                padding: EdgeInsets.only(left: images.length > 2 ? 100.0 : 60),
+                child: FlutterImageStack(
+                  imageList: [
+                  'https://cdn.pixabay.com/photo/2013/07/13/10/07/man-156584_1280.png',
+                  'https://cdn.pixabay.com/photo/2013/07/13/10/07/man-156584_1280.png',
+                  'https://cdn.pixabay.com/photo/2013/07/13/10/07/man-156584_1280.png',
+                  'https://cdn.pixabay.com/photo/2013/07/13/10/07/man-156584_1280.png',
+                  'https://cdn.pixabay.com/photo/2013/07/13/10/07/man-156584_1280.png'],
+                  extraCountTextStyle: Theme.of(context).textTheme.subtitle2,
+                  imageBorderColor: Colors
+                      .primaries[Random().nextInt(Colors.primaries.length)],
+                  imageRadius: 25,
+         
+                  imageCount: images.length,
+                  imageBorderWidth: 1,
+                  backgroundColor: Colors
+                      .primaries[Random().nextInt(Colors.primaries.length)]
+                      .withOpacity(.5),
+                  totalCount: images.length,
+                ),
+              ),
+              Row(
+                children: [
+                  Text(
+                    'Due next week',
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyText1
+                        .copyWith(color: customRedColor),
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  InkWell(
+                    onTap: () {
+                      showModalBottomSheet(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(10),
+                                  topRight: Radius.circular(10))),
+                          context: context,
+                          elevation: 3,
+                          builder: (context) {
+                            return Container(
+                              height: 260,
+                              decoration: BoxDecoration(
+                                  color: customRedColor,
+                                  borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(10),
+                                      topRight: Radius.circular(10))),
+                              child: Column(
+                                children: [
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  Center(
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                          color: Colors.white70,
+                                          borderRadius:
+                                              BorderRadius.circular(45)),
+                                      height: 6,
+                                      width: 40,
+                                    ),
+                                  ),
+                                  ListTile(
+                                    onTap: () {
+                                      Navigator.pop(context);
+                                      changeStatus();
+                                    },
+                                    title: Text(
+                                      'Change status',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyText1
+                                          .copyWith(color: Colors.white),
+                                    ),
+                                    trailing: Icon(
+                                      Icons.check,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                  Divider(
+                                    color: Colors.grey,
+                                    thickness: .5,
+                                  ),
+                                  ListTile(
+                                    onTap: () {
+                                      Navigator.pop(context);
+                                    },
+                                    title: Text(
+                                      'Edit Task',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyText1
+                                          .copyWith(color: Colors.white),
+                                    ),
+                                    trailing: Icon(
+                                      Icons.edit,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                  Divider(
+                                    color: Colors.grey,
+                                    thickness: .5,
+                                  ),
+                                  ListTile(
+                                    onTap: () {
+                                      Navigator.pop(context);
+                                    },
+                                    title: Text(
+                                      'Delete',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyText1
+                                          .copyWith(color: Colors.white),
+                                    ),
+                                    trailing: Icon(
+                                      Icons.delete,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            );
+                          });
+                    },
+                    child: Icon(
+                      Icons.more_vert,
+                      color: customGreyColor,
+                    ),
+                  ),
+                ],
+              )
+            ],
+          ),
+        ],
+      ),
     );
   }
 }

@@ -38,7 +38,7 @@ class DashboardView extends StatefulWidget {
 }
 
 class _DashboardViewState extends State<DashboardView> {
-    final Logger _logger = Logger();
+  final Logger _logger = Logger();
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
   final UiUtilities uiUtilities = UiUtilities();
   String team;
@@ -171,7 +171,10 @@ class _DashboardViewState extends State<DashboardView> {
     return _currentIndex == null
         ? Scaffold(body: Center(child: CupertinoActivityIndicator()))
         : Scaffold(
-            body: _pages[_currentIndex],
+            body: IndexedStack(
+              children: _pages,
+              index: _currentIndex,
+            ),
             bottomNavigationBar: BottomNavigationBar(
               currentIndex: _currentIndex,
               onTap: _onChanged,
@@ -369,6 +372,7 @@ class _DashboardViewState extends State<DashboardView> {
 
   void checkAuth() async {
     final FirebaseAuth _auth = FirebaseAuth.instance;
+    _logger.d(await _auth.currentUser.getIdToken());
     _auth.userChanges().listen((user) {
       if (user != null) {
         getUserTeam();

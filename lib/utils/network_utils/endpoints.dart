@@ -1,5 +1,4 @@
-final String baseUrl =
-    'https://3so6qpofn6.execute-api.us-east-1.amazonaws.com/prod';
+final String baseUrl = 'http://localhost:3000/dev';
 final String loginPath = '$baseUrl/login';
 final String organizationPath = '$baseUrl/getOrganizationById';
 final String updateTeamPath = '$baseUrl/updateUserTeam';

@@ -1,7 +1,6 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -57,33 +56,28 @@ main() async {
   runApp(MyApp());
 }
 
-
 class MyApp extends StatelessWidget {
   final FirebaseAnalytics _analytics = FirebaseAnalytics();
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<User>(
-        stream: _auth.userChanges(),
-        builder: (context, snapshot) {
-          return MaterialApp(
-            title: 'Tasky',
-            builder: BotToastInit(),
-            theme: customLightTheme(context),
-            darkTheme: customDarkTheme(context),
-            themeMode: ThemeMode.system,
-            initialRoute: '/',
-            onGenerateRoute: Routes.generateRoute,
-            debugShowCheckedModeBanner: false,
-            navigatorObservers: [
-              FirebaseAnalyticsObserver(analytics: _analytics),
-              BotToastNavigatorObserver(),
-            ],
-            localeResolutionCallback:
-                (Locale locale, Iterable<Locale> supportedLocales) {
-              return locale;
-            },
-          );
-        });
+    return MaterialApp(
+      title: 'Tasky',
+      builder: BotToastInit(),
+      theme: customLightTheme(context),
+      darkTheme: customDarkTheme(context),
+      themeMode: ThemeMode.system,
+      initialRoute: '/',
+      onGenerateRoute: Routes.generateRoute,
+      debugShowCheckedModeBanner: false,
+      navigatorObservers: [
+        FirebaseAnalyticsObserver(analytics: _analytics),
+        BotToastNavigatorObserver(),
+      ],
+      localeResolutionCallback:
+          (Locale locale, Iterable<Locale> supportedLocales) {
+        return locale;
+      },
+    );
   }
 }

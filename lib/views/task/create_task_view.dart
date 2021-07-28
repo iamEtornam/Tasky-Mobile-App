@@ -412,11 +412,11 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
                             imageList: _taskManager.imagesList,
                             extraCountTextStyle:
                                 Theme.of(context).textTheme.subtitle2,
-                            imageBorderColor:
+                            itemBorderColor:
                                 Theme.of(context).scaffoldBackgroundColor,
-                            imageRadius: 40,
-                            imageCount: _taskManager.assignees.length,
-                            imageBorderWidth: 1,
+                            itemRadius: 40,
+                            itemCount: _taskManager.assignees.length,
+                            itemBorderWidth: 1,
                             showTotalCount: true,
                             backgroundColor: Colors.primaries[
                                     Random().nextInt(Colors.primaries.length)]

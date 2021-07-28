@@ -70,8 +70,8 @@ alertNotification({@required String message, @required BuildContext context}) {
       align: Alignment.topCenter);
 }
 
-Future<PickedFile> getImage({@required ImagePicker.ImageSource imageSource}) async {
-  return await ImagePicker.ImagePicker().getImage(source: imageSource);
+Future<XFile> getImage({@required ImagePicker.ImageSource imageSource}) async {
+  return await ImagePicker.ImagePicker().pickImage(source: imageSource);
 }
 
 Future<File> getCroppedFile({String file}) async {

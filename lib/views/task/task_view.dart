@@ -5,6 +5,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_stack/flutter_image_stack.dart';
 import 'package:get_it/get_it.dart';
+import 'package:intl/intl.dart';
+import 'package:cache_image/cache_image.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:tasky_app/managers/task_manager.dart';
 import 'package:tasky_app/models/task.dart';
 import 'package:tasky_app/shared_widgets/custom_appbar_widget.dart';
@@ -90,6 +93,7 @@ class _TaskViewState extends State<TaskView> {
                       shrinkWrap: true,
                       itemBuilder: (context, index) {
                         return TaskListTile(
+                          dueDate: snapshot.data.data[index].dueDate,
                           images: snapshot.data.data[index].participants,
                           taskTitle: snapshot.data.data[index].description,
                           isCompleted:
@@ -125,7 +129,7 @@ class _TaskViewState extends State<TaskView> {
                           changeStatus: () async {
                             showDialog(
                                 context: context,
-                                builder: (context) {
+                                builder: (dialogContext) {
                                   return AlertDialog(
                                     shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(5)),
@@ -158,6 +162,7 @@ class _TaskViewState extends State<TaskView> {
                                                                 .data[index]
                                                                 .id);
                                                 BotToast.closeAllLoading();
+                                                await _taskManager.getTasks();
                                                 if (isChanged) {
                                                   uiUtilities.actionAlertWidget(
                                                       context: context,
@@ -165,16 +170,10 @@ class _TaskViewState extends State<TaskView> {
                                                   uiUtilities.alertNotification(
                                                       context: context,
                                                       message:
-                                                          'Marked as completed!');
-                                                  // setState(() {
-                                                  //   snapshot.data.data[index]
-                                                  //           .status =
-                                                  //       value
-                                                  //           ? 'complete'
-                                                  //           : 'todo';
-                                                  // });
-                                                  Navigator.pop(context);
-                                                  setState(() {});
+                                                          'Marked as a To-do!');
+                                                  Navigator.of(dialogContext,
+                                                          rootNavigator: true)
+                                                      .pop();
                                                 } else {
                                                   uiUtilities.actionAlertWidget(
                                                       context: context,
@@ -195,7 +194,6 @@ class _TaskViewState extends State<TaskView> {
                                               value: 'in progress',
                                               groupValue: 'status',
                                               onChanged: (value) async {
-                                                Navigator.of(context).pop();
                                                 BotToast.showLoading(
                                                     allowClick: false,
                                                     clickClose: false,
@@ -211,6 +209,7 @@ class _TaskViewState extends State<TaskView> {
                                                                 .data[index]
                                                                 .id);
                                                 BotToast.closeAllLoading();
+                                                await _taskManager.getTasks();
                                                 if (isChanged) {
                                                   uiUtilities.actionAlertWidget(
                                                       context: context,
@@ -218,16 +217,10 @@ class _TaskViewState extends State<TaskView> {
                                                   uiUtilities.alertNotification(
                                                       context: context,
                                                       message:
-                                                          'Marked as completed!');
-                                                  // setState(() {
-                                                  //   snapshot.data.data[index]
-                                                  //           .status =
-                                                  //       value
-                                                  //           ? 'complete'
-                                                  //           : 'todo';
-                                                  // });
-
-                                                  setState(() {});
+                                                          'Marked as In Progress!');
+                                                  Navigator.of(dialogContext,
+                                                          rootNavigator: true)
+                                                      .pop();
                                                 } else {
                                                   uiUtilities.actionAlertWidget(
                                                       context: context,
@@ -264,6 +257,7 @@ class _TaskViewState extends State<TaskView> {
                                                                 .id);
                                                 BotToast.closeAllLoading();
                                                 if (isChanged) {
+                                                  await _taskManager.getTasks();
                                                   uiUtilities.actionAlertWidget(
                                                       context: context,
                                                       alertType: 'success');
@@ -271,16 +265,9 @@ class _TaskViewState extends State<TaskView> {
                                                       context: context,
                                                       message:
                                                           'Marked as completed!');
-                                                  // setState(() {
-                                                  //   snapshot.data.data[index]
-                                                  //           .status =
-                                                  //       value
-                                                  //           ? 'complete'
-                                                  //           : 'todo';
-                                                  // });
-                                                  Navigator.pop(context);
-
-                                                  setState(() {});
+                                                  Navigator.of(dialogContext,
+                                                          rootNavigator: true)
+                                                      .pop();
                                                 } else {
                                                   uiUtilities.actionAlertWidget(
                                                       context: context,
@@ -294,6 +281,34 @@ class _TaskViewState extends State<TaskView> {
                                         ],
                                       ),
                                     ),
+                                  );
+                                });
+                          },
+                          onOpened: () {
+                            showBarModalBottomSheet(
+                                context: context,
+                                builder: (context) {
+                                  return ListView(
+                                    padding: EdgeInsets.all(16),
+                                    children: [
+                                      Text('Task:',style: Theme.of(context).textTheme.bodyText2.copyWith(fontWeight: FontWeight.w600),),
+                                      Text('${snapshot.data.data[index].description}',style: Theme.of(context).textTheme.bodyText1,),
+                                      SizedBox(height: 15,),
+                                        Text('Assignees:',style: Theme.of(context).textTheme.bodyText2.copyWith(fontWeight: FontWeight.w600),),
+                                        SizedBox(height: 6,),
+                                      SizedBox(
+                                        height: 60,
+                                        width: MediaQuery.of(context).size.width,
+                                        child: ListView.separated(
+                                          scrollDirection: Axis.horizontal,
+                                          itemBuilder: (context,index)=> CircleAvatar(
+                                          radius: 30,
+                                        
+                                          backgroundImage: CacheImage(snapshot.data.data[index].assignees[index].picture,cache: true),
+                                        ), separatorBuilder: (context,index)=> SizedBox(width: 4,), itemCount: snapshot.data.data[index].assignees.length),
+                                      )
+                                    ],
+
                                   );
                                 });
                           },
@@ -333,6 +348,8 @@ class TaskListTile extends StatelessWidget {
     @required this.taskTitle,
     @required this.onTap,
     @required this.changeStatus,
+    @required this.dueDate,
+    @required this.onOpened,
   }) : super(key: key);
 
   final List<String> images;
@@ -340,193 +357,193 @@ class TaskListTile extends StatelessWidget {
   final String taskTitle;
   final Function onTap;
   final Function changeStatus;
+  final String dueDate;
+  final Function onOpened;
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 70,
-      child: Column(
-        children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(top: 5),
-                child: CustomCheckBox(
-                  isChecked: isCompleted,
-                  onTap: (value) {
-                    onTap(value);
-                  },
-                  uncheckedColor: customGreyColor,
-                  checkedColor: Colors.green,
-                  size: 27,
-                  checkedWidget: Icon(
-                    Icons.check,
-                    size: 20,
-                    color: Colors.green,
+    final List dates = dueDate.split(' ');
+    String dateFormat =
+        DateFormat().add_yMMMEd().format(DateTime.tryParse(dates[0]));
+
+    return GestureDetector(
+      onTap: () => onOpened(),
+      child: SizedBox(
+        height: 80,
+        child: Column(
+          children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(top: 5),
+                  child: CustomCheckBox(
+                    isChecked: isCompleted,
+                    onTap: (value) {
+                      onTap(value);
+                    },
+                    uncheckedColor: customGreyColor,
+                    checkedColor: Colors.green,
+                    size: 27,
+                    checkedWidget: Icon(
+                      Icons.check,
+                      size: 20,
+                      color: Colors.green,
+                    ),
                   ),
                 ),
-              ),
-              SizedBox(
-                width: 10,
-              ),
-              Expanded(
-                child: Text(
-                  '$taskTitle',
-                  overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context).textTheme.bodyText1.copyWith(
-                
-                      decoration: isCompleted
-                          ? TextDecoration.lineThrough
-                          : TextDecoration.none),
+                SizedBox(
+                  width: 10,
                 ),
-              ),
-            ],
-          ),
-          SizedBox(
-            height: 6,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Padding(
-                padding: EdgeInsets.only(left: images.length > 2 ? 100.0 : 60),
-                child: FlutterImageStack(
-                  imageList: [
-                  'https://cdn.pixabay.com/photo/2013/07/13/10/07/man-156584_1280.png',
-                  'https://cdn.pixabay.com/photo/2013/07/13/10/07/man-156584_1280.png',
-                  'https://cdn.pixabay.com/photo/2013/07/13/10/07/man-156584_1280.png',
-                  'https://cdn.pixabay.com/photo/2013/07/13/10/07/man-156584_1280.png',
-                  'https://cdn.pixabay.com/photo/2013/07/13/10/07/man-156584_1280.png'],
+                Expanded(
+                  child: Text(
+                    '$taskTitle',
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context).textTheme.bodyText1.copyWith(
+                        decoration: isCompleted
+                            ? TextDecoration.lineThrough
+                            : TextDecoration.none),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(
+              height: 6,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                FlutterImageStack(
+                  imageList: images,
                   extraCountTextStyle: Theme.of(context).textTheme.subtitle2,
-                  imageBorderColor: Colors
+                  itemBorderColor: Colors
                       .primaries[Random().nextInt(Colors.primaries.length)],
-                  imageRadius: 25,
-         
-                  imageCount: images.length,
-                  imageBorderWidth: 1,
+                  itemRadius: 25,
+                  itemCount: images.length,
+                  itemBorderWidth: 1,
                   backgroundColor: Colors
                       .primaries[Random().nextInt(Colors.primaries.length)]
                       .withOpacity(.5),
                   totalCount: images.length,
                 ),
-              ),
-              Row(
-                children: [
-                  Text(
-                    'Due next week',
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyText1
-                        .copyWith(color: customRedColor),
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  InkWell(
-                    onTap: () {
-                      showModalBottomSheet(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(10),
-                                  topRight: Radius.circular(10))),
-                          context: context,
-                          elevation: 3,
-                          builder: (context) {
-                            return Container(
-                              height: 260,
-                              decoration: BoxDecoration(
-                                  color: customRedColor,
-                                  borderRadius: BorderRadius.only(
-                                      topLeft: Radius.circular(10),
-                                      topRight: Radius.circular(10))),
-                              child: Column(
-                                children: [
-                                  SizedBox(
-                                    height: 10,
-                                  ),
-                                  Center(
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                          color: Colors.white70,
-                                          borderRadius:
-                                              BorderRadius.circular(45)),
-                                      height: 6,
-                                      width: 40,
-                                    ),
-                                  ),
-                                  ListTile(
-                                    onTap: () {
-                                      Navigator.pop(context);
-                                      changeStatus();
-                                    },
-                                    title: Text(
-                                      'Change status',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyText1
-                                          .copyWith(color: Colors.white),
-                                    ),
-                                    trailing: Icon(
-                                      Icons.check,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                  Divider(
-                                    color: Colors.grey,
-                                    thickness: .5,
-                                  ),
-                                  ListTile(
-                                    onTap: () {
-                                      Navigator.pop(context);
-                                    },
-                                    title: Text(
-                                      'Edit Task',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyText1
-                                          .copyWith(color: Colors.white),
-                                    ),
-                                    trailing: Icon(
-                                      Icons.edit,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                  Divider(
-                                    color: Colors.grey,
-                                    thickness: .5,
-                                  ),
-                                  ListTile(
-                                    onTap: () {
-                                      Navigator.pop(context);
-                                    },
-                                    title: Text(
-                                      'Delete',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyText1
-                                          .copyWith(color: Colors.white),
-                                    ),
-                                    trailing: Icon(
-                                      Icons.delete,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            );
-                          });
-                    },
-                    child: Icon(
-                      Icons.more_vert,
-                      color: customGreyColor,
+                Row(
+                  children: [
+                    Text(
+                      '$dateFormat ${dates[1]}',
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyText1
+                          .copyWith(color: customRedColor),
                     ),
-                  ),
-                ],
-              )
-            ],
-          ),
-        ],
+                    SizedBox(
+                      width: 10,
+                    ),
+                    InkWell(
+                      onTap: () {
+                        showModalBottomSheet(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(10),
+                                    topRight: Radius.circular(10))),
+                            context: context,
+                            elevation: 3,
+                            builder: (context) {
+                              return Container(
+                                height: 260,
+                                decoration: BoxDecoration(
+                                    color: customRedColor,
+                                    borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(10),
+                                        topRight: Radius.circular(10))),
+                                child: Column(
+                                  children: [
+                                    SizedBox(
+                                      height: 10,
+                                    ),
+                                    Center(
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                            color: Colors.white70,
+                                            borderRadius:
+                                                BorderRadius.circular(45)),
+                                        height: 6,
+                                        width: 40,
+                                      ),
+                                    ),
+                                    ListTile(
+                                      onTap: () {
+                                        Navigator.pop(context);
+                                        changeStatus();
+                                      },
+                                      title: Text(
+                                        'Change status',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyText1
+                                            .copyWith(color: Colors.white),
+                                      ),
+                                      trailing: Icon(
+                                        Icons.check,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                    Divider(
+                                      color: Colors.grey,
+                                      thickness: .5,
+                                    ),
+                                    ListTile(
+                                      onTap: () {
+                                        Navigator.pop(context);
+                                      },
+                                      title: Text(
+                                        'Edit Task',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyText1
+                                            .copyWith(color: Colors.white),
+                                      ),
+                                      trailing: Icon(
+                                        Icons.edit,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                    Divider(
+                                      color: Colors.grey,
+                                      thickness: .5,
+                                    ),
+                                    ListTile(
+                                      onTap: () {
+                                        Navigator.pop(context);
+                                      },
+                                      title: Text(
+                                        'Delete',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyText1
+                                            .copyWith(color: Colors.white),
+                                      ),
+                                      trailing: Icon(
+                                        Icons.delete,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            });
+                      },
+                      child: Icon(
+                        Icons.more_vert,
+                        color: customGreyColor,
+                      ),
+                    ),
+                  ],
+                )
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

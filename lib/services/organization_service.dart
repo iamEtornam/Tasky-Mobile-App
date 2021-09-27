@@ -48,7 +48,7 @@ class OrganizationService {
     );
 
     Response response = await Response.fromStream(await multipartRequest.send())
-        .timeout(Duration(seconds: 120));
+        .timeout(const Duration(seconds: 120));
 
     return response;
   }

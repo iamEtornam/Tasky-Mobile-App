@@ -16,15 +16,17 @@ final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
 
 class LoginView extends StatelessWidget {
   final UiUtilities uiUtilities = UiUtilities();
+
+   LoginView({Key key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).cardColor,
       body: Padding(
-        padding: EdgeInsets.all(24),
+        padding: const EdgeInsets.all(24),
         child: Column(
           children: [
-            SizedBox(
+            const SizedBox(
               height: 100,
             ),
             Image.asset(
@@ -32,7 +34,7 @@ class LoginView extends StatelessWidget {
               width: 120,
               height: 120,
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             Center(
@@ -42,7 +44,7 @@ class LoginView extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                   fontFamily: GoogleFonts.fugazOne().fontFamily),
             )),
-            Spacer(),
+            const Spacer(),
             Text(
               'Login or Create a new account',
               style: Theme.of(context)
@@ -50,14 +52,14 @@ class LoginView extends StatelessWidget {
                   .bodyText2
                   .copyWith(color: Colors.grey),
             ),
-            SizedBox(
+           const  SizedBox(
               height: 15,
             ),
             TextButton(
               style: TextButton.styleFrom(
-                padding: EdgeInsets.only(left: 10, right: 10),
+                padding: const EdgeInsets.only(left: 10, right: 10),
                 shape: RoundedRectangleBorder(
-                    side: BorderSide(color: Colors.grey, width: .5),
+                    side: const BorderSide(color: Colors.grey, width: .5),
                     borderRadius: BorderRadius.circular(45)),
                 backgroundColor: Colors.white70,
               ),
@@ -70,7 +72,7 @@ class LoginView extends StatelessWidget {
                       width: 30,
                       height: 30,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 10,
                     ),
                     Text(
@@ -97,7 +99,7 @@ class LoginView extends StatelessWidget {
                   uiUtilities.alertNotification(
                       context: context, message: _authManager.message);
 
-                  Future.delayed(Duration(seconds: 3), () {
+                  Future.delayed(const Duration(seconds: 3), () {
                     Navigator.pushNamedAndRemoveUntil(
                         context,
                         data.organizationId == null ? '/organizationView' : '/',
@@ -111,14 +113,14 @@ class LoginView extends StatelessWidget {
                 }
               },
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             Visibility(
               visible: Platform.isIOS,
               child: TextButton(
                 style: TextButton.styleFrom(
-                  padding: EdgeInsets.only(left: 10, right: 10),
+                  padding: const EdgeInsets.only(left: 10, right: 10),
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(45)),
                   backgroundColor: Colors.black87,
@@ -132,7 +134,7 @@ class LoginView extends StatelessWidget {
                         width: 30,
                         height: 30,
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 10,
                       ),
                       Text(
@@ -159,7 +161,7 @@ class LoginView extends StatelessWidget {
                     uiUtilities.alertNotification(
                         context: context, message: _authManager.message);
 
-                    Future.delayed(Duration(seconds: 3), () {
+                    Future.delayed(const Duration(seconds: 3), () {
                       Navigator.pushNamedAndRemoveUntil(
                           context,
                           data.organizationId == null
@@ -176,7 +178,7 @@ class LoginView extends StatelessWidget {
                 },
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 30,
             ),
           ],

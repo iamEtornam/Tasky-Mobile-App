@@ -4,7 +4,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tasky_app/utils/ui_utils/custom_colors.dart';
 
-
 class CustomBottomSheetWidget extends StatelessWidget {
   final List<Options> options;
   final double height;
@@ -20,7 +19,7 @@ class CustomBottomSheetWidget extends StatelessWidget {
         ? title != null
             ? CupertinoActionSheet(
                 message: Text(
-                  '$title',
+                  title,
                 ),
                 actions: options
                     .map((e) => CupertinoButton(
@@ -61,14 +60,14 @@ class CustomBottomSheetWidget extends StatelessWidget {
                     onPressed: () => Navigator.of(context).pop()))
         : Container(
             height: height,
-            padding: EdgeInsets.all(10),
+            padding: const EdgeInsets.all(10),
             child: Column(
               children: [
                 title != null
                     ? Text(
-                        '$title',
+                        title,
                       )
-                    : SizedBox(),
+                    : const SizedBox(),
                 Column(
                   children: options
                       .map((e) => Column(
@@ -84,7 +83,7 @@ class CustomBottomSheetWidget extends StatelessWidget {
                                           .copyWith(color: customRedColor)),
                                 ),
                               ),
-                              Divider()
+                              const Divider()
                             ],
                           ))
                       .toList(),
@@ -111,11 +110,13 @@ class CustomBottomSheetWidget extends StatelessWidget {
 }
 
 class Options {
-  String label;
-  Function onTap;
 
-  Options({@required String label, Function onTap}) {
-    this.label = label;
-    this.onTap = onTap;
-  }
+    Options({
+        this.label,
+        this.onTap,
+    });
+
+    String label;
+    VoidCallback onTap;
+
 }

@@ -25,7 +25,7 @@ class CustomAppBarWidget extends StatelessWidget
                 if (!snapshot.hasData) {
                   return CircleAvatar(
                     radius: 16,
-                    backgroundImage: ExactAssetImage(
+                    backgroundImage: const ExactAssetImage(
                       'assets/avatar.png',
                     ),
                     backgroundColor: Colors
@@ -36,7 +36,7 @@ class CustomAppBarWidget extends StatelessWidget
                 return CircleAvatar(
                   radius: 16,
                   backgroundImage: NetworkImage(
-                    '${snapshot.data}',
+                    snapshot.data,
                   ),
                   backgroundColor: Colors
                       .primaries[Random().nextInt(Colors.primaries.length)]
@@ -46,7 +46,7 @@ class CustomAppBarWidget extends StatelessWidget
         ),
       ),
       title: Text(
-        '$title',
+        title,
         style: Theme.of(context)
             .textTheme
             .headline6
@@ -54,7 +54,7 @@ class CustomAppBarWidget extends StatelessWidget
       ),
       actions: [
         IconButton(
-            icon: Icon(Icons.search),
+            icon: const Icon(Icons.search),
             onPressed: () {
               showSearch(
                 context: context,
@@ -66,11 +66,11 @@ class CustomAppBarWidget extends StatelessWidget
             var list = <PopupMenuEntry<Object>>[];
             list.addAll([
               PopupMenuItem(
-                child: Text("Share",
-                    style: Theme.of(context).textTheme.bodyText1),
+                child:
+                    Text("Share", style: Theme.of(context).textTheme.bodyText1),
                 value: 1,
               ),
-              PopupMenuDivider(
+              const PopupMenuDivider(
                 height: 10,
               ),
               PopupMenuItem(
@@ -84,12 +84,12 @@ class CustomAppBarWidget extends StatelessWidget
             return list;
           },
           onSelected: (value) {},
-          icon: Icon(Icons.more_vert),
+          icon: const Icon(Icons.more_vert),
         )
       ],
     );
   }
 
   @override
-  Size get preferredSize => Size.fromHeight(kToolbarHeight);
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }

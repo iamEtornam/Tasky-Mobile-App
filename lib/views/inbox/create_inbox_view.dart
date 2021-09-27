@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:tasky_app/utils/ui_utils/custom_colors.dart';
 
 class CreateInboxView extends StatelessWidget {
+  const CreateInboxView({Key key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

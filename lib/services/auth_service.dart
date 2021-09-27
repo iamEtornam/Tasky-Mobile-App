@@ -33,7 +33,7 @@ class AuthService {
 
   Future<UserCredential> signInWithApple() async {
     final AuthorizationResult result = await AppleSignIn.performRequests([
-      AppleIdRequest(requestedScopes: [Scope.email, Scope.fullName])
+      const AppleIdRequest(requestedScopes: [Scope.email, Scope.fullName])
     ]);
     AppleIdCredential appleIdCredential = result.credential;
     _logger.d(appleIdCredential.toString());

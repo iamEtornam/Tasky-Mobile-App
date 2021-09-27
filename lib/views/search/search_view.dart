@@ -25,7 +25,7 @@ class SearchView extends SearchDelegate {
   @override
   Widget buildLeading(BuildContext context) {
     return IconButton(
-      icon: Icon(Icons.arrow_back),
+      icon: const Icon(Icons.arrow_back),
       onPressed: () {
         close(context, null);
       },
@@ -37,9 +37,9 @@ class SearchView extends SearchDelegate {
     if (query.length < 3) {
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
+        children: const <Widget>[
           Padding(
-            padding: const EdgeInsets.all(24.0),
+            padding: EdgeInsets.all(24.0),
             child: Center(
               child: Text(
                 "Search term must be longer than two letters.",

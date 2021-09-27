@@ -17,9 +17,9 @@ import 'package:tasky_app/models/organization.dart';
 import 'package:tasky_app/utils/local_storage.dart';
 import 'package:tasky_app/utils/ui_utils/custom_colors.dart';
 import 'package:tasky_app/utils/ui_utils/ui_utils.dart';
+import 'package:tasky_app/views/account/account_view.dart';
 import 'package:tasky_app/views/inbox/inbox_view.dart';
 import 'package:tasky_app/views/overview/over_view.dart';
-import 'package:tasky_app/views/account/account_view.dart';
 import 'package:tasky_app/views/task/task_view.dart';
 
 final FirebaseMessaging _messaging = FirebaseMessaging.instance;
@@ -45,9 +45,9 @@ class _DashboardViewState extends State<DashboardView> {
   int _currentIndex;
   final List<Widget> _pages = [
     OverView(),
-    TaskView(),
-    InboxView(),
-    AccountView()
+    const TaskView(),
+    const InboxView(),
+    const AccountView()
   ];
 
   _onChanged(int index) {
@@ -80,13 +80,13 @@ class _DashboardViewState extends State<DashboardView> {
   }
 
   initialNotification({@required BuildContext context}) async {
-    flutterLocalNotificationsPlugin = new FlutterLocalNotificationsPlugin();
-    var android = new AndroidInitializationSettings('@mipmap/launcher_icon');
-    var iOS = new IOSInitializationSettings(
+    flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+    var android = const AndroidInitializationSettings('@mipmap/launcher_icon');
+    var iOS = const IOSInitializationSettings(
         defaultPresentAlert: true,
         defaultPresentBadge: true,
         defaultPresentSound: true);
-    var initSettings = new InitializationSettings(android: android, iOS: iOS);
+    var initSettings = InitializationSettings(android: android, iOS: iOS);
     flutterLocalNotificationsPlugin.initialize(initSettings,
         onSelectNotification: onSelectNotification);
 
@@ -108,11 +108,11 @@ class _DashboardViewState extends State<DashboardView> {
       );
     }
 
-    var androidNotificationDetails = new AndroidNotificationDetails(
+    var androidNotificationDetails = const AndroidNotificationDetails(
         'tasky', 'Tasky', 'Notifications from Tasky app',
         priority: Priority.high, importance: Importance.max);
-    var iOSNotificationDetails = new IOSNotificationDetails();
-    var platform = new NotificationDetails(
+    var iOSNotificationDetails = const IOSNotificationDetails();
+    var platform = NotificationDetails(
         android: androidNotificationDetails, iOS: iOSNotificationDetails);
 
     FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
@@ -133,11 +133,11 @@ class _DashboardViewState extends State<DashboardView> {
         .then((RemoteMessage initialMessage) async {
       // ignore: null_aware_in_condition
       if (initialMessage != null) {
-        var androidNotificationDetails = new AndroidNotificationDetails(
+        var androidNotificationDetails = const AndroidNotificationDetails(
             'tasky', 'Tasky', 'Notifications from Tasky app',
             priority: Priority.high, importance: Importance.max);
-        var iOSNotificationDetails = new IOSNotificationDetails();
-        var platform = new NotificationDetails(
+        var iOSNotificationDetails = const IOSNotificationDetails();
+        var platform = NotificationDetails(
             android: androidNotificationDetails, iOS: iOSNotificationDetails);
         await flutterLocalNotificationsPlugin.show(
             0,
@@ -152,11 +152,11 @@ class _DashboardViewState extends State<DashboardView> {
     // Stream listener
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) async {
       if (message != null) {
-        var androidNotificationDetails = new AndroidNotificationDetails(
+        var androidNotificationDetails = const AndroidNotificationDetails(
             'tasky', 'Tasky', 'Notifications from Tasky app',
             priority: Priority.high, importance: Importance.max);
-        var iOSNotificationDetails = new IOSNotificationDetails();
-        var platform = new NotificationDetails(
+        var iOSNotificationDetails = const IOSNotificationDetails();
+        var platform = NotificationDetails(
             android: androidNotificationDetails, iOS: iOSNotificationDetails);
 
         await flutterLocalNotificationsPlugin.show(
@@ -169,7 +169,7 @@ class _DashboardViewState extends State<DashboardView> {
   @override
   Widget build(BuildContext context) {
     return _currentIndex == null
-        ? Scaffold(body: Center(child: CupertinoActivityIndicator()))
+        ? const Scaffold(body: Center(child: CupertinoActivityIndicator()))
         : Scaffold(
             body: IndexedStack(
               children: _pages,
@@ -233,7 +233,7 @@ class _DashboardViewState extends State<DashboardView> {
   void getUserTeam() async {
     Organization organization = await _organizationManager.getOrganization();
     _localStorage.getUserInfo().then((data) {
-      if (data.team == null && organization != null)
+      if (data.team == null && organization != null) {
         showDialog(
             context: context,
             builder: (context) {
@@ -257,7 +257,7 @@ class _DashboardViewState extends State<DashboardView> {
                         elevation: 0,
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
-                            side: BorderSide(color: Colors.grey, width: 1)),
+                            side: const BorderSide(color: Colors.grey, width: 1)),
                         child: Padding(
                           padding: const EdgeInsets.all(5.0),
                           child: OutlineDropdownButton(
@@ -266,7 +266,7 @@ class _DashboardViewState extends State<DashboardView> {
                               hintStyle: Theme.of(context)
                                   .inputDecorationTheme
                                   .hintStyle,
-                              contentPadding: EdgeInsets.fromLTRB(15, 1, 15, 1),
+                              contentPadding: const EdgeInsets.fromLTRB(15, 1, 15, 1),
                               floatingLabelBehavior: FloatingLabelBehavior.auto,
                               focusedBorder: Theme.of(context)
                                   .inputDecorationTheme
@@ -296,9 +296,9 @@ class _DashboardViewState extends State<DashboardView> {
                             ),
                             items: organization.data.teams
                                 .map((value) => DropdownMenuItem<String>(
-                                    value: '$value',
+                                    value: value,
                                     child: Text(
-                                      '$value',
+                                      value,
                                       style:
                                           Theme.of(context).textTheme.bodyText1,
                                     )))
@@ -316,7 +316,7 @@ class _DashboardViewState extends State<DashboardView> {
                           ),
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 10,
                       ),
                       TextButton(
@@ -367,6 +367,7 @@ class _DashboardViewState extends State<DashboardView> {
                 ),
               );
             });
+      }
     });
   }
 

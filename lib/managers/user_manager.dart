@@ -62,7 +62,7 @@ class UserManager with ChangeNotifier {
       isSuccessful = false;
       setMessage('$onError');
       setisLoading(false);
-    }).timeout(Duration(seconds: 60), onTimeout: () {
+    }).timeout(const Duration(seconds: 60), onTimeout: () {
       isSuccessful = false;
       setMessage('Timeout! Check your internet connection.');
       setisLoading(false);
@@ -100,7 +100,7 @@ class UserManager with ChangeNotifier {
       user = null;
       setMessage('$onError');
       setisLoading(false);
-    }).timeout(Duration(seconds: 60), onTimeout: () {
+    }).timeout(const Duration(seconds: 60), onTimeout: () {
       user = null;
       setMessage('Timeout! Check your internet connection.');
       setisLoading(false);
@@ -124,7 +124,7 @@ class UserManager with ChangeNotifier {
       isSent = false;
       setMessage('$onError');
       setisLoading(false);
-    }).timeout(Duration(seconds: 60), onTimeout: () {
+    }).timeout(const Duration(seconds: 60), onTimeout: () {
       isSent = false;
       setMessage('Timeout! Check your internet connection.');
       setisLoading(false);

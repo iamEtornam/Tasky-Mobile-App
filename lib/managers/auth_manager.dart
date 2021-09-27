@@ -8,7 +8,7 @@ import 'package:http/http.dart';
 import 'package:logger/logger.dart';
 import 'package:tasky_app/services/auth_service.dart';
 import 'package:tasky_app/utils/local_storage.dart';
-import 'package:tasky_app/models/user.dart' as Member;
+import 'package:tasky_app/models/user.dart' as _member;
 
 final AuthService _authService = GetIt.I.get<AuthService>();
 final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
@@ -50,7 +50,7 @@ class AuthManager with ChangeNotifier {
           
           setisLoading(false);
           if (statusCode == 201) {
-            Member.User member = Member.User.fromMap(body);
+            _member.User member = _member.User.fromMap(body);
 
             await _localStorage.saveUserInfo(
                 id: member.data.id,
@@ -81,7 +81,7 @@ class AuthManager with ChangeNotifier {
         setMessage('$onError');
         setisLoading(false);
         _logger.d('catchError $onError');
-      }).timeout(Duration(seconds: 60), onTimeout: () {
+      }).timeout(const Duration(seconds: 60), onTimeout: () {
         isSuccessful = false;
         setMessage('Timeout! Check your internet connection.');
         setisLoading(false);
@@ -98,7 +98,7 @@ class AuthManager with ChangeNotifier {
 
     if (await appleSignInAvailable) {
       final AuthorizationResult result = await AppleSignIn.performRequests([
-        AppleIdRequest(requestedScopes: [Scope.email, Scope.fullName])
+        const AppleIdRequest(requestedScopes: [Scope.email, Scope.fullName])
       ]);
 
       switch (result.status) {
@@ -113,7 +113,7 @@ class AuthManager with ChangeNotifier {
                   await _authService.sendTokenToBackend(token: token);
               int statusCode = _response.statusCode;
               Map<String, dynamic> body = json.decode(_response.body);
-              Member.User member = Member.User.fromMap(body);
+              _member.User member = _member.User.fromMap(body);
               setisLoading(false);
               if (statusCode == 201) {
                 await _localStorage.saveUserInfo(
@@ -145,7 +145,7 @@ class AuthManager with ChangeNotifier {
             isSuccessful = false;
             setMessage('$onError');
             setisLoading(false);
-          }).timeout(Duration(seconds: 60), onTimeout: () {
+          }).timeout(const Duration(seconds: 60), onTimeout: () {
             isSuccessful = false;
             setMessage('Timeout! Check your internet connection.');
             setisLoading(false);

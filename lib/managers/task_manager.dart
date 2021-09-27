@@ -10,7 +10,7 @@ import 'package:tasky_app/services/task_service.dart';
 import 'package:tasky_app/utils/local_storage.dart';
 
 class TaskManager with ChangeNotifier {
-  Logger _logger = Logger();
+  final Logger _logger = Logger();
   final TaskService _taskService = GetIt.I.get<TaskService>();
   final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
 
@@ -37,9 +37,9 @@ class TaskManager with ChangeNotifier {
   setAssignees(List<Data> users) {
     _assignees = users;
     List<String> ee = [];
-    users.forEach((element) {
+    for (var element in users) {
       ee.add(element.picture);
-    });
+    }
     _imagesList = ee;
 
     notifyListeners();
@@ -79,7 +79,7 @@ class TaskManager with ChangeNotifier {
       isSaved = false;
       setMessage('$onError');
       setisLoading(false);
-    }).timeout(Duration(seconds: 60), onTimeout: () {
+    }).timeout(const Duration(seconds: 60), onTimeout: () {
       setMessage('Timeout! Check your internet connection.');
       setisLoading(false);
       isSaved = false;
@@ -107,7 +107,7 @@ class TaskManager with ChangeNotifier {
       _logger.d('$onError');
       setMessage('$onError');
       setisLoading(false);
-    }).timeout(Duration(seconds: 60), onTimeout: () {
+    }).timeout(const Duration(seconds: 60), onTimeout: () {
       setMessage('Timeout! Check your internet connection.');
       setisLoading(false);
       task = null;
@@ -135,7 +135,7 @@ class TaskManager with ChangeNotifier {
       _logger.d('$onError');
       setMessage('$onError');
       setisLoading(false);
-    }).timeout(Duration(seconds: 60), onTimeout: () {
+    }).timeout(const Duration(seconds: 60), onTimeout: () {
       setMessage('Timeout! Check your internet connection.');
       setisLoading(false);
       taskStatistic = null;
@@ -161,7 +161,7 @@ class TaskManager with ChangeNotifier {
       _logger.d('$onError');
       setMessage('$onError');
       setisLoading(false);
-    }).timeout(Duration(seconds: 60), onTimeout: () {
+    }).timeout(const Duration(seconds: 60), onTimeout: () {
       setMessage('Timeout! Check your internet connection.');
       setisLoading(false);
       isDone = false;

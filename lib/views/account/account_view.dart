@@ -19,6 +19,8 @@ final UserManager _userManager = GetIt.I.get<UserManager>();
 final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
 
 class AccountView extends StatefulWidget {
+  const AccountView({Key key}) : super(key: key);
+
   @override
   _AccountViewState createState() => _AccountViewState();
 }
@@ -40,7 +42,7 @@ class _AccountViewState extends State<AccountView> {
         ),
       ),
       body: ListView(
-        padding: EdgeInsets.all(24),
+        padding: const EdgeInsets.all(24),
         children: [
           StreamBuilder<User>(
               stream: _userManager.getUserInformation().asStream(),
@@ -54,10 +56,10 @@ class _AccountViewState extends State<AccountView> {
                                   Random().nextInt(Colors.primaries.length)]
                               .withOpacity(.2),
                           radius: 60,
-                          backgroundImage: ExactAssetImage('assets/avatar.png'),
+                          backgroundImage: const ExactAssetImage('assets/avatar.png'),
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 20,
                       ),
                       Center(
@@ -68,7 +70,7 @@ class _AccountViewState extends State<AccountView> {
                             .headline6
                             .copyWith(fontWeight: FontWeight.w600),
                       )),
-                      SizedBox(
+                      const SizedBox(
                         height: 10,
                       ),
                       Center(
@@ -78,7 +80,7 @@ class _AccountViewState extends State<AccountView> {
                             fontWeight: FontWeight.normal,
                             color: customRedColor),
                       )),
-                      SizedBox(
+                      const SizedBox(
                         height: 25,
                       ),
                       Text(
@@ -130,22 +132,22 @@ class _AccountViewState extends State<AccountView> {
                             .withOpacity(.2),
                         radius: 60,
                         backgroundImage: snapshot.data == null
-                            ? ExactAssetImage('assets/avatar.png')
+                            ? const ExactAssetImage('assets/avatar.png')
                             : NetworkImage(snapshot.data.data.picture),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
                     Center(
                         child: Text(
-                      '${snapshot.data.data.name}',
+                      snapshot.data.data.name,
                       style: Theme.of(context)
                           .textTheme
                           .headline6
                           .copyWith(fontWeight: FontWeight.w600),
                     )),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                     Center(
@@ -155,14 +157,14 @@ class _AccountViewState extends State<AccountView> {
                             showCupertinoModalBottomSheet(
                               context: context,
                               builder: (context) {
-                                return PersonalAccountView();
+                                return const PersonalAccountView();
                               },
                             );
                           } else {
                             showMaterialModalBottomSheet(
                               context: context,
                               builder: (context) {
-                                return PersonalAccountView();
+                                return const PersonalAccountView();
                               },
                             );
                           }
@@ -175,7 +177,7 @@ class _AccountViewState extends State<AccountView> {
                         ),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 25,
                     ),
                     Text(
@@ -189,11 +191,11 @@ class _AccountViewState extends State<AccountView> {
                           borderRadius: BorderRadius.circular(10)),
                       child: ListTile(
                         title: Text(
-                          '${snapshot.data?.data?.organization?.name}',
+                          snapshot.data?.data?.organization?.name,
                           style: Theme.of(context).textTheme.bodyText1,
                         ),
                         subtitle: Text(
-                          '${snapshot.data?.data?.email}',
+                          snapshot.data?.data?.email,
                           style: Theme.of(context)
                               .textTheme
                               .bodyText2
@@ -230,7 +232,7 @@ class _AccountViewState extends State<AccountView> {
                                                         color: Colors.grey),
                                                 hintText: 'Emails',
                                                 textFieldBorder:
-                                                    UnderlineInputBorder(
+                                                    const UnderlineInputBorder(
                                                         borderSide: BorderSide(
                                                             color:
                                                                 customGreyColor)),
@@ -238,12 +240,12 @@ class _AccountViewState extends State<AccountView> {
                                                     .textTheme
                                                     .bodyText1,
                                                 textFieldEnabledBorder:
-                                                    UnderlineInputBorder(
+                                                   const  UnderlineInputBorder(
                                                         borderSide: BorderSide(
                                                             color:
                                                                 customGreyColor)),
                                                 textFieldFocusedBorder:
-                                                    UnderlineInputBorder(
+                                                    const UnderlineInputBorder(
                                                         borderSide: BorderSide(
                                                             color:
                                                                 customGreyColor)),
@@ -262,7 +264,7 @@ class _AccountViewState extends State<AccountView> {
                                                       BorderRadius.circular(
                                                           5.0),
                                                 ),
-                                                tagCancelIcon: Icon(
+                                                tagCancelIcon: const Icon(
                                                     Icons.cancel,
                                                     size: 18.0,
                                                     color: Colors.white),
@@ -290,7 +292,7 @@ class _AccountViewState extends State<AccountView> {
                                                 });
                                               },
                                             ),
-                                            SizedBox(
+                                           const  SizedBox(
                                               height: 10,
                                             ),
                                             TextButton(
@@ -336,7 +338,7 @@ class _AccountViewState extends State<AccountView> {
                   ],
                 );
               }),
-          SizedBox(
+          const SizedBox(
             height: 25,
           ),
           Text(
@@ -371,7 +373,7 @@ class _AccountViewState extends State<AccountView> {
                               : Icons.arrow_forward,
                           color: Theme.of(context).iconTheme.color)),
                 ),
-                Divider(),
+                const Divider(),
                 ListTile(
                   title: Text(
                     'Push',
@@ -399,7 +401,7 @@ class _AccountViewState extends State<AccountView> {
               ],
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 25,
           ),
           Text(
@@ -427,7 +429,7 @@ class _AccountViewState extends State<AccountView> {
                               : Icons.arrow_forward,
                           color: Theme.of(context).iconTheme.color)),
                 ),
-                Divider(),
+                const Divider(),
                 ListTile(
                   title: Text(
                     'Contact support',
@@ -448,7 +450,7 @@ class _AccountViewState extends State<AccountView> {
               ],
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 25,
           ),
           Text(
@@ -476,7 +478,7 @@ class _AccountViewState extends State<AccountView> {
                               : Icons.arrow_forward,
                           color: Theme.of(context).iconTheme.color)),
                 ),
-                Divider(),
+                const Divider(),
                 ListTile(
                   title: Text(
                     'Privacy policy',
@@ -494,7 +496,7 @@ class _AccountViewState extends State<AccountView> {
                         color: Theme.of(context).iconTheme.color,
                       )),
                 ),
-                Divider(),
+                const Divider(),
                 ListTile(
                   title: Text(
                     'Terms of service',
@@ -512,7 +514,7 @@ class _AccountViewState extends State<AccountView> {
                         color: Theme.of(context).iconTheme.color,
                       )),
                 ),
-                Divider(),
+                const Divider(),
                 ListTile(
                   title: Text(
                     'Version',
@@ -535,12 +537,12 @@ class _AccountViewState extends State<AccountView> {
               ],
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 30,
           ),
           TextButton(
               style: TextButton.styleFrom(
-                padding: EdgeInsets.all(10),
+                padding: const EdgeInsets.all(10),
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8)),
                 backgroundColor: Theme.of(context).cardColor,

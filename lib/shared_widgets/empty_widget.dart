@@ -8,7 +8,7 @@ class EmptyWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
-    return Container(
+    return SizedBox(
       width: size.width,
       height: size.height / 2,
       child: Center(
@@ -21,7 +21,7 @@ class EmptyWidget extends StatelessWidget {
               width: size.width / 2,
               height: size.width / 2,
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             Padding(

@@ -18,54 +18,55 @@ final TaskManager _taskManager = GetIt.I.get<TaskManager>();
 class OverView extends StatelessWidget {
   final ScrollController _scrollController = ScrollController();
 
+  OverView({Key key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
     return Scaffold(
-      appBar: CustomAppBarWidget(
+      appBar: const CustomAppBarWidget(
         title: 'Overview',
       ),
       body: ListView(
         controller: _scrollController,
         children: [
-
           StreamBuilder<TaskStatistic>(
               stream: _taskManager.getTaskStatistics().asStream(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting &&
                     !snapshot.hasData) {
-                  return LinearProgressIndicator(
+                  return const LinearProgressIndicator(
                     minHeight: 2,
                   );
                 }
 
                 if (snapshot.connectionState == ConnectionState.done &&
                     !snapshot.hasData) {
-                  return SizedBox.shrink();
+                  return const SizedBox.shrink();
                 }
 
                 if (snapshot.data == null) {
-                  return SizedBox.shrink();
+                  return const SizedBox.shrink();
                 }
                 return Column(
                   children: [
-                              Container(
-            color: customGreyColor.withOpacity(.1),
-            height: 45,
-            width: size.width,
-            child: Align(
-                alignment: Alignment.centerLeft,
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 16.0),
-                  child: Text(
-                    'My Summary',
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyText1
-                        .copyWith(fontWeight: FontWeight.w600),
-                  ),
-                )),
-          ),
+                    Container(
+                      color: customGreyColor.withOpacity(.1),
+                      height: 45,
+                      width: size.width,
+                      child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 16.0),
+                            child: Text(
+                              'My Summary',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyText1
+                                  .copyWith(fontWeight: FontWeight.w600),
+                            ),
+                          )),
+                    ),
                     Padding(
                       padding: const EdgeInsets.all(16.0),
                       child: SizedBox(
@@ -119,7 +120,7 @@ class OverView extends StatelessWidget {
                   ),
                 )),
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           StreamBuilder<Task>(
@@ -127,12 +128,12 @@ class OverView extends StatelessWidget {
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting &&
                     !snapshot.hasData) {
-                  return Center(child: CupertinoActivityIndicator());
+                  return const Center(child: CupertinoActivityIndicator());
                 }
 
                 if (snapshot.connectionState == ConnectionState.done &&
                     !snapshot.hasData) {
-                  return EmptyWidget(
+                  return const EmptyWidget(
                     imageAsset: 'no_task.png',
                     message:
                         'Tasks aasigned to you and tasks created for you appears here.',
@@ -140,7 +141,7 @@ class OverView extends StatelessWidget {
                 }
 
                 if (snapshot.data == null) {
-                  return EmptyWidget(
+                  return const EmptyWidget(
                     imageAsset: 'no_task.png',
                     message:
                         'Tasks aasigned to you and tasks created for you appears here.',
@@ -156,8 +157,7 @@ class OverView extends StatelessWidget {
                         size: size,
                         priority:
                             camelize(snapshot.data.data[index].priorityLevel),
-                        time:
-                            '${UiUtilities().twenty4to12conventer(dateList[1])}',
+                        time: UiUtilities().twenty4to12conventer(dateList[1]),
                         title: snapshot.data.data[index].description,
                       );
                     },
@@ -190,10 +190,10 @@ class HomeTaskSummary extends StatelessWidget {
       child: Card(
         elevation: 0,
         color: priority == 'Low'
-            ? Color.fromRGBO(236, 249, 245, 1)
+            ? const Color.fromRGBO(236, 249, 245, 1)
             : priority == 'Medium'
-                ? Color.fromRGBO(251, 245, 225, 1)
-                : Color.fromRGBO(252, 244, 248, 1),
+                ? const Color.fromRGBO(251, 245, 225, 1)
+                : const Color.fromRGBO(252, 244, 248, 1),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         child: Padding(
           padding: const EdgeInsets.all(15.0),
@@ -210,7 +210,7 @@ class HomeTaskSummary extends StatelessWidget {
                             : Colors.red,
                     borderRadius: BorderRadius.circular(45)),
               ),
-              SizedBox(
+             const  SizedBox(
                 width: 10,
               ),
               Column(
@@ -236,12 +236,12 @@ class HomeTaskSummary extends StatelessWidget {
                         Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            Icon(
+                            const Icon(
                               AntDesign.clockcircleo,
                               color: customGreyColor,
                               size: 15,
                             ),
-                            SizedBox(
+                            const SizedBox(
                               width: 6,
                             ),
                             Text(
@@ -258,7 +258,7 @@ class HomeTaskSummary extends StatelessWidget {
                       ],
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   SizedBox(
@@ -266,7 +266,10 @@ class HomeTaskSummary extends StatelessWidget {
                     child: Text(title,
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
-                        style: Theme.of(context).textTheme.bodyText1.copyWith(color: Colors.black)),
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyText1
+                            .copyWith(color: Colors.black)),
                   ),
                 ],
               )

@@ -1,6 +1,6 @@
-import 'package:tasky_app/models/user.dart' as User;
+import 'package:tasky_app/models/user.dart' as _user;
 
-import 'organization.dart' as Org;
+import 'organization.dart' as _org;
 
 class Task {
   Task({
@@ -14,16 +14,16 @@ class Task {
   List<Datum> data;
 
   factory Task.fromMap(Map<String, dynamic> json) => Task(
-        status: json["status"] == null ? null : json["status"],
-        message: json["message"] == null ? null : json["message"],
+        status: json["status"],
+        message: json["message"],
         data: json["data"] == null
             ? null
             : List<Datum>.from(json["data"].map((x) => Datum.fromMap(x))),
       );
 
   Map<String, dynamic> toMap() => {
-        "status": status == null ? null : status,
-        "message": message == null ? null : message,
+        "status": status,
+        "message": message,
         "data": data == null
             ? null
             : List<dynamic>.from(data.map((x) => x.toMap())),
@@ -52,7 +52,7 @@ class Datum {
   String description;
   String dueDate;
   bool isReminder;
-  List<User.Data> assignees;
+  List<_user.Data> assignees;
   List<String> participants;
   int organizationId;
   int createdBy;
@@ -60,29 +60,27 @@ class Datum {
   String priorityLevel;
   DateTime createdAt;
   DateTime updatedAt;
-  Org.Data organization;
-  User.Data creator;
+  _org.Data organization;
+  _user.Data creator;
   String status;
 
   factory Datum.fromMap(Map<String, dynamic> json) => Datum(
-        id: json["id"] == null ? null : json["id"],
-        description: json["description"] == null ? null : json["description"],
-        dueDate: json["due_date"] == null ? null : json["due_date"],
-        isReminder: json["is_reminder"] == null ? null : json["is_reminder"],
-        status: json["status"] == null ? null : json["status"],
+        id: json["id"],
+        description: json["description"],
+        dueDate: json["due_date"],
+        isReminder: json["is_reminder"],
+        status: json["status"],
         assignees: json["assignees"] == null
             ? null
-            : List<User.Data>.from(
-                json["assignees"].map((x) => User.Data.fromMap(x))),
+            : List<_user.Data>.from(
+                json["assignees"].map((x) => _user.Data.fromMap(x))),
         participants: json["assignees"] == null
             ? null
             : List<String>.from(json["assignees"].map((x) => x['picture'])),
-        organizationId:
-            json["organizationId"] == null ? null : json["organizationId"],
-        createdBy: json["created_by"] == null ? null : json["created_by"],
-        team: json["team"] == null ? null : json["team"],
-        priorityLevel:
-            json["priority_level"] == null ? null : json["priority_level"],
+        organizationId: json["organizationId"],
+        createdBy: json["created_by"],
+        team: json["team"],
+        priorityLevel: json["priority_level"],
         createdAt: json["createdAt"] == null
             ? null
             : DateTime.parse(json["createdAt"]),
@@ -91,27 +89,27 @@ class Datum {
             : DateTime.parse(json["updatedAt"]),
         organization: json["organization"] == null
             ? null
-            : Org.Data.fromMap(json["organization"]),
+            : _org.Data.fromMap(json["organization"]),
         creator:
-            json["creator"] == null ? null : User.Data.fromMap(json["creator"]),
+            json["creator"] == null ? null : _user.Data.fromMap(json["creator"]),
       );
 
   Map<String, dynamic> toMap() => {
-        "id": id == null ? null : id,
-        "description": description == null ? null : description,
-        "due_date": dueDate == null ? null : dueDate,
-        "is_reminder": isReminder == null ? null : isReminder,
+        "id": id,
+        "description": description,
+        "due_date": dueDate,
+        "is_reminder": isReminder,
         "assignees": assignees == null
             ? null
             : List<dynamic>.from(assignees.map((x) => x.toMap())),
-        "organizationId": organizationId == null ? null : organizationId,
-        "created_by": createdBy == null ? null : createdBy,
-        "team": team == null ? null : team,
-        "priority_level": priorityLevel == null ? null : priorityLevel,
-        "status": status == null ? null : status,
-        "createdAt": createdAt == null ? null : createdAt.toIso8601String(),
-        "updatedAt": updatedAt == null ? null : updatedAt.toIso8601String(),
-        "organization": organization == null ? null : organization.toMap(),
-        "creator": creator == null ? null : creator.toMap(),
+        "organizationId": organizationId,
+        "created_by": createdBy,
+        "team": team,
+        "priority_level": priorityLevel,
+        "status": status,
+        "createdAt": createdAt.toIso8601String(),
+        "updatedAt": updatedAt.toIso8601String(),
+        "organization": organization.toMap(),
+        "creator": creator.toMap(),
       };
 }

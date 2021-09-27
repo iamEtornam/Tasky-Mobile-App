@@ -55,11 +55,11 @@ class _CustomCheckBoxState extends State<CustomCheckBox> {
   @override
   void initState() {
     isChecked = widget.isChecked ?? false;
-    animationDuration = widget.animationDuration ?? Duration(milliseconds: 500);
+    animationDuration = widget.animationDuration ?? const Duration(milliseconds: 500);
     size = widget.size ?? 24.0;
     checkedColor = widget.checkedColor ?? Colors.green;
     checkedWidget =
-        widget.checkedWidget ?? Icon(Icons.check, color: Colors.white);
+        widget.checkedWidget ?? const Icon(Icons.check, color: Colors.white);
     uncheckedWidget = widget.uncheckedWidget ?? const SizedBox.shrink();
     uncheckedColor = isChecked ? widget.uncheckedColor : Colors.grey;
     super.initState();
@@ -68,7 +68,7 @@ class _CustomCheckBoxState extends State<CustomCheckBox> {
   @override
   void didUpdateWidget(CustomCheckBox oldWidget) {
     uncheckedColor =
-        widget.uncheckedColor ?? Theme.of(context).accentColor;
+        widget.uncheckedColor ?? Theme.of(context).primaryColor;
     super.didUpdateWidget(oldWidget);
   }
 

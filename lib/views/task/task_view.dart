@@ -1,12 +1,12 @@
 import 'dart:math';
 
 import 'package:bot_toast/bot_toast.dart';
+import 'package:cache_image/cache_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_stack/flutter_image_stack.dart';
 import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
-import 'package:cache_image/cache_image.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:tasky_app/managers/task_manager.dart';
 import 'package:tasky_app/models/task.dart';
@@ -19,6 +19,8 @@ import 'package:tasky_app/utils/ui_utils/ui_utils.dart';
 final TaskManager _taskManager = GetIt.I.get<TaskManager>();
 
 class TaskView extends StatefulWidget {
+  const TaskView({Key key}) : super(key: key);
+
   @override
   _TaskViewState createState() => _TaskViewState();
 }
@@ -29,7 +31,7 @@ class _TaskViewState extends State<TaskView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBarWidget(
+      appBar: const CustomAppBarWidget(
         title: 'Tasks',
       ),
       body: StreamBuilder<Task>(
@@ -37,12 +39,12 @@ class _TaskViewState extends State<TaskView> {
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting &&
                 !snapshot.hasData) {
-              return Center(child: CupertinoActivityIndicator());
+              return const Center(child: CupertinoActivityIndicator());
             }
 
             if (snapshot.connectionState == ConnectionState.done &&
                 !snapshot.hasData) {
-              return EmptyWidget(
+              return const EmptyWidget(
                 imageAsset: 'no_task.png',
                 message:
                     'Tasks aasigned to you and tasks created for you appears here.',
@@ -50,7 +52,7 @@ class _TaskViewState extends State<TaskView> {
             }
 
             if (snapshot.data == null) {
-              return EmptyWidget(
+              return const EmptyWidget(
                 imageAsset: 'no_task.png',
                 message:
                     'Tasks aasigned to you and tasks created for you appears here.',
@@ -59,17 +61,17 @@ class _TaskViewState extends State<TaskView> {
 
             return ListView(
               children: [
-                Divider(),
+                const Divider(),
                 Padding(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
                   child: Row(
                     children: [
-                      Icon(
+                      const Icon(
                         Icons.star_rate_rounded,
                         color: Color.fromRGBO(245, 101, 101, 1),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 10,
                       ),
                       Text(
@@ -79,7 +81,7 @@ class _TaskViewState extends State<TaskView> {
                     ],
                   ),
                 ),
-                Divider(),
+                const Divider(),
                 Padding(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 24, vertical: 10),
@@ -289,33 +291,68 @@ class _TaskViewState extends State<TaskView> {
                                 context: context,
                                 builder: (context) {
                                   return ListView(
-                                    padding: EdgeInsets.all(16),
+                                    padding: const EdgeInsets.all(16),
                                     children: [
-                                      Text('Task:',style: Theme.of(context).textTheme.bodyText2.copyWith(fontWeight: FontWeight.w600),),
-                                      Text('${snapshot.data.data[index].description}',style: Theme.of(context).textTheme.bodyText1,),
-                                      SizedBox(height: 15,),
-                                        Text('Assignees:',style: Theme.of(context).textTheme.bodyText2.copyWith(fontWeight: FontWeight.w600),),
-                                        SizedBox(height: 6,),
+                                      Text(
+                                        'Task:',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyText2
+                                            .copyWith(
+                                                fontWeight: FontWeight.w600),
+                                      ),
+                                      Text(
+                                        snapshot.data.data[index].description,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyText1,
+                                      ),
+                                      const SizedBox(
+                                        height: 15,
+                                      ),
+                                      Text(
+                                        'Assignees:',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyText2
+                                            .copyWith(
+                                                fontWeight: FontWeight.w600),
+                                      ),
+                                      const SizedBox(
+                                        height: 6,
+                                      ),
                                       SizedBox(
                                         height: 60,
-                                        width: MediaQuery.of(context).size.width,
+                                        width:
+                                            MediaQuery.of(context).size.width,
                                         child: ListView.separated(
-                                          scrollDirection: Axis.horizontal,
-                                          itemBuilder: (context,index)=> CircleAvatar(
-                                          radius: 30,
-                                        
-                                          backgroundImage: CacheImage(snapshot.data.data[index].assignees[index].picture,cache: true),
-                                        ), separatorBuilder: (context,index)=> SizedBox(width: 4,), itemCount: snapshot.data.data[index].assignees.length),
+                                            scrollDirection: Axis.horizontal,
+                                            itemBuilder: (context, index) =>
+                                                CircleAvatar(
+                                                  radius: 30,
+                                                  backgroundImage: CacheImage(
+                                                      snapshot
+                                                          .data
+                                                          .data[index]
+                                                          .assignees[index]
+                                                          .picture,
+                                                      cache: true),
+                                                ),
+                                            separatorBuilder:
+                                                (context, index) => const SizedBox(
+                                                      width: 4,
+                                                    ),
+                                            itemCount: snapshot.data.data[index]
+                                                .assignees.length),
                                       )
                                     ],
-
                                   );
                                 });
                           },
                         );
                       },
-                      separatorBuilder: (context, index) => Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 10),
+                      separatorBuilder: (context, index) => const Padding(
+                            padding: EdgeInsets.symmetric(vertical: 10),
                             child: Divider(
                               endIndent: 10,
                               indent: 40,
@@ -328,7 +365,7 @@ class _TaskViewState extends State<TaskView> {
           }),
       floatingActionButton: FloatingActionButton(
         backgroundColor: customRedColor,
-        child: Icon(
+        child:const  Icon(
           Icons.add,
           color: Colors.white,
         ),
@@ -385,19 +422,19 @@ class TaskListTile extends StatelessWidget {
                     uncheckedColor: customGreyColor,
                     checkedColor: Colors.green,
                     size: 27,
-                    checkedWidget: Icon(
+                    checkedWidget: const Icon(
                       Icons.check,
                       size: 20,
                       color: Colors.green,
                     ),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 10,
                 ),
                 Expanded(
                   child: Text(
-                    '$taskTitle',
+                    taskTitle,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: Theme.of(context).textTheme.bodyText1.copyWith(
@@ -408,7 +445,7 @@ class TaskListTile extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 6,
             ),
             Row(
@@ -436,13 +473,13 @@ class TaskListTile extends StatelessWidget {
                           .bodyText1
                           .copyWith(color: customRedColor),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 10,
                     ),
                     InkWell(
                       onTap: () {
                         showModalBottomSheet(
-                            shape: RoundedRectangleBorder(
+                            shape: const RoundedRectangleBorder(
                                 borderRadius: BorderRadius.only(
                                     topLeft: Radius.circular(10),
                                     topRight: Radius.circular(10))),
@@ -451,14 +488,14 @@ class TaskListTile extends StatelessWidget {
                             builder: (context) {
                               return Container(
                                 height: 260,
-                                decoration: BoxDecoration(
+                                decoration: const BoxDecoration(
                                     color: customRedColor,
                                     borderRadius: BorderRadius.only(
                                         topLeft: Radius.circular(10),
                                         topRight: Radius.circular(10))),
                                 child: Column(
                                   children: [
-                                    SizedBox(
+                                    const SizedBox(
                                       height: 10,
                                     ),
                                     Center(
@@ -483,12 +520,12 @@ class TaskListTile extends StatelessWidget {
                                             .bodyText1
                                             .copyWith(color: Colors.white),
                                       ),
-                                      trailing: Icon(
+                                      trailing: const Icon(
                                         Icons.check,
                                         color: Colors.white,
                                       ),
                                     ),
-                                    Divider(
+                                    const Divider(
                                       color: Colors.grey,
                                       thickness: .5,
                                     ),
@@ -503,12 +540,12 @@ class TaskListTile extends StatelessWidget {
                                             .bodyText1
                                             .copyWith(color: Colors.white),
                                       ),
-                                      trailing: Icon(
+                                      trailing: const Icon(
                                         Icons.edit,
                                         color: Colors.white,
                                       ),
                                     ),
-                                    Divider(
+                                    const Divider(
                                       color: Colors.grey,
                                       thickness: .5,
                                     ),
@@ -523,7 +560,7 @@ class TaskListTile extends StatelessWidget {
                                             .bodyText1
                                             .copyWith(color: Colors.white),
                                       ),
-                                      trailing: Icon(
+                                      trailing: const Icon(
                                         Icons.delete,
                                         color: Colors.white,
                                       ),
@@ -533,7 +570,7 @@ class TaskListTile extends StatelessWidget {
                               );
                             });
                       },
-                      child: Icon(
+                      child: const Icon(
                         Icons.more_vert,
                         color: customGreyColor,
                       ),

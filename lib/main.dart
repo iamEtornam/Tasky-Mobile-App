@@ -53,11 +53,14 @@ main() async {
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
   FirebaseMessaging.onBackgroundMessage(backgroundMessageHandler);
   await Hive.initFlutter();
-  runApp(MyApp());
+  runApp( MyApp());
 }
 
 class MyApp extends StatelessWidget {
+
+   MyApp({Key key}) : super(key: key);
   final FirebaseAnalytics _analytics = FirebaseAnalytics();
+
 
   @override
   Widget build(BuildContext context) {

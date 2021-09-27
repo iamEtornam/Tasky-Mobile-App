@@ -13,24 +13,25 @@ class Routes {
     switch (settings.name) {
       case '/':
         final int currentIndex = settings.arguments ?? 0;
-        return MaterialPageRoute(builder: (_) => DashboardView(currentIndex: currentIndex));
+        return MaterialPageRoute(
+            builder: (_) => DashboardView(currentIndex: currentIndex));
       case '/createNewTaskView':
-        return MaterialPageRoute(builder: (_) => CreateNewTaskView());
+        return MaterialPageRoute(builder: (_) => const CreateNewTaskView());
       case '/loginView':
         return MaterialPageRoute(builder: (_) => LoginView());
       case '/organizationView':
-        return MaterialPageRoute(builder: (_) => OrganizationView());
+        return MaterialPageRoute(builder: (_) => const OrganizationView());
       case '/accountView':
-        return MaterialPageRoute(builder: (_) => AccountView());
+        return MaterialPageRoute(builder: (_) => const AccountView());
       case '/createInboxView':
         return MaterialPageRoute(
-            builder: (_) => CreateInboxView(), fullscreenDialog: true);
+            builder: (_) => const CreateInboxView(), fullscreenDialog: true);
       default:
         return MaterialPageRoute(
             builder: (context) => Scaffold(
                   appBar: AppBar(
                     backgroundColor: customRedColor,
-                    iconTheme: IconThemeData(color: Colors.white),
+                    iconTheme: const IconThemeData(color: Colors.white),
                   ),
                   body: Center(
                       child: Text('No route defined for ${settings.name}')),

@@ -51,7 +51,7 @@ class OrganizationManager with ChangeNotifier {
       _organization = null;
       setMessage('$onError');
       setisLoading(false);
-    }).timeout(Duration(seconds: 60), onTimeout: () {
+    }).timeout(const Duration(seconds: 60), onTimeout: () {
       _organization = null;
       setMessage('Timeout! Check your internet connection.');
       setisLoading(false);
@@ -129,7 +129,7 @@ class OrganizationManager with ChangeNotifier {
       _member = null;
       setMessage('$onError');
       setisLoading(false);
-    }).timeout(Duration(seconds: 60), onTimeout: () {
+    }).timeout(const Duration(seconds: 60), onTimeout: () {
       _member = null;
       setMessage('Timeout! Check your internet connection.');
       setisLoading(false);

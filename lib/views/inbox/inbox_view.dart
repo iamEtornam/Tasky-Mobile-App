@@ -4,9 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:sample_data/avatars.dart';
 import 'package:tasky_app/utils/ui_utils/custom_colors.dart';
-import 'package:time_ago_provider/time_ago_provider.dart' as timeAgo;
+import 'package:time_ago_provider/time_ago_provider.dart' as time_ago;
 
 class InboxView extends StatefulWidget {
+  const InboxView({Key key}) : super(key: key);
+
   @override
   _InboxViewState createState() => _InboxViewState();
 }
@@ -27,7 +29,7 @@ class _InboxViewState extends State<InboxView> {
       'isLiked': Random().nextBool(),
       'teamName': 'Backend team',
       'title': 'Update documentation',
-      'timestamp': timeAgo.format(
+      'timestamp': time_ago.format(
           DateTime.now().subtract(Duration(days: Random().nextInt(10)))),
       'dueDate': 'Due soon',
       'replies': Random().nextInt(10)
@@ -39,7 +41,7 @@ class _InboxViewState extends State<InboxView> {
       'isLiked': Random().nextBool(),
       'teamName': 'Frontend team',
       'title': 'Mobile View Compartibility',
-      'timestamp': timeAgo.format(
+      'timestamp': time_ago.format(
           DateTime.now().subtract(Duration(days: Random().nextInt(10)))),
       'dueDate': 'Completed',
       'replies': Random().nextInt(10)
@@ -51,7 +53,7 @@ class _InboxViewState extends State<InboxView> {
       'isLiked': Random().nextBool(),
       'teamName': 'UI/UX team',
       'title': 'Make changes to mobile mockup',
-      'timestamp': timeAgo.format(
+      'timestamp': time_ago.format(
           DateTime.now().subtract(Duration(days: Random().nextInt(10)))),
       'dueDate': 'Due soon',
       'replies': Random().nextInt(10)
@@ -63,7 +65,7 @@ class _InboxViewState extends State<InboxView> {
       'isLiked': Random().nextBool(),
       'teamName': 'Frontend team',
       'title': 'Mobile View Compartibility',
-      'timestamp': timeAgo.format(
+      'timestamp': time_ago.format(
           DateTime.now().subtract(Duration(days: Random().nextInt(10)))),
       'dueDate': 'Completed',
       'replies': Random().nextInt(10)
@@ -129,7 +131,7 @@ class _InboxViewState extends State<InboxView> {
         ),
       ),
       body: ListView.separated(
-          padding: EdgeInsets.all(24),
+          padding:const  EdgeInsets.all(24),
           itemBuilder: (context, index) => InboxItemWidget(
                 avatar: data[index]['avatar'],
                 description: data[index]['description'],
@@ -140,11 +142,11 @@ class _InboxViewState extends State<InboxView> {
                 dueDate: data[index]['dueDate'],
                 replies: data[index]['replies'],
               ),
-          separatorBuilder: (context, index) => Divider(),
+          separatorBuilder: (context, index) =>const  Divider(),
           itemCount: data.length),
       floatingActionButton: FloatingActionButton(
         backgroundColor: customRedColor,
-        child: Icon(
+        child: const Icon(
           MaterialCommunityIcons.chat_outline,
           color: Colors.white,
         ),
@@ -196,7 +198,7 @@ class InboxItemWidget extends StatelessWidget {
                     backgroundColor: Colors
                         .primaries[Random().nextInt(Colors.primaries.length)],
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 8,
                   ),
                   Text(
@@ -214,7 +216,7 @@ class InboxItemWidget extends StatelessWidget {
               ),
             ],
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           Row(
@@ -245,7 +247,7 @@ class InboxItemWidget extends StatelessWidget {
                       ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 10,
                   ),
                   Text(
@@ -260,7 +262,7 @@ class InboxItemWidget extends StatelessWidget {
                 ],
               ),
               replies == 0
-                  ? SizedBox()
+                  ? const SizedBox.shrink()
                   : Material(
                       color: customRedColor,
                       borderRadius: BorderRadius.circular(35),
@@ -277,10 +279,10 @@ class InboxItemWidget extends StatelessWidget {
                                       fontWeight: FontWeight.normal,
                                       color: Colors.white),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               width: 2,
                             ),
-                            Icon(
+                            const Icon(
                               Ionicons.ios_chatbubbles,
                               color: Colors.white,
                               size: 15,
@@ -291,7 +293,7 @@ class InboxItemWidget extends StatelessWidget {
                     )
             ],
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           Row(
@@ -304,7 +306,7 @@ class InboxItemWidget extends StatelessWidget {
                 backgroundImage:
                     ExactAssetImage(kidsAvatar(), package: 'sample_data'),
               ),
-              SizedBox(
+              const SizedBox(
                 width: 10,
               ),
               Column(

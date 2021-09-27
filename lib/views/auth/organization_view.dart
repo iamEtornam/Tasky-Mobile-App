@@ -17,6 +17,8 @@ final OrganizationManager _organizationManager =
     GetIt.I.get<OrganizationManager>();
 
 class OrganizationView extends StatefulWidget {
+  const OrganizationView({Key key}) : super(key: key);
+
   @override
   _OrganizationViewState createState() => _OrganizationViewState();
 }
@@ -24,7 +26,7 @@ class OrganizationView extends StatefulWidget {
 class _OrganizationViewState extends State<OrganizationView> {
   final Logger _logger = Logger();
   final UiUtilities uiUtilities = UiUtilities();
-  static GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  static final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   TextEditingController nameTextEditingController = TextEditingController();
   List<String> teams = [];
   final nameFocusNode = FocusNode();
@@ -86,7 +88,7 @@ class _OrganizationViewState extends State<OrganizationView> {
           child: Form(
         key: _formKey,
         child: ListView(
-          padding: EdgeInsets.all(24),
+          padding: const EdgeInsets.all(24),
           children: [
             Center(
               child: CircleAvatar(
@@ -95,11 +97,11 @@ class _OrganizationViewState extends State<OrganizationView> {
                     .withOpacity(.2),
                 radius: 60,
                 backgroundImage: _imageFile == null
-                    ? ExactAssetImage('assets/avatar.png')
+                    ? const ExactAssetImage('assets/avatar.png')
                     : FileImage(_imageFile),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 7,
             ),
             Center(
@@ -128,7 +130,7 @@ class _OrganizationViewState extends State<OrganizationView> {
                         });
               },
             )),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             TextFormField(
@@ -137,18 +139,18 @@ class _OrganizationViewState extends State<OrganizationView> {
               style: Theme.of(context).textTheme.bodyText1,
               textInputAction: TextInputAction.next,
               keyboardType: TextInputType.name,
-              autofillHints: [AutofillHints.organizationName],
+              autofillHints: const [AutofillHints.organizationName],
               maxLines: 1,
               cursorColor: Theme.of(context).textSelectionTheme.cursorColor,
               enableInteractiveSelection: true,
               decoration: InputDecoration(
                   filled: false,
                   hintText: 'Organization Name',
-                  enabledBorder: UnderlineInputBorder(
+                  enabledBorder: const UnderlineInputBorder(
                       borderSide: BorderSide(color: customGreyColor)),
-                  focusedBorder: UnderlineInputBorder(
+                  focusedBorder: const UnderlineInputBorder(
                       borderSide: BorderSide(color: customGreyColor)),
-                  border: UnderlineInputBorder(
+                  border: const UnderlineInputBorder(
                       borderSide: BorderSide(color: Colors.black)),
                   hintStyle: Theme.of(context)
                       .textTheme
@@ -161,7 +163,7 @@ class _OrganizationViewState extends State<OrganizationView> {
                 return null;
               },
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             TextFieldTags(
@@ -173,12 +175,12 @@ class _OrganizationViewState extends State<OrganizationView> {
                     .bodyText1
                     .copyWith(color: Colors.grey),
                 hintText: 'Organization Teams',
-                textFieldBorder: UnderlineInputBorder(
+                textFieldBorder: const UnderlineInputBorder(
                     borderSide: BorderSide(color: customGreyColor)),
                 textStyle: Theme.of(context).textTheme.bodyText1,
-                textFieldEnabledBorder: UnderlineInputBorder(
+                textFieldEnabledBorder:const  UnderlineInputBorder(
                     borderSide: BorderSide(color: customGreyColor)),
-                textFieldFocusedBorder: UnderlineInputBorder(
+                textFieldFocusedBorder: const UnderlineInputBorder(
                     borderSide: BorderSide(color: customGreyColor)),
               ),
               //[tagsStyler] is required and shall not be null
@@ -193,7 +195,7 @@ class _OrganizationViewState extends State<OrganizationView> {
                   borderRadius: BorderRadius.circular(5.0),
                 ),
                 tagCancelIcon:
-                    Icon(Icons.cancel, size: 18.0, color: Colors.white),
+                    const Icon(Icons.cancel, size: 18.0, color: Colors.white),
                 tagPadding: const EdgeInsets.all(8.0),
 
                 // EdgeInsets tagPadding = const EdgeInsets.all(4.0),
@@ -217,7 +219,7 @@ class _OrganizationViewState extends State<OrganizationView> {
                 });
               },
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             TextButton(
@@ -237,7 +239,7 @@ class _OrganizationViewState extends State<OrganizationView> {
                     uiUtilities.alertNotification(
                         context: context,
                         message: _organizationManager.message);
-                    Future.delayed(Duration(seconds: 3), () {
+                    Future.delayed(const Duration(seconds: 3), () {
                       Navigator.pushNamedAndRemoveUntil(
                           context, '/', (route) => false);
                     });

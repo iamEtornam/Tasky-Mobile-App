@@ -47,3 +47,5 @@ app.*.map.json
 
 
 ios/build/
+.metadata
+.vscode/launch.json

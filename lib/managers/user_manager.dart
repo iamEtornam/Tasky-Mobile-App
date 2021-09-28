@@ -3,9 +3,9 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
-import 'package:tasky_app/models/user.dart';
-import 'package:tasky_app/services/user_service.dart';
-import 'package:tasky_app/utils/local_storage.dart';
+import 'package:tasky_mobile_app/models/user.dart';
+import 'package:tasky_mobile_app/services/user_service.dart';
+import 'package:tasky_mobile_app/utils/local_storage.dart';
 
 final UserService _userService = GetIt.I.get<UserService>();
 final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
@@ -31,9 +31,7 @@ class UserManager with ChangeNotifier {
   Future<bool> updateUserTeam({@required String team}) async {
     bool isSuccessful = false;
     setisLoading(true);
-    await _userService
-        .updateUserTeamRequest(team: team)
-        .then((response) async {
+    await _userService.updateUserTeamRequest(team: team).then((response) async {
       int statusCode = response.statusCode;
       Map<String, dynamic> body = json.decode(response.body);
       setisLoading(false);

@@ -2,8 +2,8 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:tasky_app/utils/local_storage.dart';
-import 'package:tasky_app/views/search/search_view.dart';
+import 'package:tasky_mobile_app/utils/local_storage.dart';
+import 'package:tasky_mobile_app/views/search/search_view.dart';
 
 final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
 

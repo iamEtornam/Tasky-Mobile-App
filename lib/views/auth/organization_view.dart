@@ -7,10 +7,10 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:logger/logger.dart';
-import 'package:tasky_app/managers/organization_manager.dart';
-import 'package:tasky_app/shared_widgets/custom_bottom_sheet_widget.dart';
-import 'package:tasky_app/utils/ui_utils/custom_colors.dart';
-import 'package:tasky_app/utils/ui_utils/ui_utils.dart';
+import 'package:tasky_mobile_app/managers/organization_manager.dart';
+import 'package:tasky_mobile_app/shared_widgets/custom_bottom_sheet_widget.dart';
+import 'package:tasky_mobile_app/utils/ui_utils/custom_colors.dart';
+import 'package:tasky_mobile_app/utils/ui_utils/ui_utils.dart';
 import 'package:textfield_tags/textfield_tags.dart';
 
 final OrganizationManager _organizationManager =
@@ -178,7 +178,7 @@ class _OrganizationViewState extends State<OrganizationView> {
                 textFieldBorder: const UnderlineInputBorder(
                     borderSide: BorderSide(color: customGreyColor)),
                 textStyle: Theme.of(context).textTheme.bodyText1,
-                textFieldEnabledBorder:const  UnderlineInputBorder(
+                textFieldEnabledBorder: const UnderlineInputBorder(
                     borderSide: BorderSide(color: customGreyColor)),
                 textFieldFocusedBorder: const UnderlineInputBorder(
                     borderSide: BorderSide(color: customGreyColor)),

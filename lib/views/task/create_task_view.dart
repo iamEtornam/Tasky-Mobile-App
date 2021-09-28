@@ -6,20 +6,20 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_icons/flutter_icons.dart';
+import 'package:flutter_font_icons/flutter_font_icons.dart';
 import 'package:flutter_image_stack/flutter_image_stack.dart';
 import 'package:get_it/get_it.dart';
 import 'package:groovin_widgets/groovin_widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
-import 'package:tasky_app/managers/organization_manager.dart';
-import 'package:tasky_app/managers/task_manager.dart';
-import 'package:tasky_app/models/member.dart';
-import 'package:tasky_app/models/organization.dart' as _org;
-import 'package:tasky_app/models/user.dart';
-import 'package:tasky_app/utils/ui_utils/custom_colors.dart';
-import 'package:tasky_app/utils/ui_utils/ui_utils.dart';
+import 'package:tasky_mobile_app/managers/organization_manager.dart';
+import 'package:tasky_mobile_app/managers/task_manager.dart';
+import 'package:tasky_mobile_app/models/member.dart';
+import 'package:tasky_mobile_app/models/organization.dart' as _org;
+import 'package:tasky_mobile_app/models/user.dart';
+import 'package:tasky_mobile_app/utils/ui_utils/custom_colors.dart';
+import 'package:tasky_mobile_app/utils/ui_utils/ui_utils.dart';
 
 final OrganizationManager _organizationManager =
     GetIt.I.get<OrganizationManager>();
@@ -211,7 +211,8 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
                               .copyWith(
                                   fontWeight: FontWeight.normal,
                                   color: customGreyColor),
-                          contentPadding: const EdgeInsets.fromLTRB(15, 1, 15, 1),
+                          contentPadding:
+                              const EdgeInsets.fromLTRB(15, 1, 15, 1),
                           floatingLabelBehavior: FloatingLabelBehavior.auto,
                           focusedBorder: Theme.of(context)
                               .inputDecorationTheme
@@ -256,7 +257,8 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
                               .copyWith(
                                   fontWeight: FontWeight.normal,
                                   color: customGreyColor),
-                          contentPadding: const EdgeInsets.fromLTRB(15, 1, 15, 1),
+                          contentPadding:
+                              const EdgeInsets.fromLTRB(15, 1, 15, 1),
                           floatingLabelBehavior: FloatingLabelBehavior.auto,
                           focusedBorder: Theme.of(context)
                               .inputDecorationTheme
@@ -650,7 +652,7 @@ class _TaskAssigneeWidgetState extends State<TaskAssigneeWidget> {
     return Scaffold(
       body: Column(
         children: [
-         const  SizedBox(
+          const SizedBox(
             height: 14,
           ),
           Container(

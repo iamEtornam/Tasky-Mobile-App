@@ -3,11 +3,11 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
-import 'package:tasky_app/models/task.dart';
-import 'package:tasky_app/models/task_statistic.dart';
-import 'package:tasky_app/models/user.dart';
-import 'package:tasky_app/services/task_service.dart';
-import 'package:tasky_app/utils/local_storage.dart';
+import 'package:tasky_mobile_app/models/task.dart';
+import 'package:tasky_mobile_app/models/task_statistic.dart';
+import 'package:tasky_mobile_app/models/user.dart';
+import 'package:tasky_mobile_app/services/task_service.dart';
+import 'package:tasky_mobile_app/utils/local_storage.dart';
 
 class TaskManager with ChangeNotifier {
   final Logger _logger = Logger();

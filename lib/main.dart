@@ -7,18 +7,19 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:tasky_app/managers/auth_manager.dart';
-import 'package:tasky_app/managers/task_manager.dart';
-import 'package:tasky_app/managers/user_manager.dart';
-import 'package:tasky_app/routes.dart';
-import 'package:tasky_app/services/auth_service.dart';
-import 'package:tasky_app/services/organization_service.dart';
-import 'package:tasky_app/services/task_service.dart';
-import 'package:tasky_app/utils/local_storage.dart';
-import 'package:tasky_app/utils/network_utils/background_message_handler.dart';
-import 'package:tasky_app/utils/network_utils/custom_http_client.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:tasky_mobile_app/managers/auth_manager.dart';
+import 'package:tasky_mobile_app/managers/task_manager.dart';
+import 'package:tasky_mobile_app/managers/user_manager.dart';
+import 'package:tasky_mobile_app/routes.dart';
+import 'package:tasky_mobile_app/services/auth_service.dart';
+import 'package:tasky_mobile_app/services/organization_service.dart';
+import 'package:tasky_mobile_app/services/task_service.dart';
+import 'package:tasky_mobile_app/utils/local_storage.dart';
+import 'package:tasky_mobile_app/utils/network_utils/background_message_handler.dart';
+import 'package:tasky_mobile_app/utils/network_utils/custom_http_client.dart';
+
 import 'managers/organization_manager.dart';
 import 'services/user_service.dart';
 import 'shared_widgets/custom_theme.dart';
@@ -53,14 +54,12 @@ main() async {
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
   FirebaseMessaging.onBackgroundMessage(backgroundMessageHandler);
   await Hive.initFlutter();
-  runApp( MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-
-   MyApp({Key key}) : super(key: key);
+  MyApp({Key key}) : super(key: key);
   final FirebaseAnalytics _analytics = FirebaseAnalytics();
-
 
   @override
   Widget build(BuildContext context) {

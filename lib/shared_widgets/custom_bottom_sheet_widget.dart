@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:tasky_app/utils/ui_utils/custom_colors.dart';
+import 'package:tasky_mobile_app/utils/ui_utils/custom_colors.dart';
 
 class CustomBottomSheetWidget extends StatelessWidget {
   final List<Options> options;
@@ -110,13 +110,11 @@ class CustomBottomSheetWidget extends StatelessWidget {
 }
 
 class Options {
+  Options({
+    this.label,
+    this.onTap,
+  });
 
-    Options({
-        this.label,
-        this.onTap,
-    });
-
-    String label;
-    VoidCallback onTap;
-
+  String label;
+  VoidCallback onTap;
 }

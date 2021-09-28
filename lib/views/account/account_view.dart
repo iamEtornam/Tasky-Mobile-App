@@ -4,15 +4,15 @@ import 'dart:math';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fb;
 import 'package:flutter/material.dart';
-import 'package:flutter_icons/flutter_icons.dart';
+import 'package:flutter_font_icons/flutter_font_icons.dart';
 import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
-import 'package:tasky_app/managers/user_manager.dart';
-import 'package:tasky_app/models/user.dart';
-import 'package:tasky_app/utils/local_storage.dart';
-import 'package:tasky_app/utils/ui_utils/custom_colors.dart';
-import 'package:tasky_app/views/account/personal_account_view.dart';
+import 'package:tasky_mobile_app/managers/user_manager.dart';
+import 'package:tasky_mobile_app/models/user.dart';
+import 'package:tasky_mobile_app/utils/local_storage.dart';
+import 'package:tasky_mobile_app/utils/ui_utils/custom_colors.dart';
+import 'package:tasky_mobile_app/views/account/personal_account_view.dart';
 import 'package:textfield_tags/textfield_tags.dart';
 
 final UserManager _userManager = GetIt.I.get<UserManager>();
@@ -56,7 +56,8 @@ class _AccountViewState extends State<AccountView> {
                                   Random().nextInt(Colors.primaries.length)]
                               .withOpacity(.2),
                           radius: 60,
-                          backgroundImage: const ExactAssetImage('assets/avatar.png'),
+                          backgroundImage:
+                              const ExactAssetImage('assets/avatar.png'),
                         ),
                       ),
                       const SizedBox(
@@ -240,7 +241,7 @@ class _AccountViewState extends State<AccountView> {
                                                     .textTheme
                                                     .bodyText1,
                                                 textFieldEnabledBorder:
-                                                   const  UnderlineInputBorder(
+                                                    const UnderlineInputBorder(
                                                         borderSide: BorderSide(
                                                             color:
                                                                 customGreyColor)),
@@ -292,7 +293,7 @@ class _AccountViewState extends State<AccountView> {
                                                 });
                                               },
                                             ),
-                                           const  SizedBox(
+                                            const SizedBox(
                                               height: 10,
                                             ),
                                             TextButton(

@@ -1,6 +1,6 @@
 {
-    "name": "tasky_app",
-    "short_name": "tasky_app",
+    "name": "tasky_mobile_app",
+    "short_name": "tasky_mobile_app",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

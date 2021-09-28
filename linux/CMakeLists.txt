@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.10)
 project(runner LANGUAGES CXX)
 
-set(BINARY_NAME "tasky_app")
-set(APPLICATION_ID "dev.etornam.tasky_app")
+set(BINARY_NAME "tasky_mobile_app")
+set(APPLICATION_ID "dev.etornam.tasky_mobile_app")
 
 cmake_policy(SET CMP0063 NEW)
 

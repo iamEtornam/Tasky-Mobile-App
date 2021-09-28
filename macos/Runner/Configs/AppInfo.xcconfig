@@ -5,10 +5,10 @@
 // 'flutter create' template.
 
 // The application's name. By default this is also the title of the Flutter window.
-PRODUCT_NAME = tasky_app
+PRODUCT_NAME = tasky_mobile_app
 
 // The application's bundle identifier
-PRODUCT_BUNDLE_IDENTIFIER = dev.etornam.taskyApp
+PRODUCT_BUNDLE_IDENTIFIER = dev.etornam.taskyMobileApp
 
 // The copyright displayed in application information
 PRODUCT_COPYRIGHT = Copyright © 2021 dev.etornam. All rights reserved.

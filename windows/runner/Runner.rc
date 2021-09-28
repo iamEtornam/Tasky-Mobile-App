@@ -92,10 +92,10 @@ BEGIN
             VALUE "CompanyName", "dev.etornam" "\0"
             VALUE "FileDescription", "A new Flutter project." "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "tasky_app" "\0"
+            VALUE "InternalName", "tasky_mobile_app" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2021 dev.etornam. All rights reserved." "\0"
-            VALUE "OriginalFilename", "tasky_app.exe" "\0"
-            VALUE "ProductName", "tasky_app" "\0"
+            VALUE "OriginalFilename", "tasky_mobile_app.exe" "\0"
+            VALUE "ProductName", "tasky_mobile_app" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

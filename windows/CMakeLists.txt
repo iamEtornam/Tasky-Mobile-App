@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.15)
-project(tasky_app LANGUAGES CXX)
+project(tasky_mobile_app LANGUAGES CXX)
 
-set(BINARY_NAME "tasky_app")
+set(BINARY_NAME "tasky_mobile_app")
 
 cmake_policy(SET CMP0063 NEW)
 

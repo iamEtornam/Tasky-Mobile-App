@@ -1,4 +1,4 @@
-package dev.etornam.tasky_app
+package dev.etornam.tasky
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -2,16 +2,16 @@ import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_icons/flutter_icons.dart';
+import 'package:flutter_font_icons/flutter_font_icons.dart';
 import 'package:get_it/get_it.dart';
 import 'package:strings/strings.dart';
-import 'package:tasky_app/managers/task_manager.dart';
-import 'package:tasky_app/models/task.dart';
-import 'package:tasky_app/models/task_statistic.dart';
-import 'package:tasky_app/shared_widgets/custom_appbar_widget.dart';
-import 'package:tasky_app/shared_widgets/empty_widget.dart';
-import 'package:tasky_app/utils/ui_utils/custom_colors.dart';
-import 'package:tasky_app/utils/ui_utils/ui_utils.dart';
+import 'package:tasky_mobile_app/managers/task_manager.dart';
+import 'package:tasky_mobile_app/models/task.dart';
+import 'package:tasky_mobile_app/models/task_statistic.dart';
+import 'package:tasky_mobile_app/shared_widgets/custom_appbar_widget.dart';
+import 'package:tasky_mobile_app/shared_widgets/empty_widget.dart';
+import 'package:tasky_mobile_app/utils/ui_utils/custom_colors.dart';
+import 'package:tasky_mobile_app/utils/ui_utils/ui_utils.dart';
 
 final TaskManager _taskManager = GetIt.I.get<TaskManager>();
 
@@ -210,7 +210,7 @@ class HomeTaskSummary extends StatelessWidget {
                             : Colors.red,
                     borderRadius: BorderRadius.circular(45)),
               ),
-             const  SizedBox(
+              const SizedBox(
                 width: 10,
               ),
               Column(

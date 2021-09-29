@@ -1,7 +1,7 @@
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart';
-import 'package:tasky_app/utils/network_utils/custom_http_client.dart';
-import 'package:tasky_app/utils/network_utils/endpoints.dart';
+import 'package:tasky_mobile_app/utils/network_utils/custom_http_client.dart';
+import 'package:tasky_mobile_app/utils/network_utils/endpoints.dart';
 
 final CustomHttpClient _customHttpClient = GetIt.I.get<CustomHttpClient>();
 

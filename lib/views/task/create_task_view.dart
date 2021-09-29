@@ -6,20 +6,20 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_icons/flutter_icons.dart';
+import 'package:flutter_font_icons/flutter_font_icons.dart';
 import 'package:flutter_image_stack/flutter_image_stack.dart';
 import 'package:get_it/get_it.dart';
 import 'package:groovin_widgets/groovin_widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
-import 'package:tasky_app/managers/organization_manager.dart';
-import 'package:tasky_app/managers/task_manager.dart';
-import 'package:tasky_app/models/member.dart';
-import 'package:tasky_app/models/organization.dart' as _org;
-import 'package:tasky_app/models/user.dart';
-import 'package:tasky_app/utils/ui_utils/custom_colors.dart';
-import 'package:tasky_app/utils/ui_utils/ui_utils.dart';
+import 'package:tasky_mobile_app/managers/organization_manager.dart';
+import 'package:tasky_mobile_app/managers/task_manager.dart';
+import 'package:tasky_mobile_app/models/member.dart';
+import 'package:tasky_mobile_app/models/organization.dart' as _org;
+import 'package:tasky_mobile_app/models/user.dart';
+import 'package:tasky_mobile_app/utils/ui_utils/custom_colors.dart';
+import 'package:tasky_mobile_app/utils/ui_utils/ui_utils.dart';
 
 final OrganizationManager _organizationManager =
     GetIt.I.get<OrganizationManager>();
@@ -211,7 +211,8 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
                               .copyWith(
                                   fontWeight: FontWeight.normal,
                                   color: customGreyColor),
-                          contentPadding: const EdgeInsets.fromLTRB(15, 1, 15, 1),
+                          contentPadding:
+                              const EdgeInsets.fromLTRB(15, 1, 15, 1),
                           floatingLabelBehavior: FloatingLabelBehavior.auto,
                           focusedBorder: Theme.of(context)
                               .inputDecorationTheme
@@ -256,7 +257,8 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
                               .copyWith(
                                   fontWeight: FontWeight.normal,
                                   color: customGreyColor),
-                          contentPadding: const EdgeInsets.fromLTRB(15, 1, 15, 1),
+                          contentPadding:
+                              const EdgeInsets.fromLTRB(15, 1, 15, 1),
                           floatingLabelBehavior: FloatingLabelBehavior.auto,
                           focusedBorder: Theme.of(context)
                               .inputDecorationTheme
@@ -404,19 +406,17 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
               ),
               Row(
                 children: [
-                  _taskManager.assignees.isEmpty
+                  _taskManager.assignees.isNotEmpty
                       ? Padding(
-                          padding: EdgeInsets.only(
-                              left: _taskManager.assignees.length < 3
-                                  ? 35
-                                  : 100.0),
+                          padding: const EdgeInsets.only(right: 8.0),
                           child: FlutterImageStack(
-                            imageList: _taskManager.imagesList,
+                            imageList: _taskManager.assignees.map((e) => e
+                                .picture).toList(),
                             extraCountTextStyle:
                                 Theme.of(context).textTheme.subtitle2,
                             itemBorderColor:
                                 Theme.of(context).scaffoldBackgroundColor,
-                            itemRadius: 40,
+                            itemRadius: 50,
                             itemCount: _taskManager.assignees.length,
                             itemBorderWidth: 1,
                             showTotalCount: true,
@@ -472,7 +472,7 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
                                     data: snapshot.data,
                                   );
                                 },
-                              );
+                              ).then((_) => setState(() {}));
                             } else {
                               showMaterialModalBottomSheet(
                                 context: context,
@@ -481,7 +481,7 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
                                     data: snapshot.data,
                                   );
                                 },
-                              );
+                              ).then((_) => setState(() {}));
                             }
                           },
                           child: Align(
@@ -650,7 +650,7 @@ class _TaskAssigneeWidgetState extends State<TaskAssigneeWidget> {
     return Scaffold(
       body: Column(
         children: [
-         const  SizedBox(
+          const SizedBox(
             height: 14,
           ),
           Container(
@@ -665,12 +665,16 @@ class _TaskAssigneeWidgetState extends State<TaskAssigneeWidget> {
             controller: ModalScrollController.of(context),
             children: List.generate(widget.data.data.length, (index) {
               return AssigneeTileWidget(
-                isChecked:
-                    _taskManager.assignees.contains(widget.data.data[index]),
+                isChecked: (_taskManager.assignees.singleWhere(
+                        (it) => it.id == widget.data.data[index].id,
+                        orElse: () => null)) !=
+                    null,
                 selectedUser: widget.data.data[index],
                 onTap: (Data user) {
                   setState(() {
-                    if (users.contains(user)) {
+                    if ((users.singleWhere((it) => it.id == user.id,
+                            orElse: () => null)) !=
+                        null) {
                       users.remove(user);
                     } else {
                       users.add(user);
@@ -692,8 +696,9 @@ class _TaskAssigneeWidgetState extends State<TaskAssigneeWidget> {
                 ),
                 backgroundColor: Colors.black),
             onPressed: () {
-              _taskManager.setAssignees(users);
-
+              setState(() {
+                _taskManager.setAssignees(users);
+              });
               if (_taskManager.assignees.isNotEmpty) {
                 Navigator.pop(context);
               }

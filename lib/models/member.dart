@@ -1,4 +1,4 @@
-import 'package:tasky_app/models/user.dart';
+import 'package:tasky_mobile_app/models/user.dart';
 
 class Member {
   Member({

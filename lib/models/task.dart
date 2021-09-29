@@ -1,4 +1,4 @@
-import 'package:tasky_app/models/user.dart' as _user;
+import 'package:tasky_mobile_app/models/user.dart' as _user;
 
 import 'organization.dart' as _org;
 
@@ -90,8 +90,9 @@ class Datum {
         organization: json["organization"] == null
             ? null
             : _org.Data.fromMap(json["organization"]),
-        creator:
-            json["creator"] == null ? null : _user.Data.fromMap(json["creator"]),
+        creator: json["creator"] == null
+            ? null
+            : _user.Data.fromMap(json["creator"]),
       );
 
   Map<String, dynamic> toMap() => {

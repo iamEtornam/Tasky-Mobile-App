@@ -1,9 +1,9 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_icons/flutter_icons.dart';
+import 'package:flutter_font_icons/flutter_font_icons.dart';
 import 'package:sample_data/avatars.dart';
-import 'package:tasky_app/utils/ui_utils/custom_colors.dart';
+import 'package:tasky_mobile_app/utils/ui_utils/custom_colors.dart';
 import 'package:time_ago_provider/time_ago_provider.dart' as time_ago;
 
 class InboxView extends StatefulWidget {
@@ -131,7 +131,7 @@ class _InboxViewState extends State<InboxView> {
         ),
       ),
       body: ListView.separated(
-          padding:const  EdgeInsets.all(24),
+          padding: const EdgeInsets.all(24),
           itemBuilder: (context, index) => InboxItemWidget(
                 avatar: data[index]['avatar'],
                 description: data[index]['description'],
@@ -142,7 +142,7 @@ class _InboxViewState extends State<InboxView> {
                 dueDate: data[index]['dueDate'],
                 replies: data[index]['replies'],
               ),
-          separatorBuilder: (context, index) =>const  Divider(),
+          separatorBuilder: (context, index) => const Divider(),
           itemCount: data.length),
       floatingActionButton: FloatingActionButton(
         backgroundColor: customRedColor,

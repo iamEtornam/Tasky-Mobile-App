@@ -1,4 +1,4 @@
-const String baseUrl = 'http://localhost:3000/dev';
+const String baseUrl = 'https://84e3-102-177-101-3.ngrok.io/dev';
 const String loginPath = '$baseUrl/login';
 const String organizationPath = '$baseUrl/getOrganizationById';
 const String updateTeamPath = '$baseUrl/updateUserTeam';

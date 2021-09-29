@@ -1,20 +1,20 @@
 import 'dart:math';
 
 import 'package:bot_toast/bot_toast.dart';
-import 'package:cache_image/cache_image.dart';
+import 'package:extended_image/extended_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_stack/flutter_image_stack.dart';
 import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
-import 'package:tasky_app/managers/task_manager.dart';
-import 'package:tasky_app/models/task.dart';
-import 'package:tasky_app/shared_widgets/custom_appbar_widget.dart';
-import 'package:tasky_app/shared_widgets/custom_checkbox_widget.dart';
-import 'package:tasky_app/shared_widgets/empty_widget.dart';
-import 'package:tasky_app/utils/ui_utils/custom_colors.dart';
-import 'package:tasky_app/utils/ui_utils/ui_utils.dart';
+import 'package:tasky_mobile_app/managers/task_manager.dart';
+import 'package:tasky_mobile_app/models/task.dart';
+import 'package:tasky_mobile_app/shared_widgets/custom_appbar_widget.dart';
+import 'package:tasky_mobile_app/shared_widgets/custom_checkbox_widget.dart';
+import 'package:tasky_mobile_app/shared_widgets/empty_widget.dart';
+import 'package:tasky_mobile_app/utils/ui_utils/custom_colors.dart';
+import 'package:tasky_mobile_app/utils/ui_utils/ui_utils.dart';
 
 final TaskManager _taskManager = GetIt.I.get<TaskManager>();
 
@@ -27,6 +27,7 @@ class TaskView extends StatefulWidget {
 
 class _TaskViewState extends State<TaskView> {
   final UiUtilities uiUtilities = UiUtilities();
+  final ScrollController _scrollController = ScrollController();
 
   @override
   Widget build(BuildContext context) {
@@ -60,6 +61,7 @@ class _TaskViewState extends State<TaskView> {
             }
 
             return ListView(
+              controller: _scrollController,
               children: [
                 const Divider(),
                 Padding(
@@ -92,6 +94,7 @@ class _TaskViewState extends State<TaskView> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 24),
                   child: ListView.separated(
+                      controller: _scrollController,
                       shrinkWrap: true,
                       itemBuilder: (context, index) {
                         return TaskListTile(
@@ -328,18 +331,48 @@ class _TaskViewState extends State<TaskView> {
                                         child: ListView.separated(
                                             scrollDirection: Axis.horizontal,
                                             itemBuilder: (context, index) =>
-                                                CircleAvatar(
-                                                  radius: 30,
-                                                  backgroundImage: CacheImage(
+                                                ClipRRect(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10),
+                                                    child:
+                                                        ExtendedImage.network(
                                                       snapshot
                                                           .data
                                                           .data[index]
                                                           .assignees[index]
                                                           .picture,
-                                                      cache: true),
-                                                ),
+                                                      fit: BoxFit.cover,
+                                                      width: 60,
+                                                      height: 60,
+                                                      cache: true,
+                                                      loadStateChanged:
+                                                          (ExtendedImageState
+                                                              state) {
+                                                        if (state
+                                                                .extendedImageLoadState ==
+                                                            LoadState.failed) {
+                                                          return Image.asset(
+                                                            'assets/avatar.png',
+                                                            fit: BoxFit.cover,
+                                                            width: 60,
+                                                            height: 60,
+                                                          );
+                                                        } else {
+                                                          return ExtendedRawImage(
+                                                            image: state
+                                                                .extendedImageInfo
+                                                                ?.image,
+                                                            fit: BoxFit.cover,
+                                                            width: 60,
+                                                            height: 60,
+                                                          );
+                                                        }
+                                                      },
+                                                    )),
                                             separatorBuilder:
-                                                (context, index) => const SizedBox(
+                                                (context, index) =>
+                                                    const SizedBox(
                                                       width: 4,
                                                     ),
                                             itemCount: snapshot.data.data[index]
@@ -365,7 +398,7 @@ class _TaskViewState extends State<TaskView> {
           }),
       floatingActionButton: FloatingActionButton(
         backgroundColor: customRedColor,
-        child:const  Icon(
+        child: const Icon(
           Icons.add,
           color: Colors.white,
         ),

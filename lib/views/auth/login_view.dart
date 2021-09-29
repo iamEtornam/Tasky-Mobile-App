@@ -6,10 +6,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:tasky_app/managers/auth_manager.dart';
-import 'package:tasky_app/models/user.dart';
-import 'package:tasky_app/utils/local_storage.dart';
-import 'package:tasky_app/utils/ui_utils/ui_utils.dart';
+import 'package:provider/provider.dart';
+import 'package:tasky_mobile_app/managers/auth_manager.dart';
+import 'package:tasky_mobile_app/models/user.dart';
+import 'package:tasky_mobile_app/utils/local_storage.dart';
+import 'package:tasky_mobile_app/utils/network_utils/apple_sign_in_avaliability.dart';
+import 'package:tasky_mobile_app/utils/ui_utils/ui_utils.dart';
 
 final AuthManager _authManager = GetIt.I.get<AuthManager>();
 final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
@@ -17,9 +19,11 @@ final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
 class LoginView extends StatelessWidget {
   final UiUtilities uiUtilities = UiUtilities();
 
-   LoginView({Key key}) : super(key: key);
+  LoginView({Key key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    final appleSignInAvailable =
+        Provider.of<AppleSignInAvailable>(context, listen: false);
     return Scaffold(
       backgroundColor: Theme.of(context).cardColor,
       body: Padding(
@@ -52,7 +56,7 @@ class LoginView extends StatelessWidget {
                   .bodyText2
                   .copyWith(color: Colors.grey),
             ),
-           const  SizedBox(
+            const SizedBox(
               height: 15,
             ),
             TextButton(
@@ -117,7 +121,7 @@ class LoginView extends StatelessWidget {
               height: 20,
             ),
             Visibility(
-              visible: Platform.isIOS,
+              visible: Platform.isIOS && appleSignInAvailable.isAvailable,
               child: TextButton(
                 style: TextButton.styleFrom(
                   padding: const EdgeInsets.only(left: 10, right: 10),
@@ -138,7 +142,7 @@ class LoginView extends StatelessWidget {
                         width: 10,
                       ),
                       Text(
-                        'Signin with Apple',
+                        'Sign in with Apple',
                         style: Theme.of(context)
                             .textTheme
                             .button
@@ -152,28 +156,40 @@ class LoginView extends StatelessWidget {
                       allowClick: false,
                       clickClose: false,
                       backButtonBehavior: BackButtonBehavior.ignore);
-                  bool isSuccess = await _authManager.loginUserwithApple();
-                  BotToast.closeAllLoading();
-                  if (isSuccess) {
-                    Data data = await _localStorage.getUserInfo();
-                    uiUtilities.actionAlertWidget(
-                        context: context, alertType: 'success');
-                    uiUtilities.alertNotification(
-                        context: context, message: _authManager.message);
 
-                    Future.delayed(const Duration(seconds: 3), () {
-                      Navigator.pushNamedAndRemoveUntil(
-                          context,
-                          data.organizationId == null
-                              ? '/organizationView'
-                              : '/',
-                          (route) => false);
-                    });
-                  } else {
+                  try {
+                    final bool isSuccess = await _authManager.signInWithApple();
+
+                    BotToast.closeAllLoading();
+                    if (isSuccess) {
+                      Data data = await _localStorage.getUserInfo();
+                      uiUtilities.actionAlertWidget(
+                          context: context, alertType: 'success');
+                      uiUtilities.alertNotification(
+                          context: context, message: _authManager.message);
+
+                      Future.delayed(const Duration(seconds: 3), () {
+                        Navigator.pushNamedAndRemoveUntil(
+                            context,
+                            data.organizationId == null
+                                ? '/organizationView'
+                                : '/',
+                            (route) => false);
+                      });
+                    } else {
+                      uiUtilities.actionAlertWidget(
+                          context: context, alertType: 'error');
+                      uiUtilities.alertNotification(
+                          context: context, message: _authManager.message);
+                    }
+                  } catch (e) {
+                    BotToast.closeAllLoading();
                     uiUtilities.actionAlertWidget(
                         context: context, alertType: 'error');
                     uiUtilities.alertNotification(
                         context: context, message: _authManager.message);
+                    // TODO: Show alert here
+                    debugPrint('$e');
                   }
                 },
               ),

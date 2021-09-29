@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
-import 'package:tasky_app/models/user.dart';
+import 'package:tasky_mobile_app/models/user.dart';
 
 class LocalStorage {
   final String _tasky = 'tasky';
@@ -88,7 +88,7 @@ class LocalStorage {
     return await box.get('auth_token');
   }
 
-    Future<int> clearStorage() async {
+  Future<int> clearStorage() async {
     final Box box = await Hive.openBox(_tasky);
     return await box.clear();
   }

@@ -11,16 +11,16 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get_it/get_it.dart';
 import 'package:groovin_widgets/groovin_widgets.dart';
 import 'package:logger/logger.dart';
-import 'package:tasky_app/managers/organization_manager.dart';
-import 'package:tasky_app/managers/user_manager.dart';
-import 'package:tasky_app/models/organization.dart';
-import 'package:tasky_app/utils/local_storage.dart';
-import 'package:tasky_app/utils/ui_utils/custom_colors.dart';
-import 'package:tasky_app/utils/ui_utils/ui_utils.dart';
-import 'package:tasky_app/views/account/account_view.dart';
-import 'package:tasky_app/views/inbox/inbox_view.dart';
-import 'package:tasky_app/views/overview/over_view.dart';
-import 'package:tasky_app/views/task/task_view.dart';
+import 'package:tasky_mobile_app/managers/organization_manager.dart';
+import 'package:tasky_mobile_app/managers/user_manager.dart';
+import 'package:tasky_mobile_app/models/organization.dart';
+import 'package:tasky_mobile_app/utils/local_storage.dart';
+import 'package:tasky_mobile_app/utils/ui_utils/custom_colors.dart';
+import 'package:tasky_mobile_app/utils/ui_utils/ui_utils.dart';
+import 'package:tasky_mobile_app/views/account/account_view.dart';
+import 'package:tasky_mobile_app/views/inbox/inbox_view.dart';
+import 'package:tasky_mobile_app/views/overview/over_view.dart';
+import 'package:tasky_mobile_app/views/task/task_view.dart';
 
 final FirebaseMessaging _messaging = FirebaseMessaging.instance;
 final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
@@ -58,12 +58,14 @@ class _DashboardViewState extends State<DashboardView> {
 
   @override
   void initState() {
+    // checkAuth();
+    confirmAuthStatus();
     setState(() {
       _currentIndex = widget.currentIndex;
     });
-    checkAuth();
     initialNotification(context: context);
     uploadNotificationToken();
+
     super.initState();
   }
 
@@ -257,7 +259,8 @@ class _DashboardViewState extends State<DashboardView> {
                         elevation: 0,
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
-                            side: const BorderSide(color: Colors.grey, width: 1)),
+                            side:
+                                const BorderSide(color: Colors.grey, width: 1)),
                         child: Padding(
                           padding: const EdgeInsets.all(5.0),
                           child: OutlineDropdownButton(
@@ -266,7 +269,8 @@ class _DashboardViewState extends State<DashboardView> {
                               hintStyle: Theme.of(context)
                                   .inputDecorationTheme
                                   .hintStyle,
-                              contentPadding: const EdgeInsets.fromLTRB(15, 1, 15, 1),
+                              contentPadding:
+                                  const EdgeInsets.fromLTRB(15, 1, 15, 1),
                               floatingLabelBehavior: FloatingLabelBehavior.auto,
                               focusedBorder: Theme.of(context)
                                   .inputDecorationTheme
@@ -371,16 +375,36 @@ class _DashboardViewState extends State<DashboardView> {
     });
   }
 
-  void checkAuth() async {
+  // void checkAuth() async {
+  //   final FirebaseAuth _auth = FirebaseAuth.instance;
+  //   _logger.d(await _auth.currentUser.getIdToken());
+  //   int userId = await _localStorage.getId();
+  //   _auth.userChanges().listen((user) {
+  //     print('user: $user');
+  //     if (user != null) {
+  //       getUserTeam();
+  //     } else {
+  //       Navigator.pushNamedAndRemoveUntil(
+  //           context, '/loginView', (route) => false);
+  //     }
+  //   });
+  // }
+
+
+void confirmAuthStatus() async {
     final FirebaseAuth _auth = FirebaseAuth.instance;
     _logger.d(await _auth.currentUser.getIdToken());
+    int userId = await _localStorage.getId();
     _auth.userChanges().listen((user) {
-      if (user != null) {
+      if (user != null && userId != null) {
         getUserTeam();
       } else {
+         _auth.signOut();
+         _localStorage.clearStorage();
         Navigator.pushNamedAndRemoveUntil(
             context, '/loginView', (route) => false);
       }
     });
-  }
 }
+}
+

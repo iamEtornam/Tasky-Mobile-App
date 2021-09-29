@@ -15,14 +15,13 @@ class TaskManager with ChangeNotifier {
   final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
 
   List<Data> _assignees = [];
-  List<String> _imagesList = [];
   String _message = '';
   bool _isLoading = false;
 
   String get message => _message;
   bool get isLoading => _isLoading;
   List<Data> get assignees => _assignees;
-  List<String> get imagesList => _imagesList;
+
 
   setMessage(String message) {
     _message = message;
@@ -36,14 +35,9 @@ class TaskManager with ChangeNotifier {
 
   setAssignees(List<Data> users) {
     _assignees = users;
-    List<String> ee = [];
-    for (var element in users) {
-      ee.add(element.picture);
-    }
-    _imagesList = ee;
-
     notifyListeners();
   }
+
 
   Future<bool> createTask(
       {@required String description,
@@ -94,9 +88,7 @@ class TaskManager with ChangeNotifier {
       int statusCode = response.statusCode;
       Map<String, dynamic> body = json.decode(response.body);
       setMessage(body['message']);
-      _logger.d(body['message']);
       setisLoading(false);
-      _logger.d(body['message']);
       if (statusCode == 200) {
         task = Task.fromMap(body);
       } else {

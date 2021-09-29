@@ -6,11 +6,13 @@ import 'package:http/http.dart';
 import 'package:logger/logger.dart';
 import 'package:tasky_mobile_app/utils/network_utils/custom_http_client.dart';
 import 'package:tasky_mobile_app/utils/network_utils/endpoints.dart';
+import 'package:the_apple_sign_in/the_apple_sign_in.dart';
 
-final CustomHttpClient _customHttpClient = GetIt.I.get<CustomHttpClient>();
-final FirebaseAuth auth = FirebaseAuth.instance;
+
 
 class AuthService {
+  final CustomHttpClient _customHttpClient = GetIt.I.get<CustomHttpClient>();
+  final FirebaseAuth auth = FirebaseAuth.instance;
   // final Logger _logger = Logger();
 
   Future<UserCredential> signInWithGoogle() async {
@@ -32,18 +34,18 @@ class AuthService {
   }
 
   Future<UserCredential> signInWithApple() async {
-    // final AuthorizationResult result = await AppleSignIn.performRequests([
-    //   const AppleIdRequest(requestedScopes: [Scope.email, Scope.fullName])
-    // ]);
-    // AppleIdCredential appleIdCredential = result.credential;
-    // _logger.d(appleIdCredential.toString());
-    // OAuthProvider oAuthProvider = OAuthProvider('apple.com');
-    // OAuthCredential credential = oAuthProvider.credential(
-    //   idToken: String.fromCharCodes(appleIdCredential.identityToken),
-    //   accessToken: String.fromCharCodes(appleIdCredential.authorizationCode),
-    // );
+    final AuthorizationResult result = await TheAppleSignIn.performRequests([
+      const AppleIdRequest(requestedScopes: [Scope.email, Scope.fullName])
+    ]);
+    AppleIdCredential appleIdCredential = result.credential;
 
-    // return await auth.signInWithCredential(credential);
+    OAuthProvider oAuthProvider = OAuthProvider('apple.com');
+    OAuthCredential credential = oAuthProvider.credential(
+      idToken: String.fromCharCodes(appleIdCredential.identityToken),
+      accessToken: String.fromCharCodes(appleIdCredential.authorizationCode),
+    );
+
+    return await auth.signInWithCredential(credential);
   }
 
   Future<Response> sendTokenToBackend({String token}) async {

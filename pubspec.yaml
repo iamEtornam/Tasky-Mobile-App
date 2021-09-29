@@ -15,6 +15,7 @@ dependencies:
     git:
       url: git://github.com/794341379/flutter_custom_dialog.git
   bot_toast: ^4.0.1
+  the_apple_sign_in: ^1.1.1
   cupertino_icons: ^1.0.3
   dotted_border: ^2.0.0+1
   extended_image: ^5.1.0
@@ -44,6 +45,7 @@ dependencies:
   supercharged: ^2.1.1
   textfield_tags: ^1.4.2
   time_ago_provider: ^4.1.1
+  provider: ^6.0.1
 
 dependency_overrides:
   path_provider: ^2.0.5

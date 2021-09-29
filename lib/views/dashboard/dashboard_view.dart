@@ -58,12 +58,14 @@ class _DashboardViewState extends State<DashboardView> {
 
   @override
   void initState() {
+    // checkAuth();
+    confirmAuthStatus();
     setState(() {
       _currentIndex = widget.currentIndex;
     });
-    checkAuth();
     initialNotification(context: context);
     uploadNotificationToken();
+
     super.initState();
   }
 
@@ -373,7 +375,23 @@ class _DashboardViewState extends State<DashboardView> {
     });
   }
 
-  void checkAuth() async {
+  // void checkAuth() async {
+  //   final FirebaseAuth _auth = FirebaseAuth.instance;
+  //   _logger.d(await _auth.currentUser.getIdToken());
+  //   int userId = await _localStorage.getId();
+  //   _auth.userChanges().listen((user) {
+  //     print('user: $user');
+  //     if (user != null) {
+  //       getUserTeam();
+  //     } else {
+  //       Navigator.pushNamedAndRemoveUntil(
+  //           context, '/loginView', (route) => false);
+  //     }
+  //   });
+  // }
+
+
+void confirmAuthStatus() async {
     final FirebaseAuth _auth = FirebaseAuth.instance;
     _logger.d(await _auth.currentUser.getIdToken());
     int userId = await _localStorage.getId();
@@ -381,9 +399,12 @@ class _DashboardViewState extends State<DashboardView> {
       if (user != null && userId != null) {
         getUserTeam();
       } else {
+         _auth.signOut();
+         _localStorage.clearStorage();
         Navigator.pushNamedAndRemoveUntil(
             context, '/loginView', (route) => false);
       }
     });
-  }
 }
+}
+

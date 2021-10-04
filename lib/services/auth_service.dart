@@ -3,7 +3,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart';
-import 'package:logger/logger.dart';
 import 'package:tasky_mobile_app/utils/network_utils/custom_http_client.dart';
 import 'package:tasky_mobile_app/utils/network_utils/endpoints.dart';
 import 'package:the_apple_sign_in/the_apple_sign_in.dart';

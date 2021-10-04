@@ -188,7 +188,6 @@ class LoginView extends StatelessWidget {
                         context: context, alertType: 'error');
                     uiUtilities.alertNotification(
                         context: context, message: _authManager.message);
-                    // TODO: Show alert here
                     debugPrint('$e');
                   }
                 },

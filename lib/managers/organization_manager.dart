@@ -9,11 +9,12 @@ import 'package:tasky_mobile_app/models/organization.dart';
 import 'package:tasky_mobile_app/services/organization_service.dart';
 import 'package:tasky_mobile_app/utils/local_storage.dart';
 
-final OrganizationService _organizationService =
-    GetIt.I.get<OrganizationService>();
-final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
+
 
 class OrganizationManager with ChangeNotifier {
+  final OrganizationService _organizationService =
+    GetIt.I.get<OrganizationService>();
+final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
   final Logger _logger = Logger();
   String _message = '';
   bool _isLoading = false;

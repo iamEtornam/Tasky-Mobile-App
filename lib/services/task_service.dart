@@ -3,9 +3,10 @@ import 'package:http/http.dart';
 import 'package:tasky_mobile_app/utils/network_utils/custom_http_client.dart';
 import 'package:tasky_mobile_app/utils/network_utils/endpoints.dart';
 
-final CustomHttpClient _customHttpClient = GetIt.I.get<CustomHttpClient>();
 
 class TaskService {
+final CustomHttpClient _customHttpClient = GetIt.I.get<CustomHttpClient>();
+
   Future<Response> createTaskRequest(
       {String description,
       String dueDate,

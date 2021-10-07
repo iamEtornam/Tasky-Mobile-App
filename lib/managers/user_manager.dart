@@ -7,10 +7,12 @@ import 'package:tasky_mobile_app/models/user.dart';
 import 'package:tasky_mobile_app/services/user_service.dart';
 import 'package:tasky_mobile_app/utils/local_storage.dart';
 
-final UserService _userService = GetIt.I.get<UserService>();
-final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
+
 
 class UserManager with ChangeNotifier {
+  final UserService _userService = GetIt.I.get<UserService>();
+final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
+
   final Logger _logger = Logger();
   String _message = '';
   bool _isLoading = false;

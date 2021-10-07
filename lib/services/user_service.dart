@@ -3,9 +3,11 @@ import 'package:http/http.dart';
 import 'package:tasky_mobile_app/utils/network_utils/custom_http_client.dart';
 import 'package:tasky_mobile_app/utils/network_utils/endpoints.dart';
 
-final CustomHttpClient _customHttpClient = GetIt.I.get<CustomHttpClient>();
 
 class UserService {
+final CustomHttpClient _customHttpClient = GetIt.I.get<CustomHttpClient>();
+
+
   Future<Response> updateUserTeamRequest({String team}) async {
     return await _customHttpClient
         .putRequest(path: updateTeamPath, body: {'team': team});

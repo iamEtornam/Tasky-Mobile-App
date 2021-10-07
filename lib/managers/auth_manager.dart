@@ -10,11 +10,13 @@ import 'package:tasky_mobile_app/services/auth_service.dart';
 import 'package:tasky_mobile_app/utils/local_storage.dart';
 import 'package:the_apple_sign_in/the_apple_sign_in.dart';
 
-final AuthService _authService = GetIt.I.get<AuthService>();
+
+
+class AuthManager with ChangeNotifier {
+  final AuthService _authService = GetIt.I.get<AuthService>();
 final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
 final Logger _logger = Logger();
 
-class AuthManager with ChangeNotifier {
   String _message = '';
   bool _isLoading = false;
 

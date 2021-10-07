@@ -1,8 +1,13 @@
 import 'dart:math';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_font_icons/flutter_font_icons.dart';
+import 'package:get_it/get_it.dart';
 import 'package:sample_data/avatars.dart';
+import 'package:tasky_mobile_app/managers/inbox_manager.dart';
+import 'package:tasky_mobile_app/models/inbox.dart';
+import 'package:tasky_mobile_app/shared_widgets/empty_widget.dart';
 import 'package:tasky_mobile_app/utils/ui_utils/custom_colors.dart';
 import 'package:time_ago_provider/time_ago_provider.dart' as time_ago;
 
@@ -14,6 +19,8 @@ class InboxView extends StatefulWidget {
 }
 
 class _InboxViewState extends State<InboxView> {
+  final InboxManager _inboxManager = GetIt.I.get<InboxManager>();
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final List<String> options = [
     'All',
     'Assigned to me',
@@ -130,20 +137,39 @@ class _InboxViewState extends State<InboxView> {
           ),
         ),
       ),
-      body: ListView.separated(
-          padding: const EdgeInsets.all(24),
-          itemBuilder: (context, index) => InboxItemWidget(
-                avatar: data[index]['avatar'],
-                description: data[index]['description'],
-                isLiked: data[index]['isLiked'],
-                teamName: data[index]['teamName'],
-                title: data[index]['title'],
-                timestamp: data[index]['timestamp'],
-                dueDate: data[index]['dueDate'],
-                replies: data[index]['replies'],
-              ),
-          separatorBuilder: (context, index) => const Divider(),
-          itemCount: data.length),
+      body: StreamBuilder<Inbox>(
+          stream: _inboxManager.getInboxes().asStream(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting &&
+                snapshot.data == null) {
+              return const Center(child: CircularProgressIndicator.adaptive());
+            }
+
+            if (snapshot.connectionState == ConnectionState.done &&
+                snapshot.data == null) {
+              return EmptyWidget(
+                message: snapshot.data.message,
+                imageAsset: 'no_inbox.png',
+              );
+            }
+
+            return ListView.separated(
+                padding: const EdgeInsets.all(24),
+                itemBuilder: (context, index) => InboxItemWidget(
+                      avatar: snapshot.data.data[index].user.picture,
+                      description: snapshot.data.data[index].message,
+                      isLiked: snapshot.data.data[index].like
+                          .contains(_firebaseAuth.currentUser.uid),
+                      teamName: snapshot.data.data[index].team,
+                      title: snapshot.data.data[index].title,
+                      timestamp:
+                          time_ago.format(snapshot.data.data[index].createdAt),
+                      dueDate: 'Due soon',
+                      replies: snapshot.data.data[index].like.length,
+                    ),
+                separatorBuilder: (context, index) => const Divider(),
+                itemCount: snapshot.data.data.length);
+          }),
       floatingActionButton: FloatingActionButton(
         backgroundColor: customRedColor,
         child: const Icon(
@@ -195,6 +221,9 @@ class InboxItemWidget extends StatelessWidget {
                 children: [
                   CircleAvatar(
                     radius: 6,
+                    backgroundImage: avatar.isEmpty
+                        ? const ExactAssetImage('assets/avatar.png')
+                        : NetworkImage(avatar),
                     backgroundColor: Colors
                         .primaries[Random().nextInt(Colors.primaries.length)],
                   ),

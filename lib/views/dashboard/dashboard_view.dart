@@ -22,12 +22,7 @@ import 'package:tasky_mobile_app/views/inbox/inbox_view.dart';
 import 'package:tasky_mobile_app/views/overview/over_view.dart';
 import 'package:tasky_mobile_app/views/task/task_view.dart';
 
-final FirebaseMessaging _messaging = FirebaseMessaging.instance;
-final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
-final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
-final OrganizationManager _organizationManager =
-    GetIt.I.get<OrganizationManager>();
-final UserManager _userManager = GetIt.I.get<UserManager>();
+
 
 class DashboardView extends StatefulWidget {
   final int currentIndex;
@@ -38,6 +33,12 @@ class DashboardView extends StatefulWidget {
 }
 
 class _DashboardViewState extends State<DashboardView> {
+  final FirebaseMessaging _messaging = FirebaseMessaging.instance;
+final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
+final OrganizationManager _organizationManager =
+    GetIt.I.get<OrganizationManager>();
+final UserManager _userManager = GetIt.I.get<UserManager>();
   final Logger _logger = Logger();
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
   final UiUtilities uiUtilities = UiUtilities();

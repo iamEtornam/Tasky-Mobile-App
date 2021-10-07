@@ -16,7 +16,6 @@ import 'package:tasky_mobile_app/shared_widgets/empty_widget.dart';
 import 'package:tasky_mobile_app/utils/ui_utils/custom_colors.dart';
 import 'package:tasky_mobile_app/utils/ui_utils/ui_utils.dart';
 
-final TaskManager _taskManager = GetIt.I.get<TaskManager>();
 
 class TaskView extends StatefulWidget {
   const TaskView({Key key}) : super(key: key);
@@ -28,6 +27,7 @@ class TaskView extends StatefulWidget {
 class _TaskViewState extends State<TaskView> {
   final UiUtilities uiUtilities = UiUtilities();
   final ScrollController _scrollController = ScrollController();
+final TaskManager _taskManager = GetIt.I.get<TaskManager>();
 
   @override
   Widget build(BuildContext context) {

@@ -13,11 +13,12 @@ import 'package:tasky_mobile_app/utils/local_storage.dart';
 import 'package:tasky_mobile_app/utils/network_utils/apple_sign_in_avaliability.dart';
 import 'package:tasky_mobile_app/utils/ui_utils/ui_utils.dart';
 
-final AuthManager _authManager = GetIt.I.get<AuthManager>();
-final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
+
 
 class LoginView extends StatelessWidget {
   final UiUtilities uiUtilities = UiUtilities();
+  final AuthManager _authManager = GetIt.I.get<AuthManager>();
+final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
 
   LoginView({Key key}) : super(key: key);
   @override

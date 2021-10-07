@@ -13,8 +13,7 @@ import 'package:tasky_mobile_app/utils/ui_utils/custom_colors.dart';
 import 'package:tasky_mobile_app/utils/ui_utils/ui_utils.dart';
 import 'package:textfield_tags/textfield_tags.dart';
 
-final OrganizationManager _organizationManager =
-    GetIt.I.get<OrganizationManager>();
+
 
 class OrganizationView extends StatefulWidget {
   const OrganizationView({Key key}) : super(key: key);
@@ -24,6 +23,8 @@ class OrganizationView extends StatefulWidget {
 }
 
 class _OrganizationViewState extends State<OrganizationView> {
+  final OrganizationManager _organizationManager =
+    GetIt.I.get<OrganizationManager>();
   final Logger _logger = Logger();
   final UiUtilities uiUtilities = UiUtilities();
   static final GlobalKey<FormState> _formKey = GlobalKey<FormState>();

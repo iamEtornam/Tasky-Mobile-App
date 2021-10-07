@@ -15,8 +15,7 @@ import 'package:tasky_mobile_app/utils/ui_utils/custom_colors.dart';
 import 'package:tasky_mobile_app/views/account/personal_account_view.dart';
 import 'package:textfield_tags/textfield_tags.dart';
 
-final UserManager _userManager = GetIt.I.get<UserManager>();
-final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
+
 
 class AccountView extends StatefulWidget {
   const AccountView({Key key}) : super(key: key);
@@ -26,6 +25,8 @@ class AccountView extends StatefulWidget {
 }
 
 class _AccountViewState extends State<AccountView> {
+  final UserManager _userManager = GetIt.I.get<UserManager>();
+final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
   final Logger _logger = Logger();
   List<String> teams = [];
 

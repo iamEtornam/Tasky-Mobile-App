@@ -21,10 +21,6 @@ import 'package:tasky_mobile_app/models/user.dart';
 import 'package:tasky_mobile_app/utils/ui_utils/custom_colors.dart';
 import 'package:tasky_mobile_app/utils/ui_utils/ui_utils.dart';
 
-final OrganizationManager _organizationManager =
-    GetIt.I.get<OrganizationManager>();
-final TaskManager _taskManager = GetIt.I.get<TaskManager>();
-
 class CreateNewTaskView extends StatefulWidget {
   const CreateNewTaskView({Key key}) : super(key: key);
 
@@ -33,6 +29,9 @@ class CreateNewTaskView extends StatefulWidget {
 }
 
 class _CreateNewTaskViewState extends State<CreateNewTaskView> {
+  final OrganizationManager _organizationManager =
+      GetIt.I.get<OrganizationManager>();
+  final TaskManager _taskManager = GetIt.I.get<TaskManager>();
   final UiUtilities uiUtilities = UiUtilities();
   static final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final FocusNode taskFocusNode = FocusNode();
@@ -410,8 +409,9 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
                       ? Padding(
                           padding: const EdgeInsets.only(right: 8.0),
                           child: FlutterImageStack(
-                            imageList: _taskManager.assignees.map((e) => e
-                                .picture).toList(),
+                            imageList: _taskManager.assignees
+                                .map((e) => e.picture)
+                                .toList(),
                             extraCountTextStyle:
                                 Theme.of(context).textTheme.subtitle2,
                             itemBorderColor:
@@ -469,6 +469,7 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
                                 context: context,
                                 builder: (context) {
                                   return TaskAssigneeWidget(
+                                    taskManager: _taskManager,
                                     data: snapshot.data,
                                   );
                                 },
@@ -478,6 +479,7 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
                                 context: context,
                                 builder: (context) {
                                   return TaskAssigneeWidget(
+                                        taskManager: _taskManager,
                                     data: snapshot.data,
                                   );
                                 },
@@ -631,9 +633,10 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
 
 class TaskAssigneeWidget extends StatefulWidget {
   final Member data;
+  final TaskManager taskManager;
   const TaskAssigneeWidget({
     Key key,
-    @required this.data,
+    @required this.data,@required this.taskManager,
   }) : super(key: key);
 
   @override
@@ -665,7 +668,7 @@ class _TaskAssigneeWidgetState extends State<TaskAssigneeWidget> {
             controller: ModalScrollController.of(context),
             children: List.generate(widget.data.data.length, (index) {
               return AssigneeTileWidget(
-                isChecked: (_taskManager.assignees.singleWhere(
+                isChecked: (widget.taskManager.assignees.singleWhere(
                         (it) => it.id == widget.data.data[index].id,
                         orElse: () => null)) !=
                     null,
@@ -680,8 +683,8 @@ class _TaskAssigneeWidgetState extends State<TaskAssigneeWidget> {
                       users.add(user);
                     }
                   });
-                  _taskManager.setAssignees(users);
-                  _logger.d(_taskManager.assignees);
+                  widget.taskManager.setAssignees(users);
+                  _logger.d(widget.taskManager.assignees);
                 },
               );
             }),
@@ -697,9 +700,9 @@ class _TaskAssigneeWidgetState extends State<TaskAssigneeWidget> {
                 backgroundColor: Colors.black),
             onPressed: () {
               setState(() {
-                _taskManager.setAssignees(users);
+                widget.taskManager.setAssignees(users);
               });
-              if (_taskManager.assignees.isNotEmpty) {
+              if (widget.taskManager.assignees.isNotEmpty) {
                 Navigator.pop(context);
               }
             },

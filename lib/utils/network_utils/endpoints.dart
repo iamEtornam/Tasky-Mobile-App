@@ -15,3 +15,5 @@ String getTaskPath(int organizationId) => '$baseUrl/getTasks/$organizationId';
 String getTaskStatisticsPath(int userId) =>
     '$baseUrl/getTaskStatusCount/$userId';
 const String updateTaskPath = '$baseUrl/updateTask';
+String getUserInboxPath(int userId) => '$baseUrl/getUserInbox/$userId';
+String getUserInboxCommentPath(int inboxId) => '$baseUrl/getUserInbox/$inboxId';

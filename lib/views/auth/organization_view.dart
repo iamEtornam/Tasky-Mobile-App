@@ -16,7 +16,7 @@ import 'package:textfield_tags/textfield_tags.dart';
 
 
 class OrganizationView extends StatefulWidget {
-  const OrganizationView({Key key}) : super(key: key);
+  const OrganizationView({Key? key}) : super(key: key);
 
   @override
   _OrganizationViewState createState() => _OrganizationViewState();
@@ -31,14 +31,14 @@ class _OrganizationViewState extends State<OrganizationView> {
   TextEditingController nameTextEditingController = TextEditingController();
   List<String> teams = [];
   final nameFocusNode = FocusNode();
-  File _imageFile;
-  List<Options> options;
+  File? _imageFile;
+  List<Options>? options;
 
   getProfileFromCamera() async {
     await uiUtilities
         .getImage(imageSource: ImageSource.camera)
         .then((file) async {
-      File croppedFile = await uiUtilities.getCroppedFile(file: file.path);
+      File? croppedFile = await uiUtilities.getCroppedFile(file: file!.path);
 
       if (croppedFile != null) {
         setState(() {
@@ -52,7 +52,7 @@ class _OrganizationViewState extends State<OrganizationView> {
     await uiUtilities
         .getImage(imageSource: ImageSource.gallery)
         .then((file) async {
-      File croppedFile = await uiUtilities.getCroppedFile(file: file.path);
+      File? croppedFile = await uiUtilities.getCroppedFile(file: file!.path);
 
       if (croppedFile != null) {
         setState(() {
@@ -84,7 +84,13 @@ class _OrganizationViewState extends State<OrganizationView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        actions: [
+          TextButton(onPressed: (){
+
+          }, child: Text('Logout',style: Theme.of(context).textTheme.bodyText1!.copyWith(color: Colors.red),))
+        ],
+      ),
       body: SafeArea(
           child: Form(
         key: _formKey,
@@ -97,9 +103,9 @@ class _OrganizationViewState extends State<OrganizationView> {
                     .primaries[Random().nextInt(Colors.primaries.length)]
                     .withOpacity(.2),
                 radius: 60,
-                backgroundImage: _imageFile == null
+                backgroundImage: (_imageFile == null
                     ? const ExactAssetImage('assets/avatar.png')
-                    : FileImage(_imageFile),
+                    : FileImage(_imageFile!)) as ImageProvider<Object>?,
               ),
             ),
             const SizedBox(
@@ -109,7 +115,7 @@ class _OrganizationViewState extends State<OrganizationView> {
                 child: TextButton(
               child: Text(
                 'update profile photo',
-                style: Theme.of(context).textTheme.subtitle2.copyWith(
+                style: Theme.of(context).textTheme.subtitle2!.copyWith(
                     fontWeight: FontWeight.w600, color: customRedColor),
               ),
               onPressed: () {
@@ -155,10 +161,10 @@ class _OrganizationViewState extends State<OrganizationView> {
                       borderSide: BorderSide(color: Colors.black)),
                   hintStyle: Theme.of(context)
                       .textTheme
-                      .bodyText1
+                      .bodyText1!
                       .copyWith(color: Colors.grey)),
               validator: (value) {
-                if (value.isEmpty) {
+                if (value!.isEmpty) {
                   return 'Organization Name cannot be Empty';
                 }
                 return null;
@@ -173,7 +179,7 @@ class _OrganizationViewState extends State<OrganizationView> {
                 cursorColor: Theme.of(context).textSelectionTheme.cursorColor,
                 hintStyle: Theme.of(context)
                     .textTheme
-                    .bodyText1
+                    .bodyText1!
                     .copyWith(color: Colors.grey),
                 hintText: 'Organization Teams',
                 textFieldBorder: const UnderlineInputBorder(
@@ -189,7 +195,7 @@ class _OrganizationViewState extends State<OrganizationView> {
                 //These are properties you can tweek for customization of tags
                 tagTextStyle: Theme.of(context)
                     .textTheme
-                    .bodyText1
+                    .bodyText1!
                     .copyWith(color: Colors.white),
                 tagDecoration: BoxDecoration(
                   color: customRedColor,
@@ -225,21 +231,21 @@ class _OrganizationViewState extends State<OrganizationView> {
             ),
             TextButton(
               onPressed: () async {
-                if (_formKey.currentState.validate()) {
+                if (_formKey.currentState!.validate()) {
                   BotToast.showLoading(
                       allowClick: false,
                       clickClose: false,
                       backButtonBehavior: BackButtonBehavior.ignore);
                   bool isCreated =
                       await _organizationManager.createOrganization(
-                          image: _imageFile,
+                          image: _imageFile!,
                           name: nameTextEditingController.text,
                           teams: teams);
                   BotToast.closeAllLoading();
                   if (isCreated) {
                     uiUtilities.alertNotification(
                         context: context,
-                        message: _organizationManager.message);
+                        message: _organizationManager.message!);
                     Future.delayed(const Duration(seconds: 3), () {
                       Navigator.pushNamedAndRemoveUntil(
                           context, '/', (route) => false);
@@ -249,7 +255,7 @@ class _OrganizationViewState extends State<OrganizationView> {
                         context: context, alertType: 'error');
                     uiUtilities.alertNotification(
                         context: context,
-                        message: _organizationManager.message);
+                        message: _organizationManager.message!);
                   }
                 } else {
                   uiUtilities.actionAlertWidget(
@@ -262,7 +268,7 @@ class _OrganizationViewState extends State<OrganizationView> {
                 'Create Organization',
                 style: Theme.of(context)
                     .textTheme
-                    .button
+                    .button!
                     .copyWith(color: Colors.white),
               ),
               style: TextButton.styleFrom(

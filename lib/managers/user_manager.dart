@@ -14,13 +14,13 @@ class UserManager with ChangeNotifier {
 final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
 
   final Logger _logger = Logger();
-  String _message = '';
+  String? _message = '';
   bool _isLoading = false;
 
-  String get message => _message;
+  String? get message => _message;
   bool get isLoading => _isLoading;
 
-  setMessage(String message) {
+  setMessage(String? message) {
     _message = message;
     notifyListeners();
   }
@@ -30,7 +30,7 @@ final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
     notifyListeners();
   }
 
-  Future<bool> updateUserTeam({@required String team}) async {
+  Future<bool> updateUserTeam({required String? team}) async {
     bool isSuccessful = false;
     setisLoading(true);
     await _userService.updateUserTeamRequest(team: team).then((response) async {
@@ -41,17 +41,17 @@ final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
       if (statusCode == 200) {
         User _user = User.fromMap(body);
         await _localStorage.saveUserInfo(
-            id: _user.data.id,
-            name: _user.data.name,
-            picture: _user.data.picture,
-            userId: _user.data.userId,
-            email: _user.data.email,
-            signInProvider: _user.data.signInProvider,
-            authToken: _user.data.authToken,
-            organizationId: _user.data.organizationId,
-            team: _user.data.team,
-            fcmToken: _user.data.fcmToken,
-            phoneNumber: _user.data.phoneNumber);
+            id: _user.data!.id,
+            name: _user.data!.name,
+            picture: _user.data!.picture,
+            userId: _user.data!.userId,
+            email: _user.data!.email,
+            signInProvider: _user.data!.signInProvider,
+            authToken: _user.data!.authToken,
+            organizationId: _user.data!.organizationId,
+            team: _user.data!.team,
+            fcmToken: _user.data!.fcmToken,
+            phoneNumber: _user.data!.phoneNumber);
         isSuccessful = true;
         setMessage(body['message']);
       } else {
@@ -70,8 +70,8 @@ final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
     return isSuccessful;
   }
 
-  Future<User> getUserInformation() async {
-    User user;
+  Future<User?> getUserInformation() async {
+    User? user;
     setisLoading(true);
     await _userService.getUserInformationRequest().then((response) async {
       int statusCode = response.statusCode;
@@ -81,17 +81,17 @@ final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
       if (statusCode == 200) {
         User _user = User.fromMap(body);
         await _localStorage.saveUserInfo(
-            id: _user.data.id,
-            name: _user.data.name,
-            picture: _user.data.picture,
-            userId: _user.data.userId,
-            email: _user.data.email,
-            signInProvider: _user.data.signInProvider,
-            authToken: _user.data.authToken,
-            organizationId: _user.data.organizationId,
-            team: _user.data.team,
-            fcmToken: _user.data.fcmToken,
-            phoneNumber: _user.data.phoneNumber);
+            id: _user.data!.id,
+            name: _user.data!.name,
+            picture: _user.data!.picture,
+            userId: _user.data!.userId,
+            email: _user.data!.email,
+            signInProvider: _user.data!.signInProvider,
+            authToken: _user.data!.authToken,
+            organizationId: _user.data!.organizationId,
+            team: _user.data!.team,
+            fcmToken: _user.data!.fcmToken,
+            phoneNumber: _user.data!.phoneNumber);
         user = _user;
       } else {
         user = null;
@@ -108,7 +108,7 @@ final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
     return user;
   }
 
-  Future<bool> inviteMember({@required List<String> emails}) async {
+  Future<bool> inviteMember({required List<String> emails}) async {
     bool isSent = false;
     await _userService.inviteMembersRequest(emails: emails).then((response) {
       int statusCode = response.statusCode;
@@ -132,7 +132,7 @@ final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
     return isSent;
   }
 
-  sendNotificationToken({String token}) async {
+  sendNotificationToken({String? token}) async {
     await _userService.sendNotificationTokenRequest(token: token);
   }
 }

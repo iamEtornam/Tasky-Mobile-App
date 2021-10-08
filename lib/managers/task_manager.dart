@@ -15,15 +15,15 @@ class TaskManager with ChangeNotifier {
   final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
 
   List<Data> _assignees = [];
-  String _message = '';
+  String? _message = '';
   bool _isLoading = false;
 
-  String get message => _message;
+  String? get message => _message;
   bool get isLoading => _isLoading;
   List<Data> get assignees => _assignees;
 
 
-  setMessage(String message) {
+  setMessage(String? message) {
     _message = message;
     notifyListeners();
   }
@@ -40,15 +40,15 @@ class TaskManager with ChangeNotifier {
 
 
   Future<bool> createTask(
-      {@required String description,
-      @required String team,
-      @required String dueDate,
-      @required bool shouldSetReminder,
-      @required List<int> assignees}) async {
+      {required String description,
+      required String? team,
+      required String dueDate,
+      required bool shouldSetReminder,
+      required List<int?> assignees}) async {
     setisLoading(true);
     bool isSaved = false;
-    int userId = await _localStorage.getId();
-    int organizationId = await _localStorage.getOrganizationId();
+    int? userId = await _localStorage.getId();
+    int? organizationId = await _localStorage.getOrganizationId();
     await _taskService
         .createTaskRequest(
             team: team,
@@ -81,9 +81,9 @@ class TaskManager with ChangeNotifier {
     return isSaved;
   }
 
-  Future<Task> getTasks() async {
-    Task task;
-    int organizationId = await _localStorage.getOrganizationId();
+  Future<Task?> getTasks() async {
+    Task? task;
+    int? organizationId = await _localStorage.getOrganizationId();
     await _taskService.getTaskRequest(organizationId).then((response) {
       int statusCode = response.statusCode;
       Map<String, dynamic> body = json.decode(response.body);
@@ -107,9 +107,9 @@ class TaskManager with ChangeNotifier {
     return task;
   }
 
-  Future<TaskStatistic> getTaskStatistics() async {
-    TaskStatistic taskStatistic;
-    int userId = await _localStorage.getId();
+  Future<TaskStatistic?> getTaskStatistics() async {
+    TaskStatistic? taskStatistic;
+    int? userId = await _localStorage.getId();
     await _taskService.getTaskStatisticsRequest(userId).then((response) {
       int statusCode = response.statusCode;
       Map<String, dynamic> body = json.decode(response.body);
@@ -135,7 +135,7 @@ class TaskManager with ChangeNotifier {
     return taskStatistic;
   }
 
-  Future<bool> markTaskAsCompleted({int taskId, String status}) async {
+  Future<bool> markTaskAsCompleted({int? taskId, String? status}) async {
     bool isDone = false;
     await _taskService
         .markAsCompletedRequest(status: status, taskId: taskId)

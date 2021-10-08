@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class PersonalAccountView extends StatelessWidget {
-  const PersonalAccountView({Key key}) : super(key: key);
+  const PersonalAccountView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

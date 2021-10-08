@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 ///Widget that draw a beautiful checkbox rounded. Provided with animation if wanted
 class CustomCheckBox extends StatefulWidget {
   const CustomCheckBox({
-    Key key,
+    Key? key,
     this.isChecked,
     this.checkedWidget,
     this.uncheckedWidget,
@@ -11,46 +11,45 @@ class CustomCheckBox extends StatefulWidget {
     this.uncheckedColor,
     this.size,
     this.animationDuration,
-    @required this.onTap,
-  })  : assert(onTap != null),
-        super(key: key);
+    required this.onTap,
+  })  : super(key: key);
 
   ///Define wether the checkbox is marked or not
-  final bool isChecked;
+  final bool? isChecked;
 
   ///Define the widget that is shown when Widgets is checked
-  final Widget checkedWidget;
+  final Widget? checkedWidget;
 
   ///Define the widget that is shown when Widgets is unchecked
-  final Widget uncheckedWidget;
+  final Widget? uncheckedWidget;
 
   ///Define the color that is shown when Widgets is checked
-  final Color checkedColor;
+  final Color? checkedColor;
 
   ///Define the color that is shown when Widgets is unchecked
-  final Color uncheckedColor;
+  final Color? uncheckedColor;
 
   ///Define the size of the checkbox
-  final double size;
+  final double? size;
 
   ///Define Function that os executed when user tap on checkbox
-  final Function(bool) onTap;
+  final Function(bool?) onTap;
 
   ///Define the duration of the animation. If any
-  final Duration animationDuration;
+  final Duration? animationDuration;
 
   @override
   _CustomCheckBoxState createState() => _CustomCheckBoxState();
 }
 
 class _CustomCheckBoxState extends State<CustomCheckBox> {
-  bool isChecked;
-  Duration animationDuration;
-  double size;
-  Widget checkedWidget;
-  Widget uncheckedWidget;
-  Color checkedColor;
-  Color uncheckedColor;
+  bool? isChecked;
+  late Duration animationDuration;
+  double? size;
+  Widget? checkedWidget;
+  Widget? uncheckedWidget;
+  late Color checkedColor;
+  Color? uncheckedColor;
 
   @override
   void initState() {
@@ -61,7 +60,7 @@ class _CustomCheckBoxState extends State<CustomCheckBox> {
     checkedWidget =
         widget.checkedWidget ?? const Icon(Icons.check, color: Colors.white);
     uncheckedWidget = widget.uncheckedWidget ?? const SizedBox.shrink();
-    uncheckedColor = isChecked ? widget.uncheckedColor : Colors.grey;
+    uncheckedColor = isChecked! ? widget.uncheckedColor : Colors.grey;
     super.initState();
   }
 
@@ -76,22 +75,22 @@ class _CustomCheckBoxState extends State<CustomCheckBox> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        setState(() => isChecked = !isChecked);
-        widget?.onTap(isChecked);
+        setState(() => isChecked = !isChecked!);
+        widget.onTap(isChecked);
       },
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(size / 2),
+        borderRadius: BorderRadius.circular(size! / 2),
         child: AnimatedContainer(
           duration: animationDuration,
           height: size,
           width: size,
           decoration: BoxDecoration(
             border: Border.all(
-              color: isChecked ? checkedColor : uncheckedColor,
+              color: isChecked! ? checkedColor : uncheckedColor!,
             ),
-            borderRadius: BorderRadius.circular(size / 2),
+            borderRadius: BorderRadius.circular(size! / 2),
           ),
-          child: isChecked ? checkedWidget : uncheckedWidget,
+          child: isChecked! ? checkedWidget : uncheckedWidget,
         ),
       ),
     );

@@ -18,7 +18,7 @@ import 'package:tasky_mobile_app/utils/ui_utils/ui_utils.dart';
 
 
 class TaskView extends StatefulWidget {
-  const TaskView({Key key}) : super(key: key);
+  const TaskView({Key? key}) : super(key: key);
 
   @override
   _TaskViewState createState() => _TaskViewState();
@@ -35,7 +35,7 @@ final TaskManager _taskManager = GetIt.I.get<TaskManager>();
       appBar: const CustomAppBarWidget(
         title: 'Tasks',
       ),
-      body: StreamBuilder<Task>(
+      body: StreamBuilder<Task?>(
           stream: _taskManager.getTasks().asStream(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting &&
@@ -98,11 +98,11 @@ final TaskManager _taskManager = GetIt.I.get<TaskManager>();
                       shrinkWrap: true,
                       itemBuilder: (context, index) {
                         return TaskListTile(
-                          dueDate: snapshot.data.data[index].dueDate,
-                          images: snapshot.data.data[index].participants,
-                          taskTitle: snapshot.data.data[index].description,
+                          dueDate: snapshot.data!.data![index].dueDate,
+                          images: snapshot.data!.data![index].participants,
+                          taskTitle: snapshot.data!.data![index].description,
                           isCompleted:
-                              snapshot.data.data[index].status == 'completed',
+                              snapshot.data!.data![index].status == 'completed',
                           onTap: (bool value) async {
                             BotToast.showLoading(
                                 allowClick: false,
@@ -111,7 +111,7 @@ final TaskManager _taskManager = GetIt.I.get<TaskManager>();
                             bool isChanged =
                                 await _taskManager.markTaskAsCompleted(
                                     status: 'completed',
-                                    taskId: snapshot.data.data[index].id);
+                                    taskId: snapshot.data!.data![index].id);
                             BotToast.closeAllLoading();
                             if (isChanged) {
                               uiUtilities.actionAlertWidget(
@@ -120,7 +120,7 @@ final TaskManager _taskManager = GetIt.I.get<TaskManager>();
                                   context: context,
                                   message: 'Marked as completed!');
                               setState(() {
-                                snapshot.data.data[index].status =
+                                snapshot.data!.data![index].status =
                                     value ? 'complete' : 'todo';
                               });
                             } else {
@@ -128,7 +128,7 @@ final TaskManager _taskManager = GetIt.I.get<TaskManager>();
                                   context: context, alertType: 'error');
                               uiUtilities.alertNotification(
                                   context: context,
-                                  message: _taskManager.message);
+                                  message: _taskManager.message!);
                             }
                           },
                           changeStatus: () async {
@@ -151,7 +151,7 @@ final TaskManager _taskManager = GetIt.I.get<TaskManager>();
                                               ),
                                               value: 'todo',
                                               groupValue: 'status',
-                                              onChanged: (value) async {
+                                              onChanged: (dynamic value) async {
                                                 BotToast.showLoading(
                                                     allowClick: false,
                                                     clickClose: false,
@@ -163,8 +163,8 @@ final TaskManager _taskManager = GetIt.I.get<TaskManager>();
                                                         .markTaskAsCompleted(
                                                             status: value,
                                                             taskId: snapshot
-                                                                .data
-                                                                .data[index]
+                                                                .data!
+                                                                .data![index]
                                                                 .id);
                                                 BotToast.closeAllLoading();
                                                 await _taskManager.getTasks();
@@ -186,7 +186,7 @@ final TaskManager _taskManager = GetIt.I.get<TaskManager>();
                                                   uiUtilities.alertNotification(
                                                       context: context,
                                                       message:
-                                                          _taskManager.message);
+                                                          _taskManager.message!);
                                                 }
                                               }),
                                           RadioListTile(
@@ -198,7 +198,7 @@ final TaskManager _taskManager = GetIt.I.get<TaskManager>();
                                               ),
                                               value: 'in progress',
                                               groupValue: 'status',
-                                              onChanged: (value) async {
+                                              onChanged: (dynamic value) async {
                                                 BotToast.showLoading(
                                                     allowClick: false,
                                                     clickClose: false,
@@ -210,8 +210,8 @@ final TaskManager _taskManager = GetIt.I.get<TaskManager>();
                                                         .markTaskAsCompleted(
                                                             status: value,
                                                             taskId: snapshot
-                                                                .data
-                                                                .data[index]
+                                                                .data!
+                                                                .data![index]
                                                                 .id);
                                                 BotToast.closeAllLoading();
                                                 await _taskManager.getTasks();
@@ -233,7 +233,7 @@ final TaskManager _taskManager = GetIt.I.get<TaskManager>();
                                                   uiUtilities.alertNotification(
                                                       context: context,
                                                       message:
-                                                          _taskManager.message);
+                                                          _taskManager.message!);
                                                 }
                                               }),
                                           RadioListTile(
@@ -245,7 +245,7 @@ final TaskManager _taskManager = GetIt.I.get<TaskManager>();
                                               ),
                                               value: 'completed',
                                               groupValue: 'status',
-                                              onChanged: (value) async {
+                                              onChanged: (dynamic value) async {
                                                 BotToast.showLoading(
                                                     allowClick: false,
                                                     clickClose: false,
@@ -257,8 +257,8 @@ final TaskManager _taskManager = GetIt.I.get<TaskManager>();
                                                         .markTaskAsCompleted(
                                                             status: value,
                                                             taskId: snapshot
-                                                                .data
-                                                                .data[index]
+                                                                .data!
+                                                                .data![index]
                                                                 .id);
                                                 BotToast.closeAllLoading();
                                                 if (isChanged) {
@@ -280,7 +280,7 @@ final TaskManager _taskManager = GetIt.I.get<TaskManager>();
                                                   uiUtilities.alertNotification(
                                                       context: context,
                                                       message:
-                                                          _taskManager.message);
+                                                          _taskManager.message!);
                                                 }
                                               })
                                         ],
@@ -300,12 +300,12 @@ final TaskManager _taskManager = GetIt.I.get<TaskManager>();
                                         'Task:',
                                         style: Theme.of(context)
                                             .textTheme
-                                            .bodyText2
+                                            .bodyText2!
                                             .copyWith(
                                                 fontWeight: FontWeight.w600),
                                       ),
                                       Text(
-                                        snapshot.data.data[index].description,
+                                        snapshot.data!.data![index].description!,
                                         style: Theme.of(context)
                                             .textTheme
                                             .bodyText1,
@@ -317,7 +317,7 @@ final TaskManager _taskManager = GetIt.I.get<TaskManager>();
                                         'Assignees:',
                                         style: Theme.of(context)
                                             .textTheme
-                                            .bodyText2
+                                            .bodyText2!
                                             .copyWith(
                                                 fontWeight: FontWeight.w600),
                                       ),
@@ -338,10 +338,10 @@ final TaskManager _taskManager = GetIt.I.get<TaskManager>();
                                                     child:
                                                         ExtendedImage.network(
                                                       snapshot
-                                                          .data
-                                                          .data[index]
-                                                          .assignees[index]
-                                                          .picture,
+                                                          .data!
+                                                          .data![index]
+                                                          .assignees![index]
+                                                          .picture!,
                                                       fit: BoxFit.cover,
                                                       width: 60,
                                                       height: 60,
@@ -375,8 +375,8 @@ final TaskManager _taskManager = GetIt.I.get<TaskManager>();
                                                     const SizedBox(
                                                       width: 4,
                                                     ),
-                                            itemCount: snapshot.data.data[index]
-                                                .assignees.length),
+                                            itemCount: snapshot.data!.data![index]
+                                                .assignees!.length),
                                       )
                                     ],
                                   );
@@ -391,7 +391,7 @@ final TaskManager _taskManager = GetIt.I.get<TaskManager>();
                               indent: 40,
                             ),
                           ),
-                      itemCount: snapshot.data.data.length),
+                      itemCount: snapshot.data!.data!.length),
                 ),
               ],
             );
@@ -412,29 +412,29 @@ final TaskManager _taskManager = GetIt.I.get<TaskManager>();
 // this widget represent each individual task list tile
 class TaskListTile extends StatelessWidget {
   const TaskListTile({
-    Key key,
-    @required this.images,
-    @required this.isCompleted,
-    @required this.taskTitle,
-    @required this.onTap,
-    @required this.changeStatus,
-    @required this.dueDate,
-    @required this.onOpened,
+    Key? key,
+    required this.images,
+    required this.isCompleted,
+    required this.taskTitle,
+    required this.onTap,
+    required this.changeStatus,
+    required this.dueDate,
+    required this.onOpened,
   }) : super(key: key);
 
-  final List<String> images;
+  final List<String>? images;
   final bool isCompleted;
-  final String taskTitle;
+  final String? taskTitle;
   final Function onTap;
   final Function changeStatus;
-  final String dueDate;
+  final String? dueDate;
   final Function onOpened;
 
   @override
   Widget build(BuildContext context) {
-    final List dates = dueDate.split(' ');
+    final List dates = dueDate!.split(' ');
     String dateFormat =
-        DateFormat().add_yMMMEd().format(DateTime.tryParse(dates[0]));
+        DateFormat().add_yMMMEd().format(DateTime.tryParse(dates[0])!);
 
     return GestureDetector(
       onTap: () => onOpened(),
@@ -467,10 +467,10 @@ class TaskListTile extends StatelessWidget {
                 ),
                 Expanded(
                   child: Text(
-                    taskTitle,
+                    taskTitle!,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
-                    style: Theme.of(context).textTheme.bodyText1.copyWith(
+                    style: Theme.of(context).textTheme.bodyText1!.copyWith(
                         decoration: isCompleted
                             ? TextDecoration.lineThrough
                             : TextDecoration.none),
@@ -485,17 +485,17 @@ class TaskListTile extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 FlutterImageStack(
-                  imageList: images,
-                  extraCountTextStyle: Theme.of(context).textTheme.subtitle2,
+                  imageList: images!,
+                  extraCountTextStyle: Theme.of(context).textTheme.subtitle2!,
                   itemBorderColor: Colors
                       .primaries[Random().nextInt(Colors.primaries.length)],
                   itemRadius: 25,
-                  itemCount: images.length,
+                  itemCount: images!.length,
                   itemBorderWidth: 1,
                   backgroundColor: Colors
                       .primaries[Random().nextInt(Colors.primaries.length)]
                       .withOpacity(.5),
-                  totalCount: images.length,
+                  totalCount: images!.length,
                 ),
                 Row(
                   children: [
@@ -503,7 +503,7 @@ class TaskListTile extends StatelessWidget {
                       '$dateFormat ${dates[1]}',
                       style: Theme.of(context)
                           .textTheme
-                          .bodyText1
+                          .bodyText1!
                           .copyWith(color: customRedColor),
                     ),
                     const SizedBox(
@@ -550,7 +550,7 @@ class TaskListTile extends StatelessWidget {
                                         'Change status',
                                         style: Theme.of(context)
                                             .textTheme
-                                            .bodyText1
+                                            .bodyText1!
                                             .copyWith(color: Colors.white),
                                       ),
                                       trailing: const Icon(
@@ -570,7 +570,7 @@ class TaskListTile extends StatelessWidget {
                                         'Edit Task',
                                         style: Theme.of(context)
                                             .textTheme
-                                            .bodyText1
+                                            .bodyText1!
                                             .copyWith(color: Colors.white),
                                       ),
                                       trailing: const Icon(
@@ -590,7 +590,7 @@ class TaskListTile extends StatelessWidget {
                                         'Delete',
                                         style: Theme.of(context)
                                             .textTheme
-                                            .bodyText1
+                                            .bodyText1!
                                             .copyWith(color: Colors.white),
                                       ),
                                       trailing: const Icon(

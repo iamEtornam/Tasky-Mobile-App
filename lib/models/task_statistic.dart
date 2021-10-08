@@ -5,9 +5,9 @@ class TaskStatistic {
     this.data,
   });
 
-  bool status;
-  String message;
-  List<Datum> data;
+  bool? status;
+  String? message;
+  List<Datum>? data;
 
   factory TaskStatistic.fromMap(Map<String, dynamic> json) => TaskStatistic(
         status: json["status"],
@@ -22,7 +22,7 @@ class TaskStatistic {
         "message": message,
         "data": data == null
             ? null
-            : List<dynamic>.from(data.map((x) => x.toMap())),
+            : List<dynamic>.from(data!.map((x) => x.toMap())),
       };
 }
 
@@ -33,9 +33,9 @@ class Datum {
     this.completed,
   });
 
-  int todo;
-  int inProgress;
-  int completed;
+  int? todo;
+  int? inProgress;
+  int? completed;
 
   factory Datum.fromMap(Map<String, dynamic> json) => Datum(
         todo: json["todo"],

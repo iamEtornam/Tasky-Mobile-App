@@ -4,7 +4,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_font_icons/flutter_font_icons.dart';
 import 'package:get_it/get_it.dart';
-import 'package:sample_data/avatars.dart';
 import 'package:tasky_mobile_app/managers/inbox_manager.dart';
 import 'package:tasky_mobile_app/models/inbox.dart';
 import 'package:tasky_mobile_app/shared_widgets/empty_widget.dart';
@@ -12,7 +11,7 @@ import 'package:tasky_mobile_app/utils/ui_utils/custom_colors.dart';
 import 'package:time_ago_provider/time_ago_provider.dart' as time_ago;
 
 class InboxView extends StatefulWidget {
-  const InboxView({Key key}) : super(key: key);
+  const InboxView({Key? key}) : super(key: key);
 
   @override
   _InboxViewState createState() => _InboxViewState();
@@ -28,56 +27,56 @@ class _InboxViewState extends State<InboxView> {
     'Assigned to team'
   ];
   int currentIndex = 0;
-  final List<Map<String, dynamic>> data = [
-    {
-      'avatar': kidsAvatar(),
-      'description':
-          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce luctus lobortis metus et auctor. Curabitur suscipit, lectus ut pulvinar cursus, dolor arcu iaculis nulla, id dictum ipsum nisl eget dui.',
-      'isLiked': Random().nextBool(),
-      'teamName': 'Backend team',
-      'title': 'Update documentation',
-      'timestamp': time_ago.format(
-          DateTime.now().subtract(Duration(days: Random().nextInt(10)))),
-      'dueDate': 'Due soon',
-      'replies': Random().nextInt(10)
-    },
-    {
-      'avatar': kidsAvatar(),
-      'description':
-          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce luctus lobortis metus et auctor. ',
-      'isLiked': Random().nextBool(),
-      'teamName': 'Frontend team',
-      'title': 'Mobile View Compartibility',
-      'timestamp': time_ago.format(
-          DateTime.now().subtract(Duration(days: Random().nextInt(10)))),
-      'dueDate': 'Completed',
-      'replies': Random().nextInt(10)
-    },
-    {
-      'avatar': kidsAvatar(),
-      'description':
-          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce luctus lobortis metus et auctor. Curabitur suscipit, lectus ut pulvinar cursus, dolor arcu iaculis nulla, id dictum ipsum nisl eget dui.',
-      'isLiked': Random().nextBool(),
-      'teamName': 'UI/UX team',
-      'title': 'Make changes to mobile mockup',
-      'timestamp': time_ago.format(
-          DateTime.now().subtract(Duration(days: Random().nextInt(10)))),
-      'dueDate': 'Due soon',
-      'replies': Random().nextInt(10)
-    },
-    {
-      'avatar': kidsAvatar(),
-      'description':
-          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce luctus lobortis metus et auctor. ',
-      'isLiked': Random().nextBool(),
-      'teamName': 'Frontend team',
-      'title': 'Mobile View Compartibility',
-      'timestamp': time_ago.format(
-          DateTime.now().subtract(Duration(days: Random().nextInt(10)))),
-      'dueDate': 'Completed',
-      'replies': Random().nextInt(10)
-    }
-  ];
+  // final List<Map<String, dynamic>> data = [
+  //   {
+  //     'avatar': kidsAvatar(),
+  //     'description':
+  //         'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce luctus lobortis metus et auctor. Curabitur suscipit, lectus ut pulvinar cursus, dolor arcu iaculis nulla, id dictum ipsum nisl eget dui.',
+  //     'isLiked': Random().nextBool(),
+  //     'teamName': 'Backend team',
+  //     'title': 'Update documentation',
+  //     'timestamp': time_ago.format(
+  //         DateTime.now().subtract(Duration(days: Random().nextInt(10)))),
+  //     'dueDate': 'Due soon',
+  //     'replies': Random().nextInt(10)
+  //   },
+  //   {
+  //     'avatar': kidsAvatar(),
+  //     'description':
+  //         'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce luctus lobortis metus et auctor. ',
+  //     'isLiked': Random().nextBool(),
+  //     'teamName': 'Frontend team',
+  //     'title': 'Mobile View Compartibility',
+  //     'timestamp': time_ago.format(
+  //         DateTime.now().subtract(Duration(days: Random().nextInt(10)))),
+  //     'dueDate': 'Completed',
+  //     'replies': Random().nextInt(10)
+  //   },
+  //   {
+  //     'avatar': kidsAvatar(),
+  //     'description':
+  //         'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce luctus lobortis metus et auctor. Curabitur suscipit, lectus ut pulvinar cursus, dolor arcu iaculis nulla, id dictum ipsum nisl eget dui.',
+  //     'isLiked': Random().nextBool(),
+  //     'teamName': 'UI/UX team',
+  //     'title': 'Make changes to mobile mockup',
+  //     'timestamp': time_ago.format(
+  //         DateTime.now().subtract(Duration(days: Random().nextInt(10)))),
+  //     'dueDate': 'Due soon',
+  //     'replies': Random().nextInt(10)
+  //   },
+  //   {
+  //     'avatar': kidsAvatar(),
+  //     'description':
+  //         'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce luctus lobortis metus et auctor. ',
+  //     'isLiked': Random().nextBool(),
+  //     'teamName': 'Frontend team',
+  //     'title': 'Mobile View Compartibility',
+  //     'timestamp': time_ago.format(
+  //         DateTime.now().subtract(Duration(days: Random().nextInt(10)))),
+  //     'dueDate': 'Completed',
+  //     'replies': Random().nextInt(10)
+  //   }
+  // ];
 
   @override
   Widget build(BuildContext context) {
@@ -87,7 +86,7 @@ class _InboxViewState extends State<InboxView> {
           'Inbox',
           style: Theme.of(context)
               .textTheme
-              .headline6
+              .headline6!
               .copyWith(fontWeight: FontWeight.bold),
         ),
         bottom: PreferredSize(
@@ -122,7 +121,7 @@ class _InboxViewState extends State<InboxView> {
                                   options[index],
                                   style: Theme.of(context)
                                       .textTheme
-                                      .bodyText1
+                                      .bodyText1!
                                       .copyWith(
                                           color: currentIndex == index
                                               ? customRedColor
@@ -137,8 +136,9 @@ class _InboxViewState extends State<InboxView> {
           ),
         ),
       ),
-      body: StreamBuilder<Inbox>(
-          stream: _inboxManager.getInboxes().asStream(),
+      body: StreamBuilder<Inbox?>(
+          stream:
+              _inboxManager.getInboxes(query: options[currentIndex]).asStream(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting &&
                 snapshot.data == null) {
@@ -147,28 +147,33 @@ class _InboxViewState extends State<InboxView> {
 
             if (snapshot.connectionState == ConnectionState.done &&
                 snapshot.data == null) {
-              return EmptyWidget(
-                message: snapshot.data.message,
+              return const EmptyWidget(
+                message: 'You don\'t have any message yet.',
                 imageAsset: 'no_inbox.png',
               );
             }
 
             return ListView.separated(
+                shrinkWrap: true,
                 padding: const EdgeInsets.all(24),
                 itemBuilder: (context, index) => InboxItemWidget(
-                      avatar: snapshot.data.data[index].user.picture,
-                      description: snapshot.data.data[index].message,
-                      isLiked: snapshot.data.data[index].like
-                          .contains(_firebaseAuth.currentUser.uid),
-                      teamName: snapshot.data.data[index].team,
-                      title: snapshot.data.data[index].title,
-                      timestamp:
-                          time_ago.format(snapshot.data.data[index].createdAt),
+                      avatar: snapshot.data!.data![index].user!.picture,
+                      description: snapshot.data!.data![index].message,
+                      isLiked: snapshot.data!.data![index].like == null
+                          ? false
+                          : snapshot.data!.data![index].like
+                              .contains(_firebaseAuth.currentUser!.uid),
+                      teamName: snapshot.data!.data![index].team,
+                      title: snapshot.data!.data![index].title,
+                      timestamp: time_ago
+                          .format(snapshot.data!.data![index].createdAt!),
                       dueDate: 'Due soon',
-                      replies: snapshot.data.data[index].like.length,
+                      replies: snapshot.data!.data![index].like == null
+                          ? 0
+                          : snapshot.data!.data![index].like!.length,
                     ),
                 separatorBuilder: (context, index) => const Divider(),
-                itemCount: snapshot.data.data.length);
+                itemCount: snapshot.data!.data!.length);
           }),
       floatingActionButton: FloatingActionButton(
         backgroundColor: customRedColor,
@@ -183,24 +188,24 @@ class _InboxViewState extends State<InboxView> {
 }
 
 class InboxItemWidget extends StatelessWidget {
-  final String teamName;
-  final String title;
-  final String description;
+  final String? teamName;
+  final String? title;
+  final String? description;
   final String dueDate;
   final String timestamp;
   final bool isLiked;
-  final String avatar;
+  final String? avatar;
   final int replies;
 
   const InboxItemWidget({
-    Key key,
-    @required this.teamName,
-    @required this.title,
-    @required this.description,
-    @required this.dueDate,
-    @required this.timestamp,
-    @required this.isLiked,
-    @required this.avatar,
+    Key? key,
+    required this.teamName,
+    required this.title,
+    required this.description,
+    required this.dueDate,
+    required this.timestamp,
+    required this.isLiked,
+    required this.avatar,
     this.replies = 0,
   }) : super(key: key);
 
@@ -221,9 +226,6 @@ class InboxItemWidget extends StatelessWidget {
                 children: [
                   CircleAvatar(
                     radius: 6,
-                    backgroundImage: avatar.isEmpty
-                        ? const ExactAssetImage('assets/avatar.png')
-                        : NetworkImage(avatar),
                     backgroundColor: Colors
                         .primaries[Random().nextInt(Colors.primaries.length)],
                   ),
@@ -231,14 +233,14 @@ class InboxItemWidget extends StatelessWidget {
                     width: 8,
                   ),
                   Text(
-                    teamName,
+                    teamName!,
                     style: Theme.of(context).textTheme.bodyText1,
                   ),
                 ],
               ),
               Text(
                 dueDate,
-                style: Theme.of(context).textTheme.bodyText1.copyWith(
+                style: Theme.of(context).textTheme.bodyText1!.copyWith(
                     color: dueDate == 'Completed'
                         ? Colors.green
                         : customGreyColor),
@@ -280,12 +282,12 @@ class InboxItemWidget extends StatelessWidget {
                     width: 10,
                   ),
                   Text(
-                    title,
+                    title!,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: Theme.of(context)
                         .textTheme
-                        .bodyText1
+                        .bodyText1!
                         .copyWith(fontWeight: FontWeight.w600),
                   ),
                 ],
@@ -303,7 +305,7 @@ class InboxItemWidget extends StatelessWidget {
                               '$replies',
                               style: Theme.of(context)
                                   .textTheme
-                                  .subtitle2
+                                  .subtitle2!
                                   .copyWith(
                                       fontWeight: FontWeight.normal,
                                       color: Colors.white),
@@ -332,8 +334,9 @@ class InboxItemWidget extends StatelessWidget {
                     .primaries[Random().nextInt(Colors.primaries.length)]
                     .withOpacity(.2),
                 radius: 30,
-                backgroundImage:
-                    ExactAssetImage(kidsAvatar(), package: 'sample_data'),
+                backgroundImage: (avatar!.isEmpty
+                    ? const ExactAssetImage('assets/avatar.png')
+                    : NetworkImage(avatar!)) as ImageProvider,
               ),
               const SizedBox(
                 width: 10,
@@ -344,12 +347,12 @@ class InboxItemWidget extends StatelessWidget {
                   SizedBox(
                     width: MediaQuery.of(context).size.width - 120,
                     child: Text(
-                      description,
+                      description!,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                       style: Theme.of(context)
                           .textTheme
-                          .bodyText1
+                          .bodyText1!
                           .copyWith(fontWeight: FontWeight.normal),
                     ),
                   ),
@@ -360,7 +363,7 @@ class InboxItemWidget extends StatelessWidget {
                         '$timestamp - ',
                         style: Theme.of(context)
                             .textTheme
-                            .bodyText2
+                            .bodyText2!
                             .copyWith(color: customGreyColor),
                       ),
                       Icon(

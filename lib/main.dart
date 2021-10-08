@@ -24,7 +24,9 @@ import 'package:tasky_mobile_app/utils/network_utils/custom_http_client.dart';
 import 'package:tasky_mobile_app/views/auth/login_view.dart';
 import 'package:tasky_mobile_app/views/dashboard/dashboard_view.dart';
 
+import 'managers/inbox_manager.dart';
 import 'managers/organization_manager.dart';
+import 'services/inbox_service.dart';
 import 'services/user_service.dart';
 import 'shared_widgets/custom_theme.dart';
 import 'utils/network_utils/apple_sign_in_avaliability.dart';
@@ -50,6 +52,9 @@ setupSingletons() async {
 
   locator.registerLazySingleton<TaskService>(() => TaskService());
   locator.registerLazySingleton<TaskManager>(() => TaskManager());
+
+    locator.registerLazySingleton<InboxService>(() => InboxService());
+  locator.registerLazySingleton<InboxManager>(() => InboxManager());
 }
 
 main() async {
@@ -67,13 +72,13 @@ main() async {
 }
 
 class MyApp extends StatelessWidget {
-  MyApp({Key key}) : super(key: key);
+  MyApp({Key? key}) : super(key: key);
   final FirebaseAnalytics _analytics = FirebaseAnalytics();
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<User>(
+    return StreamBuilder<User?>(
       stream: _auth.authStateChanges(),
       builder: (context, snapshot) {
 
@@ -102,7 +107,7 @@ class MyApp extends StatelessWidget {
             BotToastNavigatorObserver(),
           ],
           localeResolutionCallback:
-              (Locale locale, Iterable<Locale> supportedLocales) {
+              (Locale? locale, Iterable<Locale> supportedLocales) {
             return locale;
           },
         );

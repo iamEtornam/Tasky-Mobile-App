@@ -18,7 +18,7 @@ import 'package:textfield_tags/textfield_tags.dart';
 
 
 class AccountView extends StatefulWidget {
-  const AccountView({Key key}) : super(key: key);
+  const AccountView({Key? key}) : super(key: key);
 
   @override
   _AccountViewState createState() => _AccountViewState();
@@ -38,7 +38,7 @@ final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
           'Account',
           style: Theme.of(context)
               .textTheme
-              .headline6
+              .headline6!
               .copyWith(fontWeight: FontWeight.bold),
         ),
       ),
@@ -46,7 +46,7 @@ final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
         child: ListView(
           padding: const EdgeInsets.all(24),
           children: [
-            StreamBuilder<User>(
+            StreamBuilder<User?>(
                 stream: _userManager.getUserInformation().asStream(),
                 builder: (context, snapshot) {
                   if (!snapshot.hasData) {
@@ -70,7 +70,7 @@ final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
                           'Full Name here',
                           style: Theme.of(context)
                               .textTheme
-                              .headline6
+                              .headline6!
                               .copyWith(fontWeight: FontWeight.w600),
                         )),
                         const SizedBox(
@@ -79,7 +79,7 @@ final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
                         Center(
                             child: Text(
                           'View Profile',
-                          style: Theme.of(context).textTheme.bodyText2.copyWith(
+                          style: Theme.of(context).textTheme.bodyText2!.copyWith(
                               fontWeight: FontWeight.normal,
                               color: customRedColor),
                         )),
@@ -88,7 +88,7 @@ final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
                         ),
                         Text(
                           'Organizations',
-                          style: Theme.of(context).textTheme.bodyText1.copyWith(
+                          style: Theme.of(context).textTheme.bodyText1!.copyWith(
                               fontWeight: FontWeight.normal,
                               color: customGreyColor),
                         ),
@@ -104,7 +104,7 @@ final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
                               'info@mail.com',
                               style: Theme.of(context)
                                   .textTheme
-                                  .bodyText2
+                                  .bodyText2!
                                   .copyWith(color: customGreyColor),
                             ),
                             trailing: TextButton(
@@ -118,7 +118,7 @@ final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
                                   'Invite',
                                   style: Theme.of(context)
                                       .textTheme
-                                      .button
+                                      .button!
                                       .copyWith(color: Colors.white),
                                 )),
                           ),
@@ -134,9 +134,9 @@ final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
                                   Random().nextInt(Colors.primaries.length)]
                               .withOpacity(.2),
                           radius: 60,
-                          backgroundImage: snapshot.data == null
+                          backgroundImage: (snapshot.data == null
                               ? const ExactAssetImage('assets/avatar.png')
-                              : NetworkImage(snapshot.data.data.picture),
+                              : NetworkImage(snapshot.data!.data!.picture!)) as ImageProvider<Object>?,
                         ),
                       ),
                       const SizedBox(
@@ -144,10 +144,10 @@ final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
                       ),
                       Center(
                           child: Text(
-                        snapshot.data.data.name,
+                        snapshot.data!.data!.name!,
                         style: Theme.of(context)
                             .textTheme
-                            .headline6
+                            .headline6!
                             .copyWith(fontWeight: FontWeight.w600),
                       )),
                       const SizedBox(
@@ -174,7 +174,7 @@ final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
                           },
                           child: Text(
                             'View Profile',
-                            style: Theme.of(context).textTheme.bodyText2.copyWith(
+                            style: Theme.of(context).textTheme.bodyText2!.copyWith(
                                 fontWeight: FontWeight.normal,
                                 color: customRedColor),
                           ),
@@ -185,7 +185,7 @@ final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
                       ),
                       Text(
                         'Organizations',
-                        style: Theme.of(context).textTheme.bodyText1.copyWith(
+                        style: Theme.of(context).textTheme.bodyText1!.copyWith(
                             fontWeight: FontWeight.normal,
                             color: customGreyColor),
                       ),
@@ -194,14 +194,14 @@ final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
                             borderRadius: BorderRadius.circular(10)),
                         child: ListTile(
                           title: Text(
-                            snapshot.data?.data?.organization?.name,
+                            snapshot.data!.data!.organization!.name!,
                             style: Theme.of(context).textTheme.bodyText1,
                           ),
                           subtitle: Text(
-                            snapshot.data?.data?.email,
+                            snapshot.data!.data!.email!,
                             style: Theme.of(context)
                                 .textTheme
-                                .bodyText2
+                                .bodyText2!
                                 .copyWith(color: customGreyColor),
                           ),
                           trailing: TextButton(
@@ -230,7 +230,7 @@ final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
                                                       .cursorColor,
                                                   hintStyle: Theme.of(context)
                                                       .textTheme
-                                                      .bodyText1
+                                                      .bodyText1!
                                                       .copyWith(
                                                           color: Colors.grey),
                                                   hintText: 'Emails',
@@ -258,7 +258,7 @@ final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
                                                   //These are properties you can tweek for customization of tags
                                                   tagTextStyle: Theme.of(context)
                                                       .textTheme
-                                                      .bodyText1
+                                                      .bodyText1!
                                                       .copyWith(
                                                           color: Colors.white),
                                                   tagDecoration: BoxDecoration(
@@ -317,7 +317,7 @@ final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
                                                       'Invite email(s)',
                                                       style: Theme.of(context)
                                                           .textTheme
-                                                          .button
+                                                          .button!
                                                           .copyWith(
                                                               color:
                                                                   Colors.white),
@@ -333,7 +333,7 @@ final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
                                 'Invite',
                                 style: Theme.of(context)
                                     .textTheme
-                                    .button
+                                    .button!
                                     .copyWith(color: Colors.white),
                               )),
                         ),
@@ -346,7 +346,7 @@ final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
             ),
             Text(
               'Notifications',
-              style: Theme.of(context).textTheme.bodyText1.copyWith(
+              style: Theme.of(context).textTheme.bodyText1!.copyWith(
                   fontWeight: FontWeight.normal, color: customGreyColor),
             ),
             Material(
@@ -363,7 +363,7 @@ final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
                       'Off',
                       style: Theme.of(context)
                           .textTheme
-                          .bodyText1
+                          .bodyText1!
                           .copyWith(color: customGreyColor),
                     ),
                     leading: Icon(Icons.notifications_paused_outlined,
@@ -386,7 +386,7 @@ final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
                       'Manage',
                       style: Theme.of(context)
                           .textTheme
-                          .bodyText1
+                          .bodyText1!
                           .copyWith(color: customGreyColor),
                     ),
                     leading: Icon(
@@ -409,7 +409,7 @@ final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
             ),
             Text(
               'Support',
-              style: Theme.of(context).textTheme.bodyText1.copyWith(
+              style: Theme.of(context).textTheme.bodyText1!.copyWith(
                   fontWeight: FontWeight.normal, color: customGreyColor),
             ),
             Material(
@@ -458,7 +458,7 @@ final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
             ),
             Text(
               'More',
-              style: Theme.of(context).textTheme.bodyText1.copyWith(
+              style: Theme.of(context).textTheme.bodyText1!.copyWith(
                   fontWeight: FontWeight.normal, color: customGreyColor),
             ),
             Material(
@@ -567,7 +567,7 @@ final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
                   'Log out',
                   style: Theme.of(context)
                       .textTheme
-                      .button
+                      .button!
                       .copyWith(color: customRedColor),
                 ))
           ],

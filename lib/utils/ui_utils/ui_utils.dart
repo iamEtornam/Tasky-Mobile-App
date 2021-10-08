@@ -12,7 +12,7 @@ import 'custom_colors.dart';
 
 class UiUtilities {
   actionAlertWidget(
-      {@required BuildContext context, @required String alertType}) {
+      {required BuildContext context, required String alertType}) {
     YYDialog yyDialog = YYDialog();
     yyDialog.build(context)
       ..width = 120
@@ -59,7 +59,7 @@ class UiUtilities {
   }
 
   alertNotification(
-      {@required String message, @required BuildContext context}) {
+      {required String message, required BuildContext context}) {
     return BotToast.showSimpleNotification(
         title: message,
         backgroundColor:
@@ -69,12 +69,12 @@ class UiUtilities {
         align: Alignment.topCenter);
   }
 
-  Future<XFile> getImage(
-      {@required _image_picker.ImageSource imageSource}) async {
+  Future<XFile?> getImage(
+      {required _image_picker.ImageSource imageSource}) async {
     return await _image_picker.ImagePicker().pickImage(source: imageSource);
   }
 
-  Future<File> getCroppedFile({String file}) async {
+  Future<File?> getCroppedFile({required String file}) async {
     return await ImageCropper.cropImage(
         sourcePath: file,
         compressFormat: ImageCompressFormat.png,

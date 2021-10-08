@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:bot_toast/bot_toast.dart';
+import 'package:collection/collection.dart' show IterableExtension;
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +23,7 @@ import 'package:tasky_mobile_app/utils/ui_utils/custom_colors.dart';
 import 'package:tasky_mobile_app/utils/ui_utils/ui_utils.dart';
 
 class CreateNewTaskView extends StatefulWidget {
-  const CreateNewTaskView({Key key}) : super(key: key);
+  const CreateNewTaskView({Key? key}) : super(key: key);
 
   @override
   _CreateNewTaskViewState createState() => _CreateNewTaskViewState();
@@ -41,8 +42,8 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
   final TextEditingController dueDateTextEditingController =
       TextEditingController();
   final DateFormat dateFormat = DateFormat('yyyy-MM-dd HH:mm');
-  DateTime dueDate;
-  String teamTextEditingController;
+  late DateTime dueDate;
+  String? teamTextEditingController;
 
   @override
   void initState() {
@@ -71,7 +72,7 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
             'New Task',
             style: Theme.of(context)
                 .textTheme
-                .headline6
+                .headline6!
                 .copyWith(fontWeight: FontWeight.bold, color: Colors.white),
           ),
         ),
@@ -84,7 +85,7 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
                 'What needs to be done ?',
                 style: Theme.of(context)
                     .textTheme
-                    .bodyText1
+                    .bodyText1!
                     .copyWith(fontWeight: FontWeight.w600),
               ),
               const SizedBox(
@@ -111,10 +112,10 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
                         borderSide: BorderSide(color: Colors.black)),
                     hintStyle: Theme.of(context)
                         .textTheme
-                        .bodyText1
+                        .bodyText1!
                         .copyWith(color: Colors.grey)),
                 validator: (value) {
-                  if (value.isEmpty) {
+                  if (value!.isEmpty) {
                     return 'Field cannot be Empty';
                   }
                   return null;
@@ -127,7 +128,7 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
                 'By when ?',
                 style: Theme.of(context)
                     .textTheme
-                    .bodyText1
+                    .bodyText1!
                     .copyWith(fontWeight: FontWeight.w600),
               ),
               const SizedBox(
@@ -135,7 +136,7 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
               ),
               Text(
                 'Due date & time',
-                style: Theme.of(context).textTheme.bodyText2.copyWith(
+                style: Theme.of(context).textTheme.bodyText2!.copyWith(
                     fontWeight: FontWeight.normal, color: customGreyColor),
               ),
               const SizedBox(
@@ -152,7 +153,7 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
                   controller: dueDateTextEditingController,
                   style: Theme.of(context)
                       .textTheme
-                      .bodyText1
+                      .bodyText1!
                       .copyWith(fontWeight: FontWeight.w600),
                   textInputAction: TextInputAction.done,
                   keyboardType: TextInputType.datetime,
@@ -169,14 +170,14 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
                           borderSide: BorderSide(color: Colors.black)),
                       hintStyle: Theme.of(context)
                           .textTheme
-                          .bodyText1
+                          .bodyText1!
                           .copyWith(color: Colors.grey),
                       suffixIcon: const Icon(
                         Icons.arrow_forward,
                         color: customGreyColor,
                       )),
                   validator: (value) {
-                    if (value.isEmpty) {
+                    if (value!.isEmpty) {
                       return 'Field cannot be Empty';
                     }
                     return null;
@@ -190,13 +191,13 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
                 'Which team?',
                 style: Theme.of(context)
                     .textTheme
-                    .bodyText1
+                    .bodyText1!
                     .copyWith(fontWeight: FontWeight.w600),
               ),
               const SizedBox(
                 height: 10,
               ),
-              FutureBuilder<_org.Organization>(
+              FutureBuilder<_org.Organization?>(
                   future: _organizationManager.getOrganization(),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting &&
@@ -206,7 +207,7 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
                           alignLabelWithHint: true,
                           hintStyle: Theme.of(context)
                               .textTheme
-                              .bodyText2
+                              .bodyText2!
                               .copyWith(
                                   fontWeight: FontWeight.normal,
                                   color: customGreyColor),
@@ -252,7 +253,7 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
                           alignLabelWithHint: true,
                           hintStyle: Theme.of(context)
                               .textTheme
-                              .bodyText2
+                              .bodyText2!
                               .copyWith(
                                   fontWeight: FontWeight.normal,
                                   color: customGreyColor),
@@ -296,7 +297,7 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
                         alignLabelWithHint: true,
                         hintStyle: Theme.of(context)
                             .textTheme
-                            .bodyText2
+                            .bodyText2!
                             .copyWith(
                                 fontWeight: FontWeight.normal,
                                 color: customGreyColor),
@@ -324,7 +325,7 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
                         errorStyle:
                             Theme.of(context).inputDecorationTheme.errorStyle,
                       ),
-                      items: snapshot.data.data.teams
+                      items: snapshot.data!.data!.teams!
                           .map((value) => DropdownMenuItem<String>(
                               value: value,
                               child: Text(
@@ -361,7 +362,7 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
                     'Set task reminder',
                     style: Theme.of(context)
                         .textTheme
-                        .bodyText1
+                        .bodyText1!
                         .copyWith(fontWeight: FontWeight.w600),
                   ),
                   Switch.adaptive(
@@ -389,7 +390,7 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
                 'By whom ?',
                 style: Theme.of(context)
                     .textTheme
-                    .bodyText1
+                    .bodyText1!
                     .copyWith(fontWeight: FontWeight.w600),
               ),
               const SizedBox(
@@ -397,7 +398,7 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
               ),
               Text(
                 'select Assignee',
-                style: Theme.of(context).textTheme.bodyText2.copyWith(
+                style: Theme.of(context).textTheme.bodyText2!.copyWith(
                     fontWeight: FontWeight.normal, color: customGreyColor),
               ),
               const SizedBox(
@@ -411,9 +412,9 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
                           child: FlutterImageStack(
                             imageList: _taskManager.assignees
                                 .map((e) => e.picture)
-                                .toList(),
+                                .toList() as List<String>,
                             extraCountTextStyle:
-                                Theme.of(context).textTheme.subtitle2,
+                                Theme.of(context).textTheme.subtitle2!,
                             itemBorderColor:
                                 Theme.of(context).scaffoldBackgroundColor,
                             itemRadius: 50,
@@ -427,7 +428,7 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
                           ),
                         )
                       : const SizedBox.shrink(),
-                  FutureBuilder<Member>(
+                  FutureBuilder<Member?>(
                       future: _organizationManager.getOrganizationMembers(),
                       builder: (context, snapshot) {
                         if (snapshot.connectionState ==
@@ -521,12 +522,12 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
                     ),
                     backgroundColor: Colors.black),
                 onPressed: () async {
-                  if (_formKey.currentState.validate()) {
+                  if (_formKey.currentState!.validate()) {
                     BotToast.showLoading(
                         allowClick: false,
                         clickClose: false,
                         backButtonBehavior: BackButtonBehavior.ignore);
-                    List<int> userIds = [];
+                    List<int?> userIds = [];
                     for (var element in _taskManager.assignees) {
                       userIds.add(element.id);
                     }
@@ -543,7 +544,7 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
                       uiUtilities.actionAlertWidget(
                           context: context, alertType: 'success');
                       uiUtilities.alertNotification(
-                          context: context, message: _taskManager.message);
+                          context: context, message: _taskManager.message!);
 
                       Future.delayed(const Duration(seconds: 3), () {
                         Navigator.pushReplacementNamed(context, '/',
@@ -553,7 +554,7 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
                       uiUtilities.actionAlertWidget(
                           context: context, alertType: 'error');
                       uiUtilities.alertNotification(
-                          context: context, message: _taskManager.message);
+                          context: context, message: _taskManager.message!);
                     }
                   } else {
                     uiUtilities.actionAlertWidget(
@@ -567,7 +568,7 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
                   child: Text('Create Task',
                       style: Theme.of(context)
                           .textTheme
-                          .button
+                          .button!
                           .copyWith(color: Colors.white)),
                 ),
               ),
@@ -590,13 +591,11 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
               child: CupertinoDatePicker(
                 mode: CupertinoDatePickerMode.dateAndTime,
                 onDateTimeChanged: (picked) {
-                  if (picked != null) {
-                    setState(() {
+                     setState(() {
                       dueDate = picked;
                       dueDateTextEditingController.text =
                           dateFormat.format(dueDate);
                     });
-                  }
                 },
                 initialDateTime: DateTime.now(),
                 minimumYear: DateTime.now().year,
@@ -605,7 +604,7 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
             );
           });
     } else {
-      DateTime picked = await showDatePicker(
+      DateTime? picked = await showDatePicker(
         context: context,
         initialDate: DateTime.now(),
         firstDate: DateTime.now(),
@@ -613,13 +612,13 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
         helpText: 'Select due date',
       );
       if (picked != null) {
-        TimeOfDay timeOfDay = await showTimePicker(
+        TimeOfDay? timeOfDay = await showTimePicker(
           context: context,
           initialTime: TimeOfDay.now(),
           helpText: 'Select due time',
         );
 
-        if (timeOfDay != null && picked != null) {
+        if (timeOfDay != null) {
           setState(() {
             dueDate = DateTime(picked.year, picked.month, picked.day,
                 timeOfDay.hour, timeOfDay.minute);
@@ -632,11 +631,11 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
 }
 
 class TaskAssigneeWidget extends StatefulWidget {
-  final Member data;
+  final Member? data;
   final TaskManager taskManager;
   const TaskAssigneeWidget({
-    Key key,
-    @required this.data,@required this.taskManager,
+    Key? key,
+    required this.data,required this.taskManager,
   }) : super(key: key);
 
   @override
@@ -666,17 +665,15 @@ class _TaskAssigneeWidgetState extends State<TaskAssigneeWidget> {
             shrinkWrap: true,
             padding: const EdgeInsets.all(24),
             controller: ModalScrollController.of(context),
-            children: List.generate(widget.data.data.length, (index) {
+            children: List.generate(widget.data!.data!.length, (index) {
               return AssigneeTileWidget(
-                isChecked: (widget.taskManager.assignees.singleWhere(
-                        (it) => it.id == widget.data.data[index].id,
-                        orElse: () => null)) !=
+                isChecked: (widget.taskManager.assignees.singleWhereOrNull(
+                        (it) => it.id == widget.data!.data![index].id)) !=
                     null,
-                selectedUser: widget.data.data[index],
+                selectedUser: widget.data!.data![index],
                 onTap: (Data user) {
                   setState(() {
-                    if ((users.singleWhere((it) => it.id == user.id,
-                            orElse: () => null)) !=
+                    if ((users.singleWhereOrNull((it) => it.id == user.id)) !=
                         null) {
                       users.remove(user);
                     } else {
@@ -711,7 +708,7 @@ class _TaskAssigneeWidgetState extends State<TaskAssigneeWidget> {
               child: Text('Done',
                   style: Theme.of(context)
                       .textTheme
-                      .button
+                      .button!
                       .copyWith(color: Colors.white)),
             ),
           ),
@@ -724,10 +721,10 @@ class _TaskAssigneeWidgetState extends State<TaskAssigneeWidget> {
 
 class AssigneeTileWidget extends StatelessWidget {
   const AssigneeTileWidget(
-      {Key key,
-      @required this.onTap,
-      @required this.selectedUser,
-      @required this.isChecked})
+      {Key? key,
+      required this.onTap,
+      required this.selectedUser,
+      required this.isChecked})
       : super(key: key);
   final bool isChecked;
   final Data selectedUser;
@@ -738,10 +735,10 @@ class AssigneeTileWidget extends StatelessWidget {
     return ListTile(
       leading: CircleAvatar(
         radius: 20,
-        backgroundImage: NetworkImage(selectedUser.picture),
+        backgroundImage: NetworkImage(selectedUser.picture!),
       ),
       title: Text(
-        selectedUser.name,
+        selectedUser.name!,
         style: Theme.of(context).textTheme.bodyText1,
       ),
       trailing: GestureDetector(

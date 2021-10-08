@@ -15,7 +15,7 @@ class SearchView extends SearchDelegate {
               'Clear',
               style: Theme.of(context)
                   .textTheme
-                  .subtitle1
+                  .subtitle1!
                   .copyWith(color: Colors.grey),
             ))),
       )

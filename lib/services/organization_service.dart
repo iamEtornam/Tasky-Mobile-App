@@ -6,24 +6,21 @@ import 'package:http/http.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:logger/logger.dart';
 import 'package:path/path.dart';
-import 'package:tasky_mobile_app/utils/local_storage.dart';
 import 'package:tasky_mobile_app/utils/network_utils/custom_http_client.dart';
 import 'package:tasky_mobile_app/utils/network_utils/endpoints.dart';
 
-
-
 class OrganizationService {
   final CustomHttpClient _customHttpClient = GetIt.I.get<CustomHttpClient>();
-final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final Logger _logger = Logger();
 
-  Future<Response> getOrganizationRequest({int organizationID}) async {
+  Future<Response> getOrganizationRequest({int? organizationID}) async {
     return await _customHttpClient
         .getRequest('$organizationPath/$organizationID');
   }
 
   Future<Response> createOrganizationRequest(
-      {String imageUrl, String name, List<String> teams}) async {
+      {String? imageUrl, String? name, List<String>? teams}) async {
     Map<String, dynamic> body = {
       "name": name,
       "logo": imageUrl,
@@ -34,8 +31,8 @@ final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
         path: createOrganizationPath, body: body);
   }
 
-  Future<Response> fileUploaderRequest({File file}) async {
-    final token = await _firebaseAuth.currentUser.getIdToken();
+  Future<Response> fileUploaderRequest({required File file}) async {
+    final token = await _firebaseAuth.currentUser!.getIdToken();
     Map<String, String> headers = {
       "Accept": "application/json",
       "Authorization": "Bearer $token"
@@ -55,7 +52,9 @@ final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
     return response;
   }
 
-  Future<Response> getMemberListRequest({int organizationId}) async {
-    return await _customHttpClient.getRequest(listMembersPath(organizationId),);
+  Future<Response> getMemberListRequest({int? organizationId}) async {
+    return await _customHttpClient.getRequest(
+      listMembersPath(organizationId),
+    );
   }
 }

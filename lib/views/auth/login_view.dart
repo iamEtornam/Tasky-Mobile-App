@@ -20,7 +20,7 @@ class LoginView extends StatelessWidget {
   final AuthManager _authManager = GetIt.I.get<AuthManager>();
 final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
 
-  LoginView({Key key}) : super(key: key);
+  LoginView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     final appleSignInAvailable =
@@ -45,7 +45,7 @@ final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
             Center(
                 child: Text(
               'Tasky',
-              style: Theme.of(context).textTheme.headline4.copyWith(
+              style: Theme.of(context).textTheme.headline4!.copyWith(
                   fontWeight: FontWeight.bold,
                   fontFamily: GoogleFonts.fugazOne().fontFamily),
             )),
@@ -54,7 +54,7 @@ final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
               'Login or Create a new account',
               style: Theme.of(context)
                   .textTheme
-                  .bodyText2
+                  .bodyText2!
                   .copyWith(color: Colors.grey),
             ),
             const SizedBox(
@@ -84,7 +84,7 @@ final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
                       'Continue with Google',
                       style: Theme.of(context)
                           .textTheme
-                          .button
+                          .button!
                           .copyWith(color: Colors.black),
                     ),
                   ],
@@ -102,7 +102,7 @@ final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
                   uiUtilities.actionAlertWidget(
                       context: context, alertType: 'success');
                   uiUtilities.alertNotification(
-                      context: context, message: _authManager.message);
+                      context: context, message: _authManager.message!);
 
                   Future.delayed(const Duration(seconds: 3), () {
                     Navigator.pushNamedAndRemoveUntil(
@@ -114,7 +114,7 @@ final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
                   uiUtilities.actionAlertWidget(
                       context: context, alertType: 'error');
                   uiUtilities.alertNotification(
-                      context: context, message: _authManager.message);
+                      context: context, message: _authManager.message!);
                 }
               },
             ),
@@ -146,7 +146,7 @@ final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
                         'Sign in with Apple',
                         style: Theme.of(context)
                             .textTheme
-                            .button
+                            .button!
                             .copyWith(color: Colors.white),
                       ),
                     ],
@@ -167,7 +167,7 @@ final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
                       uiUtilities.actionAlertWidget(
                           context: context, alertType: 'success');
                       uiUtilities.alertNotification(
-                          context: context, message: _authManager.message);
+                          context: context, message: _authManager.message!);
 
                       Future.delayed(const Duration(seconds: 3), () {
                         Navigator.pushNamedAndRemoveUntil(
@@ -181,14 +181,14 @@ final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
                       uiUtilities.actionAlertWidget(
                           context: context, alertType: 'error');
                       uiUtilities.alertNotification(
-                          context: context, message: _authManager.message);
+                          context: context, message: _authManager.message!);
                     }
                   } catch (e) {
                     BotToast.closeAllLoading();
                     uiUtilities.actionAlertWidget(
                         context: context, alertType: 'error');
                     uiUtilities.alertNotification(
-                        context: context, message: _authManager.message);
+                        context: context, message: _authManager.message!);
                     debugPrint('$e');
                   }
                 },

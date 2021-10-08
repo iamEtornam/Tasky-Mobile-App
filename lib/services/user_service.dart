@@ -8,7 +8,7 @@ class UserService {
 final CustomHttpClient _customHttpClient = GetIt.I.get<CustomHttpClient>();
 
 
-  Future<Response> updateUserTeamRequest({String team}) async {
+  Future<Response> updateUserTeamRequest({String? team}) async {
     return await _customHttpClient
         .putRequest(path: updateTeamPath, body: {'team': team});
   }
@@ -17,12 +17,12 @@ final CustomHttpClient _customHttpClient = GetIt.I.get<CustomHttpClient>();
     return await _customHttpClient.getRequest(getUserInformationPath);
   }
 
-  Future<Response> inviteMembersRequest({List<String> emails}) async {
+  Future<Response> inviteMembersRequest({List<String>? emails}) async {
     return await _customHttpClient
         .postRequest(path: inviteMembersPath, body: {'emails': emails});
   }
 
-  Future<Response> sendNotificationTokenRequest({String token}) async {
+  Future<Response> sendNotificationTokenRequest({String? token}) async {
     return await _customHttpClient
         .putRequest(path: updateTokenPath, body: {'fcm_token': token});
   }

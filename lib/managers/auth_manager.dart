@@ -10,20 +10,18 @@ import 'package:tasky_mobile_app/services/auth_service.dart';
 import 'package:tasky_mobile_app/utils/local_storage.dart';
 import 'package:the_apple_sign_in/the_apple_sign_in.dart';
 
-
-
 class AuthManager with ChangeNotifier {
   final AuthService _authService = GetIt.I.get<AuthService>();
-final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
-final Logger _logger = Logger();
+  final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
+  final Logger _logger = Logger();
 
-  String _message = '';
+  String? _message = '';
   bool _isLoading = false;
 
-  String get message => _message;
+  String? get message => _message;
   bool get isLoading => _isLoading;
 
-  setMessage(String message) {
+  setMessage(String? message) {
     _message = message;
     notifyListeners();
   }
@@ -39,38 +37,38 @@ final Logger _logger = Logger();
       setisLoading(true);
       await _authService
           .signInWithGoogle()
-          .then((UserCredential googleUserCredential) async {
+          .then((UserCredential? googleUserCredential) async {
         if (googleUserCredential != null) {
-          String token = await googleUserCredential.user.getIdToken();
+          String token = await googleUserCredential.user!.getIdToken();
 
           Response _response =
               await _authService.sendTokenToBackend(token: token);
           int statusCode = _response.statusCode;
-          Map<String, dynamic> body = json.decode(_response.body);
+          Map<String, dynamic>? body = json.decode(_response.body);
           _logger.d(body);
 
           setisLoading(false);
           if (statusCode == 201) {
-            _member.User member = _member.User.fromMap(body);
+            _member.User member = _member.User.fromMap(body!);
 
             await _localStorage.saveUserInfo(
-                id: member.data.id,
-                name: member.data.name,
-                picture: member.data.picture,
-                userId: member.data.userId,
-                email: member.data.email,
-                signInProvider: member.data.signInProvider,
-                authToken: member.data.authToken,
-                organizationId: member.data.organizationId,
-                team: member.data.team,
-                fcmToken: member.data.fcmToken,
-                phoneNumber: member.data.phoneNumber);
+                id: member.data!.id,
+                name: member.data!.name,
+                picture: member.data!.picture,
+                userId: member.data!.userId,
+                email: member.data!.email,
+                signInProvider: member.data!.signInProvider,
+                authToken: member.data!.authToken,
+                organizationId: member.data!.organizationId,
+                team: member.data!.team,
+                fcmToken: member.data!.fcmToken,
+                phoneNumber: member.data!.phoneNumber);
             setMessage(body['message']);
 
             isSuccessful = true;
           } else {
             isSuccessful = false;
-            setMessage(body['message']);
+            setMessage(body!['message']);
             _logger.d('message ${body['message']}');
           }
         } else {
@@ -105,7 +103,7 @@ final Logger _logger = Logger();
       case AuthorizationStatus.authorized:
         await _authService.signInWithApple().then((appleUserCredential) async {
           if (appleUserCredential != null) {
-            String token = await appleUserCredential.user.getIdToken();
+            String token = await appleUserCredential.user!.getIdToken();
 
             Response _response =
                 await _authService.sendTokenToBackend(token: token);
@@ -115,17 +113,17 @@ final Logger _logger = Logger();
             setisLoading(false);
             if (statusCode == 201) {
               await _localStorage.saveUserInfo(
-                  id: member.data.id,
-                  name: member.data.name,
-                  picture: member.data.picture,
-                  userId: member.data.userId,
-                  email: member.data.email,
-                  signInProvider: member.data.signInProvider,
-                  authToken: member.data.authToken,
-                  organizationId: member.data.organizationId,
-                  team: member.data.team,
-                  fcmToken: member.data.fcmToken,
-                  phoneNumber: member.data.phoneNumber);
+                  id: member.data!.id,
+                  name: member.data!.name,
+                  picture: member.data!.picture,
+                  userId: member.data!.userId,
+                  email: member.data!.email,
+                  signInProvider: member.data!.signInProvider,
+                  authToken: member.data!.authToken,
+                  organizationId: member.data!.organizationId,
+                  team: member.data!.team,
+                  fcmToken: member.data!.fcmToken,
+                  phoneNumber: member.data!.phoneNumber);
               isSuccessful = true;
               setMessage(body['message']);
             } else {
@@ -150,13 +148,13 @@ final Logger _logger = Logger();
         });
         break;
       case AuthorizationStatus.error:
-        _logger.d('error ${result.error.localizedDescription}');
+        _logger.d('error ${result.error!.localizedDescription}');
         isSuccessful = false;
-        setMessage(result.error.localizedDescription);
+        setMessage(result.error!.localizedDescription);
         setisLoading(false);
         break;
       case AuthorizationStatus.cancelled:
-        _logger.d('cancelled ${result.error.localizedDescription}');
+        _logger.d('cancelled ${result.error!.localizedDescription}');
         isSuccessful = false;
         setMessage('Sign in aborted by user');
         setisLoading(false);
@@ -164,7 +162,7 @@ final Logger _logger = Logger();
       default:
         _logger.d('userCredential ${result.error.toString()}');
         isSuccessful = false;
-        setMessage(result.error.localizedDescription);
+        setMessage(result.error!.localizedDescription);
         setisLoading(false);
     }
     return isSuccessful;

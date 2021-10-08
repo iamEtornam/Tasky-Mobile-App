@@ -62,7 +62,7 @@ C:\path\to\project> flutter pub get
 then run:
 
 ```
-C:\path\to\project> flutter run
+C:\path\to\project> flutter run --dart-define=BASE_URL=<BASE URL HRERE> --dart-define=FILE_UPLOAD_URL=<FILE UPLOAD URL HERE>
 
 ```
 

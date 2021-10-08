@@ -22,28 +22,26 @@ import 'package:tasky_mobile_app/views/inbox/inbox_view.dart';
 import 'package:tasky_mobile_app/views/overview/over_view.dart';
 import 'package:tasky_mobile_app/views/task/task_view.dart';
 
-
-
 class DashboardView extends StatefulWidget {
   final int currentIndex;
 
-  const DashboardView({Key key, this.currentIndex = 0}) : super(key: key);
+  const DashboardView({Key? key, this.currentIndex = 0}) : super(key: key);
   @override
   _DashboardViewState createState() => _DashboardViewState();
 }
 
 class _DashboardViewState extends State<DashboardView> {
   final FirebaseMessaging _messaging = FirebaseMessaging.instance;
-final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
-final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
-final OrganizationManager _organizationManager =
-    GetIt.I.get<OrganizationManager>();
-final UserManager _userManager = GetIt.I.get<UserManager>();
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
+  final OrganizationManager _organizationManager =
+      GetIt.I.get<OrganizationManager>();
+  final UserManager _userManager = GetIt.I.get<UserManager>();
   final Logger _logger = Logger();
-  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
+  late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
   final UiUtilities uiUtilities = UiUtilities();
-  String team;
-  int _currentIndex;
+  String? team;
+  int? _currentIndex;
   final List<Widget> _pages = [
     OverView(),
     const TaskView(),
@@ -71,18 +69,18 @@ final UserManager _userManager = GetIt.I.get<UserManager>();
   }
 
   void uploadNotificationToken() async {
-    if (_messaging != null && _firebaseAuth.currentUser != null) {
+    if (_firebaseAuth.currentUser != null) {
       await _messaging.getToken().then((token) async {
         await _userManager.sendNotificationToken(token: token);
       });
     }
   }
 
-  Future onSelectNotification(String payload) async {
+  Future onSelectNotification(String? payload) async {
     _logger.d("payload : $payload");
   }
 
-  initialNotification({@required BuildContext context}) async {
+  initialNotification({required BuildContext context}) async {
     flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
     var android = const AndroidInitializationSettings('@mipmap/launcher_icon');
     var iOS = const IOSInitializationSettings(
@@ -119,7 +117,7 @@ final UserManager _userManager = GetIt.I.get<UserManager>();
         android: androidNotificationDetails, iOS: iOSNotificationDetails);
 
     FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
-      RemoteNotification notification = message.notification;
+      RemoteNotification? notification = message.notification;
       // If `onMessage` is triggered with a notification, construct our own
       // local notification to show to users using the created channel.
       if (notification != null) {
@@ -133,7 +131,7 @@ final UserManager _userManager = GetIt.I.get<UserManager>();
     // a terminated state.
     await _messaging
         .getInitialMessage()
-        .then((RemoteMessage initialMessage) async {
+        .then((RemoteMessage? initialMessage) async {
       // ignore: null_aware_in_condition
       if (initialMessage != null) {
         var androidNotificationDetails = const AndroidNotificationDetails(
@@ -144,8 +142,8 @@ final UserManager _userManager = GetIt.I.get<UserManager>();
             android: androidNotificationDetails, iOS: iOSNotificationDetails);
         await flutterLocalNotificationsPlugin.show(
             0,
-            initialMessage.notification.title,
-            initialMessage.notification.body,
+            initialMessage.notification!.title,
+            initialMessage.notification!.body,
             platform,
             payload: json.encode(initialMessage.data));
       }
@@ -153,7 +151,7 @@ final UserManager _userManager = GetIt.I.get<UserManager>();
 
     // Also handle any interaction when the app is in the background via a
     // Stream listener
-    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) async {
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage? message) async {
       if (message != null) {
         var androidNotificationDetails = const AndroidNotificationDetails(
             'tasky', 'Tasky', 'Notifications from Tasky app',
@@ -162,8 +160,8 @@ final UserManager _userManager = GetIt.I.get<UserManager>();
         var platform = NotificationDetails(
             android: androidNotificationDetails, iOS: iOSNotificationDetails);
 
-        await flutterLocalNotificationsPlugin.show(
-            0, message.notification.title, message.notification.body, platform,
+        await flutterLocalNotificationsPlugin.show(0,
+            message.notification!.title, message.notification!.body, platform,
             payload: json.encode(message.data));
       }
     });
@@ -179,19 +177,19 @@ final UserManager _userManager = GetIt.I.get<UserManager>();
               index: _currentIndex,
             ),
             bottomNavigationBar: BottomNavigationBar(
-              currentIndex: _currentIndex,
+              currentIndex: _currentIndex!,
               onTap: _onChanged,
               selectedIconTheme:
                   Theme.of(context).iconTheme.copyWith(color: customRedColor),
               selectedLabelStyle: Theme.of(context)
                   .textTheme
-                  .bodyText2
+                  .bodyText2!
                   .copyWith(color: customRedColor),
               unselectedIconTheme:
                   Theme.of(context).iconTheme.copyWith(color: customGreyColor),
               unselectedLabelStyle: Theme.of(context)
                   .textTheme
-                  .bodyText2
+                  .bodyText2!
                   .copyWith(color: customGreyColor),
               type: BottomNavigationBarType.fixed,
               showUnselectedLabels: true,
@@ -234,7 +232,7 @@ final UserManager _userManager = GetIt.I.get<UserManager>();
   }
 
   void getUserTeam() async {
-    Organization organization = await _organizationManager.getOrganization();
+    Organization? organization = await _organizationManager.getOrganization();
     _localStorage.getUserInfo().then((data) {
       if (data.team == null && organization != null) {
         showDialog(
@@ -245,7 +243,7 @@ final UserManager _userManager = GetIt.I.get<UserManager>();
                   'Update your Team',
                   style: Theme.of(context)
                       .textTheme
-                      .button
+                      .button!
                       .copyWith(fontWeight: FontWeight.w600),
                 ),
                 shape: RoundedRectangleBorder(
@@ -299,7 +297,7 @@ final UserManager _userManager = GetIt.I.get<UserManager>();
                                   .inputDecorationTheme
                                   .errorStyle,
                             ),
-                            items: organization.data.teams
+                            items: organization.data!.teams!
                                 .map((value) => DropdownMenuItem<String>(
                                     value: value,
                                     child: Text(
@@ -350,13 +348,13 @@ final UserManager _userManager = GetIt.I.get<UserManager>();
                                     context: context, alertType: 'success');
                                 uiUtilities.alertNotification(
                                     context: context,
-                                    message: _userManager.message);
+                                    message: _userManager.message!);
                               } else {
                                 uiUtilities.actionAlertWidget(
                                     context: context, alertType: 'error');
                                 uiUtilities.alertNotification(
                                     context: context,
-                                    message: _userManager.message);
+                                    message: _userManager.message!);
                               }
                             }
                           },
@@ -364,7 +362,7 @@ final UserManager _userManager = GetIt.I.get<UserManager>();
                             'Update team',
                             style: Theme.of(context)
                                 .textTheme
-                                .button
+                                .button!
                                 .copyWith(color: Colors.white),
                           ))
                     ],
@@ -376,36 +374,23 @@ final UserManager _userManager = GetIt.I.get<UserManager>();
     });
   }
 
-  // void checkAuth() async {
-  //   final FirebaseAuth _auth = FirebaseAuth.instance;
-  //   _logger.d(await _auth.currentUser.getIdToken());
-  //   int userId = await _localStorage.getId();
-  //   _auth.userChanges().listen((user) {
-  //     print('user: $user');
-  //     if (user != null) {
-  //       getUserTeam();
-  //     } else {
-  //       Navigator.pushNamedAndRemoveUntil(
-  //           context, '/loginView', (route) => false);
-  //     }
-  //   });
-  // }
-
-
-void confirmAuthStatus() async {
+  void confirmAuthStatus() async {
     final FirebaseAuth _auth = FirebaseAuth.instance;
-    _logger.d(await _auth.currentUser.getIdToken());
-    int userId = await _localStorage.getId();
+    _logger.d(await _auth.currentUser!.getIdToken());
+    int? userId = await _localStorage.getId();
+    int? organizationId = await _localStorage.getOrganizationId();
     _auth.userChanges().listen((user) {
-      if (user != null && userId != null) {
+      if (user != null && userId != null && organizationId != null) {
         getUserTeam();
+      } else if (organizationId == null && user != null) {
+        Navigator.pushNamedAndRemoveUntil(
+            context, '/organizationView', (route) => false);
       } else {
-         _auth.signOut();
-         _localStorage.clearStorage();
+        _auth.signOut();
+        _localStorage.clearStorage();
         Navigator.pushNamedAndRemoveUntil(
             context, '/loginView', (route) => false);
       }
     });
+  }
 }
-}
-

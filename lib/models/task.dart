@@ -9,9 +9,9 @@ class Task {
     this.data,
   });
 
-  bool status;
-  String message;
-  List<Datum> data;
+  bool? status;
+  String? message;
+  List<Datum>? data;
 
   factory Task.fromMap(Map<String, dynamic> json) => Task(
         status: json["status"],
@@ -26,7 +26,7 @@ class Task {
         "message": message,
         "data": data == null
             ? null
-            : List<dynamic>.from(data.map((x) => x.toMap())),
+            : List<dynamic>.from(data!.map((x) => x.toMap())),
       };
 }
 
@@ -48,21 +48,21 @@ class Datum {
       this.creator,
       this.status});
 
-  int id;
-  String description;
-  String dueDate;
-  bool isReminder;
-  List<_user.Data> assignees;
-  List<String> participants;
-  int organizationId;
-  int createdBy;
-  String team;
-  String priorityLevel;
-  DateTime createdAt;
-  DateTime updatedAt;
-  _org.Data organization;
-  _user.Data creator;
-  String status;
+  int? id;
+  String? description;
+  String? dueDate;
+  bool? isReminder;
+  List<_user.Data>? assignees;
+  List<String>? participants;
+  int? organizationId;
+  int? createdBy;
+  String? team;
+  String? priorityLevel;
+  DateTime? createdAt;
+  DateTime? updatedAt;
+  _org.Data? organization;
+  _user.Data? creator;
+  String? status;
 
   factory Datum.fromMap(Map<String, dynamic> json) => Datum(
         id: json["id"],
@@ -102,15 +102,15 @@ class Datum {
         "is_reminder": isReminder,
         "assignees": assignees == null
             ? null
-            : List<dynamic>.from(assignees.map((x) => x.toMap())),
+            : List<dynamic>.from(assignees!.map((x) => x.toMap())),
         "organizationId": organizationId,
         "created_by": createdBy,
         "team": team,
         "priority_level": priorityLevel,
         "status": status,
-        "createdAt": createdAt.toIso8601String(),
-        "updatedAt": updatedAt.toIso8601String(),
-        "organization": organization.toMap(),
-        "creator": creator.toMap(),
+        "createdAt": createdAt!.toIso8601String(),
+        "updatedAt": updatedAt!.toIso8601String(),
+        "organization": organization!.toMap(),
+        "creator": creator!.toMap(),
       };
 }

@@ -11,7 +11,7 @@ class CustomAppBarWidget extends StatelessWidget
     implements PreferredSizeWidget {
   final String title;
 
-  const CustomAppBarWidget({Key key, @required this.title}) : super(key: key);
+  const CustomAppBarWidget({Key? key, required this.title}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return AppBar(
@@ -19,7 +19,7 @@ class CustomAppBarWidget extends StatelessWidget
       leading: Center(
         child: InkWell(
           onTap: () => Navigator.of(context).pushNamed('/accountView'),
-          child: StreamBuilder<String>(
+          child: StreamBuilder<String?>(
               stream: _localStorage.getPicture().asStream(),
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
@@ -36,7 +36,7 @@ class CustomAppBarWidget extends StatelessWidget
                 return CircleAvatar(
                   radius: 16,
                   backgroundImage: NetworkImage(
-                    snapshot.data,
+                    snapshot.data!,
                   ),
                   backgroundColor: Colors
                       .primaries[Random().nextInt(Colors.primaries.length)]
@@ -49,7 +49,7 @@ class CustomAppBarWidget extends StatelessWidget
         title,
         style: Theme.of(context)
             .textTheme
-            .headline6
+            .headline6!
             .copyWith(fontWeight: FontWeight.bold),
       ),
       actions: [
@@ -83,7 +83,7 @@ class CustomAppBarWidget extends StatelessWidget
             ]);
             return list;
           },
-          onSelected: (value) {},
+          onSelected: (dynamic value) {},
           icon: const Icon(Icons.more_vert),
         )
       ],

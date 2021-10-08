@@ -16,13 +16,13 @@ class OrganizationManager with ChangeNotifier {
     GetIt.I.get<OrganizationService>();
 final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
   final Logger _logger = Logger();
-  String _message = '';
+  String? _message = '';
   bool _isLoading = false;
 
-  String get message => _message;
+  String? get message => _message;
   bool get isLoading => _isLoading;
 
-  setMessage(String message) {
+  setMessage(String? message) {
     _message = message;
     notifyListeners();
   }
@@ -32,10 +32,10 @@ final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
     notifyListeners();
   }
 
-  Future<Organization> getOrganization() async {
-    Organization _organization;
+  Future<Organization?> getOrganization() async {
+    Organization? _organization;
     setisLoading(true);
-    int organizationID = await _localStorage.getOrganizationId();
+    int? organizationID = await _localStorage.getOrganizationId();
     await _organizationService
         .getOrganizationRequest(organizationID: organizationID)
         .then((response) {
@@ -60,12 +60,13 @@ final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
     return _organization;
   }
 
-  Future<String> updateOrganizationPicture(File imageFile) async {
-    String fileUrl;
+  Future<String?> updateOrganizationPicture(File imageFile) async {
+    String? fileUrl;
     await _organizationService
         .fileUploaderRequest(file: imageFile)
         .then((response) async {
       Map<String, dynamic> body = json.decode(response.body);
+        _logger.d(response.statusCode);
       _logger.d(body);
       setMessage('${body['message']}');
       if (response.statusCode == 200) {
@@ -82,9 +83,9 @@ final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
   }
 
   Future<bool> createOrganization(
-      {File image, String name, List<String> teams}) async {
+      {required File image, String? name, List<String>? teams}) async {
     bool isCreated = false;
-    String fileUrl = await updateOrganizationPicture(image);
+    String? fileUrl = await updateOrganizationPicture(image);
     if (fileUrl != null) {
       await _organizationService
           .createOrganizationRequest(
@@ -110,10 +111,10 @@ final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
     return isCreated;
   }
 
-  Future<Member> getOrganizationMembers() async {
-    Member _member;
+  Future<Member?> getOrganizationMembers() async {
+    Member? _member;
     setisLoading(true);
-    int organizationID = await _localStorage.getOrganizationId();
+    int? organizationID = await _localStorage.getOrganizationId();
     await _organizationService
         .getMemberListRequest(organizationId: organizationID)
         .then((response) {

@@ -14,40 +14,40 @@ class AuthService {
   final FirebaseAuth auth = FirebaseAuth.instance;
   // final Logger _logger = Logger();
 
-  Future<UserCredential> signInWithGoogle() async {
+  Future<UserCredential?> signInWithGoogle() async {
     // Trigger the authentication flow
-    final GoogleSignInAccount googleUser = await GoogleSignIn().signIn();
+    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
 
     // Obtain the auth details from the request
     final GoogleSignInAuthentication googleAuth =
-        await googleUser.authentication;
+        await googleUser!.authentication;
 
     // Create a new credential
     final GoogleAuthCredential credential = GoogleAuthProvider.credential(
       accessToken: googleAuth.accessToken,
       idToken: googleAuth.idToken,
-    );
+    ) as GoogleAuthCredential;
 
     // Once signed in, return the UserCredential
     return await auth.signInWithCredential(credential);
   }
 
-  Future<UserCredential> signInWithApple() async {
+  Future<UserCredential?> signInWithApple() async {
     final AuthorizationResult result = await TheAppleSignIn.performRequests([
       const AppleIdRequest(requestedScopes: [Scope.email, Scope.fullName])
     ]);
-    AppleIdCredential appleIdCredential = result.credential;
+    AppleIdCredential appleIdCredential = result.credential!;
 
     OAuthProvider oAuthProvider = OAuthProvider('apple.com');
     OAuthCredential credential = oAuthProvider.credential(
-      idToken: String.fromCharCodes(appleIdCredential.identityToken),
-      accessToken: String.fromCharCodes(appleIdCredential.authorizationCode),
+      idToken: String.fromCharCodes(appleIdCredential.identityToken!),
+      accessToken: String.fromCharCodes(appleIdCredential.authorizationCode!),
     );
 
     return await auth.signInWithCredential(credential);
   }
 
-  Future<Response> sendTokenToBackend({String token}) async {
+  Future<Response> sendTokenToBackend({String? token}) async {
     return await _customHttpClient
         .postRequest(path: loginPath, body: {'token': token});
   }

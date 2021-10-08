@@ -7,11 +7,11 @@ class InboxService{
   final CustomHttpClient _customHttpClient = GetIt.I.get<CustomHttpClient>();
 
 
-  Future<Response> getInboxRequest({int userId}) async {
+  Future<Response> getInboxRequest({int? userId}) async {
     return await _customHttpClient.getRequest(getUserInboxPath(userId));
   }
 
-    Future<Response> getInboxCommentRequest({int inbox}) async {
+    Future<Response> getInboxCommentRequest({int? inbox}) async {
     return await _customHttpClient.getRequest(getUserInboxCommentPath(inbox));
   }
 }

@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
 import 'package:tasky_mobile_app/models/comment.dart';
-import 'package:tasky_mobile_app/models/inbox.dart';
+import 'package:tasky_mobile_app/models/inbox.dart' as inbox;
+import 'package:tasky_mobile_app/models/user.dart';
 import 'package:tasky_mobile_app/services/inbox_service.dart';
 import 'package:tasky_mobile_app/utils/local_storage.dart';
 
@@ -14,13 +15,13 @@ class InboxManager with ChangeNotifier {
 
   final Logger _logger = Logger();
 
-  String _message = '';
+  String? _message = '';
   bool _isLoading = false;
 
-  String get message => _message;
+  String? get message => _message;
   bool get isLoading => _isLoading;
 
-  setMessage(String message) {
+  setMessage(String? message) {
     _message = message;
     notifyListeners();
   }
@@ -30,37 +31,58 @@ class InboxManager with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<Inbox> getInboxes() async {
-    Inbox _inbox;
-    await _inboxService
-        .getInboxRequest(userId: await _localStorage.getId())
-        .then((response) {
-      int statusCode = response.statusCode;
-      Map<String, dynamic> body = json.decode(response.body);
-      setMessage(body['message']);
-      setisLoading(false);
-      if (statusCode == 200) {
-        _inbox = Inbox.fromJson(body);
-      } else {
+  Future<inbox.Inbox?> getInboxes({String query = 'All'}) async {
+    try {
+      inbox.Inbox? _inbox;
+      int? userId = await _localStorage.getId();
+      Data? userInfo = await _localStorage.getUserInfo();
+      await _inboxService.getInboxRequest(userId: userId!).then((response) {
+        int statusCode = response.statusCode;
+        Map<String, dynamic> body = json.decode(response.body);
+
+        setMessage(body['message']);
+        setisLoading(false);
+        if (statusCode == 200) {
+          _inbox = inbox.Inbox.fromJson(body);
+          Iterable<inbox.Datum> searchData = _inbox!.data!.where((element) {
+            if (query == 'Assigned to me' || query == 'All') {
+              return element.userId == userId;
+            } else if (query == 'Assigned to team') {
+              return element.team == userInfo.team;
+            } else {
+              return false;
+            }
+          });
+
+          _inbox = inbox.Inbox(
+              data: searchData.toList(),
+              message: _inbox!.message,
+              status: _inbox!.status);
+        } else {
+          _inbox = null;
+        }
+      }).catchError((onError) {
+        _logger.d(onError);
         _inbox = null;
-      }
-    }).catchError((onError) {
-      _inbox = null;
-      setMessage('$onError');
+        setMessage('$onError');
+        setisLoading(false);
+      }).timeout(const Duration(seconds: 60), onTimeout: () {
+        _inbox = null;
+        setMessage('Timeout! Check your internet connection.');
+        setisLoading(false);
+      });
+      return _inbox;
+    } catch (e) {
+      _logger.d(e);
+      setMessage('$e');
       setisLoading(false);
-    }).timeout(const Duration(seconds: 60), onTimeout: () {
-      _inbox = null;
-      setMessage('Timeout! Check your internet connection.');
-      setisLoading(false);
-    });
-    return _inbox;
+      return null;
+    }
   }
 
-    Future<Comment> getInboxComments({int inboxId}) async {
-    Comment _comment;
-    await _inboxService
-        .getInboxCommentRequest(inbox: inboxId)
-        .then((response) {
+  Future<Comment?> getInboxComments({int? inboxId}) async {
+    Comment? _comment;
+    await _inboxService.getInboxCommentRequest(inbox: inboxId).then((response) {
       int statusCode = response.statusCode;
       Map<String, dynamic> body = json.decode(response.body);
       setMessage(body['message']);

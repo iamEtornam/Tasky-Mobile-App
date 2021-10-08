@@ -49,3 +49,4 @@ app.*.map.json
 ios/build/
 .metadata
 .vscode/launch.json
+prod_url.txt

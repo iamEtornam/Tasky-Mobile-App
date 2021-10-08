@@ -53,7 +53,6 @@ class CreateInboxView extends StatelessWidget {
             enableInteractiveSelection: true,
             decoration: InputDecoration(
                 filled: false,
-        
                 enabledBorder: const UnderlineInputBorder(
                     borderSide: BorderSide(color: customGreyColor)),
                 focusedBorder: const UnderlineInputBorder(

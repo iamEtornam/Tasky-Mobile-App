@@ -13,13 +13,11 @@ import 'package:tasky_mobile_app/shared_widgets/empty_widget.dart';
 import 'package:tasky_mobile_app/utils/ui_utils/custom_colors.dart';
 import 'package:tasky_mobile_app/utils/ui_utils/ui_utils.dart';
 
-
 class OverView extends StatelessWidget {
   final ScrollController _scrollController = ScrollController();
 
   OverView({Key? key}) : super(key: key);
-final TaskManager _taskManager = GetIt.I.get<TaskManager>();
-
+  final TaskManager _taskManager = GetIt.I.get<TaskManager>();
 
   @override
   Widget build(BuildContext context) {
@@ -49,6 +47,7 @@ final TaskManager _taskManager = GetIt.I.get<TaskManager>();
                 if (snapshot.data == null) {
                   return const SizedBox.shrink();
                 }
+
                 return Column(
                   children: [
                     Container(
@@ -80,22 +79,19 @@ final TaskManager _taskManager = GetIt.I.get<TaskManager>();
                                 count: snapshot.data!.data![0].todo,
                                 desc: 'To Do',
                                 image: 'dots.png',
-                                color: Colors.primaries[
-                                    Random().nextInt(Colors.primaries.length)]),
+                                color: const Color(0xffff5722)),
                             HomeTaskCountCard(
                                 size: size,
                                 count: snapshot.data!.data![1].inProgress,
                                 desc: 'In Progress',
                                 image: 'circles.png',
-                                color: Colors.primaries[
-                                    Random().nextInt(Colors.primaries.length)]),
+                                color: const Color(0xff03a9f4)),
                             HomeTaskCountCard(
                               size: size,
                               count: snapshot.data!.data![2].completed,
                               desc: 'Done',
                               image: 'layers.png',
-                              color: Colors.primaries[
-                                  Random().nextInt(Colors.primaries.length)],
+                              color: const Color(0xff4caf50),
                             ),
                           ],
                         ),
@@ -156,8 +152,8 @@ final TaskManager _taskManager = GetIt.I.get<TaskManager>();
                       List<String> dateList = date.split(' ');
                       return HomeTaskSummary(
                         size: size,
-                        priority:
-                            camelize(snapshot.data!.data![index].priorityLevel!),
+                        priority: camelize(
+                            snapshot.data!.data![index].priorityLevel!),
                         time: UiUtilities().twenty4to12conventer(dateList[1]),
                         title: snapshot.data!.data![index].description,
                       );
@@ -186,15 +182,18 @@ class HomeTaskSummary extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Brightness brightness = Theme.of(context).brightness;
     return Padding(
       padding: const EdgeInsets.fromLTRB(16.0, 0, 16, 10),
       child: Card(
         elevation: 0,
-        color: priority == 'Low'
-            ? const Color.fromRGBO(236, 249, 245, 1)
-            : priority == 'Medium'
-                ? const Color.fromRGBO(251, 245, 225, 1)
-                : const Color.fromRGBO(252, 244, 248, 1),
+        color: brightness == Brightness.dark
+            ? customGreyColor.withOpacity(.1)
+            : priority == 'Low'
+                ? const Color.fromRGBO(236, 249, 245, 1)
+                : priority == 'Medium'
+                    ? const Color.fromRGBO(251, 245, 225, 1)
+                    : const Color.fromRGBO(252, 244, 248, 1),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         child: Padding(
           padding: const EdgeInsets.all(15.0),
@@ -226,13 +225,14 @@ class HomeTaskSummary extends StatelessWidget {
                       children: [
                         Text(
                           '$priority Priority',
-                          style: Theme.of(context).textTheme.subtitle2!.copyWith(
-                              color: priority == 'Low'
-                                  ? Colors.green
-                                  : priority == 'Medium'
-                                      ? Colors.amber
-                                      : Colors.red,
-                              fontWeight: FontWeight.w600),
+                          style:
+                              Theme.of(context).textTheme.subtitle2!.copyWith(
+                                  color: priority == 'Low'
+                                      ? Colors.green
+                                      : priority == 'Medium'
+                                          ? Colors.amber
+                                          : Colors.red,
+                                  fontWeight: FontWeight.w600),
                         ),
                         Row(
                           mainAxisSize: MainAxisSize.min,
@@ -267,10 +267,7 @@ class HomeTaskSummary extends StatelessWidget {
                     child: Text(title!,
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodyText1!
-                            .copyWith(color: Colors.black)),
+                        style: Theme.of(context).textTheme.bodyText1),
                   ),
                 ],
               )

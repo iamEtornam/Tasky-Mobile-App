@@ -24,6 +24,9 @@ ThemeData customLightTheme(
       brightness: Brightness.light,
       fontFamily: GoogleFonts.poppins().fontFamily,
       cardColor: const Color.fromRGBO(250, 250, 250, 1),
+      progressIndicatorTheme: const ProgressIndicatorThemeData(
+        color: customRedColor,
+      ),
       inputDecorationTheme: InputDecorationTheme(
         fillColor: Colors.white,
         filled: true,
@@ -108,6 +111,9 @@ ThemeData customDarkTheme(
       cardColor: const Color.fromRGBO(31, 31, 31, 1),
       tabBarTheme: TabBarTheme(
         unselectedLabelColor: Colors.white.withOpacity(.7),
+      ),
+            progressIndicatorTheme: const ProgressIndicatorThemeData(
+        color: customRedColor,
       ),
       textTheme: Typography.material2018(platform: defaultTargetPlatform)
           .white

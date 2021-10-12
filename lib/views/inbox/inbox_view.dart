@@ -32,56 +32,7 @@ class _InboxViewState extends State<InboxView> {
     'Assigned to team'
   ];
   int currentIndex = 0;
-  // final List<Map<String, dynamic>> data = [
-  //   {
-  //     'avatar': kidsAvatar(),
-  //     'description':
-  //         'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce luctus lobortis metus et auctor. Curabitur suscipit, lectus ut pulvinar cursus, dolor arcu iaculis nulla, id dictum ipsum nisl eget dui.',
-  //     'isLiked': Random().nextBool(),
-  //     'teamName': 'Backend team',
-  //     'title': 'Update documentation',
-  //     'timestamp': time_ago.format(
-  //         DateTime.now().subtract(Duration(days: Random().nextInt(10)))),
-  //     'dueDate': 'Due soon',
-  //     'replies': Random().nextInt(10)
-  //   },
-  //   {
-  //     'avatar': kidsAvatar(),
-  //     'description':
-  //         'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce luctus lobortis metus et auctor. ',
-  //     'isLiked': Random().nextBool(),
-  //     'teamName': 'Frontend team',
-  //     'title': 'Mobile View Compartibility',
-  //     'timestamp': time_ago.format(
-  //         DateTime.now().subtract(Duration(days: Random().nextInt(10)))),
-  //     'dueDate': 'Completed',
-  //     'replies': Random().nextInt(10)
-  //   },
-  //   {
-  //     'avatar': kidsAvatar(),
-  //     'description':
-  //         'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce luctus lobortis metus et auctor. Curabitur suscipit, lectus ut pulvinar cursus, dolor arcu iaculis nulla, id dictum ipsum nisl eget dui.',
-  //     'isLiked': Random().nextBool(),
-  //     'teamName': 'UI/UX team',
-  //     'title': 'Make changes to mobile mockup',
-  //     'timestamp': time_ago.format(
-  //         DateTime.now().subtract(Duration(days: Random().nextInt(10)))),
-  //     'dueDate': 'Due soon',
-  //     'replies': Random().nextInt(10)
-  //   },
-  //   {
-  //     'avatar': kidsAvatar(),
-  //     'description':
-  //         'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce luctus lobortis metus et auctor. ',
-  //     'isLiked': Random().nextBool(),
-  //     'teamName': 'Frontend team',
-  //     'title': 'Mobile View Compartibility',
-  //     'timestamp': time_ago.format(
-  //         DateTime.now().subtract(Duration(days: Random().nextInt(10)))),
-  //     'dueDate': 'Completed',
-  //     'replies': Random().nextInt(10)
-  //   }
-  // ];
+  AsyncSnapshot<Inbox?>? _snapshot;
 
   @override
   Widget build(BuildContext context) {
@@ -97,47 +48,57 @@ class _InboxViewState extends State<InboxView> {
         bottom: PreferredSize(
           preferredSize:
               Size(MediaQuery.of(context).size.width, kToolbarHeight),
-          child: Padding(
-            padding: const EdgeInsets.only(left: 16.0),
-            child: SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: List.generate(
-                    options.length,
-                    (index) => Padding(
-                          padding: const EdgeInsets.only(right: 10.0),
-                          child: InkWell(
-                            onTap: () {
-                              setState(() {
-                                currentIndex = index;
-                              });
-                            },
-                            child: Material(
-                              color: currentIndex == index
-                                  ? customRedColor.withOpacity(.2)
-                                  : customGreyColor.withOpacity(.2),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(35),
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 16.0),
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: List.generate(
+                        options.length,
+                        (index) => Padding(
+                              padding: const EdgeInsets.only(right: 10.0),
+                              child: InkWell(
+                                onTap: () {
+                                  setState(() {
+                                    currentIndex = index;
+                                  });
+                                },
+                                child: Material(
+                                  color: currentIndex == index
+                                      ? customRedColor.withOpacity(.2)
+                                      : customGreyColor.withOpacity(.2),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(35),
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Center(
+                                        child: Text(
+                                      options[index],
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyText1!
+                                          .copyWith(
+                                              color: currentIndex == index
+                                                  ? customRedColor
+                                                  : customGreyColor),
+                                    )),
+                                  ),
+                                ),
                               ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Center(
-                                    child: Text(
-                                  options[index],
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodyText1!
-                                      .copyWith(
-                                          color: currentIndex == index
-                                              ? customRedColor
-                                              : customGreyColor),
-                                )),
-                              ),
-                            ),
-                          ),
-                        )),
+                            )),
+                  ),
+                ),
               ),
-            ),
+              Visibility(
+                visible: _snapshot?.connectionState == ConnectionState.waiting,
+                child: const LinearProgressIndicator(
+                  minHeight: 2,
+                ),
+              )
+            ],
           ),
         ),
       ),
@@ -145,6 +106,7 @@ class _InboxViewState extends State<InboxView> {
           stream:
               _inboxManager.getInboxes(query: options[currentIndex]).asStream(),
           builder: (context, snapshot) {
+            _snapshot = snapshot;
             if (snapshot.connectionState == ConnectionState.waiting &&
                 snapshot.data == null) {
               return const Center(child: CircularProgressIndicator.adaptive());

@@ -47,6 +47,7 @@ dependencies:
   time_ago_provider: ^4.1.1
   provider: ^6.0.1
   collection: ^1.15.0-nullsafety.4
+  readmore: ^2.1.0
 
 dependency_overrides:
   path_provider: ^2.0.5

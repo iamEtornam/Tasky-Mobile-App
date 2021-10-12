@@ -14,4 +14,10 @@ class InboxService{
     Future<Response> getInboxCommentRequest({int? inbox}) async {
     return await _customHttpClient.getRequest(getUserInboxCommentPath(inbox));
   }
+
+      Future<Response> submitInboxCommentRequest({int? inbox, String? comment}) async {
+    return await _customHttpClient.postRequest(path: submitUserInboxCommentPath(inbox), body: {
+      'comment':comment
+    });
+  }
 }

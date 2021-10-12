@@ -103,4 +103,28 @@ class InboxManager with ChangeNotifier {
     });
     return _comment;
   }
+
+  Future<bool> submitInboxComment({int? inboxId, String? comment}) async {
+    bool isSent = true;
+    await _inboxService.submitInboxCommentRequest(inbox: inboxId,comment: comment).then((response) {
+      int statusCode = response.statusCode;
+      Map<String, dynamic> body = json.decode(response.body);
+      setMessage(body['message']);
+      setisLoading(false);
+      if (statusCode == 201) {
+       isSent = true;
+      } else {
+        isSent = false;
+      }
+    }).catchError((onError) {
+     isSent = false;
+      setMessage('$onError');
+      setisLoading(false);
+    }).timeout(const Duration(seconds: 60), onTimeout: () {
+      isSent = false;
+      setMessage('Timeout! Check your internet connection.');
+      setisLoading(false);
+    });
+    return isSent;
+  }
 }

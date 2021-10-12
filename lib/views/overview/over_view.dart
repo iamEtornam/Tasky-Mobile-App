@@ -1,9 +1,9 @@
-import 'dart:math';
-
+import 'package:extended_image/extended_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_font_icons/flutter_font_icons.dart';
 import 'package:get_it/get_it.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:strings/strings.dart';
 import 'package:tasky_mobile_app/managers/task_manager.dart';
 import 'package:tasky_mobile_app/models/task.dart';
@@ -151,6 +151,99 @@ class OverView extends StatelessWidget {
                       String date = snapshot.data!.data![index].dueDate!;
                       List<String> dateList = date.split(' ');
                       return HomeTaskSummary(
+                        onTap: () {
+                showBarModalBottomSheet(
+                                context: context,
+                                builder: (context) {
+                                  return ListView(
+                                    padding: const EdgeInsets.all(16),
+                                    children: [
+                                      Text(
+                                        'Task:',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyText2!
+                                            .copyWith(
+                                                fontWeight: FontWeight.w600),
+                                      ),
+                                      Text(
+                                        snapshot.data!.data![index].description!,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyText1,
+                                      ),
+                                      const SizedBox(
+                                        height: 15,
+                                      ),
+                                      Text(
+                                        'Assignees:',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyText2!
+                                            .copyWith(
+                                                fontWeight: FontWeight.w600),
+                                      ),
+                                      const SizedBox(
+                                        height: 6,
+                                      ),
+                                      SizedBox(
+                                        height: 60,
+                                        width:
+                                            MediaQuery.of(context).size.width,
+                                        child: ListView.separated(
+                                            scrollDirection: Axis.horizontal,
+                                            itemBuilder: (context, index) =>
+                                                ClipRRect(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10),
+                                                    child:
+                                                        ExtendedImage.network(
+                                                      snapshot
+                                                          .data!
+                                                          .data![index]
+                                                          .assignees![index]
+                                                          .picture!,
+                                                      fit: BoxFit.cover,
+                                                      width: 60,
+                                                      height: 60,
+                                                      cache: true,
+                                                      loadStateChanged:
+                                                          (ExtendedImageState
+                                                              state) {
+                                                        if (state
+                                                                .extendedImageLoadState ==
+                                                            LoadState.failed) {
+                                                          return Image.asset(
+                                                            'assets/avatar.png',
+                                                            fit: BoxFit.cover,
+                                                            width: 60,
+                                                            height: 60,
+                                                          );
+                                                        } else {
+                                                          return ExtendedRawImage(
+                                                            image: state
+                                                                .extendedImageInfo
+                                                                ?.image,
+                                                            fit: BoxFit.cover,
+                                                            width: 60,
+                                                            height: 60,
+                                                          );
+                                                        }
+                                                      },
+                                                    )),
+                                            separatorBuilder:
+                                                (context, index) =>
+                                                    const SizedBox(
+                                                      width: 4,
+                                                    ),
+                                            itemCount: snapshot.data!.data![index]
+                                                .assignees!.length),
+                                      )
+                                    ],
+                                  );
+                                });
+                        },
                         size: size,
                         priority: camelize(
                             snapshot.data!.data![index].priorityLevel!),
@@ -173,105 +266,111 @@ class HomeTaskSummary extends StatelessWidget {
     required this.title,
     required this.priority,
     required this.time,
+    required this.onTap,
   }) : super(key: key);
 
   final Size size;
   final String? title;
   final String priority;
   final String time;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
     Brightness brightness = Theme.of(context).brightness;
     return Padding(
       padding: const EdgeInsets.fromLTRB(16.0, 0, 16, 10),
-      child: Card(
-        elevation: 0,
-        color: brightness == Brightness.dark
-            ? customGreyColor.withOpacity(.1)
-            : priority == 'Low'
-                ? const Color.fromRGBO(236, 249, 245, 1)
-                : priority == 'Medium'
-                    ? const Color.fromRGBO(251, 245, 225, 1)
-                    : const Color.fromRGBO(252, 244, 248, 1),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-        child: Padding(
-          padding: const EdgeInsets.all(15.0),
-          child: Row(
-            children: [
-              Container(
-                width: 10,
-                height: 80,
-                decoration: BoxDecoration(
-                    color: priority == 'Low'
-                        ? Colors.green
-                        : priority == 'Medium'
-                            ? Colors.amber
-                            : Colors.red,
-                    borderRadius: BorderRadius.circular(45)),
-              ),
-              const SizedBox(
-                width: 10,
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  SizedBox(
-                    width: size.width - 90,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text(
-                          '$priority Priority',
-                          style:
-                              Theme.of(context).textTheme.subtitle2!.copyWith(
-                                  color: priority == 'Low'
-                                      ? Colors.green
-                                      : priority == 'Medium'
-                                          ? Colors.amber
-                                          : Colors.red,
-                                  fontWeight: FontWeight.w600),
-                        ),
-                        Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            const Icon(
-                              AntDesign.clockcircleo,
-                              color: customGreyColor,
-                              size: 15,
-                            ),
-                            const SizedBox(
-                              width: 6,
-                            ),
-                            Text(
-                              time,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .subtitle2!
-                                  .copyWith(
-                                      color: customGreyColor,
-                                      fontWeight: FontWeight.w600),
-                            )
-                          ],
-                        ),
-                      ],
+      child: InkWell(
+        onTap: onTap,
+        child: Card(
+          elevation: 0,
+          color: brightness == Brightness.dark
+              ? customGreyColor.withOpacity(.1)
+              : priority == 'Low'
+                  ? const Color.fromRGBO(236, 249, 245, 1)
+                  : priority == 'Medium'
+                      ? const Color.fromRGBO(251, 245, 225, 1)
+                      : const Color.fromRGBO(252, 244, 248, 1),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          child: Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: Row(
+              children: [
+                Container(
+                  width: 10,
+                  height: 80,
+                  decoration: BoxDecoration(
+                      color: priority == 'Low'
+                          ? Colors.green
+                          : priority == 'Medium'
+                              ? Colors.amber
+                              : Colors.red,
+                      borderRadius: BorderRadius.circular(45)),
+                ),
+                const SizedBox(
+                  width: 10,
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    SizedBox(
+                      width: size.width - 90,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
+                            '$priority Priority',
+                            style:
+                                Theme.of(context).textTheme.subtitle2!.copyWith(
+                                    color: priority == 'Low'
+                                        ? Colors.green
+                                        : priority == 'Medium'
+                                            ? Colors.amber
+                                            : Colors.red,
+                                    fontWeight: FontWeight.w600),
+                          ),
+                          Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const Icon(
+                                AntDesign.clockcircleo,
+                                color: customGreyColor,
+                                size: 15,
+                              ),
+                              const SizedBox(
+                                width: 6,
+                              ),
+                              Text(
+                                time,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .subtitle2!
+                                    .copyWith(
+                                        color: customGreyColor,
+                                        fontWeight: FontWeight.w600),
+                              )
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  SizedBox(
-                    width: size.width - 90,
-                    child: Text(title!,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: Theme.of(context).textTheme.bodyText1),
-                  ),
-                ],
-              )
-            ],
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    SizedBox(
+                      width: size.width - 90,
+                      child: Text(title!,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: Theme.of(context).textTheme.bodyText1),
+                    ),
+                  ],
+                )
+              ],
+            ),
           ),
         ),
       ),

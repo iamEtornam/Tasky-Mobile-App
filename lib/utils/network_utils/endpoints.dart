@@ -11,6 +11,7 @@ String listMembersPath(int? organizationId) =>
  String fileUploaderPath =
     '${const String.fromEnvironment('FILE_UPLOAD_URL')}/api/v0/upload';
 const String updateTokenPath = '$baseUrl/updateUserToken';
+const String updateUserPath = '$baseUrl/updateUserInformation';
 String getTaskPath(int? organizationId) => '$baseUrl/getTasks/$organizationId';
 String getTaskStatisticsPath(int? userId) =>
     '$baseUrl/getTaskStatusCount/$userId';

@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:bot_toast/bot_toast.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
@@ -9,11 +10,10 @@ import 'package:image_picker/image_picker.dart';
 import 'package:logger/logger.dart';
 import 'package:tasky_mobile_app/managers/organization_manager.dart';
 import 'package:tasky_mobile_app/shared_widgets/custom_bottom_sheet_widget.dart';
+import 'package:tasky_mobile_app/utils/local_storage.dart';
 import 'package:tasky_mobile_app/utils/ui_utils/custom_colors.dart';
 import 'package:tasky_mobile_app/utils/ui_utils/ui_utils.dart';
 import 'package:textfield_tags/textfield_tags.dart';
-
-
 
 class OrganizationView extends StatefulWidget {
   const OrganizationView({Key? key}) : super(key: key);
@@ -23,11 +23,13 @@ class OrganizationView extends StatefulWidget {
 }
 
 class _OrganizationViewState extends State<OrganizationView> {
+  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+  final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
   final OrganizationManager _organizationManager =
-    GetIt.I.get<OrganizationManager>();
+      GetIt.I.get<OrganizationManager>();
   final Logger _logger = Logger();
   final UiUtilities uiUtilities = UiUtilities();
-  static final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  static final GlobalKey<FormState> _myFormKey = GlobalKey<FormState>();
   TextEditingController nameTextEditingController = TextEditingController();
   List<String> teams = [];
   final nameFocusNode = FocusNode();
@@ -82,18 +84,42 @@ class _OrganizationViewState extends State<OrganizationView> {
   }
 
   @override
+  void dispose() {
+    _myFormKey.currentState!.dispose();
+    nameTextEditingController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         actions: [
-          TextButton(onPressed: (){
-
-          }, child: Text('Logout',style: Theme.of(context).textTheme.bodyText1!.copyWith(color: Colors.red),))
+          TextButton(
+              onPressed: () async {
+                BotToast.showLoading(
+                    allowClick: false,
+                    clickClose: false,
+                    backButtonBehavior: BackButtonBehavior.ignore);
+                firebaseAuth.signOut().then((_) async {
+                  await _localStorage.clearStorage();
+                  BotToast.closeAllLoading();
+                  Navigator.pushNamedAndRemoveUntil(
+                      context, '/loginView', (route) => false);
+                });
+              },
+              child: Text(
+                'Logout',
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyText1!
+                    .copyWith(color: Colors.red),
+              ))
         ],
       ),
       body: SafeArea(
           child: Form(
-        key: _formKey,
+        key: _myFormKey,
         child: ListView(
           padding: const EdgeInsets.all(24),
           children: [
@@ -148,6 +174,7 @@ class _OrganizationViewState extends State<OrganizationView> {
               keyboardType: TextInputType.name,
               autofillHints: const [AutofillHints.organizationName],
               maxLines: 1,
+               textCapitalization: TextCapitalization.words,
               cursorColor: Theme.of(context).textSelectionTheme.cursorColor,
               enableInteractiveSelection: true,
               decoration: InputDecoration(
@@ -231,7 +258,7 @@ class _OrganizationViewState extends State<OrganizationView> {
             ),
             TextButton(
               onPressed: () async {
-                if (_formKey.currentState!.validate()) {
+                if (_myFormKey.currentState!.validate()) {
                   BotToast.showLoading(
                       allowClick: false,
                       clickClose: false,
@@ -277,6 +304,7 @@ class _OrganizationViewState extends State<OrganizationView> {
                     borderRadius: BorderRadius.circular(10),
                   )),
             )
+          
           ],
         ),
       )),

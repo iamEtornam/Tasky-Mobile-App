@@ -3,19 +3,23 @@ import 'dart:math';
 
 import 'package:bot_toast/bot_toast.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fb;
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_font_icons/flutter_font_icons.dart';
 import 'package:get_it/get_it.dart';
+import 'package:in_app_review/in_app_review.dart';
 import 'package:logger/logger.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:open_apps_settings/open_apps_settings.dart';
+import 'package:open_apps_settings/settings_enum.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:tasky_mobile_app/managers/user_manager.dart';
 import 'package:tasky_mobile_app/models/user.dart';
 import 'package:tasky_mobile_app/utils/local_storage.dart';
 import 'package:tasky_mobile_app/utils/ui_utils/custom_colors.dart';
 import 'package:tasky_mobile_app/views/account/personal_account_view.dart';
 import 'package:textfield_tags/textfield_tags.dart';
-
-
+import 'package:url_launcher/url_launcher.dart';
 
 class AccountView extends StatefulWidget {
   const AccountView({Key? key}) : super(key: key);
@@ -25,8 +29,10 @@ class AccountView extends StatefulWidget {
 }
 
 class _AccountViewState extends State<AccountView> {
+  final FirebaseMessaging _fcm = FirebaseMessaging.instance;
   final UserManager _userManager = GetIt.I.get<UserManager>();
-final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
+  final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
+  final InAppReview _inAppReview = InAppReview.instance;
   final Logger _logger = Logger();
   List<String> teams = [];
 
@@ -79,18 +85,24 @@ final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
                         Center(
                             child: Text(
                           'View Profile',
-                          style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                              fontWeight: FontWeight.normal,
-                              color: customRedColor),
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyText2!
+                              .copyWith(
+                                  fontWeight: FontWeight.normal,
+                                  color: customRedColor),
                         )),
                         const SizedBox(
                           height: 25,
                         ),
                         Text(
                           'Organizations',
-                          style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                              fontWeight: FontWeight.normal,
-                              color: customGreyColor),
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyText1!
+                              .copyWith(
+                                  fontWeight: FontWeight.normal,
+                                  color: customGreyColor),
                         ),
                         Material(
                           shape: RoundedRectangleBorder(
@@ -135,8 +147,9 @@ final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
                               .withOpacity(.2),
                           radius: 60,
                           backgroundImage: (snapshot.data == null
-                              ? const ExactAssetImage('assets/avatar.png')
-                              : NetworkImage(snapshot.data!.data!.picture!)) as ImageProvider<Object>?,
+                                  ? const ExactAssetImage('assets/avatar.png')
+                                  : NetworkImage(snapshot.data!.data!.picture!))
+                              as ImageProvider<Object>?,
                         ),
                       ),
                       const SizedBox(
@@ -174,9 +187,12 @@ final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
                           },
                           child: Text(
                             'View Profile',
-                            style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                                fontWeight: FontWeight.normal,
-                                color: customRedColor),
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyText2!
+                                .copyWith(
+                                    fontWeight: FontWeight.normal,
+                                    color: customRedColor),
                           ),
                         ),
                       ),
@@ -223,7 +239,8 @@ final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
                                           child: Column(
                                             children: [
                                               TextFieldTags(
-                                                textFieldStyler: TextFieldStyler(
+                                                textFieldStyler:
+                                                    TextFieldStyler(
                                                   helperText: '',
                                                   cursorColor: Theme.of(context)
                                                       .textSelectionTheme
@@ -256,11 +273,13 @@ final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
                                                 //[tagsStyler] is required and shall not be null
                                                 tagsStyler: TagsStyler(
                                                   //These are properties you can tweek for customization of tags
-                                                  tagTextStyle: Theme.of(context)
-                                                      .textTheme
-                                                      .bodyText1!
-                                                      .copyWith(
-                                                          color: Colors.white),
+                                                  tagTextStyle:
+                                                      Theme.of(context)
+                                                          .textTheme
+                                                          .bodyText1!
+                                                          .copyWith(
+                                                              color:
+                                                                  Colors.white),
                                                   tagDecoration: BoxDecoration(
                                                     color: customRedColor,
                                                     borderRadius:
@@ -285,7 +304,9 @@ final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
                                                   //This give you tags entered
                                                   _logger.d('onTag ' + tag);
                                                   setState(() {
-                                                    teams.add(tag);
+                                                    if (tag.isNotEmpty) {
+                                                      teams.add(tag);
+                                                    }
                                                   });
                                                 },
                                                 onDelete: (tag) {
@@ -305,14 +326,15 @@ final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
                                                       shape:
                                                           RoundedRectangleBorder(
                                                         borderRadius:
-                                                            BorderRadius.circular(
-                                                                8),
+                                                            BorderRadius
+                                                                .circular(8),
                                                       )),
                                                   onPressed: () {},
                                                   child: Padding(
                                                     padding:
                                                         const EdgeInsets.only(
-                                                            left: 15, right: 15),
+                                                            left: 15,
+                                                            right: 15),
                                                     child: Text(
                                                       'Invite email(s)',
                                                       style: Theme.of(context)
@@ -350,11 +372,46 @@ final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
                   fontWeight: FontWeight.normal, color: customGreyColor),
             ),
             Material(
-              shape:
-                  RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10)),
               child: Column(
                 children: [
                   ListTile(
+                    onTap: () {
+                      showDialog(
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                              content: Text(
+                                'Are you sure you want to receive Notifications?',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyText1!
+                                    .copyWith(fontSize: 18),
+                              ),
+                              actions: [
+                                TextButton(
+                                    onPressed: () => Navigator.pop(context),
+                                    child: Text(
+                                      'No',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyText1!
+                                          .copyWith(color: Colors.red),
+                                    )),
+                                TextButton(
+                                    onPressed: () async {
+                                      await _fcm.deleteToken();
+                                    },
+                                    child: Text('Yes',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyText1!
+                                            .copyWith(color: Colors.red)))
+                              ],
+                            );
+                          });
+                    },
                     title: Text(
                       'Do not disturb',
                       style: Theme.of(context).textTheme.bodyText1,
@@ -368,18 +425,21 @@ final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
                     ),
                     leading: Icon(Icons.notifications_paused_outlined,
                         color: Theme.of(context).iconTheme.color, size: 30),
-                    trailing: IconButton(
-                        onPressed: () {},
-                        icon: Icon(
-                            Platform.isIOS
-                                ? Icons.arrow_forward_ios_sharp
-                                : Icons.arrow_forward,
-                            color: Theme.of(context).iconTheme.color)),
+                    trailing: Icon(
+                      Platform.isIOS
+                          ? Icons.arrow_forward_ios_sharp
+                          : Icons.arrow_forward,
+                      color: Theme.of(context).iconTheme.color,
+                    ),
                   ),
                   const Divider(),
                   ListTile(
+                    onTap: () {
+                      OpenAppsSettings.openAppsSettings(
+                          settingsCode: SettingsCode.APP_SETTINGS);
+                    },
                     title: Text(
-                      'Push',
+                      'Push Notifications',
                       style: Theme.of(context).textTheme.bodyText1,
                     ),
                     subtitle: Text(
@@ -394,12 +454,12 @@ final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
                       color: Theme.of(context).iconTheme.color,
                       size: 30,
                     ),
-                    trailing: IconButton(
-                        onPressed: () {},
-                        icon: Icon(
-                          Icons.arrow_forward_ios_sharp,
-                          color: Theme.of(context).iconTheme.color,
-                        )),
+                    trailing: Icon(
+                      Platform.isIOS
+                          ? Icons.arrow_forward_ios_sharp
+                          : Icons.arrow_forward,
+                      color: Theme.of(context).iconTheme.color,
+                    ),
                   ),
                 ],
               ),
@@ -413,24 +473,23 @@ final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
                   fontWeight: FontWeight.normal, color: customGreyColor),
             ),
             Material(
-              shape:
-                  RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10)),
               child: Column(
                 children: [
                   ListTile(
                     title: Text(
-                      'iOS guide',
+                      Platform.isIOS ? 'iOS guide' : 'Android guide',
                       style: Theme.of(context).textTheme.bodyText1,
                     ),
                     leading: Icon(Icons.info_outline_rounded,
                         color: Theme.of(context).iconTheme.color, size: 30),
-                    trailing: IconButton(
-                        onPressed: () {},
-                        icon: Icon(
-                            Platform.isIOS
-                                ? Icons.arrow_forward_ios_sharp
-                                : Icons.arrow_forward,
-                            color: Theme.of(context).iconTheme.color)),
+                    trailing: Icon(
+                      Platform.isIOS
+                          ? Icons.arrow_forward_ios_sharp
+                          : Icons.arrow_forward,
+                      color: Theme.of(context).iconTheme.color,
+                    ),
                   ),
                   const Divider(),
                   ListTile(
@@ -443,12 +502,12 @@ final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
                       color: Theme.of(context).iconTheme.color,
                       size: 30,
                     ),
-                    trailing: IconButton(
-                        onPressed: () {},
-                        icon: Icon(
-                          Icons.arrow_forward_ios_sharp,
-                          color: Theme.of(context).iconTheme.color,
-                        )),
+                    trailing: Icon(
+                      Platform.isIOS
+                          ? Icons.arrow_forward_ios_sharp
+                          : Icons.arrow_forward,
+                      color: Theme.of(context).iconTheme.color,
+                    ),
                   ),
                 ],
               ),
@@ -462,27 +521,38 @@ final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
                   fontWeight: FontWeight.normal, color: customGreyColor),
             ),
             Material(
-              shape:
-                  RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10)),
               child: Column(
                 children: [
                   ListTile(
+                    onTap: () async {
+                      if (await _inAppReview.isAvailable()) {
+                        await _inAppReview.requestReview();
+                      } else {
+                        Platform.isIOS
+                            ? _launchURL(url: '')
+                            : _launchURL(url: '');
+                      }
+                    },
                     title: Text(
                       'Rate the app',
                       style: Theme.of(context).textTheme.bodyText1,
                     ),
                     leading: Icon(Icons.star_border_rounded,
                         color: Theme.of(context).iconTheme.color, size: 30),
-                    trailing: IconButton(
-                        onPressed: () {},
-                        icon: Icon(
-                            Platform.isIOS
-                                ? Icons.arrow_forward_ios_sharp
-                                : Icons.arrow_forward,
-                            color: Theme.of(context).iconTheme.color)),
+                    trailing: Icon(
+                      Platform.isIOS
+                          ? Icons.arrow_forward_ios_sharp
+                          : Icons.arrow_forward,
+                      color: Theme.of(context).iconTheme.color,
+                    ),
                   ),
                   const Divider(),
                   ListTile(
+                    onTap: () => _launchURL(
+                        url:
+                            'https://www.privacypolicygenerator.info/live.php?token=RRoYC8f5TiNZtKNOStV9f3o8b25vOqp7'),
                     title: Text(
                       'Privacy policy',
                       style: Theme.of(context).textTheme.bodyText1,
@@ -492,15 +562,18 @@ final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
                       color: Theme.of(context).iconTheme.color,
                       size: 30,
                     ),
-                    trailing: IconButton(
-                        onPressed: () {},
-                        icon: Icon(
-                          Icons.arrow_forward_ios_sharp,
-                          color: Theme.of(context).iconTheme.color,
-                        )),
+                    trailing: Icon(
+                      Platform.isIOS
+                          ? Icons.arrow_forward_ios_sharp
+                          : Icons.arrow_forward,
+                      color: Theme.of(context).iconTheme.color,
+                    ),
                   ),
                   const Divider(),
                   ListTile(
+                    onTap: () => _launchURL(
+                        url:
+                            'https://www.privacypolicygenerator.info/live.php?token=RRoYC8f5TiNZtKNOStV9f3o8b25vOqp7'),
                     title: Text(
                       'Terms of service',
                       style: Theme.of(context).textTheme.bodyText1,
@@ -510,15 +583,60 @@ final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
                       color: Theme.of(context).iconTheme.color,
                       size: 30,
                     ),
-                    trailing: IconButton(
-                        onPressed: () {},
-                        icon: Icon(
-                          Icons.arrow_forward_ios_sharp,
-                          color: Theme.of(context).iconTheme.color,
-                        )),
+                    trailing: Icon(
+                      Platform.isIOS
+                          ? Icons.arrow_forward_ios_sharp
+                          : Icons.arrow_forward,
+                      color: Theme.of(context).iconTheme.color,
+                    ),
                   ),
                   const Divider(),
                   ListTile(
+                    onTap: () async {
+                      final PackageInfo packageInfo =
+                          await PackageInfo.fromPlatform();
+
+                      String appName = packageInfo.appName;
+                      String packageName = packageInfo.packageName;
+                      String version = packageInfo.version;
+                      String buildNumber = packageInfo.buildNumber;
+                      print(appName);
+                      print(packageName);
+                      print(version);
+                      print(buildNumber);
+
+                      showDialog(
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(15)),
+                              title: Text(
+                                'App version',
+                                style: Theme.of(context).textTheme.bodyText1,
+                              ),
+                              content: Text(
+                                'Current app version is $version',
+                                textAlign: TextAlign.center,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyText1!
+                                    .copyWith(fontSize: 18),
+                              ),
+                              actions: [
+                                TextButton(
+                                    onPressed: () => Navigator.pop(context),
+                                    child: Text(
+                                      'OK',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyText1!
+                                          .copyWith(color: Colors.red),
+                                    )),
+                              ],
+                            );
+                          });
+                    },
                     title: Text(
                       'Version',
                       style: Theme.of(context).textTheme.bodyText1,
@@ -530,12 +648,12 @@ final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
                       color: Theme.of(context).iconTheme.color,
                       size: 30,
                     ),
-                    trailing: IconButton(
-                        onPressed: () {},
-                        icon: Icon(
-                          Icons.arrow_forward_ios_sharp,
-                          color: Theme.of(context).iconTheme.color,
-                        )),
+                    trailing: Icon(
+                      Platform.isIOS
+                          ? Icons.arrow_forward_ios_sharp
+                          : Icons.arrow_forward,
+                      color: Theme.of(context).iconTheme.color,
+                    ),
                   ),
                 ],
               ),
@@ -551,17 +669,55 @@ final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
                   backgroundColor: Theme.of(context).cardColor,
                 ),
                 onPressed: () async {
-                  BotToast.showLoading(
-                      allowClick: false,
-                      clickClose: false,
-                      backButtonBehavior: BackButtonBehavior.ignore);
-                  final fb.FirebaseAuth firebaseAuth = fb.FirebaseAuth.instance;
-                  firebaseAuth.signOut().then((_) async {
-                    await _localStorage.clearStorage();
-                    BotToast.closeAllLoading();
-                    Navigator.pushNamedAndRemoveUntil(
-                        context, '/loginView', (route) => false);
-                  });
+                  showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15)),
+                          title: Text(
+                            'Information',
+                            style: Theme.of(context).textTheme.bodyText1,
+                          ),
+                          content: Text(
+                            'Are you sure you want to log out?',
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyText1!
+                                .copyWith(fontSize: 18),
+                          ),
+                          actions: [
+                            TextButton(
+                                onPressed: () => Navigator.pop(context),
+                                child: Text(
+                                  'Cancel',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyText1!
+                                      .copyWith(color: Colors.red),
+                                )),
+                            TextButton(
+                                onPressed: () {
+                                  BotToast.showLoading(
+                                      allowClick: false,
+                                      clickClose: false,
+                                      backButtonBehavior:
+                                          BackButtonBehavior.ignore);
+                                  final fb.FirebaseAuth firebaseAuth =
+                                      fb.FirebaseAuth.instance;
+                                  firebaseAuth.signOut().then((_) async {
+                                    await _localStorage.clearStorage();
+                                    BotToast.closeAllLoading();
+                                    Navigator.pushNamedAndRemoveUntil(context,
+                                        '/loginView', (route) => false);
+                                  });
+                                },
+                                child: Text('Logout',
+                                    style:
+                                        Theme.of(context).textTheme.bodyText1))
+                          ],
+                        );
+                      });
                 },
                 child: Text(
                   'Log out',
@@ -575,4 +731,7 @@ final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
       ),
     );
   }
+
+  void _launchURL({String? url}) async =>
+      await canLaunch(url!) ? await launch(url) : throw 'Could not launch $url';
 }

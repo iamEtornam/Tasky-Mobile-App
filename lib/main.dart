@@ -12,10 +12,12 @@ import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:tasky_mobile_app/managers/auth_manager.dart';
+import 'package:tasky_mobile_app/managers/file_upload_manager.dart';
 import 'package:tasky_mobile_app/managers/task_manager.dart';
 import 'package:tasky_mobile_app/managers/user_manager.dart';
 import 'package:tasky_mobile_app/routes.dart';
 import 'package:tasky_mobile_app/services/auth_service.dart';
+import 'package:tasky_mobile_app/services/file_upload_service.dart';
 import 'package:tasky_mobile_app/services/organization_service.dart';
 import 'package:tasky_mobile_app/services/task_service.dart';
 import 'package:tasky_mobile_app/utils/local_storage.dart';
@@ -53,8 +55,11 @@ setupSingletons() async {
   locator.registerLazySingleton<TaskService>(() => TaskService());
   locator.registerLazySingleton<TaskManager>(() => TaskManager());
 
-    locator.registerLazySingleton<InboxService>(() => InboxService());
+  locator.registerLazySingleton<InboxService>(() => InboxService());
   locator.registerLazySingleton<InboxManager>(() => InboxManager());
+
+  locator.registerLazySingleton<FileUploadService>(() => FileUploadService());
+  locator.registerLazySingleton<FileUploadManager>(() => FileUploadManager());
 }
 
 main() async {
@@ -79,39 +84,37 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<User?>(
-      stream: _auth.authStateChanges(),
-      builder: (context, snapshot) {
-
-        return MaterialApp(
-          title: 'Tasky',
-          builder: BotToastInit(),
-          theme: customLightTheme(context),
-          darkTheme: customDarkTheme(context),
-          themeMode: ThemeMode.system,
-          initialRoute: '/',
-          onGenerateInitialRoutes: (_) {
-            if (_auth.currentUser != null) {
-              return <Route>[
-                MaterialPageRoute(builder: (context) =>  const DashboardView())
-              ];
-            } else {
-              return <Route>[
-                MaterialPageRoute(builder: (context) =>  LoginView())
-              ];
-            }
-          },
-          onGenerateRoute: Routes.generateRoute,
-          debugShowCheckedModeBanner: false,
-          navigatorObservers: [
-            FirebaseAnalyticsObserver(analytics: _analytics),
-            BotToastNavigatorObserver(),
-          ],
-          localeResolutionCallback:
-              (Locale? locale, Iterable<Locale> supportedLocales) {
-            return locale;
-          },
-        );
-      }
-    );
+        stream: _auth.authStateChanges(),
+        builder: (context, snapshot) {
+          return MaterialApp(
+            title: 'Tasky',
+            builder: BotToastInit(),
+            theme: customLightTheme(context),
+            darkTheme: customDarkTheme(context),
+            themeMode: ThemeMode.system,
+            initialRoute: '/',
+            onGenerateInitialRoutes: (_) {
+              if (_auth.currentUser != null) {
+                return <Route>[
+                  MaterialPageRoute(builder: (context) => const DashboardView())
+                ];
+              } else {
+                return <Route>[
+                  MaterialPageRoute(builder: (context) => LoginView())
+                ];
+              }
+            },
+            onGenerateRoute: Routes.generateRoute,
+            debugShowCheckedModeBanner: false,
+            navigatorObservers: [
+              FirebaseAnalyticsObserver(analytics: _analytics),
+              BotToastNavigatorObserver(),
+            ],
+            localeResolutionCallback:
+                (Locale? locale, Iterable<Locale> supportedLocales) {
+              return locale;
+            },
+          );
+        });
   }
 }

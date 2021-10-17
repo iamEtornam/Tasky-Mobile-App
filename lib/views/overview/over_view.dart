@@ -44,7 +44,19 @@ class OverView extends StatelessWidget {
                   return const SizedBox.shrink();
                 }
 
-                if (snapshot.data == null) {
+                if (snapshot.connectionState == ConnectionState.done &&
+                    snapshot.data == null) {
+                  return const SizedBox.shrink();
+                }
+
+                if (snapshot.connectionState == ConnectionState.done &&
+                    snapshot.data!.data!.isEmpty) {
+                  return const SizedBox.shrink();
+                }
+                if (snapshot.connectionState == ConnectionState.done &&
+                    snapshot.data!.data![0].todo == 0 &&
+                    snapshot.data!.data![0].inProgress == 0 &&
+                    snapshot.data!.data![0].completed == 0) {
                   return const SizedBox.shrink();
                 }
 
@@ -152,97 +164,92 @@ class OverView extends StatelessWidget {
                       List<String> dateList = date.split(' ');
                       return HomeTaskSummary(
                         onTap: () {
-                showBarModalBottomSheet(
-                                context: context,
-                                builder: (context) {
-                                  return ListView(
-                                    padding: const EdgeInsets.all(16),
-                                    children: [
-                                      Text(
-                                        'Task:',
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodyText2!
-                                            .copyWith(
-                                                fontWeight: FontWeight.w600),
-                                      ),
-                                      Text(
-                                        snapshot.data!.data![index].description!,
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodyText1,
-                                      ),
-                                      const SizedBox(
-                                        height: 15,
-                                      ),
-                                      Text(
-                                        'Assignees:',
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodyText2!
-                                            .copyWith(
-                                                fontWeight: FontWeight.w600),
-                                      ),
-                                      const SizedBox(
-                                        height: 6,
-                                      ),
-                                      SizedBox(
-                                        height: 60,
-                                        width:
-                                            MediaQuery.of(context).size.width,
-                                        child: ListView.separated(
-                                            scrollDirection: Axis.horizontal,
-                                            itemBuilder: (context, index) =>
-                                                ClipRRect(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            10),
-                                                    child:
-                                                        ExtendedImage.network(
-                                                      snapshot
-                                                          .data!
-                                                          .data![index]
-                                                          .assignees![index]
-                                                          .picture!,
-                                                      fit: BoxFit.cover,
-                                                      width: 60,
-                                                      height: 60,
-                                                      cache: true,
-                                                      loadStateChanged:
-                                                          (ExtendedImageState
-                                                              state) {
-                                                        if (state
-                                                                .extendedImageLoadState ==
-                                                            LoadState.failed) {
-                                                          return Image.asset(
-                                                            'assets/avatar.png',
-                                                            fit: BoxFit.cover,
-                                                            width: 60,
-                                                            height: 60,
-                                                          );
-                                                        } else {
-                                                          return ExtendedRawImage(
-                                                            image: state
-                                                                .extendedImageInfo
-                                                                ?.image,
-                                                            fit: BoxFit.cover,
-                                                            width: 60,
-                                                            height: 60,
-                                                          );
-                                                        }
-                                                      },
-                                                    )),
-                                            separatorBuilder:
-                                                (context, index) =>
-                                                    const SizedBox(
-                                                      width: 4,
-                                                    ),
-                                            itemCount: snapshot.data!.data![index]
-                                                .assignees!.length),
-                                      )
-                                    ],
-                                  );
-                                });
+                          showBarModalBottomSheet(
+                              context: context,
+                              builder: (context) {
+                                return ListView(
+                                  padding: const EdgeInsets.all(16),
+                                  children: [
+                                    Text(
+                                      'Task:',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyText2!
+                                          .copyWith(
+                                              fontWeight: FontWeight.w600),
+                                    ),
+                                    Text(
+                                      snapshot.data!.data![index].description!,
+                                      style:
+                                          Theme.of(context).textTheme.bodyText1,
+                                    ),
+                                    const SizedBox(
+                                      height: 15,
+                                    ),
+                                    Text(
+                                      'Assignees:',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyText2!
+                                          .copyWith(
+                                              fontWeight: FontWeight.w600),
+                                    ),
+                                    const SizedBox(
+                                      height: 6,
+                                    ),
+                                    SizedBox(
+                                      height: 60,
+                                      width: MediaQuery.of(context).size.width,
+                                      child: ListView.separated(
+                                          scrollDirection: Axis.horizontal,
+                                          itemBuilder: (context, index) =>
+                                              ClipRRect(
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
+                                                  child: ExtendedImage.network(
+                                                    snapshot
+                                                        .data!
+                                                        .data![index]
+                                                        .assignees![index]
+                                                        .picture!,
+                                                    fit: BoxFit.cover,
+                                                    width: 60,
+                                                    height: 60,
+                                                    cache: true,
+                                                    loadStateChanged:
+                                                        (ExtendedImageState
+                                                            state) {
+                                                      if (state
+                                                              .extendedImageLoadState ==
+                                                          LoadState.failed) {
+                                                        return Image.asset(
+                                                          'assets/avatar.png',
+                                                          fit: BoxFit.cover,
+                                                          width: 60,
+                                                          height: 60,
+                                                        );
+                                                      } else {
+                                                        return ExtendedRawImage(
+                                                          image: state
+                                                              .extendedImageInfo
+                                                              ?.image,
+                                                          fit: BoxFit.cover,
+                                                          width: 60,
+                                                          height: 60,
+                                                        );
+                                                      }
+                                                    },
+                                                  )),
+                                          separatorBuilder: (context, index) =>
+                                              const SizedBox(
+                                                width: 4,
+                                              ),
+                                          itemCount: snapshot.data!.data![index]
+                                              .assignees!.length),
+                                    )
+                                  ],
+                                );
+                              });
                         },
                         size: size,
                         priority: camelize(

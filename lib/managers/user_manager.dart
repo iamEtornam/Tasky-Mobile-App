@@ -1,18 +1,18 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
+import 'package:tasky_mobile_app/managers/file_upload_manager.dart';
 import 'package:tasky_mobile_app/models/user.dart';
 import 'package:tasky_mobile_app/services/user_service.dart';
 import 'package:tasky_mobile_app/utils/local_storage.dart';
 
-
-
 class UserManager with ChangeNotifier {
   final UserService _userService = GetIt.I.get<UserService>();
-final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
-
+  final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
+  final FileUploadManager _fileUploadManager = GetIt.I.get<FileUploadManager>();
   final Logger _logger = Logger();
   String? _message = '';
   bool _isLoading = false;
@@ -134,5 +134,34 @@ final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
 
   sendNotificationToken({String? token}) async {
     await _userService.sendNotificationTokenRequest(token: token);
+  }
+
+  Future<bool> updateProfile({String? name, String? phone, File? image}) async {
+    bool isUpdated = false;
+    String? fileUrl =
+        await _fileUploadManager.updateOrganizationPicture(image!);
+
+    await _userService
+        .updateUserRequest(name: name, phone: phone, pic: fileUrl)
+        .then((response) {
+      int statusCode = response.statusCode;
+      Map<String, dynamic> body = json.decode(response.body);
+      setMessage(body['message']);
+      setisLoading(false);
+      if (statusCode == 200) {
+        isUpdated = true;
+      } else {
+        isUpdated = false;
+      }
+    }).catchError((onError) {
+      isUpdated = false;
+      setMessage('$onError');
+      setisLoading(false);
+    }).timeout(const Duration(seconds: 60), onTimeout: () {
+      isUpdated = false;
+      setMessage('Timeout! Check your internet connection.');
+      setisLoading(false);
+    });
+    return isUpdated;
   }
 }

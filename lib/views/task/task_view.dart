@@ -397,6 +397,7 @@ final TaskManager _taskManager = GetIt.I.get<TaskManager>();
             );
           }),
       floatingActionButton: FloatingActionButton(
+        heroTag: 'create_task',
         backgroundColor: customRedColor,
         child: const Icon(
           Icons.add,

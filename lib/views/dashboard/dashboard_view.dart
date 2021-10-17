@@ -106,6 +106,7 @@ class _DashboardViewState extends State<DashboardView> {
         alert: true, // Required to display a heads up notification
         badge: true,
         sound: true,
+      
       );
     }
 

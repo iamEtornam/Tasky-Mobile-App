@@ -156,6 +156,7 @@ class _InboxViewState extends State<InboxView> {
                 itemCount: snapshot.data!.data!.length);
           }),
       floatingActionButton: FloatingActionButton(
+        heroTag: 'create_message',
         backgroundColor: customRedColor,
         child: const Icon(
           MaterialCommunityIcons.chat_outline,

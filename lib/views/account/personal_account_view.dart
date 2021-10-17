@@ -92,7 +92,15 @@ class _PersonalAccountViewState extends State<PersonalAccountView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: Text(
+          'Update Profile',
+          style: Theme.of(context)
+              .textTheme
+              .headline6!
+              .copyWith(fontWeight: FontWeight.bold),
+        ),
+      ),
       body: SafeArea(
         child: Form(
           key: _myFormKey,

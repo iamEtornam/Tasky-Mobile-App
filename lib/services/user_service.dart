@@ -10,7 +10,7 @@ final CustomHttpClient _customHttpClient = GetIt.I.get<CustomHttpClient>();
 
   Future<Response> updateUserTeamRequest({String? team}) async {
     return await _customHttpClient
-        .putRequest(path: updateTeamPath, body: {'team': team});
+        .patchRequest(path: updateTeamPath, body: {'team': team});
   }
 
   Future<Response> getUserInformationRequest() async {
@@ -24,6 +24,12 @@ final CustomHttpClient _customHttpClient = GetIt.I.get<CustomHttpClient>();
 
   Future<Response> sendNotificationTokenRequest({String? token}) async {
     return await _customHttpClient
-        .putRequest(path: updateTokenPath, body: {'fcm_token': token});
+        .patchRequest(path: updateTokenPath, body: {'fcm_token': token});
+  }
+
+
+    Future<Response> updateUserRequest({String? name, String? phone, String? pic}) async {
+    return await _customHttpClient
+        .patchRequest(path: updateUserPath, body: {'name': name, 'picture':pic,'phone_number':phone});
   }
 }

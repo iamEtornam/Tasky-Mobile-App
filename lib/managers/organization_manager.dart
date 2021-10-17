@@ -4,17 +4,21 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
+import 'package:tasky_mobile_app/managers/file_upload_manager.dart';
+import 'package:tasky_mobile_app/managers/user_manager.dart';
 import 'package:tasky_mobile_app/models/member.dart';
 import 'package:tasky_mobile_app/models/organization.dart';
 import 'package:tasky_mobile_app/services/organization_service.dart';
 import 'package:tasky_mobile_app/utils/local_storage.dart';
 
-
-
 class OrganizationManager with ChangeNotifier {
   final OrganizationService _organizationService =
-    GetIt.I.get<OrganizationService>();
-final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
+      GetIt.I.get<OrganizationService>();
+  final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
+  final FileUploadManager _fileUploadManager = GetIt.I.get<FileUploadManager>();
+
+  final UserManager _userManager =
+      GetIt.I.get<UserManager>();
   final Logger _logger = Logger();
   String? _message = '';
   bool _isLoading = false;
@@ -60,42 +64,21 @@ final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
     return _organization;
   }
 
-  Future<String?> updateOrganizationPicture(File imageFile) async {
-    String? fileUrl;
-    await _organizationService
-        .fileUploaderRequest(file: imageFile)
-        .then((response) async {
-      Map<String, dynamic> body = json.decode(response.body);
-        _logger.d(response.statusCode);
-      _logger.d(body);
-      setMessage('${body['message']}');
-      if (response.statusCode == 200) {
-        fileUrl = body['fileUrl'];
-      } else {
-        fileUrl = null;
-      }
-    }).catchError((onError) {
-      _logger.d('error $onError');
-      setMessage('Something went wrong while uploading file');
-      fileUrl = null;
-    });
-    return fileUrl;
-  }
-
   Future<bool> createOrganization(
       {required File image, String? name, List<String>? teams}) async {
     bool isCreated = false;
-    String? fileUrl = await updateOrganizationPicture(image);
+    String? fileUrl = await _fileUploadManager.updateOrganizationPicture(image);
     if (fileUrl != null) {
       await _organizationService
           .createOrganizationRequest(
               teams: teams, imageUrl: fileUrl, name: name)
-          .then((response) {
+          .then((response) async {
         int statusCode = response.statusCode;
         _logger.d(statusCode);
         Map<String, dynamic> body = json.decode(response.body);
         setMessage('${body['message']}');
         if (statusCode == 201) {
+          await _userManager.getUserInformation();
           isCreated = true;
         } else {
           isCreated = false;

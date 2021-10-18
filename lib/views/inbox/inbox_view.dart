@@ -120,6 +120,15 @@ class _InboxViewState extends State<InboxView> {
               );
             }
 
+               if (snapshot.connectionState == ConnectionState.done &&
+                snapshot.data!.data!.isEmpty) {
+              return const EmptyWidget(
+                message: 'You don\'t have any message yet.',
+                imageAsset: 'no_inbox.png',
+              );
+            }
+
+
             return ListView.separated(
                 shrinkWrap: true,
                 padding: const EdgeInsets.all(24),

@@ -12,7 +12,7 @@ A project management mobile app
 
 </p>
 
-This project is an implementation of a Design i found on [uigaints.com](https://uigiants.com/etsadhakal8888?posts=1129-Easy-Task-Create-Assign-UX) by [Ashish Dhakal](https://uigiants.com/etsadhakal8888).
+This project is an implementation of a Design i found on [uigaints.com](https://uigiants.com/etsadhakal8888?posts=1129-Easy-Task-Create-Assign-UX) by [Ashish Dhakal](https://uigiants.com/etsadhakal8888). This project does not make use of any third party/external state management package.
 
 <p>
 The Backend was coded with Nodejs and serverless with Postgres Database and Firebase Auth. Location the code [here](https://github.com/RegNex/TaskyBackendService)

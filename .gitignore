@@ -48,5 +48,7 @@ app.*.map.json
 
 ios/build/
 .metadata
-.vscode/launch.json
+.vscode/
 prod_url.txt
+.fvm
+pubspec.lock

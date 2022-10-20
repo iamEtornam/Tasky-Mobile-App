@@ -239,6 +239,9 @@ class _AccountViewState extends State<AccountView> {
                                           child: Column(
                                             children: [
                                               TextFieldTags(
+                                                inputfieldBuilder: (context, tec, fn, error, onChanged, onSubmitted) {
+                                                  
+                                                },
                                                 textFieldStyler:
                                                     TextFieldStyler(
                                                   helperText: '',

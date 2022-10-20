@@ -1,16 +1,13 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:firebase_analytics/observer.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:provider/provider.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tasky_mobile_app/managers/auth_manager.dart';
 import 'package:tasky_mobile_app/managers/file_upload_manager.dart';
 import 'package:tasky_mobile_app/managers/task_manager.dart';
@@ -31,7 +28,6 @@ import 'managers/organization_manager.dart';
 import 'services/inbox_service.dart';
 import 'services/user_service.dart';
 import 'shared_widgets/custom_theme.dart';
-import 'utils/network_utils/apple_sign_in_avaliability.dart';
 
 final FirebaseMessaging messaging = FirebaseMessaging.instance;
 GetIt locator = GetIt.instance;
@@ -44,10 +40,8 @@ setupSingletons() async {
 
   locator.registerLazySingleton<LocalStorage>(() => LocalStorage());
 
-  locator
-      .registerLazySingleton<OrganizationService>(() => OrganizationService());
-  locator
-      .registerLazySingleton<OrganizationManager>(() => OrganizationManager());
+  locator.registerLazySingleton<OrganizationService>(() => OrganizationService());
+  locator.registerLazySingleton<OrganizationManager>(() => OrganizationManager());
 
   locator.registerLazySingleton<UserService>(() => UserService());
   locator.registerLazySingleton<UserManager>(() => UserManager());
@@ -69,16 +63,14 @@ main() async {
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
   FirebaseMessaging.onBackgroundMessage(backgroundMessageHandler);
   await Hive.initFlutter();
-  final appleSignInAvailable = await AppleSignInAvailable.check();
-  runApp(Provider<AppleSignInAvailable>.value(
-    value: appleSignInAvailable,
+  runApp(ProviderScope(
     child: MyApp(),
   ));
 }
 
 class MyApp extends StatelessWidget {
   MyApp({Key? key}) : super(key: key);
-  final FirebaseAnalytics _analytics = FirebaseAnalytics();
+  final FirebaseAnalytics _analytics = FirebaseAnalytics.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   @override
@@ -95,13 +87,9 @@ class MyApp extends StatelessWidget {
             initialRoute: '/',
             onGenerateInitialRoutes: (_) {
               if (_auth.currentUser != null) {
-                return <Route>[
-                  MaterialPageRoute(builder: (context) => const DashboardView())
-                ];
+                return <Route>[MaterialPageRoute(builder: (context) => const DashboardView())];
               } else {
-                return <Route>[
-                  MaterialPageRoute(builder: (context) => LoginView())
-                ];
+                return <Route>[MaterialPageRoute(builder: (context) => LoginView())];
               }
             },
             onGenerateRoute: Routes.generateRoute,
@@ -110,8 +98,7 @@ class MyApp extends StatelessWidget {
               FirebaseAnalyticsObserver(analytics: _analytics),
               BotToastNavigatorObserver(),
             ],
-            localeResolutionCallback:
-                (Locale? locale, Iterable<Locale> supportedLocales) {
+            localeResolutionCallback: (Locale? locale, Iterable<Locale> supportedLocales) {
               return locale;
             },
           );

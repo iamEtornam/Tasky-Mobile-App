@@ -6,13 +6,12 @@ import 'package:flutter_custom_dialog/flutter_custom_dialog.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:image_picker/image_picker.dart' as _image_picker;
+import 'package:image_picker/image_picker.dart' as image_picker;
 
 import 'custom_colors.dart';
 
 class UiUtilities {
-  actionAlertWidget(
-      {required BuildContext context, required String alertType}) {
+  actionAlertWidget({required BuildContext context, required String alertType}) {
     YYDialog yyDialog = YYDialog();
     yyDialog.build(context)
       ..width = 120
@@ -48,8 +47,8 @@ class UiUtilities {
       ))
       ..animatedFunc = (child, animation) {
         return ScaleTransition(
-          child: child,
           scale: Tween(begin: 0.0, end: 1.0).animate(animation),
+          child: child,
         );
       };
     yyDialog.show();
@@ -58,92 +57,95 @@ class UiUtilities {
     });
   }
 
-  alertNotification(
-      {required String message, required BuildContext context}) {
+  alertNotification({required String message, required BuildContext context}) {
     return BotToast.showSimpleNotification(
         title: message,
-        backgroundColor:
-            Theme.of(context).scaffoldBackgroundColor.withOpacity(.3),
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor.withOpacity(.3),
         borderRadius: 10,
         duration: const Duration(seconds: 4),
         align: Alignment.topCenter);
   }
 
-  Future<XFile?> getImage(
-      {required _image_picker.ImageSource imageSource}) async {
-    return await _image_picker.ImagePicker().pickImage(source: imageSource);
+  Future<XFile?> getImage({required image_picker.ImageSource imageSource}) async {
+    return await image_picker.ImagePicker().pickImage(source: imageSource);
   }
 
   Future<File?> getCroppedFile({required String file}) async {
-    return await ImageCropper.cropImage(
-        sourcePath: file,
-        compressFormat: ImageCompressFormat.png,
-        compressQuality: 70,
-        aspectRatioPresets: Platform.isAndroid
-            ? [
-                CropAspectRatioPreset.square,
-                CropAspectRatioPreset.ratio3x2,
-                CropAspectRatioPreset.original,
-                CropAspectRatioPreset.ratio4x3,
-                CropAspectRatioPreset.ratio16x9
-              ]
-            : [
-                CropAspectRatioPreset.original,
-                CropAspectRatioPreset.square,
-                CropAspectRatioPreset.ratio3x2,
-                CropAspectRatioPreset.ratio4x3,
-                CropAspectRatioPreset.ratio5x3,
-                CropAspectRatioPreset.ratio5x4,
-                CropAspectRatioPreset.ratio7x5,
-                CropAspectRatioPreset.ratio16x9
-              ],
-        androidUiSettings: const AndroidUiSettings(
+    final croppedFile = await ImageCropper().cropImage(
+      sourcePath: file,
+      compressFormat: ImageCompressFormat.png,
+      compressQuality: 70,
+      aspectRatioPresets: Platform.isAndroid
+          ? [
+              CropAspectRatioPreset.square,
+              CropAspectRatioPreset.ratio3x2,
+              CropAspectRatioPreset.original,
+              CropAspectRatioPreset.ratio4x3,
+              CropAspectRatioPreset.ratio16x9
+            ]
+          : [
+              CropAspectRatioPreset.original,
+              CropAspectRatioPreset.square,
+              CropAspectRatioPreset.ratio3x2,
+              CropAspectRatioPreset.ratio4x3,
+              CropAspectRatioPreset.ratio5x3,
+              CropAspectRatioPreset.ratio5x4,
+              CropAspectRatioPreset.ratio7x5,
+              CropAspectRatioPreset.ratio16x9
+            ],
+      uiSettings: [
+        AndroidUiSettings(
             toolbarTitle: 'Crop Image',
             toolbarColor: customRedColor,
             toolbarWidgetColor: Colors.white,
             initAspectRatio: CropAspectRatioPreset.original,
             lockAspectRatio: false),
-        iosUiSettings: const IOSUiSettings(
+        IOSUiSettings(
           title: 'Crop Image',
-        ));
+        )
+      ],
+    );
+
+    if (croppedFile == null) return null;
+    return File(croppedFile.path);
   }
 
   String twenty4to12conventer(String unformattedTime) {
-    List<String> _time = unformattedTime.split(':');
+    List<String> splitTime = unformattedTime.split(':');
     String time;
-    switch (int.parse(_time[0])) {
+    switch (int.parse(splitTime[0])) {
       case 13:
-        time = '1:${_time[1]} PM';
+        time = '1:${splitTime[1]} PM';
         break;
       case 14:
-        time = '2:${_time[1]} PM';
+        time = '2:${splitTime[1]} PM';
         break;
       case 15:
-        time = '3:${_time[1]} PM';
+        time = '3:${splitTime[1]} PM';
         break;
       case 16:
-        time = '4:${_time[1]} PM';
+        time = '4:${splitTime[1]} PM';
         break;
       case 17:
-        time = '5:${_time[1]} PM';
+        time = '5:${splitTime[1]} PM';
         break;
       case 18:
-        time = '6:${_time[1]} PM';
+        time = '6:${splitTime[1]} PM';
         break;
       case 19:
-        time = '7:${_time[1]} PM';
+        time = '7:${splitTime[1]} PM';
         break;
       case 20:
-        time = '8:${_time[1]} PM';
+        time = '8:${splitTime[1]} PM';
         break;
       case 21:
-        time = '9:${_time[1]} PM';
+        time = '9:${splitTime[1]} PM';
         break;
       case 22:
-        time = '10:${_time[1]} PM';
+        time = '10:${splitTime[1]} PM';
         break;
       case 23:
-        time = '11:${_time[1]} PM';
+        time = '11:${splitTime[1]} PM';
         break;
       default:
         return '$unformattedTime AM';

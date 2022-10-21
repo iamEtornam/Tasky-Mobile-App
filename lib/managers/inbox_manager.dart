@@ -33,7 +33,7 @@ class InboxManager with ChangeNotifier {
 
   Future<inbox.Inbox?> getInboxes({String query = 'All'}) async {
     try {
-      inbox.Inbox? _inbox;
+      inbox.Inbox? i;
       int? userId = await _localStorage.getId();
       Data? userInfo = await _localStorage.getUserInfo();
       await _inboxService.getInboxRequest(userId: userId!).then((response) {
@@ -43,8 +43,8 @@ class InboxManager with ChangeNotifier {
         setMessage(body['message']);
         setisLoading(false);
         if (statusCode == 200) {
-          _inbox = inbox.Inbox.fromJson(body);
-          Iterable<inbox.Datum> searchData = _inbox!.data!.where((element) {
+          i = inbox.Inbox.fromJson(body);
+          Iterable<inbox.Datum> searchData = i!.data!.where((element) {
             if (query == 'Assigned to me' || query == 'All') {
               return element.userId == userId;
             } else if (query == 'Assigned to team') {
@@ -54,24 +54,24 @@ class InboxManager with ChangeNotifier {
             }
           });
 
-          _inbox = inbox.Inbox(
+          i = inbox.Inbox(
               data: searchData.toList(),
-              message: _inbox!.message,
-              status: _inbox!.status);
+              message: i!.message,
+              status: i!.status);
         } else {
-          _inbox = null;
+          i = null;
         }
       }).catchError((onError) {
         _logger.d(onError);
-        _inbox = null;
+        i = null;
         setMessage('$onError');
         setisLoading(false);
       }).timeout(const Duration(seconds: 60), onTimeout: () {
-        _inbox = null;
+        i = null;
         setMessage('Timeout! Check your internet connection.');
         setisLoading(false);
       });
-      return _inbox;
+      return i;
     } catch (e) {
       _logger.d(e);
       setMessage('$e');
@@ -81,27 +81,27 @@ class InboxManager with ChangeNotifier {
   }
 
   Future<Comment?> getInboxComments({int? inboxId}) async {
-    Comment? _comment;
+    Comment? c;
     await _inboxService.getInboxCommentRequest(inbox: inboxId).then((response) {
       int statusCode = response.statusCode;
       Map<String, dynamic> body = json.decode(response.body);
       setMessage(body['message']);
       setisLoading(false);
       if (statusCode == 200) {
-        _comment = Comment.fromJson(body);
+        c = Comment.fromJson(body);
       } else {
-        _comment = null;
+        c = null;
       }
     }).catchError((onError) {
-      _comment = null;
+      c = null;
       setMessage('$onError');
       setisLoading(false);
     }).timeout(const Duration(seconds: 60), onTimeout: () {
-      _comment = null;
+      c = null;
       setMessage('Timeout! Check your internet connection.');
       setisLoading(false);
     });
-    return _comment;
+    return c;
   }
 
   Future<bool> submitInboxComment({int? inboxId, String? comment}) async {

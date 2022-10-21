@@ -16,18 +16,17 @@ import 'package:tasky_mobile_app/shared_widgets/empty_widget.dart';
 import 'package:tasky_mobile_app/utils/ui_utils/custom_colors.dart';
 import 'package:tasky_mobile_app/utils/ui_utils/ui_utils.dart';
 
-
 class TaskView extends StatefulWidget {
   const TaskView({Key? key}) : super(key: key);
 
   @override
-  _TaskViewState createState() => _TaskViewState();
+  State<TaskView> createState() => _TaskViewState();
 }
 
 class _TaskViewState extends State<TaskView> {
   final UiUtilities uiUtilities = UiUtilities();
   final ScrollController _scrollController = ScrollController();
-final TaskManager _taskManager = GetIt.I.get<TaskManager>();
+  final TaskManager _taskManager = GetIt.I.get<TaskManager>();
 
   @override
   Widget build(BuildContext context) {
@@ -38,25 +37,21 @@ final TaskManager _taskManager = GetIt.I.get<TaskManager>();
       body: StreamBuilder<Task?>(
           stream: _taskManager.getTasks().asStream(),
           builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting &&
-                !snapshot.hasData) {
+            if (snapshot.connectionState == ConnectionState.waiting && !snapshot.hasData) {
               return const Center(child: CupertinoActivityIndicator());
             }
 
-            if (snapshot.connectionState == ConnectionState.done &&
-                !snapshot.hasData) {
+            if (snapshot.connectionState == ConnectionState.done && !snapshot.hasData) {
               return const EmptyWidget(
                 imageAsset: 'no_task.png',
-                message:
-                    'Tasks aasigned to you and tasks created for you appears here.',
+                message: 'Tasks aasigned to you and tasks created for you appears here.',
               );
             }
 
             if (snapshot.data == null) {
               return const EmptyWidget(
                 imageAsset: 'no_task.png',
-                message:
-                    'Tasks aasigned to you and tasks created for you appears here.',
+                message: 'Tasks aasigned to you and tasks created for you appears here.',
               );
             }
 
@@ -65,8 +60,7 @@ final TaskManager _taskManager = GetIt.I.get<TaskManager>();
               children: [
                 const Divider(),
                 Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
+                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
                   child: Row(
                     children: [
                       const Icon(
@@ -85,8 +79,7 @@ final TaskManager _taskManager = GetIt.I.get<TaskManager>();
                 ),
                 const Divider(),
                 Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 24, vertical: 10),
+                    padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
                     child: Text(
                       'Tasks',
                       style: Theme.of(context).textTheme.bodyText1,
@@ -101,34 +94,26 @@ final TaskManager _taskManager = GetIt.I.get<TaskManager>();
                           dueDate: snapshot.data!.data![index].dueDate,
                           images: snapshot.data!.data![index].participants,
                           taskTitle: snapshot.data!.data![index].description,
-                          isCompleted:
-                              snapshot.data!.data![index].status == 'completed',
+                          isCompleted: snapshot.data!.data![index].status == 'completed',
                           onTap: (bool value) async {
                             BotToast.showLoading(
                                 allowClick: false,
                                 clickClose: false,
                                 backButtonBehavior: BackButtonBehavior.ignore);
-                            bool isChanged =
-                                await _taskManager.markTaskAsCompleted(
-                                    status: 'completed',
-                                    taskId: snapshot.data!.data![index].id);
+                            bool isChanged = await _taskManager.markTaskAsCompleted(
+                                status: 'completed', taskId: snapshot.data!.data![index].id);
                             BotToast.closeAllLoading();
                             if (isChanged) {
-                              uiUtilities.actionAlertWidget(
-                                  context: context, alertType: 'success');
+                              uiUtilities.actionAlertWidget(context: context, alertType: 'success');
                               uiUtilities.alertNotification(
-                                  context: context,
-                                  message: 'Marked as completed!');
+                                  context: context, message: 'Marked as completed!');
                               setState(() {
-                                snapshot.data!.data![index].status =
-                                    value ? 'complete' : 'todo';
+                                snapshot.data!.data![index].status = value ? 'complete' : 'todo';
                               });
                             } else {
-                              uiUtilities.actionAlertWidget(
-                                  context: context, alertType: 'error');
+                              uiUtilities.actionAlertWidget(context: context, alertType: 'error');
                               uiUtilities.alertNotification(
-                                  context: context,
-                                  message: _taskManager.message!);
+                                  context: context, message: _taskManager.message!);
                             }
                           },
                           changeStatus: () async {
@@ -145,9 +130,7 @@ final TaskManager _taskManager = GetIt.I.get<TaskManager>();
                                           RadioListTile(
                                               title: Text(
                                                 'To do',
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .bodyText1,
+                                                style: Theme.of(context).textTheme.bodyText1,
                                               ),
                                               value: 'todo',
                                               groupValue: 'status',
@@ -155,46 +138,35 @@ final TaskManager _taskManager = GetIt.I.get<TaskManager>();
                                                 BotToast.showLoading(
                                                     allowClick: false,
                                                     clickClose: false,
-                                                    backButtonBehavior:
-                                                        BackButtonBehavior
-                                                            .ignore);
+                                                    backButtonBehavior: BackButtonBehavior.ignore);
                                                 bool isChanged =
-                                                    await _taskManager
-                                                        .markTaskAsCompleted(
-                                                            status: value,
-                                                            taskId: snapshot
-                                                                .data!
-                                                                .data![index]
-                                                                .id);
+                                                    await _taskManager.markTaskAsCompleted(
+                                                        status: value,
+                                                        taskId: snapshot.data!.data![index].id);
                                                 BotToast.closeAllLoading();
                                                 await _taskManager.getTasks();
                                                 if (isChanged) {
                                                   uiUtilities.actionAlertWidget(
-                                                      context: context,
-                                                      alertType: 'success');
+                                                      context: context, alertType: 'success');
                                                   uiUtilities.alertNotification(
                                                       context: context,
-                                                      message:
-                                                          'Marked as a To-do!');
-                                                  Navigator.of(dialogContext,
-                                                          rootNavigator: true)
+                                                      message: 'Marked as a To-do!');
+                                                  if (!mounted) return;
+
+                                                  Navigator.of(dialogContext, rootNavigator: true)
                                                       .pop();
                                                 } else {
                                                   uiUtilities.actionAlertWidget(
-                                                      context: context,
-                                                      alertType: 'error');
+                                                      context: context, alertType: 'error');
                                                   uiUtilities.alertNotification(
                                                       context: context,
-                                                      message:
-                                                          _taskManager.message!);
+                                                      message: _taskManager.message!);
                                                 }
                                               }),
                                           RadioListTile(
                                               title: Text(
                                                 'In Progress',
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .bodyText1,
+                                                style: Theme.of(context).textTheme.bodyText1,
                                               ),
                                               value: 'in progress',
                                               groupValue: 'status',
@@ -202,46 +174,35 @@ final TaskManager _taskManager = GetIt.I.get<TaskManager>();
                                                 BotToast.showLoading(
                                                     allowClick: false,
                                                     clickClose: false,
-                                                    backButtonBehavior:
-                                                        BackButtonBehavior
-                                                            .ignore);
+                                                    backButtonBehavior: BackButtonBehavior.ignore);
                                                 bool isChanged =
-                                                    await _taskManager
-                                                        .markTaskAsCompleted(
-                                                            status: value,
-                                                            taskId: snapshot
-                                                                .data!
-                                                                .data![index]
-                                                                .id);
+                                                    await _taskManager.markTaskAsCompleted(
+                                                        status: value,
+                                                        taskId: snapshot.data!.data![index].id);
                                                 BotToast.closeAllLoading();
                                                 await _taskManager.getTasks();
                                                 if (isChanged) {
                                                   uiUtilities.actionAlertWidget(
-                                                      context: context,
-                                                      alertType: 'success');
+                                                      context: context, alertType: 'success');
                                                   uiUtilities.alertNotification(
                                                       context: context,
-                                                      message:
-                                                          'Marked as In Progress!');
-                                                  Navigator.of(dialogContext,
-                                                          rootNavigator: true)
+                                                      message: 'Marked as In Progress!');
+                                                  if (!mounted) return;
+
+                                                  Navigator.of(dialogContext, rootNavigator: true)
                                                       .pop();
                                                 } else {
                                                   uiUtilities.actionAlertWidget(
-                                                      context: context,
-                                                      alertType: 'error');
+                                                      context: context, alertType: 'error');
                                                   uiUtilities.alertNotification(
                                                       context: context,
-                                                      message:
-                                                          _taskManager.message!);
+                                                      message: _taskManager.message!);
                                                 }
                                               }),
                                           RadioListTile(
                                               title: Text(
                                                 'Complete',
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .bodyText1,
+                                                style: Theme.of(context).textTheme.bodyText1,
                                               ),
                                               value: 'completed',
                                               groupValue: 'status',
@@ -249,38 +210,29 @@ final TaskManager _taskManager = GetIt.I.get<TaskManager>();
                                                 BotToast.showLoading(
                                                     allowClick: false,
                                                     clickClose: false,
-                                                    backButtonBehavior:
-                                                        BackButtonBehavior
-                                                            .ignore);
+                                                    backButtonBehavior: BackButtonBehavior.ignore);
                                                 bool isChanged =
-                                                    await _taskManager
-                                                        .markTaskAsCompleted(
-                                                            status: value,
-                                                            taskId: snapshot
-                                                                .data!
-                                                                .data![index]
-                                                                .id);
+                                                    await _taskManager.markTaskAsCompleted(
+                                                        status: value,
+                                                        taskId: snapshot.data!.data![index].id);
                                                 BotToast.closeAllLoading();
                                                 if (isChanged) {
                                                   await _taskManager.getTasks();
                                                   uiUtilities.actionAlertWidget(
-                                                      context: context,
-                                                      alertType: 'success');
+                                                      context: context, alertType: 'success');
                                                   uiUtilities.alertNotification(
                                                       context: context,
-                                                      message:
-                                                          'Marked as completed!');
-                                                  Navigator.of(dialogContext,
-                                                          rootNavigator: true)
+                                                      message: 'Marked as completed!');
+                                                  if (!mounted) return;
+
+                                                  Navigator.of(dialogContext, rootNavigator: true)
                                                       .pop();
                                                 } else {
                                                   uiUtilities.actionAlertWidget(
-                                                      context: context,
-                                                      alertType: 'error');
+                                                      context: context, alertType: 'error');
                                                   uiUtilities.alertNotification(
                                                       context: context,
-                                                      message:
-                                                          _taskManager.message!);
+                                                      message: _taskManager.message!);
                                                 }
                                               })
                                         ],
@@ -301,14 +253,11 @@ final TaskManager _taskManager = GetIt.I.get<TaskManager>();
                                         style: Theme.of(context)
                                             .textTheme
                                             .bodyText2!
-                                            .copyWith(
-                                                fontWeight: FontWeight.w600),
+                                            .copyWith(fontWeight: FontWeight.w600),
                                       ),
                                       Text(
                                         snapshot.data!.data![index].description!,
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodyText1,
+                                        style: Theme.of(context).textTheme.bodyText1,
                                       ),
                                       const SizedBox(
                                         height: 15,
@@ -318,65 +267,49 @@ final TaskManager _taskManager = GetIt.I.get<TaskManager>();
                                         style: Theme.of(context)
                                             .textTheme
                                             .bodyText2!
-                                            .copyWith(
-                                                fontWeight: FontWeight.w600),
+                                            .copyWith(fontWeight: FontWeight.w600),
                                       ),
                                       const SizedBox(
                                         height: 6,
                                       ),
                                       SizedBox(
                                         height: 60,
-                                        width:
-                                            MediaQuery.of(context).size.width,
+                                        width: MediaQuery.of(context).size.width,
                                         child: ListView.separated(
                                             scrollDirection: Axis.horizontal,
-                                            itemBuilder: (context, index) =>
-                                                ClipRRect(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            10),
-                                                    child:
-                                                        ExtendedImage.network(
-                                                      snapshot
-                                                          .data!
-                                                          .data![index]
-                                                          .assignees![index]
-                                                          .picture!,
-                                                      fit: BoxFit.cover,
-                                                      width: 60,
-                                                      height: 60,
-                                                      cache: true,
-                                                      loadStateChanged:
-                                                          (ExtendedImageState
-                                                              state) {
-                                                        if (state
-                                                                .extendedImageLoadState ==
-                                                            LoadState.failed) {
-                                                          return Image.asset(
-                                                            'assets/avatar.png',
-                                                            fit: BoxFit.cover,
-                                                            width: 60,
-                                                            height: 60,
-                                                          );
-                                                        } else {
-                                                          return ExtendedRawImage(
-                                                            image: state
-                                                                .extendedImageInfo
-                                                                ?.image,
-                                                            fit: BoxFit.cover,
-                                                            width: 60,
-                                                            height: 60,
-                                                          );
-                                                        }
-                                                      },
-                                                    )),
-                                            separatorBuilder:
-                                                (context, index) =>
-                                                    const SizedBox(
-                                                      width: 4,
-                                                    ),
-                                            itemCount: snapshot.data!.data![index]
-                                                .assignees!.length),
+                                            itemBuilder: (context, index) => ClipRRect(
+                                                borderRadius: BorderRadius.circular(10),
+                                                child: ExtendedImage.network(
+                                                  snapshot.data!.data![index].assignees![index]
+                                                      .picture!,
+                                                  fit: BoxFit.cover,
+                                                  width: 60,
+                                                  height: 60,
+                                                  cache: true,
+                                                  loadStateChanged: (ExtendedImageState state) {
+                                                    if (state.extendedImageLoadState ==
+                                                        LoadState.failed) {
+                                                      return Image.asset(
+                                                        'assets/avatar.png',
+                                                        fit: BoxFit.cover,
+                                                        width: 60,
+                                                        height: 60,
+                                                      );
+                                                    } else {
+                                                      return ExtendedRawImage(
+                                                        image: state.extendedImageInfo?.image,
+                                                        fit: BoxFit.cover,
+                                                        width: 60,
+                                                        height: 60,
+                                                      );
+                                                    }
+                                                  },
+                                                )),
+                                            separatorBuilder: (context, index) => const SizedBox(
+                                                  width: 4,
+                                                ),
+                                            itemCount:
+                                                snapshot.data!.data![index].assignees!.length),
                                       )
                                     ],
                                   );
@@ -403,8 +336,7 @@ final TaskManager _taskManager = GetIt.I.get<TaskManager>();
           Icons.add,
           color: Colors.white,
         ),
-        onPressed: () =>
-            Navigator.pushReplacementNamed(context, '/createNewTaskView'),
+        onPressed: () => Navigator.pushReplacementNamed(context, '/createNewTaskView'),
       ),
     );
   }
@@ -434,8 +366,7 @@ class TaskListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List dates = dueDate!.split(' ');
-    String dateFormat =
-        DateFormat().add_yMMMEd().format(DateTime.tryParse(dates[0])!);
+    String dateFormat = DateFormat().add_yMMMEd().format(DateTime.tryParse(dates[0])!);
 
     return GestureDetector(
       onTap: () => onOpened(),
@@ -472,9 +403,7 @@ class TaskListTile extends StatelessWidget {
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                        decoration: isCompleted
-                            ? TextDecoration.lineThrough
-                            : TextDecoration.none),
+                        decoration: isCompleted ? TextDecoration.lineThrough : TextDecoration.none),
                   ),
                 ),
               ],
@@ -488,24 +417,19 @@ class TaskListTile extends StatelessWidget {
                 FlutterImageStack(
                   imageList: images!,
                   extraCountTextStyle: Theme.of(context).textTheme.subtitle2!,
-                  itemBorderColor: Colors
-                      .primaries[Random().nextInt(Colors.primaries.length)],
+                  itemBorderColor: Colors.primaries[Random().nextInt(Colors.primaries.length)],
                   itemRadius: 25,
                   itemCount: images!.length,
                   itemBorderWidth: 1,
-                  backgroundColor: Colors
-                      .primaries[Random().nextInt(Colors.primaries.length)]
-                      .withOpacity(.5),
+                  backgroundColor:
+                      Colors.primaries[Random().nextInt(Colors.primaries.length)].withOpacity(.5),
                   totalCount: images!.length,
                 ),
                 Row(
                   children: [
                     Text(
                       '$dateFormat ${dates[1]}',
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodyText1!
-                          .copyWith(color: customRedColor),
+                      style: Theme.of(context).textTheme.bodyText1!.copyWith(color: customRedColor),
                     ),
                     const SizedBox(
                       width: 10,
@@ -515,8 +439,7 @@ class TaskListTile extends StatelessWidget {
                         showModalBottomSheet(
                             shape: const RoundedRectangleBorder(
                                 borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(10),
-                                    topRight: Radius.circular(10))),
+                                    topLeft: Radius.circular(10), topRight: Radius.circular(10))),
                             context: context,
                             elevation: 3,
                             builder: (context) {
@@ -536,8 +459,7 @@ class TaskListTile extends StatelessWidget {
                                       child: Container(
                                         decoration: BoxDecoration(
                                             color: Colors.white70,
-                                            borderRadius:
-                                                BorderRadius.circular(45)),
+                                            borderRadius: BorderRadius.circular(45)),
                                         height: 6,
                                         width: 40,
                                       ),

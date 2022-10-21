@@ -9,8 +9,7 @@ class CustomBottomSheetWidget extends StatelessWidget {
   final double height;
   final String? title;
 
-  const CustomBottomSheetWidget(
-      {Key? key, required this.options, this.height = 170.0, this.title})
+  const CustomBottomSheetWidget({Key? key, required this.options, this.height = 170.0, this.title})
       : super(key: key);
 
   @override
@@ -23,40 +22,34 @@ class CustomBottomSheetWidget extends StatelessWidget {
                 ),
                 actions: options!
                     .map((e) => CupertinoButton(
+                        onPressed: e.onTap,
                         child: Text(
                           e.label!,
                           style: Theme.of(context)
                               .textTheme
                               .bodyText1!
                               .copyWith(color: customRedColor),
-                        ),
-                        onPressed: e.onTap))
+                        )))
                     .toList(),
                 cancelButton: CupertinoButton(
                     child: Text('Cancel',
-                        style: Theme.of(context)
-                            .textTheme
-                            .button!
-                            .copyWith(color: Colors.red)),
+                        style: Theme.of(context).textTheme.button!.copyWith(color: Colors.red)),
                     onPressed: () => Navigator.of(context).pop()))
             : CupertinoActionSheet(
                 actions: options!
                     .map((e) => CupertinoButton(
+                        onPressed: e.onTap,
                         child: Text(
                           e.label!,
                           style: Theme.of(context)
                               .textTheme
                               .bodyText1!
                               .copyWith(color: customRedColor),
-                        ),
-                        onPressed: e.onTap))
+                        )))
                     .toList(),
                 cancelButton: CupertinoButton(
                     child: Text('Cancel',
-                        style: Theme.of(context)
-                            .textTheme
-                            .button!
-                            .copyWith(color: Colors.red)),
+                        style: Theme.of(context).textTheme.button!.copyWith(color: Colors.red)),
                     onPressed: () => Navigator.of(context).pop()))
         : Container(
             height: height,
@@ -96,10 +89,7 @@ class CustomBottomSheetWidget extends StatelessWidget {
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
                       'Cancel',
-                      style: Theme.of(context)
-                          .textTheme
-                          .button!
-                          .copyWith(color: Colors.red),
+                      style: Theme.of(context).textTheme.button!.copyWith(color: Colors.red),
                     ),
                   ),
                 )

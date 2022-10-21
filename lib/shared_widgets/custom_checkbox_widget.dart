@@ -39,7 +39,7 @@ class CustomCheckBox extends StatefulWidget {
   final Duration? animationDuration;
 
   @override
-  _CustomCheckBoxState createState() => _CustomCheckBoxState();
+  State<CustomCheckBox> createState() => _CustomCheckBoxState();
 }
 
 class _CustomCheckBoxState extends State<CustomCheckBox> {

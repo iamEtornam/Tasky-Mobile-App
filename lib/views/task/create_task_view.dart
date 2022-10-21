@@ -24,7 +24,7 @@ class CreateNewTaskView extends StatefulWidget {
   const CreateNewTaskView({Key? key}) : super(key: key);
 
   @override
-  _CreateNewTaskViewState createState() => _CreateNewTaskViewState();
+  State<CreateNewTaskView> createState() => _CreateNewTaskViewState();
 }
 
 class _CreateNewTaskViewState extends State<CreateNewTaskView> {

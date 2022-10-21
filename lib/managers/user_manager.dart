@@ -39,19 +39,19 @@ class UserManager with ChangeNotifier {
       setisLoading(false);
       _logger.d(body['message']);
       if (statusCode == 200) {
-        User _user = User.fromMap(body);
+        User user = User.fromMap(body);
         await _localStorage.saveUserInfo(
-            id: _user.data!.id,
-            name: _user.data!.name,
-            picture: _user.data!.picture,
-            userId: _user.data!.userId,
-            email: _user.data!.email,
-            signInProvider: _user.data!.signInProvider,
-            authToken: _user.data!.authToken,
-            organizationId: _user.data!.organizationId,
-            team: _user.data!.team,
-            fcmToken: _user.data!.fcmToken,
-            phoneNumber: _user.data!.phoneNumber);
+            id: user.data!.id,
+            name: user.data!.name,
+            picture: user.data!.picture,
+            userId: user.data!.userId,
+            email: user.data!.email,
+            signInProvider: user.data!.signInProvider,
+            authToken: user.data!.authToken,
+            organizationId: user.data!.organizationId,
+            team: user.data!.team,
+            fcmToken: user.data!.fcmToken,
+            phoneNumber: user.data!.phoneNumber);
         isSuccessful = true;
         setMessage(body['message']);
       } else {
@@ -79,20 +79,20 @@ class UserManager with ChangeNotifier {
       setMessage(body['message']);
       setisLoading(false);
       if (statusCode == 200) {
-        User _user = User.fromMap(body);
+        User user = User.fromMap(body);
         await _localStorage.saveUserInfo(
-            id: _user.data!.id,
-            name: _user.data!.name,
-            picture: _user.data!.picture,
-            userId: _user.data!.userId,
-            email: _user.data!.email,
-            signInProvider: _user.data!.signInProvider,
-            authToken: _user.data!.authToken,
-            organizationId: _user.data!.organizationId,
-            team: _user.data!.team,
-            fcmToken: _user.data!.fcmToken,
-            phoneNumber: _user.data!.phoneNumber);
-        user = _user;
+            id: user.data!.id,
+            name: user.data!.name,
+            picture: user.data!.picture,
+            userId: user.data!.userId,
+            email: user.data!.email,
+            signInProvider: user.data!.signInProvider,
+            authToken: user.data!.authToken,
+            organizationId: user.data!.organizationId,
+            team: user.data!.team,
+            fcmToken: user.data!.fcmToken,
+            phoneNumber: user.data!.phoneNumber);
+        user = user;
       } else {
         user = null;
       }
@@ -138,12 +138,9 @@ class UserManager with ChangeNotifier {
 
   Future<bool> updateProfile({String? name, String? phone, File? image}) async {
     bool isUpdated = false;
-    String? fileUrl =
-        await _fileUploadManager.updateOrganizationPicture(image!);
+    String? fileUrl = await _fileUploadManager.updateOrganizationPicture(image!);
 
-    await _userService
-        .updateUserRequest(name: name, phone: phone, pic: fileUrl)
-        .then((response) {
+    await _userService.updateUserRequest(name: name, phone: phone, pic: fileUrl).then((response) {
       int statusCode = response.statusCode;
       Map<String, dynamic> body = json.decode(response.body);
       setMessage(body['message']);

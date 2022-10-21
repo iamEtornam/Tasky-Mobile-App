@@ -37,7 +37,7 @@ class OrganizationManager with ChangeNotifier {
   }
 
   Future<Organization?> getOrganization() async {
-    Organization? _organization;
+    Organization? organization;
     setisLoading(true);
     int? organizationID = await _localStorage.getOrganizationId();
     await _organizationService
@@ -48,20 +48,20 @@ class OrganizationManager with ChangeNotifier {
       setMessage(body['message']);
       setisLoading(false);
       if (statusCode == 200) {
-        _organization = Organization.fromMap(body);
+        organization = Organization.fromMap(body);
       } else {
-        _organization = null;
+        organization = null;
       }
     }).catchError((onError) {
-      _organization = null;
+      organization = null;
       setMessage('$onError');
       setisLoading(false);
     }).timeout(const Duration(seconds: 60), onTimeout: () {
-      _organization = null;
+      organization = null;
       setMessage('Timeout! Check your internet connection.');
       setisLoading(false);
     });
-    return _organization;
+    return organization;
   }
 
   Future<bool> createOrganization(
@@ -95,7 +95,7 @@ class OrganizationManager with ChangeNotifier {
   }
 
   Future<Member?> getOrganizationMembers() async {
-    Member? _member;
+    Member? member;
     setisLoading(true);
     int? organizationID = await _localStorage.getOrganizationId();
     await _organizationService
@@ -106,19 +106,19 @@ class OrganizationManager with ChangeNotifier {
       setMessage(body['message']);
       setisLoading(false);
       if (statusCode == 200) {
-        _member = Member.fromMap(body);
+        member = Member.fromMap(body);
       } else {
-        _member = null;
+        member = null;
       }
     }).catchError((onError) {
-      _member = null;
+      member = null;
       setMessage('$onError');
       setisLoading(false);
     }).timeout(const Duration(seconds: 60), onTimeout: () {
-      _member = null;
+      member = null;
       setMessage('Timeout! Check your internet connection.');
       setisLoading(false);
     });
-    return _member;
+    return member;
   }
 }

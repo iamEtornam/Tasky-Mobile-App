@@ -7,8 +7,7 @@ import 'package:tasky_mobile_app/views/search/search_view.dart';
 
 final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
 
-class CustomAppBarWidget extends StatelessWidget
-    implements PreferredSizeWidget {
+class CustomAppBarWidget extends StatelessWidget implements PreferredSizeWidget {
   final String title;
 
   const CustomAppBarWidget({Key? key, required this.title}) : super(key: key);
@@ -28,9 +27,8 @@ class CustomAppBarWidget extends StatelessWidget
                     backgroundImage: const ExactAssetImage(
                       'assets/avatar.png',
                     ),
-                    backgroundColor: Colors
-                        .primaries[Random().nextInt(Colors.primaries.length)]
-                        .withOpacity(.4),
+                    backgroundColor:
+                        Colors.primaries[Random().nextInt(Colors.primaries.length)].withOpacity(.4),
                   );
                 }
                 return CircleAvatar(
@@ -38,19 +36,15 @@ class CustomAppBarWidget extends StatelessWidget
                   backgroundImage: NetworkImage(
                     snapshot.data!,
                   ),
-                  backgroundColor: Colors
-                      .primaries[Random().nextInt(Colors.primaries.length)]
-                      .withOpacity(.4),
+                  backgroundColor:
+                      Colors.primaries[Random().nextInt(Colors.primaries.length)].withOpacity(.4),
                 );
               }),
         ),
       ),
       title: Text(
         title,
-        style: Theme.of(context)
-            .textTheme
-            .headline6!
-            .copyWith(fontWeight: FontWeight.bold),
+        style: Theme.of(context).textTheme.headline6!.copyWith(fontWeight: FontWeight.bold),
       ),
       actions: [
         IconButton(
@@ -66,19 +60,18 @@ class CustomAppBarWidget extends StatelessWidget
             var list = <PopupMenuEntry<Object>>[];
             list.addAll([
               PopupMenuItem(
-                child:
-                    Text("Share", style: Theme.of(context).textTheme.bodyText1),
                 value: 1,
+                child: Text("Share", style: Theme.of(context).textTheme.bodyText1),
               ),
               const PopupMenuDivider(
                 height: 10,
               ),
               PopupMenuItem(
+                value: 2,
                 child: Text(
                   "Invite",
                   style: Theme.of(context).textTheme.bodyText1,
                 ),
-                value: 2,
               )
             ]);
             return list;

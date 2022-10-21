@@ -19,7 +19,7 @@ class InboxView extends StatefulWidget {
   const InboxView({Key? key}) : super(key: key);
 
   @override
-  _InboxViewState createState() => _InboxViewState();
+  State<InboxView> createState() => _InboxViewState();
 }
 
 class _InboxViewState extends State<InboxView> {

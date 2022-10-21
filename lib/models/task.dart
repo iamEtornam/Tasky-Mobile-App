@@ -1,6 +1,6 @@
-import 'package:tasky_mobile_app/models/user.dart' as _user;
+import 'package:tasky_mobile_app/models/user.dart' as user;
 
-import 'organization.dart' as _org;
+import 'organization.dart' as org;
 
 class Task {
   Task({
@@ -24,9 +24,7 @@ class Task {
   Map<String, dynamic> toMap() => {
         "status": status,
         "message": message,
-        "data": data == null
-            ? null
-            : List<dynamic>.from(data!.map((x) => x.toMap())),
+        "data": data == null ? null : List<dynamic>.from(data!.map((x) => x.toMap())),
       };
 }
 
@@ -52,7 +50,7 @@ class Datum {
   String? description;
   String? dueDate;
   bool? isReminder;
-  List<_user.Data>? assignees;
+  List<user.Data>? assignees;
   List<String>? participants;
   int? organizationId;
   int? createdBy;
@@ -60,8 +58,8 @@ class Datum {
   String? priorityLevel;
   DateTime? createdAt;
   DateTime? updatedAt;
-  _org.Data? organization;
-  _user.Data? creator;
+  org.Data? organization;
+  user.Data? creator;
   String? status;
 
   factory Datum.fromMap(Map<String, dynamic> json) => Datum(
@@ -72,8 +70,7 @@ class Datum {
         status: json["status"],
         assignees: json["assignees"] == null
             ? null
-            : List<_user.Data>.from(
-                json["assignees"].map((x) => _user.Data.fromMap(x))),
+            : List<user.Data>.from(json["assignees"].map((x) => user.Data.fromMap(x))),
         participants: json["assignees"] == null
             ? null
             : List<String>.from(json["assignees"].map((x) => x['picture'])),
@@ -81,18 +78,10 @@ class Datum {
         createdBy: json["created_by"],
         team: json["team"],
         priorityLevel: json["priority_level"],
-        createdAt: json["createdAt"] == null
-            ? null
-            : DateTime.parse(json["createdAt"]),
-        updatedAt: json["updatedAt"] == null
-            ? null
-            : DateTime.parse(json["updatedAt"]),
-        organization: json["organization"] == null
-            ? null
-            : _org.Data.fromMap(json["organization"]),
-        creator: json["creator"] == null
-            ? null
-            : _user.Data.fromMap(json["creator"]),
+        createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
+        updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
+        organization: json["organization"] == null ? null : org.Data.fromMap(json["organization"]),
+        creator: json["creator"] == null ? null : user.Data.fromMap(json["creator"]),
       );
 
   Map<String, dynamic> toMap() => {
@@ -100,9 +89,8 @@ class Datum {
         "description": description,
         "due_date": dueDate,
         "is_reminder": isReminder,
-        "assignees": assignees == null
-            ? null
-            : List<dynamic>.from(assignees!.map((x) => x.toMap())),
+        "assignees":
+            assignees == null ? null : List<dynamic>.from(assignees!.map((x) => x.toMap())),
         "organizationId": organizationId,
         "created_by": createdBy,
         "team": team,

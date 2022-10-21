@@ -17,7 +17,7 @@ class TaskAssigneeWidget extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _TaskAssigneeWidgetState createState() => _TaskAssigneeWidgetState();
+  State<TaskAssigneeWidget> createState() => _TaskAssigneeWidgetState();
 }
 
 class _TaskAssigneeWidgetState extends State<TaskAssigneeWidget> {

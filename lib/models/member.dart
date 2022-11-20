@@ -7,9 +7,9 @@ class Member {
     this.data,
   });
 
-  bool status;
-  String message;
-  List<Data> data;
+  bool? status;
+  String? message;
+  List<Data>? data;
 
   factory Member.fromMap(Map<String, dynamic> json) => Member(
         status: json["status"],
@@ -23,6 +23,6 @@ class Member {
         "status": status,
         "message": message,
         "data":
-            data == null ? null : List<Data>.from(data.map((x) => x.toMap())),
+            data == null ? null : List<Data>.from(data!.map((x) => x.toMap())),
       };
 }

@@ -2,7 +2,7 @@
 //
 //     final user = userFromMap(jsonString);
 
-import 'organization.dart' as _org;
+import 'organization.dart' as org;
 
 class User {
   User({
@@ -11,9 +11,9 @@ class User {
     this.data,
   });
 
-  bool status;
-  String message;
-  Data data;
+  bool? status;
+  String? message;
+  Data? data;
 
   factory User.fromMap(Map<String, dynamic> json) => User(
         status: json["status"],
@@ -24,7 +24,7 @@ class User {
   Map<String, dynamic> toMap() => {
         "status": status,
         "message": message,
-        "data": data.toMap(),
+        "data": data!.toMap(),
       };
 }
 
@@ -46,20 +46,20 @@ class Data {
     this.organization,
   });
 
-  int id;
-  String name;
-  String picture;
-  int organizationId;
-  String team;
-  String fcmToken;
-  String authToken;
-  String email;
+  int? id;
+  String? name;
+  String? picture;
+  int? organizationId;
+  String? team;
+  String? fcmToken;
+  String? authToken;
+  String? email;
   dynamic phoneNumber;
-  String userId;
-  String signInProvider;
-  DateTime createdAt;
-  DateTime updatedAt;
-  _org.Data organization;
+  String? userId;
+  String? signInProvider;
+  DateTime? createdAt;
+  DateTime? updatedAt;
+  org.Data? organization;
 
   factory Data.fromMap(Map<String, dynamic> json) => Data(
         id: json["id"],
@@ -73,15 +73,9 @@ class Data {
         phoneNumber: json["phone_number"],
         userId: json["user_id"],
         signInProvider: json["sign_in_provider"],
-        createdAt: json["createdAt"] == null
-            ? null
-            : DateTime.parse(json["createdAt"]),
-        updatedAt: json["updatedAt"] == null
-            ? null
-            : DateTime.parse(json["updatedAt"]),
-        organization: json["organization"] == null
-            ? null
-            : _org.Data.fromMap(json["organization"]),
+        createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
+        updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
+        organization: json["organization"] == null ? null : org.Data.fromMap(json["organization"]),
       );
 
   Map<String, dynamic> toMap() => {
@@ -96,8 +90,8 @@ class Data {
         "phone_number": phoneNumber,
         "user_id": userId,
         "sign_in_provider": signInProvider,
-        "createdAt": createdAt.toIso8601String(),
-        "updatedAt": updatedAt.toIso8601String(),
-        "organization": organization.toMap(),
+        "createdAt": createdAt!.toIso8601String(),
+        "updatedAt": updatedAt!.toIso8601String(),
+        "organization": organization!.toMap(),
       };
 }

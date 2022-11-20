@@ -4,57 +4,60 @@ description: A new Flutter project.
 publish_to: none
 version: 1.0.0+1
 environment:
-  sdk: ">=2.7.0 <3.0.0"
+  sdk: ">=2.17.0 <3.0.0"
 dependencies:
   flutter:
     sdk: flutter
   sample_data:
     git:
-      url: git://github.com/RegNex/sample_data.git
-  flutter_custom_dialog:
-    git:
-      url: git://github.com/794341379/flutter_custom_dialog.git
-  bot_toast: ^4.0.1
+      url: git@github.com:iamEtornam/sample_data.git
+  flutter_custom_dialog: ^1.3.0
+  bot_toast: ^4.0.3
   the_apple_sign_in: ^1.1.1
-  cupertino_icons: ^1.0.3
-  dotted_border: ^2.0.0+1
-  extended_image: ^5.1.0
-  firebase_analytics: ^8.3.2
-  firebase_auth: ^3.1.1
-  firebase_core: ^1.6.0
-  firebase_crashlytics: ^2.2.1
-  firebase_messaging: ^10.0.7
-  flutter_font_icons: ^2.2.3
+  cupertino_icons: ^1.0.5
+  dotted_border: ^2.0.0+3
+  extended_image: ^6.3.2
+  firebase_analytics: ^10.0.6
+  firebase_auth: ^4.1.3
+  firebase_core: ^2.3.0
+  firebase_crashlytics: ^3.0.6
+  firebase_messaging: ^14.1.1
+  flutter_font_icons: ^2.2.5
   flutter_image_stack: ^0.0.6
-  flutter_local_notifications: ^8.2.0
+  flutter_local_notifications: ^12.0.3+1
   flutter_spinkit: ^5.1.0
-  flutter_svg: ^0.22.0
+  flutter_svg: ^1.1.6
   get_it: ^7.2.0
-  google_fonts: ^2.1.0
-  google_sign_in: ^5.1.1
-  groovin_widgets: ^3.0.2
-  hive: ^2.0.4
+  google_fonts: ^3.0.1
+  google_sign_in: ^5.4.2
+  groovin_widgets: ^3.1.0
+  hive: ^2.2.3
   hive_flutter: ^1.1.0
-  http: ^0.13.3
-  image_cropper: ^1.4.1
-  image_picker: ^0.8.4+2
+  http: ^0.13.5
+  image_cropper: ^3.0.1
+  image_picker: ^0.8.6
   intl: ^0.17.0
   logger: ^1.1.0
-  modal_bottom_sheet: ^2.0.0
+  modal_bottom_sheet: ^2.1.2
   strings: ^0.2.2
   supercharged: ^2.1.1
-  textfield_tags: ^1.4.2
-  time_ago_provider: ^4.1.1
-  provider: ^6.0.1
+  textfield_tags: ^2.0.2
+  time_ago_provider: ^4.2.0
+  flutter_riverpod: ^2.1.1
+  readmore: ^2.2.0
+  in_app_review: ^2.0.4
+  open_apps_settings: ^0.0.4
+  package_info_plus: ^3.0.2
+  url_launcher: ^6.1.6
 
 dependency_overrides:
-  path_provider: ^2.0.5
-  firebase_storage: ^10.0.3
+  path_provider: ^2.0.11
+  firebase_storage: ^11.0.6
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^1.0.4
-  flutter_launcher_icons: ^0.9.2
+  flutter_lints: ^2.0.1
+  flutter_launcher_icons: ^0.11.0
 flutter_icons:
   android: launcher_icon
   ios: true

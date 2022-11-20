@@ -22,27 +22,25 @@ import 'package:tasky_mobile_app/views/inbox/inbox_view.dart';
 import 'package:tasky_mobile_app/views/overview/over_view.dart';
 import 'package:tasky_mobile_app/views/task/task_view.dart';
 
-final FirebaseMessaging _messaging = FirebaseMessaging.instance;
-final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
-final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
-final OrganizationManager _organizationManager =
-    GetIt.I.get<OrganizationManager>();
-final UserManager _userManager = GetIt.I.get<UserManager>();
-
 class DashboardView extends StatefulWidget {
   final int currentIndex;
 
-  const DashboardView({Key key, this.currentIndex = 0}) : super(key: key);
+  const DashboardView({Key? key, this.currentIndex = 0}) : super(key: key);
   @override
-  _DashboardViewState createState() => _DashboardViewState();
+  State<DashboardView> createState() => _DashboardViewState();
 }
 
 class _DashboardViewState extends State<DashboardView> {
+  final FirebaseMessaging _messaging = FirebaseMessaging.instance;
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
+  final OrganizationManager _organizationManager = GetIt.I.get<OrganizationManager>();
+  final UserManager _userManager = GetIt.I.get<UserManager>();
   final Logger _logger = Logger();
-  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
+  late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
   final UiUtilities uiUtilities = UiUtilities();
-  String team;
-  int _currentIndex;
+  String? team;
+  int? _currentIndex;
   final List<Widget> _pages = [
     OverView(),
     const TaskView(),
@@ -70,27 +68,29 @@ class _DashboardViewState extends State<DashboardView> {
   }
 
   void uploadNotificationToken() async {
-    if (_messaging != null && _firebaseAuth.currentUser != null) {
+    if (_firebaseAuth.currentUser != null) {
       await _messaging.getToken().then((token) async {
         await _userManager.sendNotificationToken(token: token);
       });
     }
   }
 
-  Future onSelectNotification(String payload) async {
+  Future onSelectNotification(String? payload) async {
     _logger.d("payload : $payload");
   }
 
-  initialNotification({@required BuildContext context}) async {
+  initialNotification({required BuildContext context}) async {
     flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
-    var android = const AndroidInitializationSettings('@mipmap/launcher_icon');
-    var iOS = const IOSInitializationSettings(
-        defaultPresentAlert: true,
-        defaultPresentBadge: true,
-        defaultPresentSound: true);
-    var initSettings = InitializationSettings(android: android, iOS: iOS);
-    flutterLocalNotificationsPlugin.initialize(initSettings,
-        onSelectNotification: onSelectNotification);
+    const android = AndroidInitializationSettings('@mipmap/launcher_icon');
+    const iOS = DarwinInitializationSettings(
+        defaultPresentAlert: true, defaultPresentBadge: true, defaultPresentSound: true);
+    const initSettings = InitializationSettings(android: android, iOS: iOS);
+    flutterLocalNotificationsPlugin.initialize(
+      initSettings,
+      onDidReceiveNotificationResponse: (details) => onSelectNotification(details.payload),
+      onDidReceiveBackgroundNotificationResponse: (details) =>
+          onSelectNotification(details.payload),
+    );
 
     if (Platform.isIOS) {
       await _messaging.requestPermission(
@@ -110,15 +110,16 @@ class _DashboardViewState extends State<DashboardView> {
       );
     }
 
-    var androidNotificationDetails = const AndroidNotificationDetails(
-        'tasky', 'Tasky', 'Notifications from Tasky app',
-        priority: Priority.high, importance: Importance.max);
-    var iOSNotificationDetails = const IOSNotificationDetails();
-    var platform = NotificationDetails(
-        android: androidNotificationDetails, iOS: iOSNotificationDetails);
+    const androidNotificationDetails = AndroidNotificationDetails('tasky', 'Tasky',
+        channelDescription: 'Notifications from Tasky app',
+        priority: Priority.high,
+        importance: Importance.max);
+    const iOSNotificationDetails = DarwinNotificationDetails();
+    const platform =
+        NotificationDetails(android: androidNotificationDetails, iOS: iOSNotificationDetails);
 
     FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
-      RemoteNotification notification = message.notification;
+      RemoteNotification? notification = message.notification;
       // If `onMessage` is triggered with a notification, construct our own
       // local notification to show to users using the created channel.
       if (notification != null) {
@@ -130,39 +131,36 @@ class _DashboardViewState extends State<DashboardView> {
 
     // Get any messages which caused the application to open from
     // a terminated state.
-    await _messaging
-        .getInitialMessage()
-        .then((RemoteMessage initialMessage) async {
+    await _messaging.getInitialMessage().then((RemoteMessage? initialMessage) async {
       // ignore: null_aware_in_condition
       if (initialMessage != null) {
-        var androidNotificationDetails = const AndroidNotificationDetails(
-            'tasky', 'Tasky', 'Notifications from Tasky app',
-            priority: Priority.high, importance: Importance.max);
-        var iOSNotificationDetails = const IOSNotificationDetails();
-        var platform = NotificationDetails(
-            android: androidNotificationDetails, iOS: iOSNotificationDetails);
+        const androidNotificationDetails = AndroidNotificationDetails('tasky', 'Tasky',
+            channelDescription: 'Notifications from Tasky app',
+            priority: Priority.high,
+            importance: Importance.max);
+        const iOSNotificationDetails = DarwinNotificationDetails();
+        const platform =
+            NotificationDetails(android: androidNotificationDetails, iOS: iOSNotificationDetails);
         await flutterLocalNotificationsPlugin.show(
-            0,
-            initialMessage.notification.title,
-            initialMessage.notification.body,
-            platform,
+            0, initialMessage.notification!.title, initialMessage.notification!.body, platform,
             payload: json.encode(initialMessage.data));
       }
     });
 
     // Also handle any interaction when the app is in the background via a
     // Stream listener
-    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) async {
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage? message) async {
       if (message != null) {
-        var androidNotificationDetails = const AndroidNotificationDetails(
-            'tasky', 'Tasky', 'Notifications from Tasky app',
-            priority: Priority.high, importance: Importance.max);
-        var iOSNotificationDetails = const IOSNotificationDetails();
-        var platform = NotificationDetails(
-            android: androidNotificationDetails, iOS: iOSNotificationDetails);
+        const androidNotificationDetails = AndroidNotificationDetails('tasky', 'Tasky',
+            channelDescription: 'Notifications from Tasky app',
+            priority: Priority.high,
+            importance: Importance.max);
+        const iOSNotificationDetails = DarwinNotificationDetails();
+        const platform =
+            NotificationDetails(android: androidNotificationDetails, iOS: iOSNotificationDetails);
 
         await flutterLocalNotificationsPlugin.show(
-            0, message.notification.title, message.notification.body, platform,
+            0, message.notification!.title, message.notification!.body, platform,
             payload: json.encode(message.data));
       }
     });
@@ -174,28 +172,21 @@ class _DashboardViewState extends State<DashboardView> {
         ? const Scaffold(body: Center(child: CupertinoActivityIndicator()))
         : Scaffold(
             body: IndexedStack(
-              children: _pages,
               index: _currentIndex,
+              children: _pages,
             ),
             bottomNavigationBar: BottomNavigationBar(
-              currentIndex: _currentIndex,
+              currentIndex: _currentIndex!,
               onTap: _onChanged,
-              selectedIconTheme:
-                  Theme.of(context).iconTheme.copyWith(color: customRedColor),
-              selectedLabelStyle: Theme.of(context)
-                  .textTheme
-                  .bodyText2
-                  .copyWith(color: customRedColor),
-              unselectedIconTheme:
-                  Theme.of(context).iconTheme.copyWith(color: customGreyColor),
-              unselectedLabelStyle: Theme.of(context)
-                  .textTheme
-                  .bodyText2
-                  .copyWith(color: customGreyColor),
+              selectedIconTheme: Theme.of(context).iconTheme.copyWith(color: customRedColor),
+              selectedLabelStyle:
+                  Theme.of(context).textTheme.bodyText2!.copyWith(color: customRedColor),
+              unselectedIconTheme: Theme.of(context).iconTheme.copyWith(color: customGreyColor),
+              unselectedLabelStyle:
+                  Theme.of(context).textTheme.bodyText2!.copyWith(color: customGreyColor),
               type: BottomNavigationBarType.fixed,
               showUnselectedLabels: true,
-              backgroundColor:
-                  Theme.of(context).bottomNavigationBarTheme.backgroundColor,
+              backgroundColor: Theme.of(context).bottomNavigationBarTheme.backgroundColor,
               selectedItemColor: customRedColor,
               unselectedItemColor: customGreyColor,
               items: [
@@ -233,178 +224,136 @@ class _DashboardViewState extends State<DashboardView> {
   }
 
   void getUserTeam() async {
-    Organization organization = await _organizationManager.getOrganization();
+    Organization? organization = await _organizationManager.getOrganization();
     _localStorage.getUserInfo().then((data) {
       if (data.team == null && organization != null) {
         showDialog(
             context: context,
             builder: (context) {
-              return AlertDialog(
-                title: Text(
-                  'Update your Team',
-                  style: Theme.of(context)
-                      .textTheme
-                      .button
-                      .copyWith(fontWeight: FontWeight.w600),
-                ),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10)),
-                content: SizedBox(
-                  height: 150,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Material(
-                        elevation: 0,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            side:
-                                const BorderSide(color: Colors.grey, width: 1)),
-                        child: Padding(
-                          padding: const EdgeInsets.all(5.0),
-                          child: OutlineDropdownButton(
-                            inputDecoration: InputDecoration(
-                              alignLabelWithHint: true,
-                              hintStyle: Theme.of(context)
-                                  .inputDecorationTheme
-                                  .hintStyle,
-                              contentPadding:
-                                  const EdgeInsets.fromLTRB(15, 1, 15, 1),
-                              floatingLabelBehavior: FloatingLabelBehavior.auto,
-                              focusedBorder: Theme.of(context)
-                                  .inputDecorationTheme
-                                  .focusedBorder,
-                              enabledBorder: Theme.of(context)
-                                  .inputDecorationTheme
-                                  .enabledBorder,
-                              disabledBorder: Theme.of(context)
-                                  .inputDecorationTheme
-                                  .disabledBorder,
-                              errorBorder: Theme.of(context)
-                                  .inputDecorationTheme
-                                  .errorBorder,
-                              focusedErrorBorder: Theme.of(context)
-                                  .inputDecorationTheme
-                                  .focusedErrorBorder,
-                              fillColor: Theme.of(context)
-                                  .inputDecorationTheme
-                                  .fillColor,
-                              filled: true,
-                              labelStyle: Theme.of(context)
-                                  .inputDecorationTheme
-                                  .labelStyle,
-                              errorStyle: Theme.of(context)
-                                  .inputDecorationTheme
-                                  .errorStyle,
+              return StatefulBuilder(builder: (context, setState) {
+                return AlertDialog(
+                  title: Text(
+                    'Update your Team',
+                    style:
+                        Theme.of(context).textTheme.button!.copyWith(fontWeight: FontWeight.w600),
+                  ),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                  content: SizedBox(
+                    height: 150,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Material(
+                          elevation: 0,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              side: const BorderSide(color: Colors.grey, width: 1)),
+                          child: Padding(
+                            padding: const EdgeInsets.all(5.0),
+                            child: OutlineDropdownButton(
+                              inputDecoration: InputDecoration(
+                                alignLabelWithHint: true,
+                                hintStyle: Theme.of(context).inputDecorationTheme.hintStyle,
+                                contentPadding: const EdgeInsets.fromLTRB(15, 1, 15, 1),
+                                floatingLabelBehavior: FloatingLabelBehavior.auto,
+                                focusedBorder: Theme.of(context).inputDecorationTheme.focusedBorder,
+                                enabledBorder: Theme.of(context).inputDecorationTheme.enabledBorder,
+                                disabledBorder:
+                                    Theme.of(context).inputDecorationTheme.disabledBorder,
+                                errorBorder: Theme.of(context).inputDecorationTheme.errorBorder,
+                                focusedErrorBorder:
+                                    Theme.of(context).inputDecorationTheme.focusedErrorBorder,
+                                fillColor: Theme.of(context).inputDecorationTheme.fillColor,
+                                filled: true,
+                                labelStyle: Theme.of(context).inputDecorationTheme.labelStyle,
+                                errorStyle: Theme.of(context).inputDecorationTheme.errorStyle,
+                              ),
+                              items: organization.data!.teams!
+                                  .map((value) => DropdownMenuItem<String>(
+                                      value: value,
+                                      child: Text(
+                                        value,
+                                        style: Theme.of(context).textTheme.bodyText1,
+                                      )))
+                                  .toList(),
+                              value: team,
+                              hint: Text(
+                                'Select your team',
+                                style: Theme.of(context).textTheme.bodyText2,
+                              ),
+                              onChanged: (value) {
+                                setState(() {
+                                  team = value;
+                                });
+                              },
                             ),
-                            items: organization.data.teams
-                                .map((value) => DropdownMenuItem<String>(
-                                    value: value,
-                                    child: Text(
-                                      value,
-                                      style:
-                                          Theme.of(context).textTheme.bodyText1,
-                                    )))
-                                .toList(),
-                            value: team,
-                            hint: Text(
-                              'Select your team',
-                              style: Theme.of(context).textTheme.bodyText2,
-                            ),
-                            onChanged: (value) {
-                              setState(() {
-                                team = value;
-                              });
-                            },
                           ),
                         ),
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      TextButton(
-                          style: TextButton.styleFrom(
-                              backgroundColor: customRedColor,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8))),
-                          onPressed: () async {
-                            Navigator.pop(context);
-                            if (team == null) {
-                              uiUtilities.actionAlertWidget(
-                                  context: context, alertType: 'error');
-                              uiUtilities.alertNotification(
-                                  context: context, message: 'Select a team');
-                            } else {
-                              BotToast.showLoading(
-                                  allowClick: false,
-                                  clickClose: false,
-                                  backButtonBehavior:
-                                      BackButtonBehavior.ignore);
-                              bool isUpdated =
-                                  await _userManager.updateUserTeam(team: team);
-                              BotToast.closeAllLoading();
-                              if (isUpdated) {
-                                uiUtilities.actionAlertWidget(
-                                    context: context, alertType: 'success');
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        TextButton(
+                            style: TextButton.styleFrom(
+                                backgroundColor: customRedColor,
+                                shape:
+                                    RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))),
+                            onPressed: () async {
+                              Navigator.pop(context);
+                              if (team == null) {
+                                uiUtilities.actionAlertWidget(context: context, alertType: 'error');
                                 uiUtilities.alertNotification(
-                                    context: context,
-                                    message: _userManager.message);
+                                    context: context, message: 'Select a team');
                               } else {
-                                uiUtilities.actionAlertWidget(
-                                    context: context, alertType: 'error');
-                                uiUtilities.alertNotification(
-                                    context: context,
-                                    message: _userManager.message);
+                                BotToast.showLoading(
+                                    allowClick: false,
+                                    clickClose: false,
+                                    backButtonBehavior: BackButtonBehavior.ignore);
+                                bool isUpdated = await _userManager.updateUserTeam(team: team);
+                                BotToast.closeAllLoading();
+                                if (isUpdated) {
+                                  uiUtilities.actionAlertWidget(
+                                      context: context, alertType: 'success');
+                                  uiUtilities.alertNotification(
+                                      context: context, message: _userManager.message!);
+                                } else {
+                                  uiUtilities.actionAlertWidget(
+                                      context: context, alertType: 'error');
+                                  uiUtilities.alertNotification(
+                                      context: context, message: _userManager.message!);
+                                }
                               }
-                            }
-                          },
-                          child: Text(
-                            'Update team',
-                            style: Theme.of(context)
-                                .textTheme
-                                .button
-                                .copyWith(color: Colors.white),
-                          ))
-                    ],
+                            },
+                            child: Text(
+                              'Update team',
+                              style:
+                                  Theme.of(context).textTheme.button!.copyWith(color: Colors.white),
+                            ))
+                      ],
+                    ),
                   ),
-                ),
-              );
+                );
+              });
             });
       }
     });
   }
 
-  // void checkAuth() async {
-  //   final FirebaseAuth _auth = FirebaseAuth.instance;
-  //   _logger.d(await _auth.currentUser.getIdToken());
-  //   int userId = await _localStorage.getId();
-  //   _auth.userChanges().listen((user) {
-  //     print('user: $user');
-  //     if (user != null) {
-  //       getUserTeam();
-  //     } else {
-  //       Navigator.pushNamedAndRemoveUntil(
-  //           context, '/loginView', (route) => false);
-  //     }
-  //   });
-  // }
-
-
-void confirmAuthStatus() async {
-    final FirebaseAuth _auth = FirebaseAuth.instance;
-    _logger.d(await _auth.currentUser.getIdToken());
-    int userId = await _localStorage.getId();
-    _auth.userChanges().listen((user) {
-      if (user != null && userId != null) {
+  void confirmAuthStatus() async {
+    final FirebaseAuth auth = FirebaseAuth.instance;
+    _logger.d(await auth.currentUser!.getIdToken());
+    int? userId = await _localStorage.getId();
+    int? organizationId = await _localStorage.getOrganizationId();
+    auth.userChanges().listen((user) {
+      if (user != null && userId != null && organizationId != null) {
         getUserTeam();
+      } else if (organizationId == null && user != null) {
+        Navigator.pushNamedAndRemoveUntil(context, '/organizationView', (route) => false);
       } else {
-         _auth.signOut();
-         _localStorage.clearStorage();
-        Navigator.pushNamedAndRemoveUntil(
-            context, '/loginView', (route) => false);
+        auth.signOut();
+        _localStorage.clearStorage();
+        Navigator.pushNamedAndRemoveUntil(context, '/loginView', (route) => false);
       }
     });
+  }
 }
-}
-

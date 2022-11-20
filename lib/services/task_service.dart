@@ -3,17 +3,18 @@ import 'package:http/http.dart';
 import 'package:tasky_mobile_app/utils/network_utils/custom_http_client.dart';
 import 'package:tasky_mobile_app/utils/network_utils/endpoints.dart';
 
-final CustomHttpClient _customHttpClient = GetIt.I.get<CustomHttpClient>();
 
 class TaskService {
+final CustomHttpClient _customHttpClient = GetIt.I.get<CustomHttpClient>();
+
   Future<Response> createTaskRequest(
-      {String description,
-      String dueDate,
-      String team,
-      bool isReminder,
-      int organizationId,
-      int createdBy,
-      List<int> assignees}) async {
+      {String? description,
+      String? dueDate,
+      String? team,
+      bool? isReminder,
+      int? organizationId,
+      int? createdBy,
+      List<int?>? assignees}) async {
     Map<String, dynamic> body = {
       'description': description,
       'due_date': dueDate,
@@ -27,23 +28,23 @@ class TaskService {
         path: createTaskPath, body: body);
   }
 
-  Future<Response> getTaskRequest(int organizationId) async {
+  Future<Response> getTaskRequest(int? organizationId) async {
     return await _customHttpClient.getRequest(getTaskPath(organizationId));
   }
 
-  Future<Response> getTaskStatisticsRequest(int userId) async {
+  Future<Response> getTaskStatisticsRequest(int? userId) async {
     return await _customHttpClient.getRequest(getTaskStatisticsPath(userId));
   }
 
   Future<Response> updateTaskRequest(
-      {int taskId,
-      String status,
-      String description,
-      String dueDate,
-      bool isReminder,
-      List<int> assignees,
-      String team,
-      String priorityLevel}) async {
+      {int? taskId,
+      String? status,
+      String? description,
+      String? dueDate,
+      bool? isReminder,
+      List<int>? assignees,
+      String? team,
+      String? priorityLevel}) async {
     Map body = {
       'status': status,
       'description': description,
@@ -57,7 +58,7 @@ class TaskService {
         path: '$updateTaskPath/taskId', body: body);
   }
 
-  Future<Response> markAsCompletedRequest({int taskId, String status}) async {
+  Future<Response> markAsCompletedRequest({int? taskId, String? status}) async {
     Map body = {'status': status};
     return await _customHttpClient.putRequest(
         path: '$updateTaskPath/$taskId', body: body);

@@ -24,6 +24,9 @@ ThemeData customLightTheme(
       brightness: Brightness.light,
       fontFamily: GoogleFonts.poppins().fontFamily,
       cardColor: const Color.fromRGBO(250, 250, 250, 1),
+      progressIndicatorTheme: const ProgressIndicatorThemeData(
+        color: customRedColor,
+      ),
       inputDecorationTheme: InputDecorationTheme(
         fillColor: Colors.white,
         filled: true,
@@ -32,10 +35,10 @@ ThemeData customLightTheme(
         contentPadding: const EdgeInsets.all(15.0),
         floatingLabelBehavior: FloatingLabelBehavior.auto,
         focusedBorder: UnderlineInputBorder(
-            borderSide: BorderSide(color: Colors.grey[300], width: .5),
+            borderSide: BorderSide(color: Colors.grey[300]!, width: .5),
             borderRadius: const BorderRadius.all(Radius.circular(5))),
         enabledBorder: UnderlineInputBorder(
-            borderSide: BorderSide(color: Colors.grey[300], width: .5),
+            borderSide: BorderSide(color: Colors.grey[300]!, width: .5),
             borderRadius: const BorderRadius.all(Radius.circular(5))),
         disabledBorder: const UnderlineInputBorder(
             borderSide: BorderSide(color: Color(0xffE5E5E5)),
@@ -50,7 +53,7 @@ ThemeData customLightTheme(
         labelStyle: Theme.of(context).textTheme.bodyText2,
         errorStyle: Theme.of(context)
             .textTheme
-            .bodyText2
+            .bodyText2!
             .copyWith(color: const Color.fromRGBO(229, 62, 62, 1)),
       ),
       iconTheme: const IconThemeData(color: Colors.black),
@@ -78,7 +81,7 @@ ThemeData customLightTheme(
           const DividerThemeData(color: Color(0xffEDF2F7), thickness: 1),
       appBarTheme: const AppBarTheme(
         elevation: 0,
-        systemOverlayStyle: SystemUiOverlayStyle.light,
+        systemOverlayStyle: SystemUiOverlayStyle.dark,
         color: Colors.white,
         iconTheme: IconThemeData(color: Colors.black),
         titleTextStyle: TextStyle(color: Colors.black),
@@ -109,6 +112,9 @@ ThemeData customDarkTheme(
       tabBarTheme: TabBarTheme(
         unselectedLabelColor: Colors.white.withOpacity(.7),
       ),
+            progressIndicatorTheme: const ProgressIndicatorThemeData(
+        color: customRedColor,
+      ),
       textTheme: Typography.material2018(platform: defaultTargetPlatform)
           .white
           .copyWith(
@@ -137,10 +143,10 @@ ThemeData customDarkTheme(
         contentPadding: const EdgeInsets.all(15.0),
         floatingLabelBehavior: FloatingLabelBehavior.auto,
         focusedBorder: UnderlineInputBorder(
-            borderSide: BorderSide(color: Colors.grey[300], width: .5),
+            borderSide: BorderSide(color: Colors.grey[300]!, width: .5),
             borderRadius: const BorderRadius.all(Radius.circular(5))),
         enabledBorder: UnderlineInputBorder(
-            borderSide: BorderSide(color: Colors.grey[300], width: .5),
+            borderSide: BorderSide(color: Colors.grey[300]!, width: .5),
             borderRadius: const BorderRadius.all(Radius.circular(5))),
         disabledBorder: const UnderlineInputBorder(
             borderSide: BorderSide(color: Color(0xffE5E5E5)),
@@ -153,15 +159,15 @@ ThemeData customDarkTheme(
             borderSide: BorderSide(color: Color(0xffCF6679)),
             borderRadius: BorderRadius.all(Radius.circular(5))),
         labelStyle:
-            Theme.of(context).textTheme.bodyText2.copyWith(color: Colors.white),
+            Theme.of(context).textTheme.bodyText2!.copyWith(color: Colors.white),
         errorStyle: Theme.of(context)
             .textTheme
-            .bodyText2
+            .bodyText2!
             .copyWith(color: const Color(0xffCF6679)),
       ),
       appBarTheme: const AppBarTheme(
         elevation: 0,
-        systemOverlayStyle: SystemUiOverlayStyle.dark,
+        systemOverlayStyle: SystemUiOverlayStyle.light,
         color: Color(0xff121212),
         iconTheme: IconThemeData(color: Colors.white),
         titleTextStyle: TextStyle(color: Colors.white),

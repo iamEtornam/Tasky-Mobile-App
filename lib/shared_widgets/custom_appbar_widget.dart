@@ -7,11 +7,10 @@ import 'package:tasky_mobile_app/views/search/search_view.dart';
 
 final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
 
-class CustomAppBarWidget extends StatelessWidget
-    implements PreferredSizeWidget {
+class CustomAppBarWidget extends StatelessWidget implements PreferredSizeWidget {
   final String title;
 
-  const CustomAppBarWidget({Key key, @required this.title}) : super(key: key);
+  const CustomAppBarWidget({Key? key, required this.title}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return AppBar(
@@ -19,7 +18,7 @@ class CustomAppBarWidget extends StatelessWidget
       leading: Center(
         child: InkWell(
           onTap: () => Navigator.of(context).pushNamed('/accountView'),
-          child: StreamBuilder<String>(
+          child: StreamBuilder<String?>(
               stream: _localStorage.getPicture().asStream(),
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
@@ -28,29 +27,24 @@ class CustomAppBarWidget extends StatelessWidget
                     backgroundImage: const ExactAssetImage(
                       'assets/avatar.png',
                     ),
-                    backgroundColor: Colors
-                        .primaries[Random().nextInt(Colors.primaries.length)]
-                        .withOpacity(.4),
+                    backgroundColor:
+                        Colors.primaries[Random().nextInt(Colors.primaries.length)].withOpacity(.4),
                   );
                 }
                 return CircleAvatar(
                   radius: 16,
                   backgroundImage: NetworkImage(
-                    snapshot.data,
+                    snapshot.data!,
                   ),
-                  backgroundColor: Colors
-                      .primaries[Random().nextInt(Colors.primaries.length)]
-                      .withOpacity(.4),
+                  backgroundColor:
+                      Colors.primaries[Random().nextInt(Colors.primaries.length)].withOpacity(.4),
                 );
               }),
         ),
       ),
       title: Text(
         title,
-        style: Theme.of(context)
-            .textTheme
-            .headline6
-            .copyWith(fontWeight: FontWeight.bold),
+        style: Theme.of(context).textTheme.headline6!.copyWith(fontWeight: FontWeight.bold),
       ),
       actions: [
         IconButton(
@@ -66,24 +60,23 @@ class CustomAppBarWidget extends StatelessWidget
             var list = <PopupMenuEntry<Object>>[];
             list.addAll([
               PopupMenuItem(
-                child:
-                    Text("Share", style: Theme.of(context).textTheme.bodyText1),
                 value: 1,
+                child: Text("Share", style: Theme.of(context).textTheme.bodyText1),
               ),
               const PopupMenuDivider(
                 height: 10,
               ),
               PopupMenuItem(
+                value: 2,
                 child: Text(
                   "Invite",
                   style: Theme.of(context).textTheme.bodyText1,
                 ),
-                value: 2,
               )
             ]);
             return list;
           },
-          onSelected: (value) {},
+          onSelected: (dynamic value) {},
           icon: const Icon(Icons.more_vert),
         )
       ],

@@ -1,4 +1,5 @@
 # Tasky Mobile App
+[![wakatime](https://wakatime.com/badge/user/7b10be81-8ebd-4223-abbb-5f0b918e7fd4/project/01f78e40-ba5c-46be-8b13-ff411a8de063.svg)](https://wakatime.com/badge/user/7b10be81-8ebd-4223-abbb-5f0b918e7fd4/project/01f78e40-ba5c-46be-8b13-ff411a8de063)
 
 A project management mobile app
 
@@ -62,7 +63,7 @@ C:\path\to\project> flutter pub get
 then run:
 
 ```
-C:\path\to\project> flutter run
+C:\path\to\project> flutter run --dart-define=BASE_URL=<BASE URL HRERE> --dart-define=FILE_UPLOAD_URL=<FILE UPLOAD URL HERE>
 
 ```
 

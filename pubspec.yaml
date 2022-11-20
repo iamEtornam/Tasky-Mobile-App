@@ -2,31 +2,31 @@
 name: tasky_mobile_app
 description: A new Flutter project.
 publish_to: none
-version: 1.2.0+3
+version: 1.0.0+1
 environment:
   sdk: ">=2.17.0 <3.0.0"
 dependencies:
   flutter:
     sdk: flutter
-
   sample_data:
     git:
-      url: https://github.com/iamEtornam/sample_data.git
+      url: git@github.com:iamEtornam/sample_data.git
   flutter_custom_dialog: ^1.3.0
   bot_toast: ^4.0.3
+  the_apple_sign_in: ^1.1.1
   cupertino_icons: ^1.0.5
-  dotted_border: ^2.0.0+2
-  extended_image: ^6.3.1
-  firebase_analytics: ^10.0.2
-  firebase_auth: ^4.0.2
-  firebase_core: ^2.1.0
-  firebase_crashlytics: ^3.0.2
-  firebase_messaging: ^14.0.2
+  dotted_border: ^2.0.0+3
+  extended_image: ^6.3.2
+  firebase_analytics: ^10.0.6
+  firebase_auth: ^4.1.3
+  firebase_core: ^2.3.0
+  firebase_crashlytics: ^3.0.6
+  firebase_messaging: ^14.1.1
   flutter_font_icons: ^2.2.5
   flutter_image_stack: ^0.0.6
-  flutter_local_notifications: ^12.0.2
+  flutter_local_notifications: ^12.0.3+1
   flutter_spinkit: ^5.1.0
-  flutter_svg: ^1.1.5
+  flutter_svg: ^1.1.6
   get_it: ^7.2.0
   google_fonts: ^3.0.1
   google_sign_in: ^5.4.2
@@ -34,7 +34,7 @@ dependencies:
   hive: ^2.2.3
   hive_flutter: ^1.1.0
   http: ^0.13.5
-  image_cropper: ^3.0.0
+  image_cropper: ^3.0.1
   image_picker: ^0.8.6
   intl: ^0.17.0
   logger: ^1.1.0
@@ -43,25 +43,21 @@ dependencies:
   supercharged: ^2.1.1
   textfield_tags: ^2.0.2
   time_ago_provider: ^4.2.0
-  collection: ^1.17.0
+  flutter_riverpod: ^2.1.1
   readmore: ^2.2.0
-  open_apps_settings: ^0.0.4
-  package_info_plus: ^3.0.1
-  url_launcher: ^6.1.6
   in_app_review: ^2.0.4
-  flutter_hooks: ^0.18.5+1
-  hooks_riverpod: ^2.0.2
-  http_parser: ^4.0.2
-  path: ^1.8.2
+  open_apps_settings: ^0.0.4
+  package_info_plus: ^3.0.2
+  url_launcher: ^6.1.6
 
 dependency_overrides:
-  collection: ^1.17.0
-
+  path_provider: ^2.0.11
+  firebase_storage: ^11.0.6
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^2.0.1
-  flutter_launcher_icons: ^0.10.0
+  flutter_launcher_icons: ^0.11.0
 flutter_icons:
   android: launcher_icon
   ios: true

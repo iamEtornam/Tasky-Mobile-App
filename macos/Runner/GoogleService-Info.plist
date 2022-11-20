@@ -3,9 +3,11 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>997228587501-d4q7mtjlde3uvhdqs13o57n6iuelfcmn.apps.googleusercontent.com</string>
+	<string>997228587501-14fgh7380recpq1hdu2timne4u0fdifo.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.997228587501-d4q7mtjlde3uvhdqs13o57n6iuelfcmn</string>
+	<string>com.googleusercontent.apps.997228587501-14fgh7380recpq1hdu2timne4u0fdifo</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>997228587501-11i1efim7uov55qhnqiab4v4jvjo2ql3.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
 	<string>AIzaSyCZ4JOIGpx96gC_A1w0PeoklOpL4Av2bew</string>
 	<key>GCM_SENDER_ID</key>
@@ -13,7 +15,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>dev.etornam.tasky</string>
+	<string>dev.etornam.taskyMobileApp</string>
 	<key>PROJECT_ID</key>
 	<string>tasky-manager-app</string>
 	<key>STORAGE_BUCKET</key>
@@ -29,6 +31,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:997228587501:ios:f423f5d739e33920f6dfe4</string>
+	<string>1:997228587501:ios:9a5ede98d5a72101f6dfe4</string>
 </dict>
 </plist>

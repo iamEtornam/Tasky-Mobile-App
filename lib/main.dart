@@ -5,9 +5,10 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:tasky_mobile_app/firebase_options.dart';
 import 'package:tasky_mobile_app/managers/auth_manager.dart';
 import 'package:tasky_mobile_app/managers/file_upload_manager.dart';
 import 'package:tasky_mobile_app/managers/task_manager.dart';
@@ -59,7 +60,7 @@ setupSingletons() async {
 main() async {
   await setupSingletons();
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
   FirebaseMessaging.onBackgroundMessage(backgroundMessageHandler);
   await Hive.initFlutter();

@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "997228587501-11i1efim7uov55qhnqiab4v4jvjo2ql3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "dev.etornam.tasky",
+            "certificate_hash": "99b832bb7f046e93879ca6b772cfa1c79645652d"
+          }
+        },
+        {
           "client_id": "997228587501-jbmin8dts1lrqmslnu18tnupo39beanr.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -31,10 +39,10 @@
               "client_type": 3
             },
             {
-              "client_id": "997228587501-d4q7mtjlde3uvhdqs13o57n6iuelfcmn.apps.googleusercontent.com",
+              "client_id": "997228587501-14fgh7380recpq1hdu2timne4u0fdifo.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "dev.etornam.taskyApp"
+                "bundle_id": "dev.etornam.taskyMobileApp"
               }
             }
           ]

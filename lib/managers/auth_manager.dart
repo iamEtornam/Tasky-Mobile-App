@@ -25,7 +25,7 @@ class AuthManager with ChangeNotifier {
     notifyListeners();
   }
 
-  setisLoading(bool isLoading) {
+  setIsLoading(bool isLoading) {
     _isLoading = isLoading;
     notifyListeners();
   }
@@ -33,7 +33,7 @@ class AuthManager with ChangeNotifier {
   Future<bool> loginUserwithGoogle() async {
     try {
       bool isSuccessful = false;
-      setisLoading(true);
+      setIsLoading(true);
       await _authService.signInWithGoogle().then((UserCredential? googleUserCredential) async {
         if (googleUserCredential != null) {
           String token = await googleUserCredential.user!.getIdToken();
@@ -43,7 +43,7 @@ class AuthManager with ChangeNotifier {
           Map<String, dynamic>? body = json.decode(response.body);
           _logger.d(body);
 
-          setisLoading(false);
+          setIsLoading(false);
           if (statusCode == 201) {
             m.User member = m.User.fromMap(body!);
 
@@ -58,7 +58,10 @@ class AuthManager with ChangeNotifier {
                 organizationId: member.data!.organizationId,
                 team: member.data!.team,
                 fcmToken: member.data!.fcmToken,
-                phoneNumber: member.data!.phoneNumber);
+                phoneNumber: member.data!.phoneNumber,
+                createdAt: member.data!.createdAt,
+                updatedAt: member.data!.updatedAt,
+                organization: member.data?.organization?.toMap());
             setMessage(body['message']);
 
             isSuccessful = true;
@@ -74,12 +77,12 @@ class AuthManager with ChangeNotifier {
       }).catchError((onError) {
         isSuccessful = false;
         setMessage('Process has been cancelled!');
-        setisLoading(false);
+        setIsLoading(false);
         _logger.d('catchError $onError');
       }).timeout(const Duration(seconds: 60), onTimeout: () {
         isSuccessful = false;
         setMessage('Timeout! Check your internet connection.');
-        setisLoading(false);
+        setIsLoading(false);
       });
       return isSuccessful;
     } catch (e) {
@@ -98,7 +101,7 @@ class AuthManager with ChangeNotifier {
         int statusCode = response.statusCode;
         Map<String, dynamic> body = json.decode(response.body);
         m.User member = m.User.fromMap(body);
-        setisLoading(false);
+        setIsLoading(false);
         if (statusCode == 201) {
           await _localStorage.saveUserInfo(
               id: member.data!.id,
@@ -111,7 +114,10 @@ class AuthManager with ChangeNotifier {
               organizationId: member.data!.organizationId,
               team: member.data!.team,
               fcmToken: member.data!.fcmToken,
-              phoneNumber: member.data!.phoneNumber);
+              phoneNumber: member.data!.phoneNumber,
+              createdAt: member.data!.createdAt,
+              updatedAt: member.data!.updatedAt,
+              organization: member.data?.organization?.toMap());
           isSuccessful = true;
           setMessage(body['message']);
         } else {
@@ -128,11 +134,11 @@ class AuthManager with ChangeNotifier {
       _logger.d('userCredential $onError');
       isSuccessful = false;
       setMessage('$onError');
-      setisLoading(false);
+      setIsLoading(false);
     }).timeout(const Duration(seconds: 60), onTimeout: () {
       isSuccessful = false;
       setMessage('Timeout! Check your internet connection.');
-      setisLoading(false);
+      setIsLoading(false);
     });
     return isSuccessful;
   }

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:tasky_mobile_app/utils/ui_utils/custom_colors.dart';
 import 'package:tasky_mobile_app/models/user.dart';
-
+import 'package:tasky_mobile_app/utils/ui_utils/custom_colors.dart';
 
 class AssigneeTileWidget extends StatelessWidget {
   const AssigneeTileWidget(
@@ -16,10 +15,12 @@ class AssigneeTileWidget extends StatelessWidget {
     return ListTile(
       leading: CircleAvatar(
         radius: 20,
-        backgroundImage: NetworkImage(selectedUser.picture!),
+        backgroundImage: (selectedUser.picture == null
+            ? const ExactAssetImage('assets/avatar.png')
+            : NetworkImage(selectedUser.picture!) as ImageProvider),
       ),
       title: Text(
-        selectedUser.name!,
+        selectedUser.name ?? 'Not provided',
         style: Theme.of(context).textTheme.bodyLarge,
       ),
       trailing: GestureDetector(

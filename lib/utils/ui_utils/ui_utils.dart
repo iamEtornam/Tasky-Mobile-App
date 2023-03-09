@@ -12,7 +12,7 @@ import 'custom_colors.dart';
 
 class UiUtilities {
   actionAlertWidget({required BuildContext context, required String alertType}) {
-    YYDialog yyDialog = YYDialog();
+    final yyDialog = YYDialog();
     yyDialog.build(context)
       ..width = 120
       ..height = 110
@@ -60,7 +60,7 @@ class UiUtilities {
   alertNotification({required String message, required BuildContext context}) {
     return BotToast.showSimpleNotification(
         title: message,
-        backgroundColor: Theme.of(context).scaffoldBackgroundColor.withOpacity(.3),
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor.withOpacity(.1),
         borderRadius: 10,
         duration: const Duration(seconds: 4),
         align: Alignment.topCenter);

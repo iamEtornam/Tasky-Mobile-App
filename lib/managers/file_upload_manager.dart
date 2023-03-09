@@ -6,7 +6,7 @@ import 'package:get_it/get_it.dart';
 import 'package:tasky_mobile_app/services/file_upload_service.dart';
 
 class FileUploadManager with ChangeNotifier {
-    final FileUploadService _fileUploadService = GetIt.I.get<FileUploadService>();
+  final FileUploadService _fileUploadService = GetIt.I.get<FileUploadService>();
   String? _message = '';
 
   String? get message => _message;
@@ -16,16 +16,14 @@ class FileUploadManager with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<String?> updateOrganizationPicture(File imageFile) async {
+  Future<String?> imageFileUploader(File imageFile) async {
     try {
       String? fileUrl;
-      await _fileUploadService
-          .fileUploaderRequest(file: imageFile)
-          .then((response) async {
+      await _fileUploadService.fileUploaderRequest(file: imageFile).then((response) async {
         Map<String, dynamic> body = json.decode(response.body);
 
         if (response.statusCode == 200) {
-          fileUrl = body['fileUrl'];
+          fileUrl = body['metadata']['url'];
         } else {
           fileUrl = null;
         }

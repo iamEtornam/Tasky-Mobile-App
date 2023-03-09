@@ -42,16 +42,19 @@ class UserManager with ChangeNotifier {
         User user = User.fromMap(body);
         await _localStorage.saveUserInfo(
             id: user.data!.id,
-            name: user.data!.name,
-            picture: user.data!.picture,
-            userId: user.data!.userId,
-            email: user.data!.email,
-            signInProvider: user.data!.signInProvider,
-            authToken: user.data!.authToken,
-            organizationId: user.data!.organizationId,
-            team: user.data!.team,
-            fcmToken: user.data!.fcmToken,
-            phoneNumber: user.data!.phoneNumber);
+            name: user.data?.name,
+            picture: user.data?.picture,
+            userId: user.data?.userId,
+            email: user.data?.email,
+            signInProvider: user.data?.signInProvider,
+            authToken: user.data?.authToken,
+            organizationId: user.data?.organizationId,
+            team: user.data?.team,
+            fcmToken: user.data?.fcmToken,
+            phoneNumber: user.data?.phoneNumber,
+            createdAt: user.data?.createdAt,
+            updatedAt: user.data?.updatedAt,
+            organization: user.data?.organization?.toMap());
         isSuccessful = true;
         setMessage(body['message']);
       } else {
@@ -71,7 +74,6 @@ class UserManager with ChangeNotifier {
   }
 
   Future<User?> getUserInformation() async {
-    User? user;
     setisLoading(true);
     await _userService.getUserInformationRequest().then((response) async {
       int statusCode = response.statusCode;
@@ -79,66 +81,47 @@ class UserManager with ChangeNotifier {
       setMessage(body['message']);
       setisLoading(false);
       if (statusCode == 200) {
-        User user = User.fromMap(body);
+        User u = User.fromMap(body);
         await _localStorage.saveUserInfo(
-            id: user.data!.id,
-            name: user.data!.name,
-            picture: user.data!.picture,
-            userId: user.data!.userId,
-            email: user.data!.email,
-            signInProvider: user.data!.signInProvider,
-            authToken: user.data!.authToken,
-            organizationId: user.data!.organizationId,
-            team: user.data!.team,
-            fcmToken: user.data!.fcmToken,
-            phoneNumber: user.data!.phoneNumber);
-        user = user;
+            id: u.data!.id,
+            name: u.data!.name,
+            picture: u.data!.picture,
+            userId: u.data!.userId,
+            email: u.data!.email,
+            signInProvider: u.data!.signInProvider,
+            authToken: u.data!.authToken,
+            organizationId: u.data!.organizationId,
+            team: u.data!.team,
+            fcmToken: u.data!.fcmToken,
+            phoneNumber: u.data!.phoneNumber,
+            createdAt: u.data!.createdAt,
+            updatedAt: u.data!.updatedAt,
+            organization: u.data?.organization?.toMap());
+        return u;
       } else {
-        user = null;
+        return null;
       }
     }).catchError((onError) {
-      user = null;
       setMessage('$onError');
       setisLoading(false);
+      return null;
     }).timeout(const Duration(seconds: 60), onTimeout: () {
-      user = null;
       setMessage('Timeout! Check your internet connection.');
       setisLoading(false);
+      return null;
     });
-    return user;
+    return null;
   }
 
-  Future<bool> inviteMember({required List<String> emails}) async {
-    bool isSent = false;
-    await _userService.inviteMembersRequest(emails: emails).then((response) {
-      int statusCode = response.statusCode;
-      Map<String, dynamic> body = json.decode(response.body);
-      setMessage(body['message']);
-      setisLoading(false);
-      if (statusCode == 200) {
-        isSent = true;
-      } else {
-        isSent = false;
-      }
-    }).catchError((onError) {
-      isSent = false;
-      setMessage('$onError');
-      setisLoading(false);
-    }).timeout(const Duration(seconds: 60), onTimeout: () {
-      isSent = false;
-      setMessage('Timeout! Check your internet connection.');
-      setisLoading(false);
-    });
-    return isSent;
-  }
+ 
 
-  sendNotificationToken({String? token}) async {
+  Future<void> sendNotificationToken({String? token}) async {
     await _userService.sendNotificationTokenRequest(token: token);
   }
 
   Future<bool> updateProfile({String? name, String? phone, File? image}) async {
     bool isUpdated = false;
-    String? fileUrl = await _fileUploadManager.updateOrganizationPicture(image!);
+    String? fileUrl = await _fileUploadManager.imageFileUploader(image!);
 
     await _userService.updateUserRequest(name: name, phone: phone, pic: fileUrl).then((response) {
       int statusCode = response.statusCode;

@@ -30,7 +30,6 @@ class _OrganizationViewState extends State<OrganizationView> {
   TextEditingController nameTextEditingController = TextEditingController();
   final _tagsController = TextfieldTagsController();
 
-  List<String> teams = [];
   final nameFocusNode = FocusNode();
   File? _imageFile;
   List<Options>? options;
@@ -80,7 +79,7 @@ class _OrganizationViewState extends State<OrganizationView> {
 
   @override
   void dispose() {
-    _myFormKey.currentState!.dispose();
+    _myFormKey.currentState?.dispose();
     nameTextEditingController.dispose();
     super.dispose();
   }
@@ -121,7 +120,7 @@ class _OrganizationViewState extends State<OrganizationView> {
                     Colors.primaries[Random().nextInt(Colors.primaries.length)].withOpacity(.2),
                 radius: 60,
                 backgroundImage: (_imageFile == null
-                    ? const ExactAssetImage('assets/avatar.png')
+                    ? const ExactAssetImage('assets/company.png',)
                     : FileImage(_imageFile!)) as ImageProvider<Object>?,
               ),
             ),
@@ -131,7 +130,7 @@ class _OrganizationViewState extends State<OrganizationView> {
             Center(
                 child: TextButton(
               child: Text(
-                'update profile photo',
+                'update company logo',
                 style: Theme.of(context)
                     .textTheme
                     .titleSmall!
@@ -190,6 +189,7 @@ class _OrganizationViewState extends State<OrganizationView> {
               height: 10,
             ),
             TextFieldTags(
+              textfieldTagsController: _tagsController,
               inputfieldBuilder: (context, tec, fn, error, onChanged, onSubmitted) {
                 return ((context, sc, tags, onTagDelete) {
                   return Padding(
@@ -219,6 +219,7 @@ class _OrganizationViewState extends State<OrganizationView> {
                                       borderRadius: BorderRadius.circular(5.0),
                                     ),
                                     padding: const EdgeInsets.all(8.0),
+                                    margin: const EdgeInsets.only(right: 8),
                                     child: Row(
                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
@@ -274,7 +275,9 @@ class _OrganizationViewState extends State<OrganizationView> {
                       clickClose: false,
                       backButtonBehavior: BackButtonBehavior.ignore);
                   bool isCreated = await _organizationManager.createOrganization(
-                      image: _imageFile!, name: nameTextEditingController.text, teams: teams);
+                      image: _imageFile!,
+                      name: nameTextEditingController.text,
+                      teams: _tagsController.getTags);
                   BotToast.closeAllLoading();
                   if (!mounted) return;
 

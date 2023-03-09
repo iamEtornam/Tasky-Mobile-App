@@ -1,4 +1,5 @@
 import 'package:hive/hive.dart';
+import 'package:tasky_mobile_app/models/organization.dart' as org;
 import 'package:tasky_mobile_app/models/user.dart';
 
 class LocalStorage {
@@ -12,9 +13,12 @@ class LocalStorage {
       required String? signInProvider,
       required String? authToken,
       required int? organizationId,
+      required Map<String, dynamic>? organization,
       required String? team,
       required String? fcmToken,
-      required String? phoneNumber}) async {
+      required String? phoneNumber,
+      required DateTime? createdAt,
+      required DateTime? updatedAt}) async {
     final Box box = await Hive.openBox(_tasky);
     await box.put('id', id);
     await box.put('name', name);
@@ -28,6 +32,9 @@ class LocalStorage {
     await box.put('fcm_token', fcmToken);
     await box.put('phone_number', phoneNumber);
     await box.put('isAuth', true);
+    await box.put('organization', organization);
+    await box.put('createdAt', createdAt);
+    await box.put('updatedAt', updatedAt);
   }
 
   Future<Data> getUserInfo() async {
@@ -43,6 +50,9 @@ class LocalStorage {
     String? team = await box.get('team');
     String? fcmToken = await box.get('fcm_token');
     String? phoneNumber = await box.get('phone_number');
+    Map<String, dynamic>? organization = await box.get('organization');
+    DateTime? createdAt = await box.get('createdAt');
+    DateTime? updatedAt = await box.get('updatedAt');
     return Data(
         authToken: authToken,
         team: team,
@@ -54,7 +64,10 @@ class LocalStorage {
         phoneNumber: phoneNumber,
         picture: picture,
         userId: userId,
-        signInProvider: signInProvider);
+        signInProvider: signInProvider,
+        createdAt: createdAt,
+        updatedAt: updatedAt,
+        organization: organization != null ? org.Data.fromMap(organization) : null);
   }
 
   Future<int?> getId() async {

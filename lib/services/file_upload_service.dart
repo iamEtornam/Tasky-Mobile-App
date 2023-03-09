@@ -16,13 +16,12 @@ class FileUploadService {
     String fileName = basename(file.path);
     multipartRequest.headers.addAll(headers);
     multipartRequest.files.add(
-      await MultipartFile.fromPath('file', file.path,
+      await MultipartFile.fromPath('files', file.path,
           filename: fileName, contentType: MediaType("image", "png")),
     );
 
     Response response = await Response.fromStream(await multipartRequest.send())
         .timeout(const Duration(seconds: 120));
-
     return response;
   }
 }

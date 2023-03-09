@@ -17,11 +17,6 @@ final CustomHttpClient _customHttpClient = GetIt.I.get<CustomHttpClient>();
     return await _customHttpClient.getRequest(getUserInformationPath);
   }
 
-  Future<Response> inviteMembersRequest({List<String>? emails}) async {
-    return await _customHttpClient
-        .postRequest(path: inviteMembersPath, body: {'emails': emails});
-  }
-
   Future<Response> sendNotificationTokenRequest({String? token}) async {
     return await _customHttpClient
         .patchRequest(path: updateTokenPath, body: {'fcm_token': token});

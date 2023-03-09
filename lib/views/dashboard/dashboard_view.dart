@@ -69,6 +69,7 @@ class _DashboardViewState extends State<DashboardView> {
 
   void uploadNotificationToken() async {
     if (_firebaseAuth.currentUser != null) {
+      await _messaging.requestPermission();
       await _messaging.getToken().then((token) async {
         await _userManager.sendNotificationToken(token: token);
       });
@@ -234,8 +235,10 @@ class _DashboardViewState extends State<DashboardView> {
                 return AlertDialog(
                   title: Text(
                     'Update your Team',
-                    style:
-                        Theme.of(context).textTheme.labelLarge!.copyWith(fontWeight: FontWeight.w600),
+                    style: Theme.of(context)
+                        .textTheme
+                        .labelLarge!
+                        .copyWith(fontWeight: FontWeight.w600),
                   ),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                   content: SizedBox(
@@ -311,7 +314,7 @@ class _DashboardViewState extends State<DashboardView> {
                                     backButtonBehavior: BackButtonBehavior.ignore);
                                 bool isUpdated = await _userManager.updateUserTeam(team: team);
                                 BotToast.closeAllLoading();
-                  if (!mounted) return;
+                                if (!mounted) return;
 
                                 if (isUpdated) {
                                   uiUtilities.actionAlertWidget(
@@ -328,8 +331,10 @@ class _DashboardViewState extends State<DashboardView> {
                             },
                             child: Text(
                               'Update team',
-                              style:
-                                  Theme.of(context).textTheme.labelLarge!.copyWith(color: Colors.white),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .labelLarge!
+                                  .copyWith(color: Colors.white),
                             ))
                       ],
                     ),

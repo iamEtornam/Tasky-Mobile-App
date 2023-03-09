@@ -12,13 +12,11 @@ import 'package:tasky_mobile_app/services/organization_service.dart';
 import 'package:tasky_mobile_app/utils/local_storage.dart';
 
 class OrganizationManager with ChangeNotifier {
-  final OrganizationService _organizationService =
-      GetIt.I.get<OrganizationService>();
+  final OrganizationService _organizationService = GetIt.I.get<OrganizationService>();
   final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
   final FileUploadManager _fileUploadManager = GetIt.I.get<FileUploadManager>();
 
-  final UserManager _userManager =
-      GetIt.I.get<UserManager>();
+  final UserManager _userManager = GetIt.I.get<UserManager>();
   final Logger _logger = Logger();
   String? _message = '';
   bool _isLoading = false;
@@ -64,14 +62,12 @@ class OrganizationManager with ChangeNotifier {
     return organization;
   }
 
-  Future<bool> createOrganization(
-      {required File image, String? name, List<String>? teams}) async {
+  Future<bool> createOrganization({required File image, String? name, List<String>? teams}) async {
     bool isCreated = false;
-    String? fileUrl = await _fileUploadManager.updateOrganizationPicture(image);
+    String? fileUrl = await _fileUploadManager.imageFileUploader(image);
     if (fileUrl != null) {
       await _organizationService
-          .createOrganizationRequest(
-              teams: teams, imageUrl: fileUrl, name: name)
+          .createOrganizationRequest(teams: teams, imageUrl: fileUrl, name: name)
           .then((response) async {
         int statusCode = response.statusCode;
         _logger.d(statusCode);
@@ -120,5 +116,29 @@ class OrganizationManager with ChangeNotifier {
       setisLoading(false);
     });
     return member;
+  }
+
+  Future<bool> inviteMember({required List<String> emails}) async {
+    bool isSent = false;
+    await _organizationService.inviteMembersRequest(emails: emails).then((response) {
+      int statusCode = response.statusCode;
+      Map<String, dynamic> body = json.decode(response.body);
+      setMessage(body['message']);
+      setisLoading(false);
+      if (statusCode == 200) {
+        isSent = true;
+      } else {
+        isSent = false;
+      }
+    }).catchError((onError) {
+      isSent = false;
+      setMessage('$onError');
+      setisLoading(false);
+    }).timeout(const Duration(seconds: 60), onTimeout: () {
+      isSent = false;
+      setMessage('Timeout! Check your internet connection.');
+      setisLoading(false);
+    });
+    return isSent;
   }
 }

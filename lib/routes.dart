@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tasky_mobile_app/views/inbox/create_inbox_view.dart';
+import 'package:tasky_mobile_app/views/support/support_view.dart';
 
 import 'utils/ui_utils/custom_colors.dart';
 import 'views/account/account_view.dart';
@@ -22,6 +23,8 @@ class Routes {
         return MaterialPageRoute(builder: (_) => const OrganizationView());
       case '/accountView':
         return MaterialPageRoute(builder: (_) => const AccountView());
+      case '/supportView':
+        return MaterialPageRoute(builder: (_) => const SupportView());
       case '/createInboxView':
         return MaterialPageRoute(builder: (_) => const CreateInboxView(), fullscreenDialog: true);
       default:

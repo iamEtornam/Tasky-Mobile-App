@@ -363,6 +363,8 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
                   FutureBuilder<Member?>(
                       future: _organizationManager.getOrganizationMembers(),
                       builder: (context, snapshot) {
+   
+
                         if (snapshot.connectionState == ConnectionState.waiting &&
                             !snapshot.hasData) {
                           return const CupertinoActivityIndicator();

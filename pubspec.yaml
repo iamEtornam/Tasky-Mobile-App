@@ -53,6 +53,7 @@ dependencies:
   path: ^1.8.2
   file: ^6.1.4
   collection: ^1.17.0
+  flutter_tawk: ^0.1.0
 
 dependency_overrides:
   path_provider: ^2.0.13

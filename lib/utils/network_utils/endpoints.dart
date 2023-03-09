@@ -16,3 +16,4 @@ String updateTaskPath = '$baseUrl/updateTask';
 String getUserInboxPath(int? userId) => '$baseUrl/getUserInbox/$userId';
 String getUserInboxCommentPath(int? inboxId) => '$baseUrl/getUserInboxComment/$inboxId';
 String submitUserInboxCommentPath(int? inboxId) => '$baseUrl/submitInboxComment/$inboxId';
+String tawkDirectChatLink = const String.fromEnvironment('TAWK_DIRECT_CHAT_LINK');

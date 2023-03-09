@@ -27,13 +27,13 @@ class CustomBottomSheetWidget extends StatelessWidget {
                           e.label!,
                           style: Theme.of(context)
                               .textTheme
-                              .bodyText1!
+                              .bodyLarge!
                               .copyWith(color: customRedColor),
                         )))
                     .toList(),
                 cancelButton: CupertinoButton(
                     child: Text('Cancel',
-                        style: Theme.of(context).textTheme.button!.copyWith(color: Colors.red)),
+                        style: Theme.of(context).textTheme.labelLarge!.copyWith(color: Colors.red)),
                     onPressed: () => Navigator.of(context).pop()))
             : CupertinoActionSheet(
                 actions: options!
@@ -43,13 +43,13 @@ class CustomBottomSheetWidget extends StatelessWidget {
                           e.label!,
                           style: Theme.of(context)
                               .textTheme
-                              .bodyText1!
+                              .bodyLarge!
                               .copyWith(color: customRedColor),
                         )))
                     .toList(),
                 cancelButton: CupertinoButton(
                     child: Text('Cancel',
-                        style: Theme.of(context).textTheme.button!.copyWith(color: Colors.red)),
+                        style: Theme.of(context).textTheme.labelLarge!.copyWith(color: Colors.red)),
                     onPressed: () => Navigator.of(context).pop()))
         : Container(
             height: height,
@@ -72,7 +72,7 @@ class CustomBottomSheetWidget extends StatelessWidget {
                                   child: Text(e.label!,
                                       style: Theme.of(context)
                                           .textTheme
-                                          .bodyText1!
+                                          .bodyLarge!
                                           .copyWith(color: customRedColor)),
                                 ),
                               ),
@@ -89,7 +89,7 @@ class CustomBottomSheetWidget extends StatelessWidget {
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
                       'Cancel',
-                      style: Theme.of(context).textTheme.button!.copyWith(color: Colors.red),
+                      style: Theme.of(context).textTheme.labelLarge!.copyWith(color: Colors.red),
                     ),
                   ),
                 )

@@ -91,7 +91,7 @@ class _PersonalAccountViewState extends State<PersonalAccountView> {
       appBar: AppBar(
         title: Text(
           'Update Profile',
-          style: Theme.of(context).textTheme.headline6!.copyWith(fontWeight: FontWeight.bold),
+          style: Theme.of(context).textTheme.titleLarge!.copyWith(fontWeight: FontWeight.bold),
         ),
       ),
       body: SafeArea(
@@ -121,7 +121,7 @@ class _PersonalAccountViewState extends State<PersonalAccountView> {
                   'update profile photo',
                   style: Theme.of(context)
                       .textTheme
-                      .subtitle2!
+                      .titleSmall!
                       .copyWith(fontWeight: FontWeight.w600, color: customRedColor),
                 ),
                 onPressed: () {
@@ -149,7 +149,7 @@ class _PersonalAccountViewState extends State<PersonalAccountView> {
               TextFormField(
                 controller: nameTextEditingController,
                 focusNode: nameFocusNode,
-                style: Theme.of(context).textTheme.bodyText1,
+                style: Theme.of(context).textTheme.bodyLarge,
                 textInputAction: TextInputAction.next,
                 keyboardType: TextInputType.name,
                 textCapitalization: TextCapitalization.words,
@@ -164,7 +164,7 @@ class _PersonalAccountViewState extends State<PersonalAccountView> {
                     focusedBorder:
                         const UnderlineInputBorder(borderSide: BorderSide(color: customGreyColor)),
                     border: const UnderlineInputBorder(borderSide: BorderSide(color: Colors.black)),
-                    hintStyle: Theme.of(context).textTheme.bodyText1!.copyWith(color: Colors.grey)),
+                    hintStyle: Theme.of(context).textTheme.bodyLarge!.copyWith(color: Colors.grey)),
                 validator: (value) {
                   if (value!.isEmpty) {
                     return 'Organization Name cannot be Empty';
@@ -178,7 +178,7 @@ class _PersonalAccountViewState extends State<PersonalAccountView> {
               TextFormField(
                 controller: emailTextEditingController,
                 focusNode: emailFocusNode,
-                style: Theme.of(context).textTheme.bodyText1,
+                style: Theme.of(context).textTheme.bodyLarge,
                 textInputAction: TextInputAction.next,
                 keyboardType: TextInputType.emailAddress,
                 textCapitalization: TextCapitalization.none,
@@ -193,7 +193,7 @@ class _PersonalAccountViewState extends State<PersonalAccountView> {
                     focusedBorder:
                         const UnderlineInputBorder(borderSide: BorderSide(color: customGreyColor)),
                     border: const UnderlineInputBorder(borderSide: BorderSide(color: Colors.black)),
-                    hintStyle: Theme.of(context).textTheme.bodyText1!.copyWith(color: Colors.grey)),
+                    hintStyle: Theme.of(context).textTheme.bodyLarge!.copyWith(color: Colors.grey)),
                 validator: (value) {
                   if (value!.isEmpty) {
                     return 'Organization Name cannot be Empty';
@@ -207,7 +207,7 @@ class _PersonalAccountViewState extends State<PersonalAccountView> {
               TextFormField(
                 controller: phoneTextEditingController,
                 focusNode: phoneFocusNode,
-                style: Theme.of(context).textTheme.bodyText1,
+                style: Theme.of(context).textTheme.bodyLarge,
                 textInputAction: TextInputAction.next,
                 keyboardType: TextInputType.phone,
                 textCapitalization: TextCapitalization.none,
@@ -222,7 +222,7 @@ class _PersonalAccountViewState extends State<PersonalAccountView> {
                     focusedBorder:
                         const UnderlineInputBorder(borderSide: BorderSide(color: customGreyColor)),
                     border: const UnderlineInputBorder(borderSide: BorderSide(color: Colors.black)),
-                    hintStyle: Theme.of(context).textTheme.bodyText1!.copyWith(color: Colors.grey)),
+                    hintStyle: Theme.of(context).textTheme.bodyLarge!.copyWith(color: Colors.grey)),
                 validator: (value) {
                   if (value!.isEmpty) {
                     return 'Organization Name cannot be Empty';
@@ -245,6 +245,7 @@ class _PersonalAccountViewState extends State<PersonalAccountView> {
                         name: nameTextEditingController.text,
                         phone: phoneTextEditingController.text);
                     BotToast.closeAllLoading();
+                    if (!mounted) return;
                     uiUtilities.alertNotification(context: context, message: _userManager.message!);
                     if (isUpdated) {
                       uiUtilities.actionAlertWidget(context: context, alertType: 'success');
@@ -264,7 +265,7 @@ class _PersonalAccountViewState extends State<PersonalAccountView> {
                     )),
                 child: Text(
                   'Update Profile',
-                  style: Theme.of(context).textTheme.button!.copyWith(color: Colors.white),
+                  style: Theme.of(context).textTheme.labelLarge!.copyWith(color: Colors.white),
                 ),
               )
             ],

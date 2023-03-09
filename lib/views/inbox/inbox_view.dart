@@ -8,12 +8,12 @@ import 'package:get_it/get_it.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:readmore/readmore.dart';
 import 'package:tasky_mobile_app/managers/inbox_manager.dart';
+import 'package:tasky_mobile_app/models/comment.dart' as comment;
 import 'package:tasky_mobile_app/models/inbox.dart';
 import 'package:tasky_mobile_app/shared_widgets/empty_widget.dart';
 import 'package:tasky_mobile_app/utils/ui_utils/custom_colors.dart';
 import 'package:tasky_mobile_app/utils/ui_utils/ui_utils.dart';
 import 'package:time_ago_provider/time_ago_provider.dart' as time_ago;
-import 'package:tasky_mobile_app/models/comment.dart' as comment;
 
 class InboxView extends StatefulWidget {
   const InboxView({Key? key}) : super(key: key);
@@ -25,12 +25,7 @@ class InboxView extends StatefulWidget {
 class _InboxViewState extends State<InboxView> {
   final InboxManager _inboxManager = GetIt.I.get<InboxManager>();
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
-  final List<String> options = [
-    'All',
-    'Assigned to me',
-    '@Mentioned',
-    'Assigned to team'
-  ];
+  final List<String> options = ['All', 'Assigned to me', '@Mentioned', 'Assigned to team'];
   int currentIndex = 0;
   AsyncSnapshot<Inbox?>? _snapshot;
 
@@ -40,14 +35,10 @@ class _InboxViewState extends State<InboxView> {
       appBar: AppBar(
         title: Text(
           'Inbox',
-          style: Theme.of(context)
-              .textTheme
-              .headline6!
-              .copyWith(fontWeight: FontWeight.bold),
+          style: Theme.of(context).textTheme.titleLarge!.copyWith(fontWeight: FontWeight.bold),
         ),
         bottom: PreferredSize(
-          preferredSize:
-              Size(MediaQuery.of(context).size.width, kToolbarHeight),
+          preferredSize: Size(MediaQuery.of(context).size.width, kToolbarHeight),
           child: Column(
             children: [
               Padding(
@@ -77,13 +68,10 @@ class _InboxViewState extends State<InboxView> {
                                     child: Center(
                                         child: Text(
                                       options[index],
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyText1!
-                                          .copyWith(
-                                              color: currentIndex == index
-                                                  ? customRedColor
-                                                  : customGreyColor),
+                                      style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                                          color: currentIndex == index
+                                              ? customRedColor
+                                              : customGreyColor),
                                     )),
                                   ),
                                 ),
@@ -103,31 +91,26 @@ class _InboxViewState extends State<InboxView> {
         ),
       ),
       body: StreamBuilder<Inbox?>(
-          stream:
-              _inboxManager.getInboxes(query: options[currentIndex]).asStream(),
+          stream: _inboxManager.getInboxes(query: options[currentIndex]).asStream(),
           builder: (context, snapshot) {
             _snapshot = snapshot;
-            if (snapshot.connectionState == ConnectionState.waiting &&
-                snapshot.data == null) {
+            if (snapshot.connectionState == ConnectionState.waiting && snapshot.data == null) {
               return const Center(child: CircularProgressIndicator.adaptive());
             }
 
-            if (snapshot.connectionState == ConnectionState.done &&
-                snapshot.data == null) {
+            if (snapshot.connectionState == ConnectionState.done && snapshot.data == null) {
               return const EmptyWidget(
                 message: 'You don\'t have any message yet.',
                 imageAsset: 'no_inbox.png',
               );
             }
 
-               if (snapshot.connectionState == ConnectionState.done &&
-                snapshot.data!.data!.isEmpty) {
+            if (snapshot.connectionState == ConnectionState.done && snapshot.data!.data!.isEmpty) {
               return const EmptyWidget(
                 message: 'You don\'t have any message yet.',
                 imageAsset: 'no_inbox.png',
               );
             }
-
 
             return ListView.separated(
                 shrinkWrap: true,
@@ -137,8 +120,7 @@ class _InboxViewState extends State<InboxView> {
                         showBarModalBottomSheet(
                             context: context,
                             shape: const RoundedRectangleBorder(
-                                borderRadius: BorderRadius.vertical(
-                                    top: Radius.circular(20))),
+                                borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
                             builder: (context) {
                               return MessageDisplayWidget(
                                   firebaseAuth: _firebaseAuth,
@@ -154,8 +136,7 @@ class _InboxViewState extends State<InboxView> {
                               .contains(_firebaseAuth.currentUser!.uid),
                       teamName: snapshot.data!.data![index].team,
                       title: snapshot.data!.data![index].title,
-                      timestamp: time_ago
-                          .format(snapshot.data!.data![index].createdAt!),
+                      timestamp: time_ago.format(snapshot.data!.data![index].createdAt!),
                       dueDate: snapshot.data!.data![index].status!,
                       replies: snapshot.data!.data![index].like == null
                           ? 0
@@ -177,8 +158,8 @@ class _InboxViewState extends State<InboxView> {
   }
 }
 
-class MessageDisplayWidget extends StatelessWidget {
-  MessageDisplayWidget({
+class MessageDisplayWidget extends StatefulWidget {
+  const MessageDisplayWidget({
     Key? key,
     required FirebaseAuth firebaseAuth,
     required this.snapshot,
@@ -190,7 +171,13 @@ class MessageDisplayWidget extends StatelessWidget {
   final Datum snapshot;
   final InboxManager inboxManager;
 
+  @override
+  State<MessageDisplayWidget> createState() => _MessageDisplayWidgetState();
+}
+
+class _MessageDisplayWidgetState extends State<MessageDisplayWidget> {
   final TextEditingController _commentController = TextEditingController();
+
   final UiUtilities uiUtilities = UiUtilities();
 
   @override
@@ -207,24 +194,21 @@ class MessageDisplayWidget extends StatelessWidget {
                 children: [
                   CircleAvatar(
                     radius: 6,
-                    backgroundColor: Colors
-                        .primaries[Random().nextInt(Colors.primaries.length)],
+                    backgroundColor: Colors.primaries[Random().nextInt(Colors.primaries.length)],
                   ),
                   const SizedBox(
                     width: 8,
                   ),
                   Text(
-                    snapshot.team!,
-                    style: Theme.of(context).textTheme.bodyText1,
+                    widget.snapshot.team!,
+                    style: Theme.of(context).textTheme.bodyLarge,
                   ),
                 ],
               ),
               Text(
-                snapshot.status!,
-                style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                    color: snapshot.status! == 'Completed'
-                        ? Colors.green
-                        : customGreyColor),
+                widget.snapshot.status!,
+                style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                    color: widget.snapshot.status! == 'Completed' ? Colors.green : customGreyColor),
               ),
             ],
           ),
@@ -242,19 +226,18 @@ class MessageDisplayWidget extends StatelessWidget {
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(45),
                         side: BorderSide(
-                            color: snapshot.status! == 'Completed'
+                            color: widget.snapshot.status! == 'Completed'
                                 ? Colors.transparent
                                 : customGreyColor)),
                     child: CircleAvatar(
                       radius: 12,
-                      backgroundColor: snapshot.status! == 'Completed'
+                      backgroundColor: widget.snapshot.status! == 'Completed'
                           ? Colors.green
                           : Colors.transparent,
                       child: Icon(
                         Icons.check,
-                        color: snapshot.status! == 'Completed'
-                            ? Colors.white
-                            : customGreyColor,
+                        color:
+                            widget.snapshot.status! == 'Completed' ? Colors.white : customGreyColor,
                         size: 18,
                       ),
                     ),
@@ -263,17 +246,17 @@ class MessageDisplayWidget extends StatelessWidget {
                     width: 10,
                   ),
                   Text(
-                    snapshot.title!,
+                    widget.snapshot.title!,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: Theme.of(context)
                         .textTheme
-                        .bodyText1!
+                        .bodyLarge!
                         .copyWith(fontWeight: FontWeight.w600),
                   ),
                 ],
               ),
-              snapshot.like == null
+              widget.snapshot.like == null
                   ? const SizedBox.shrink()
                   : Material(
                       color: customRedColor,
@@ -283,13 +266,11 @@ class MessageDisplayWidget extends StatelessWidget {
                         child: Row(
                           children: [
                             Text(
-                              '${snapshot.like == null ? 0 : snapshot.like!.length}',
+                              '${widget.snapshot.like == null ? 0 : widget.snapshot.like!.length}',
                               style: Theme.of(context)
                                   .textTheme
-                                  .subtitle2!
-                                  .copyWith(
-                                      fontWeight: FontWeight.normal,
-                                      color: Colors.white),
+                                  .titleSmall!
+                                  .copyWith(fontWeight: FontWeight.normal, color: Colors.white),
                             ),
                             const SizedBox(
                               width: 2,
@@ -313,13 +294,12 @@ class MessageDisplayWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               CircleAvatar(
-                backgroundColor: Colors
-                    .primaries[Random().nextInt(Colors.primaries.length)]
-                    .withOpacity(.2),
+                backgroundColor:
+                    Colors.primaries[Random().nextInt(Colors.primaries.length)].withOpacity(.2),
                 radius: 30,
-                backgroundImage: (snapshot.user!.picture!.isEmpty
+                backgroundImage: (widget.snapshot.user!.picture!.isEmpty
                     ? const ExactAssetImage('assets/avatar.png')
-                    : NetworkImage(snapshot.user!.picture!)) as ImageProvider,
+                    : NetworkImage(widget.snapshot.user!.picture!)) as ImageProvider,
               ),
               const SizedBox(
                 width: 10,
@@ -330,51 +310,47 @@ class MessageDisplayWidget extends StatelessWidget {
                   SizedBox(
                     width: MediaQuery.of(context).size.width - 120,
                     child: ReadMoreText(
-                      snapshot.message!,
+                      widget.snapshot.message!,
                       trimLines: 5,
                       colorClickableText: customRedColor,
                       lessStyle: Theme.of(context)
                           .textTheme
-                          .bodyText1!
-                          .copyWith(
-                              fontWeight: FontWeight.w600,
-                              color: customRedColor),
+                          .bodyLarge!
+                          .copyWith(fontWeight: FontWeight.w600, color: customRedColor),
                       trimMode: TrimMode.Line,
                       trimCollapsedText: 'Show more',
                       trimExpandedText: 'Show less',
                       style: Theme.of(context)
                           .textTheme
-                          .bodyText1!
+                          .bodyLarge!
                           .copyWith(fontWeight: FontWeight.normal),
                       moreStyle: Theme.of(context)
                           .textTheme
-                          .bodyText1!
-                          .copyWith(
-                              fontWeight: FontWeight.w600,
-                              color: customRedColor),
+                          .bodyLarge!
+                          .copyWith(fontWeight: FontWeight.w600, color: customRedColor),
                     ),
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Text(
-                        '${time_ago.format(snapshot.createdAt!)} - ',
+                        '${time_ago.format(widget.snapshot.createdAt!)} - ',
                         style: Theme.of(context)
                             .textTheme
-                            .bodyText2!
+                            .bodyMedium!
                             .copyWith(color: customGreyColor),
                       ),
                       Icon(
-                        (snapshot.like == null
+                        (widget.snapshot.like == null
                                 ? false
-                                : snapshot.like
-                                    .contains(_firebaseAuth.currentUser!.uid))
+                                : widget.snapshot.like
+                                    .contains(widget._firebaseAuth.currentUser!.uid))
                             ? Icons.thumb_up
                             : Feather.thumbs_up,
-                        color: (snapshot.like == null
+                        color: (widget.snapshot.like == null
                                 ? false
-                                : snapshot.like
-                                    .contains(_firebaseAuth.currentUser!.uid))
+                                : widget.snapshot.like
+                                    .contains(widget._firebaseAuth.currentUser!.uid))
                             ? customRedColor
                             : customGreyColor,
                         size: 20,
@@ -393,29 +369,24 @@ class MessageDisplayWidget extends StatelessWidget {
             textAlign: TextAlign.center,
             style: Theme.of(context)
                 .textTheme
-                .bodyText2!
+                .bodyMedium!
                 .copyWith(fontWeight: FontWeight.w600, color: customGreyColor),
           ),
           const SizedBox(
             height: 25,
           ),
           StreamBuilder<comment.Comment?>(
-              stream: inboxManager
-                  .getInboxComments(inboxId: snapshot.id)
-                  .asStream(),
+              stream: widget.inboxManager.getInboxComments(inboxId: widget.snapshot.id).asStream(),
               builder: (context, commentSnapshot) {
                 return ListView.separated(
                     shrinkWrap: true,
                     itemBuilder: (context, index) {
-                      if (commentSnapshot.connectionState ==
-                              ConnectionState.waiting &&
+                      if (commentSnapshot.connectionState == ConnectionState.waiting &&
                           commentSnapshot.data == null) {
-                        return const Center(
-                            child: CircularProgressIndicator.adaptive());
+                        return const Center(child: CircularProgressIndicator.adaptive());
                       }
 
-                      if (commentSnapshot.connectionState ==
-                              ConnectionState.done &&
+                      if (commentSnapshot.connectionState == ConnectionState.done &&
                           commentSnapshot.data == null) {
                         return const SizedBox.shrink();
                       }
@@ -424,14 +395,13 @@ class MessageDisplayWidget extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           CircleAvatar(
-                            backgroundColor: Colors.primaries[
-                                    Random().nextInt(Colors.primaries.length)]
+                            backgroundColor: Colors
+                                .primaries[Random().nextInt(Colors.primaries.length)]
                                 .withOpacity(.2),
                             radius: 30,
-                            backgroundImage: (snapshot.user!.picture!.isEmpty
-                                    ? const ExactAssetImage('assets/avatar.png')
-                                    : NetworkImage(snapshot.user!.picture!))
-                                as ImageProvider,
+                            backgroundImage: (widget.snapshot.user!.picture!.isEmpty
+                                ? const ExactAssetImage('assets/avatar.png')
+                                : NetworkImage(widget.snapshot.user!.picture!)) as ImageProvider,
                           ),
                           const SizedBox(
                             width: 10,
@@ -442,38 +412,34 @@ class MessageDisplayWidget extends StatelessWidget {
                               SizedBox(
                                 width: MediaQuery.of(context).size.width - 120,
                                 child: ReadMoreText(
-                                  snapshot.message!,
+                                  widget.snapshot.message!,
                                   trimLines: 5,
                                   colorClickableText: customRedColor,
                                   lessStyle: Theme.of(context)
                                       .textTheme
-                                      .bodyText1!
-                                      .copyWith(
-                                          fontWeight: FontWeight.w600,
-                                          color: customRedColor),
+                                      .bodyLarge!
+                                      .copyWith(fontWeight: FontWeight.w600, color: customRedColor),
                                   trimMode: TrimMode.Line,
                                   trimCollapsedText: 'Show more',
                                   trimExpandedText: 'Show less',
                                   style: Theme.of(context)
                                       .textTheme
-                                      .bodyText1!
+                                      .bodyLarge!
                                       .copyWith(fontWeight: FontWeight.normal),
                                   moreStyle: Theme.of(context)
                                       .textTheme
-                                      .bodyText1!
-                                      .copyWith(
-                                          fontWeight: FontWeight.w600,
-                                          color: customRedColor),
+                                      .bodyLarge!
+                                      .copyWith(fontWeight: FontWeight.w600, color: customRedColor),
                                 ),
                               ),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
                                   Text(
-                                    '${time_ago.format(snapshot.createdAt!)} - ',
+                                    '${time_ago.format(widget.snapshot.createdAt!)} - ',
                                     style: Theme.of(context)
                                         .textTheme
-                                        .bodyText2!
+                                        .bodyMedium!
                                         .copyWith(color: customGreyColor),
                                   )
                                 ],
@@ -486,9 +452,8 @@ class MessageDisplayWidget extends StatelessWidget {
                     separatorBuilder: (context, index) {
                       return const Divider();
                     },
-                    itemCount: commentSnapshot.data == null
-                        ? 0
-                        : commentSnapshot.data!.data!.length);
+                    itemCount:
+                        commentSnapshot.data == null ? 0 : commentSnapshot.data!.data!.length);
               })
         ],
       ),
@@ -497,7 +462,7 @@ class MessageDisplayWidget extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: TextFormField(
             controller: _commentController,
-            style: Theme.of(context).textTheme.bodyText1,
+            style: Theme.of(context).textTheme.bodyLarge,
             textInputAction: TextInputAction.send,
             keyboardType: TextInputType.multiline,
             textCapitalization: TextCapitalization.words,
@@ -512,21 +477,20 @@ class MessageDisplayWidget extends StatelessWidget {
                           clickClose: false,
                           backButtonBehavior: BackButtonBehavior.ignore);
 
-                      bool isSent = await inboxManager.submitInboxComment(
-                          comment: _commentController.text,
-                          inboxId: snapshot.id);
+                      bool isSent = await widget.inboxManager.submitInboxComment(
+                          comment: _commentController.text, inboxId: widget.snapshot.id);
                       BotToast.closeAllLoading();
+                      if (!mounted) return;
+
                       if (isSent) {
                         _commentController.clear();
-                        uiUtilities.actionAlertWidget(
-                            context: context, alertType: 'success');
+                        uiUtilities.actionAlertWidget(context: context, alertType: 'success');
                         uiUtilities.alertNotification(
-                            context: context, message: inboxManager.message!);
+                            context: context, message: widget.inboxManager.message!);
                       } else {
-                        uiUtilities.actionAlertWidget(
-                            context: context, alertType: 'error');
+                        uiUtilities.actionAlertWidget(context: context, alertType: 'error');
                         uiUtilities.alertNotification(
-                            context: context, message: inboxManager.message!);
+                            context: context, message: widget.inboxManager.message!);
                         debugPrint('$e');
                       }
                     },
@@ -536,26 +500,21 @@ class MessageDisplayWidget extends StatelessWidget {
                     )),
                 label: Text(
                   'Comment',
-                  style: Theme.of(context).textTheme.bodyText1,
+                  style: Theme.of(context).textTheme.bodyLarge,
                 ),
                 filled: false,
                 enabledBorder: OutlineInputBorder(
-                  borderSide:
-                      BorderSide(color: customGreyColor.withOpacity(.3)),
+                  borderSide: BorderSide(color: customGreyColor.withOpacity(.3)),
                   borderRadius: BorderRadius.circular(10),
                 ),
                 focusedBorder: OutlineInputBorder(
-                  borderSide:
-                      BorderSide(color: customGreyColor.withOpacity(.3)),
+                  borderSide: BorderSide(color: customGreyColor.withOpacity(.3)),
                   borderRadius: BorderRadius.circular(10),
                 ),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
-                hintStyle: Theme.of(context)
-                    .textTheme
-                    .bodyText1!
-                    .copyWith(color: Colors.grey)),
+                hintStyle: Theme.of(context).textTheme.bodyLarge!.copyWith(color: Colors.grey)),
             validator: (value) {
               if (value!.isEmpty) {
                 return 'Field cannot be Empty';
@@ -612,24 +571,23 @@ class InboxItemWidget extends StatelessWidget {
                   children: [
                     CircleAvatar(
                       radius: 6,
-                      backgroundColor: Colors
-                          .primaries[Random().nextInt(Colors.primaries.length)],
+                      backgroundColor: Colors.primaries[Random().nextInt(Colors.primaries.length)],
                     ),
                     const SizedBox(
                       width: 8,
                     ),
                     Text(
                       teamName!,
-                      style: Theme.of(context).textTheme.bodyText1,
+                      style: Theme.of(context).textTheme.bodyLarge,
                     ),
                   ],
                 ),
                 Text(
                   dueDate,
-                  style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                      color: dueDate == 'Completed'
-                          ? Colors.green
-                          : customGreyColor),
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyLarge!
+                      .copyWith(color: dueDate == 'Completed' ? Colors.green : customGreyColor),
                 ),
               ],
             ),
@@ -647,19 +605,14 @@ class InboxItemWidget extends StatelessWidget {
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(45),
                           side: BorderSide(
-                              color: dueDate == 'Completed'
-                                  ? Colors.transparent
-                                  : customGreyColor)),
+                              color:
+                                  dueDate == 'Completed' ? Colors.transparent : customGreyColor)),
                       child: CircleAvatar(
                         radius: 12,
-                        backgroundColor: dueDate == 'Completed'
-                            ? Colors.green
-                            : Colors.transparent,
+                        backgroundColor: dueDate == 'Completed' ? Colors.green : Colors.transparent,
                         child: Icon(
                           Icons.check,
-                          color: dueDate == 'Completed'
-                              ? Colors.white
-                              : customGreyColor,
+                          color: dueDate == 'Completed' ? Colors.white : customGreyColor,
                           size: 18,
                         ),
                       ),
@@ -673,7 +626,7 @@ class InboxItemWidget extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                       style: Theme.of(context)
                           .textTheme
-                          .bodyText1!
+                          .bodyLarge!
                           .copyWith(fontWeight: FontWeight.w600),
                     ),
                   ],
@@ -691,10 +644,8 @@ class InboxItemWidget extends StatelessWidget {
                                 '$replies',
                                 style: Theme.of(context)
                                     .textTheme
-                                    .subtitle2!
-                                    .copyWith(
-                                        fontWeight: FontWeight.normal,
-                                        color: Colors.white),
+                                    .titleSmall!
+                                    .copyWith(fontWeight: FontWeight.normal, color: Colors.white),
                               ),
                               const SizedBox(
                                 width: 2,
@@ -716,9 +667,8 @@ class InboxItemWidget extends StatelessWidget {
             Row(
               children: [
                 CircleAvatar(
-                  backgroundColor: Colors
-                      .primaries[Random().nextInt(Colors.primaries.length)]
-                      .withOpacity(.2),
+                  backgroundColor:
+                      Colors.primaries[Random().nextInt(Colors.primaries.length)].withOpacity(.2),
                   radius: 30,
                   backgroundImage: (avatar!.isEmpty
                       ? const ExactAssetImage('assets/avatar.png')
@@ -738,7 +688,7 @@ class InboxItemWidget extends StatelessWidget {
                         overflow: TextOverflow.ellipsis,
                         style: Theme.of(context)
                             .textTheme
-                            .bodyText1!
+                            .bodyLarge!
                             .copyWith(fontWeight: FontWeight.normal),
                       ),
                     ),
@@ -749,7 +699,7 @@ class InboxItemWidget extends StatelessWidget {
                           '$timestamp - ',
                           style: Theme.of(context)
                               .textTheme
-                              .bodyText2!
+                              .bodyMedium!
                               .copyWith(color: customGreyColor),
                         ),
                         Icon(

@@ -41,7 +41,7 @@ class _AccountViewState extends State<AccountView> {
       appBar: AppBar(
         title: Text(
           'Account',
-          style: Theme.of(context).textTheme.headline6!.copyWith(fontWeight: FontWeight.bold),
+          style: Theme.of(context).textTheme.titleLarge!.copyWith(fontWeight: FontWeight.bold),
         ),
       ),
       body: SafeArea(
@@ -71,7 +71,7 @@ class _AccountViewState extends State<AccountView> {
                           'Full Name here',
                           style: Theme.of(context)
                               .textTheme
-                              .headline6!
+                              .titleLarge!
                               .copyWith(fontWeight: FontWeight.w600),
                         )),
                         const SizedBox(
@@ -82,7 +82,7 @@ class _AccountViewState extends State<AccountView> {
                           'View Profile',
                           style: Theme.of(context)
                               .textTheme
-                              .bodyText2!
+                              .bodyMedium!
                               .copyWith(fontWeight: FontWeight.normal, color: customRedColor),
                         )),
                         const SizedBox(
@@ -92,7 +92,7 @@ class _AccountViewState extends State<AccountView> {
                           'Organizations',
                           style: Theme.of(context)
                               .textTheme
-                              .bodyText1!
+                              .bodyLarge!
                               .copyWith(fontWeight: FontWeight.normal, color: customGreyColor),
                         ),
                         Material(
@@ -100,13 +100,13 @@ class _AccountViewState extends State<AccountView> {
                           child: ListTile(
                             title: Text(
                               'My Company',
-                              style: Theme.of(context).textTheme.bodyText1,
+                              style: Theme.of(context).textTheme.bodyLarge,
                             ),
                             subtitle: Text(
                               'info@mail.com',
                               style: Theme.of(context)
                                   .textTheme
-                                  .bodyText2!
+                                  .bodyMedium!
                                   .copyWith(color: customGreyColor),
                             ),
                             trailing: TextButton(
@@ -120,7 +120,7 @@ class _AccountViewState extends State<AccountView> {
                                   'Invite',
                                   style: Theme.of(context)
                                       .textTheme
-                                      .button!
+                                      .labelLarge!
                                       .copyWith(color: Colors.white),
                                 )),
                           ),
@@ -150,7 +150,7 @@ class _AccountViewState extends State<AccountView> {
                         snapshot.data!.data!.name!,
                         style: Theme.of(context)
                             .textTheme
-                            .headline6!
+                            .titleLarge!
                             .copyWith(fontWeight: FontWeight.w600),
                       )),
                       const SizedBox(
@@ -179,7 +179,7 @@ class _AccountViewState extends State<AccountView> {
                             'View Profile',
                             style: Theme.of(context)
                                 .textTheme
-                                .bodyText2!
+                                .bodyMedium!
                                 .copyWith(fontWeight: FontWeight.normal, color: customRedColor),
                           ),
                         ),
@@ -191,7 +191,7 @@ class _AccountViewState extends State<AccountView> {
                         'Organizations',
                         style: Theme.of(context)
                             .textTheme
-                            .bodyText1!
+                            .bodyLarge!
                             .copyWith(fontWeight: FontWeight.normal, color: customGreyColor),
                       ),
                       Material(
@@ -199,13 +199,13 @@ class _AccountViewState extends State<AccountView> {
                         child: ListTile(
                           title: Text(
                             snapshot.data!.data!.organization!.name!,
-                            style: Theme.of(context).textTheme.bodyText1,
+                            style: Theme.of(context).textTheme.bodyLarge,
                           ),
                           subtitle: Text(
                             snapshot.data!.data!.email!,
                             style: Theme.of(context)
                                 .textTheme
-                                .bodyText2!
+                                .bodyMedium!
                                 .copyWith(color: customGreyColor),
                           ),
                           trailing: TextButton(
@@ -275,7 +275,7 @@ class _AccountViewState extends State<AccountView> {
                                                                             tag,
                                                                             style: Theme.of(context)
                                                                                 .textTheme
-                                                                                .bodyText1!
+                                                                                .bodyLarge!
                                                                                 .copyWith(
                                                                                     color: Colors
                                                                                         .white),
@@ -332,7 +332,7 @@ class _AccountViewState extends State<AccountView> {
                                                       'Invite email(s)',
                                                       style: Theme.of(context)
                                                           .textTheme
-                                                          .button!
+                                                          .labelLarge!
                                                           .copyWith(color: Colors.white),
                                                     ),
                                                   ))
@@ -346,7 +346,7 @@ class _AccountViewState extends State<AccountView> {
                                 'Invite',
                                 style: Theme.of(context)
                                     .textTheme
-                                    .button!
+                                    .labelLarge!
                                     .copyWith(color: Colors.white),
                               )),
                         ),
@@ -361,7 +361,7 @@ class _AccountViewState extends State<AccountView> {
               'Notifications',
               style: Theme.of(context)
                   .textTheme
-                  .bodyText1!
+                  .bodyLarge!
                   .copyWith(fontWeight: FontWeight.normal, color: customGreyColor),
             ),
             Material(
@@ -377,7 +377,7 @@ class _AccountViewState extends State<AccountView> {
                               content: Text(
                                 'Are you sure you want to receive Notifications?',
                                 style:
-                                    Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 18),
+                                    Theme.of(context).textTheme.bodyLarge!.copyWith(fontSize: 18),
                               ),
                               actions: [
                                 TextButton(
@@ -386,7 +386,7 @@ class _AccountViewState extends State<AccountView> {
                                       'No',
                                       style: Theme.of(context)
                                           .textTheme
-                                          .bodyText1!
+                                          .bodyLarge!
                                           .copyWith(color: Colors.red),
                                     )),
                                 TextButton(
@@ -396,7 +396,7 @@ class _AccountViewState extends State<AccountView> {
                                     child: Text('Yes',
                                         style: Theme.of(context)
                                             .textTheme
-                                            .bodyText1!
+                                            .bodyLarge!
                                             .copyWith(color: Colors.red)))
                               ],
                             );
@@ -404,12 +404,12 @@ class _AccountViewState extends State<AccountView> {
                     },
                     title: Text(
                       'Do not disturb',
-                      style: Theme.of(context).textTheme.bodyText1,
+                      style: Theme.of(context).textTheme.bodyLarge,
                     ),
                     subtitle: Text(
                       'Off',
                       style:
-                          Theme.of(context).textTheme.bodyText1!.copyWith(color: customGreyColor),
+                          Theme.of(context).textTheme.bodyLarge!.copyWith(color: customGreyColor),
                     ),
                     leading: Icon(Icons.notifications_paused_outlined,
                         color: Theme.of(context).iconTheme.color, size: 30),
@@ -425,12 +425,12 @@ class _AccountViewState extends State<AccountView> {
                     },
                     title: Text(
                       'Push Notifications',
-                      style: Theme.of(context).textTheme.bodyText1,
+                      style: Theme.of(context).textTheme.bodyLarge,
                     ),
                     subtitle: Text(
                       'Manage',
                       style:
-                          Theme.of(context).textTheme.bodyText1!.copyWith(color: customGreyColor),
+                          Theme.of(context).textTheme.bodyLarge!.copyWith(color: customGreyColor),
                     ),
                     leading: Icon(
                       Entypo.notification,
@@ -452,7 +452,7 @@ class _AccountViewState extends State<AccountView> {
               'Support',
               style: Theme.of(context)
                   .textTheme
-                  .bodyText1!
+                  .bodyLarge!
                   .copyWith(fontWeight: FontWeight.normal, color: customGreyColor),
             ),
             Material(
@@ -462,7 +462,7 @@ class _AccountViewState extends State<AccountView> {
                   ListTile(
                     title: Text(
                       Platform.isIOS ? 'iOS guide' : 'Android guide',
-                      style: Theme.of(context).textTheme.bodyText1,
+                      style: Theme.of(context).textTheme.bodyLarge,
                     ),
                     leading: Icon(Icons.info_outline_rounded,
                         color: Theme.of(context).iconTheme.color, size: 30),
@@ -475,7 +475,7 @@ class _AccountViewState extends State<AccountView> {
                   ListTile(
                     title: Text(
                       'Contact support',
-                      style: Theme.of(context).textTheme.bodyText1,
+                      style: Theme.of(context).textTheme.bodyLarge,
                     ),
                     leading: Icon(
                       Icons.chat_bubble_outline_rounded,
@@ -497,7 +497,7 @@ class _AccountViewState extends State<AccountView> {
               'More',
               style: Theme.of(context)
                   .textTheme
-                  .bodyText1!
+                  .bodyLarge!
                   .copyWith(fontWeight: FontWeight.normal, color: customGreyColor),
             ),
             Material(
@@ -514,7 +514,7 @@ class _AccountViewState extends State<AccountView> {
                     },
                     title: Text(
                       'Rate the app',
-                      style: Theme.of(context).textTheme.bodyText1,
+                      style: Theme.of(context).textTheme.bodyLarge,
                     ),
                     leading: Icon(Icons.star_border_rounded,
                         color: Theme.of(context).iconTheme.color, size: 30),
@@ -530,7 +530,7 @@ class _AccountViewState extends State<AccountView> {
                             'https://www.privacypolicygenerator.info/live.php?token=RRoYC8f5TiNZtKNOStV9f3o8b25vOqp7'),
                     title: Text(
                       'Privacy policy',
-                      style: Theme.of(context).textTheme.bodyText1,
+                      style: Theme.of(context).textTheme.bodyLarge,
                     ),
                     leading: Icon(
                       Icons.visibility_outlined,
@@ -549,7 +549,7 @@ class _AccountViewState extends State<AccountView> {
                             'https://www.privacypolicygenerator.info/live.php?token=RRoYC8f5TiNZtKNOStV9f3o8b25vOqp7'),
                     title: Text(
                       'Terms of service',
-                      style: Theme.of(context).textTheme.bodyText1,
+                      style: Theme.of(context).textTheme.bodyLarge,
                     ),
                     leading: Icon(
                       Feather.settings,
@@ -568,7 +568,7 @@ class _AccountViewState extends State<AccountView> {
 
                       String version = packageInfo.version;
                       String buildNumber = packageInfo.buildNumber;
-
+                      if (!mounted) return;
                       showDialog(
                           context: context,
                           builder: (context) {
@@ -577,13 +577,13 @@ class _AccountViewState extends State<AccountView> {
                                   RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
                               title: Text(
                                 'App version',
-                                style: Theme.of(context).textTheme.bodyText1,
+                                style: Theme.of(context).textTheme.bodyLarge,
                               ),
                               content: Text(
                                 'Current app version is $version+$buildNumber',
                                 textAlign: TextAlign.center,
                                 style:
-                                    Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 18),
+                                    Theme.of(context).textTheme.bodyLarge!.copyWith(fontSize: 18),
                               ),
                               actions: [
                                 TextButton(
@@ -592,7 +592,7 @@ class _AccountViewState extends State<AccountView> {
                                       'OK',
                                       style: Theme.of(context)
                                           .textTheme
-                                          .bodyText1!
+                                          .bodyLarge!
                                           .copyWith(color: Colors.red),
                                     )),
                               ],
@@ -601,7 +601,7 @@ class _AccountViewState extends State<AccountView> {
                     },
                     title: Text(
                       'Version',
-                      style: Theme.of(context).textTheme.bodyText1,
+                      style: Theme.of(context).textTheme.bodyLarge,
                     ),
                     leading: Icon(
                       Platform.isIOS ? Ionicons.ios_phone_portrait : Ionicons.md_phone_portrait,
@@ -633,11 +633,11 @@ class _AccountViewState extends State<AccountView> {
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
                           title: Text(
                             'Information',
-                            style: Theme.of(context).textTheme.bodyText1,
+                            style: Theme.of(context).textTheme.bodyLarge,
                           ),
                           content: Text(
                             'Are you sure you want to log out?',
-                            style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 18),
+                            style: Theme.of(context).textTheme.bodyLarge!.copyWith(fontSize: 18),
                           ),
                           actions: [
                             TextButton(
@@ -646,7 +646,7 @@ class _AccountViewState extends State<AccountView> {
                                   'Cancel',
                                   style: Theme.of(context)
                                       .textTheme
-                                      .bodyText1!
+                                      .bodyLarge!
                                       .copyWith(color: Colors.red),
                                 )),
                             TextButton(
@@ -665,14 +665,14 @@ class _AccountViewState extends State<AccountView> {
                                         context, '/loginView', (route) => false);
                                   });
                                 },
-                                child: Text('Logout', style: Theme.of(context).textTheme.bodyText1))
+                                child: Text('Logout', style: Theme.of(context).textTheme.bodyLarge))
                           ],
                         );
                       });
                 },
                 child: Text(
                   'Log out',
-                  style: Theme.of(context).textTheme.button!.copyWith(color: customRedColor),
+                  style: Theme.of(context).textTheme.labelLarge!.copyWith(color: customRedColor),
                 ))
           ],
         ),

@@ -20,7 +20,7 @@ class AssigneeTileWidget extends StatelessWidget {
       ),
       title: Text(
         selectedUser.name!,
-        style: Theme.of(context).textTheme.bodyText1,
+        style: Theme.of(context).textTheme.bodyLarge,
       ),
       trailing: GestureDetector(
         onTap: () {

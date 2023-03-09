@@ -74,7 +74,7 @@ class OverView extends StatelessWidget {
                               'My Summary',
                               style: Theme.of(context)
                                   .textTheme
-                                  .bodyText1!
+                                  .bodyLarge!
                                   .copyWith(fontWeight: FontWeight.w600),
                             ),
                           )),
@@ -124,7 +124,7 @@ class OverView extends StatelessWidget {
                     'My Tasks',
                     style: Theme.of(context)
                         .textTheme
-                        .bodyText1!
+                        .bodyLarge!
                         .copyWith(fontWeight: FontWeight.w600),
                   ),
                 )),
@@ -174,14 +174,14 @@ class OverView extends StatelessWidget {
                                       'Task:',
                                       style: Theme.of(context)
                                           .textTheme
-                                          .bodyText2!
+                                          .bodyMedium!
                                           .copyWith(
                                               fontWeight: FontWeight.w600),
                                     ),
                                     Text(
                                       snapshot.data!.data![index].description!,
                                       style:
-                                          Theme.of(context).textTheme.bodyText1,
+                                          Theme.of(context).textTheme.bodyLarge,
                                     ),
                                     const SizedBox(
                                       height: 15,
@@ -190,7 +190,7 @@ class OverView extends StatelessWidget {
                                       'Assignees:',
                                       style: Theme.of(context)
                                           .textTheme
-                                          .bodyText2!
+                                          .bodyMedium!
                                           .copyWith(
                                               fontWeight: FontWeight.w600),
                                     ),
@@ -331,7 +331,7 @@ class HomeTaskSummary extends StatelessWidget {
                           Text(
                             '$priority Priority',
                             style:
-                                Theme.of(context).textTheme.subtitle2!.copyWith(
+                                Theme.of(context).textTheme.titleSmall!.copyWith(
                                     color: priority == 'Low'
                                         ? Colors.green
                                         : priority == 'Medium'
@@ -354,7 +354,7 @@ class HomeTaskSummary extends StatelessWidget {
                                 time,
                                 style: Theme.of(context)
                                     .textTheme
-                                    .subtitle2!
+                                    .titleSmall!
                                     .copyWith(
                                         color: customGreyColor,
                                         fontWeight: FontWeight.w600),
@@ -372,7 +372,7 @@ class HomeTaskSummary extends StatelessWidget {
                       child: Text(title!,
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
-                          style: Theme.of(context).textTheme.bodyText1),
+                          style: Theme.of(context).textTheme.bodyLarge),
                     ),
                   ],
                 )
@@ -437,14 +437,14 @@ class HomeTaskCountCard extends StatelessWidget {
                 children: [
                   Text(
                     desc,
-                    style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                    style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                         fontWeight: FontWeight.normal, color: Colors.white),
                   ),
                   Text(
                     '$count',
                     style: Theme.of(context)
                         .textTheme
-                        .headline4!
+                        .headlineMedium!
                         .copyWith(fontWeight: FontWeight.bold, color: color),
                   ),
                 ],

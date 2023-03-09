@@ -90,7 +90,7 @@ class MyApp extends StatelessWidget {
               if (_auth.currentUser != null) {
                 return <Route>[MaterialPageRoute(builder: (context) => const DashboardView())];
               } else {
-                return <Route>[MaterialPageRoute(builder: (context) => LoginView())];
+                return <Route>[MaterialPageRoute(builder: (context) => const LoginView())];
               }
             },
             onGenerateRoute: Routes.generateRoute,

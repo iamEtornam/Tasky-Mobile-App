@@ -72,7 +72,7 @@ class _TaskViewState extends State<TaskView> {
                       ),
                       Text(
                         'Starred',
-                        style: Theme.of(context).textTheme.bodyText1,
+                        style: Theme.of(context).textTheme.bodyLarge,
                       )
                     ],
                   ),
@@ -82,7 +82,7 @@ class _TaskViewState extends State<TaskView> {
                     padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
                     child: Text(
                       'Tasks',
-                      style: Theme.of(context).textTheme.bodyText1,
+                      style: Theme.of(context).textTheme.bodyLarge,
                     )),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 24),
@@ -103,6 +103,8 @@ class _TaskViewState extends State<TaskView> {
                             bool isChanged = await _taskManager.markTaskAsCompleted(
                                 status: 'completed', taskId: snapshot.data!.data![index].id);
                             BotToast.closeAllLoading();
+                            if (!mounted) return;
+
                             if (isChanged) {
                               uiUtilities.actionAlertWidget(context: context, alertType: 'success');
                               uiUtilities.alertNotification(
@@ -130,7 +132,7 @@ class _TaskViewState extends State<TaskView> {
                                           RadioListTile(
                                               title: Text(
                                                 'To do',
-                                                style: Theme.of(context).textTheme.bodyText1,
+                                                style: Theme.of(context).textTheme.bodyLarge,
                                               ),
                                               value: 'todo',
                                               groupValue: 'status',
@@ -145,6 +147,8 @@ class _TaskViewState extends State<TaskView> {
                                                         taskId: snapshot.data!.data![index].id);
                                                 BotToast.closeAllLoading();
                                                 await _taskManager.getTasks();
+                                                if (!mounted) return;
+
                                                 if (isChanged) {
                                                   uiUtilities.actionAlertWidget(
                                                       context: context, alertType: 'success');
@@ -166,7 +170,7 @@ class _TaskViewState extends State<TaskView> {
                                           RadioListTile(
                                               title: Text(
                                                 'In Progress',
-                                                style: Theme.of(context).textTheme.bodyText1,
+                                                style: Theme.of(context).textTheme.bodyLarge,
                                               ),
                                               value: 'in progress',
                                               groupValue: 'status',
@@ -181,6 +185,8 @@ class _TaskViewState extends State<TaskView> {
                                                         taskId: snapshot.data!.data![index].id);
                                                 BotToast.closeAllLoading();
                                                 await _taskManager.getTasks();
+                                                if (!mounted) return;
+
                                                 if (isChanged) {
                                                   uiUtilities.actionAlertWidget(
                                                       context: context, alertType: 'success');
@@ -202,7 +208,7 @@ class _TaskViewState extends State<TaskView> {
                                           RadioListTile(
                                               title: Text(
                                                 'Complete',
-                                                style: Theme.of(context).textTheme.bodyText1,
+                                                style: Theme.of(context).textTheme.bodyLarge,
                                               ),
                                               value: 'completed',
                                               groupValue: 'status',
@@ -216,8 +222,12 @@ class _TaskViewState extends State<TaskView> {
                                                         status: value,
                                                         taskId: snapshot.data!.data![index].id);
                                                 BotToast.closeAllLoading();
+                                                if (!mounted) return;
+
                                                 if (isChanged) {
                                                   await _taskManager.getTasks();
+                                                  if (!mounted) return;
+
                                                   uiUtilities.actionAlertWidget(
                                                       context: context, alertType: 'success');
                                                   uiUtilities.alertNotification(
@@ -252,12 +262,12 @@ class _TaskViewState extends State<TaskView> {
                                         'Task:',
                                         style: Theme.of(context)
                                             .textTheme
-                                            .bodyText2!
+                                            .bodyMedium!
                                             .copyWith(fontWeight: FontWeight.w600),
                                       ),
                                       Text(
                                         snapshot.data!.data![index].description!,
-                                        style: Theme.of(context).textTheme.bodyText1,
+                                        style: Theme.of(context).textTheme.bodyLarge,
                                       ),
                                       const SizedBox(
                                         height: 15,
@@ -266,7 +276,7 @@ class _TaskViewState extends State<TaskView> {
                                         'Assignees:',
                                         style: Theme.of(context)
                                             .textTheme
-                                            .bodyText2!
+                                            .bodyMedium!
                                             .copyWith(fontWeight: FontWeight.w600),
                                       ),
                                       const SizedBox(
@@ -402,7 +412,7 @@ class TaskListTile extends StatelessWidget {
                     taskTitle!,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
-                    style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                    style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                         decoration: isCompleted ? TextDecoration.lineThrough : TextDecoration.none),
                   ),
                 ),
@@ -416,7 +426,7 @@ class TaskListTile extends StatelessWidget {
               children: [
                 FlutterImageStack(
                   imageList: images!,
-                  extraCountTextStyle: Theme.of(context).textTheme.subtitle2!,
+                  extraCountTextStyle: Theme.of(context).textTheme.titleSmall!,
                   itemBorderColor: Colors.primaries[Random().nextInt(Colors.primaries.length)],
                   itemRadius: 25,
                   itemCount: images!.length,
@@ -429,7 +439,7 @@ class TaskListTile extends StatelessWidget {
                   children: [
                     Text(
                       '$dateFormat ${dates[1]}',
-                      style: Theme.of(context).textTheme.bodyText1!.copyWith(color: customRedColor),
+                      style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: customRedColor),
                     ),
                     const SizedBox(
                       width: 10,
@@ -473,7 +483,7 @@ class TaskListTile extends StatelessWidget {
                                         'Change status',
                                         style: Theme.of(context)
                                             .textTheme
-                                            .bodyText1!
+                                            .bodyLarge!
                                             .copyWith(color: Colors.white),
                                       ),
                                       trailing: const Icon(
@@ -493,7 +503,7 @@ class TaskListTile extends StatelessWidget {
                                         'Edit Task',
                                         style: Theme.of(context)
                                             .textTheme
-                                            .bodyText1!
+                                            .bodyLarge!
                                             .copyWith(color: Colors.white),
                                       ),
                                       trailing: const Icon(
@@ -513,7 +523,7 @@ class TaskListTile extends StatelessWidget {
                                         'Delete',
                                         style: Theme.of(context)
                                             .textTheme
-                                            .bodyText1!
+                                            .bodyLarge!
                                             .copyWith(color: Colors.white),
                                       ),
                                       trailing: const Icon(

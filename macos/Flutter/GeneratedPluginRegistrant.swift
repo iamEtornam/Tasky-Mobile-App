@@ -14,7 +14,7 @@ import firebase_storage
 import flutter_local_notifications
 import in_app_review
 import package_info_plus
-import path_provider_macos
+import path_provider_foundation
 import url_launcher_macos
 
 func RegisterGeneratedPlugins(registry: FlutterPluginRegistry) {

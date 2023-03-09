@@ -17,7 +17,7 @@ class CreateInboxView extends StatelessWidget {
               'Cancel',
               style: Theme.of(context)
                   .textTheme
-                  .bodyText1!
+                  .bodyLarge!
                   .copyWith(color: Colors.white),
             ),
           ),
@@ -26,7 +26,7 @@ class CreateInboxView extends StatelessWidget {
           'New Message',
           style: Theme.of(context)
               .textTheme
-              .headline6!
+              .titleLarge!
               .copyWith(fontWeight: FontWeight.bold, color: Colors.white),
         ),
       ),
@@ -37,14 +37,14 @@ class CreateInboxView extends StatelessWidget {
             'What is the title?',
             style: Theme.of(context)
                 .textTheme
-                .bodyText1!
+                .bodyLarge!
                 .copyWith(fontWeight: FontWeight.w600),
           ),
           const SizedBox(
             height: 15,
           ),
           TextFormField(
-            style: Theme.of(context).textTheme.bodyText1,
+            style: Theme.of(context).textTheme.bodyLarge,
             textInputAction: TextInputAction.next,
             keyboardType: TextInputType.text,
             textCapitalization: TextCapitalization.words,
@@ -61,7 +61,7 @@ class CreateInboxView extends StatelessWidget {
                     borderSide: BorderSide(color: Colors.black)),
                 hintStyle: Theme.of(context)
                     .textTheme
-                    .bodyText1!
+                    .bodyLarge!
                     .copyWith(color: Colors.grey)),
             validator: (value) {
               if (value!.isEmpty) {

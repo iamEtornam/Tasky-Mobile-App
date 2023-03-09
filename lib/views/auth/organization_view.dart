@@ -105,7 +105,7 @@ class _OrganizationViewState extends State<OrganizationView> {
               },
               child: Text(
                 'Logout',
-                style: Theme.of(context).textTheme.bodyText1!.copyWith(color: Colors.red),
+                style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: Colors.red),
               ))
         ],
       ),
@@ -134,7 +134,7 @@ class _OrganizationViewState extends State<OrganizationView> {
                 'update profile photo',
                 style: Theme.of(context)
                     .textTheme
-                    .subtitle2!
+                    .titleSmall!
                     .copyWith(fontWeight: FontWeight.w600, color: customRedColor),
               ),
               onPressed: () {
@@ -162,7 +162,7 @@ class _OrganizationViewState extends State<OrganizationView> {
             TextFormField(
               controller: nameTextEditingController,
               focusNode: nameFocusNode,
-              style: Theme.of(context).textTheme.bodyText1,
+              style: Theme.of(context).textTheme.bodyLarge,
               textInputAction: TextInputAction.next,
               keyboardType: TextInputType.name,
               autofillHints: const [AutofillHints.organizationName],
@@ -178,7 +178,7 @@ class _OrganizationViewState extends State<OrganizationView> {
                   focusedBorder:
                       const UnderlineInputBorder(borderSide: BorderSide(color: customGreyColor)),
                   border: const UnderlineInputBorder(borderSide: BorderSide(color: Colors.black)),
-                  hintStyle: Theme.of(context).textTheme.bodyText1!.copyWith(color: Colors.grey)),
+                  hintStyle: Theme.of(context).textTheme.bodyLarge!.copyWith(color: Colors.grey)),
               validator: (value) {
                 if (value!.isEmpty) {
                   return 'Organization Name cannot be Empty';
@@ -205,7 +205,7 @@ class _OrganizationViewState extends State<OrganizationView> {
                             borderSide: BorderSide(color: customGreyColor)),
                         hintText: _tagsController.hasTags ? '' : "Organization Teams",
                         hintStyle:
-                            Theme.of(context).textTheme.bodyText1!.copyWith(color: Colors.grey),
+                            Theme.of(context).textTheme.bodyLarge!.copyWith(color: Colors.grey),
                         errorText: error,
                         prefixIcon: tags.isNotEmpty
                             ? SingleChildScrollView(
@@ -226,7 +226,7 @@ class _OrganizationViewState extends State<OrganizationView> {
                                           tag,
                                           style: Theme.of(context)
                                               .textTheme
-                                              .bodyText1!
+                                              .bodyLarge!
                                               .copyWith(color: Colors.white),
                                         ),
                                         const SizedBox(width: 4.0),
@@ -276,6 +276,8 @@ class _OrganizationViewState extends State<OrganizationView> {
                   bool isCreated = await _organizationManager.createOrganization(
                       image: _imageFile!, name: nameTextEditingController.text, teams: teams);
                   BotToast.closeAllLoading();
+                  if (!mounted) return;
+
                   if (isCreated) {
                     uiUtilities.alertNotification(
                         context: context, message: _organizationManager.message!);
@@ -300,7 +302,7 @@ class _OrganizationViewState extends State<OrganizationView> {
                   )),
               child: Text(
                 'Create Organization',
-                style: Theme.of(context).textTheme.button!.copyWith(color: Colors.white),
+                style: Theme.of(context).textTheme.labelLarge!.copyWith(color: Colors.white),
               ),
             )
           ],

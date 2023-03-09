@@ -13,7 +13,6 @@ ThemeData customLightTheme(
       visualDensity: VisualDensity.adaptivePlatformDensity,
       textSelectionTheme:
           const TextSelectionThemeData(cursorColor: customGreyColor),
-      errorColor: const Color.fromRGBO(229, 62, 62, 1),
       platform: defaultTargetPlatform,
       highlightColor: customRedColor.withOpacity(.5),
       primaryColor: Colors.white,
@@ -31,7 +30,7 @@ ThemeData customLightTheme(
         fillColor: Colors.white,
         filled: true,
         alignLabelWithHint: true,
-        hintStyle: Theme.of(context).textTheme.bodyText1,
+        hintStyle: Theme.of(context).textTheme.bodyLarge,
         contentPadding: const EdgeInsets.all(15.0),
         floatingLabelBehavior: FloatingLabelBehavior.auto,
         focusedBorder: UnderlineInputBorder(
@@ -50,10 +49,10 @@ ThemeData customLightTheme(
         focusedErrorBorder: const UnderlineInputBorder(
             borderSide: BorderSide(color: Color(0xffB00020)),
             borderRadius: BorderRadius.all(Radius.circular(5))),
-        labelStyle: Theme.of(context).textTheme.bodyText2,
+        labelStyle: Theme.of(context).textTheme.bodyMedium,
         errorStyle: Theme.of(context)
             .textTheme
-            .bodyText2!
+            .bodyMedium!
             .copyWith(color: const Color.fromRGBO(229, 62, 62, 1)),
       ),
       iconTheme: const IconThemeData(color: Colors.black),
@@ -63,19 +62,19 @@ ThemeData customLightTheme(
       textTheme: Typography.material2018(platform: defaultTargetPlatform)
           .white
           .copyWith(
-            bodyText1: const TextStyle(color: Colors.black, fontSize: 16),
-            bodyText2: const TextStyle(color: Colors.black, fontSize: 14),
-            caption: const TextStyle(color: Colors.black, fontSize: 12),
-            headline1: const TextStyle(color: Colors.black, fontSize: 96),
-            headline2: const TextStyle(color: Colors.black, fontSize: 60),
-            headline3: const TextStyle(color: Colors.black, fontSize: 48),
-            headline4: const TextStyle(color: Colors.black, fontSize: 34),
-            headline5: const TextStyle(color: Colors.black, fontSize: 24),
-            headline6: const TextStyle(color: Colors.black, fontSize: 20),
-            subtitle1: const TextStyle(color: Colors.black, fontSize: 16),
-            subtitle2: const TextStyle(color: Colors.black, fontSize: 14),
-            overline: const TextStyle(color: Colors.black, fontSize: 10),
-            button: const TextStyle(color: Colors.black, fontSize: 16),
+            bodyLarge: const TextStyle(color: Colors.black, fontSize: 16),
+            bodyMedium: const TextStyle(color: Colors.black, fontSize: 14),
+            bodySmall: const TextStyle(color: Colors.black, fontSize: 12),
+            displayLarge: const TextStyle(color: Colors.black, fontSize: 96),
+            displayMedium: const TextStyle(color: Colors.black, fontSize: 60),
+            displaySmall: const TextStyle(color: Colors.black, fontSize: 48),
+            headlineMedium: const TextStyle(color: Colors.black, fontSize: 34),
+            headlineSmall: const TextStyle(color: Colors.black, fontSize: 24),
+            titleLarge: const TextStyle(color: Colors.black, fontSize: 20),
+            titleMedium: const TextStyle(color: Colors.black, fontSize: 16),
+            titleSmall: const TextStyle(color: Colors.black, fontSize: 14),
+            labelSmall: const TextStyle(color: Colors.black, fontSize: 10),
+            labelLarge: const TextStyle(color: Colors.black, fontSize: 16),
           ),
       dividerTheme:
           const DividerThemeData(color: Color(0xffEDF2F7), thickness: 1),
@@ -85,8 +84,7 @@ ThemeData customLightTheme(
         color: Colors.white,
         iconTheme: IconThemeData(color: Colors.black),
         titleTextStyle: TextStyle(color: Colors.black),
-      ),
-      colorScheme: const ColorScheme.light(secondary: customRedColor));
+      ), colorScheme: const ColorScheme.light(secondary: customRedColor).copyWith(error: const Color.fromRGBO(229, 62, 62, 1)));
 }
 
 ///dark theme
@@ -98,7 +96,6 @@ ThemeData customDarkTheme(
       visualDensity: VisualDensity.adaptivePlatformDensity,
       textSelectionTheme:
           const TextSelectionThemeData(cursorColor: customGreyColor),
-      errorColor: const Color(0xffCF6679),
       primaryColor: Colors.black,
       indicatorColor: customRedColor,
       highlightColor: customRedColor.withOpacity(.5),
@@ -118,19 +115,19 @@ ThemeData customDarkTheme(
       textTheme: Typography.material2018(platform: defaultTargetPlatform)
           .white
           .copyWith(
-            bodyText1: const TextStyle(color: Colors.white, fontSize: 16),
-            bodyText2: const TextStyle(color: Colors.white, fontSize: 14),
-            caption: const TextStyle(color: Colors.white, fontSize: 12),
-            headline1: const TextStyle(color: Colors.white, fontSize: 96),
-            headline2: const TextStyle(color: Colors.white, fontSize: 60),
-            headline3: const TextStyle(color: Colors.white, fontSize: 48),
-            headline4: const TextStyle(color: Colors.white, fontSize: 34),
-            headline5: const TextStyle(color: Colors.white, fontSize: 24),
-            headline6: const TextStyle(color: Colors.white, fontSize: 20),
-            subtitle1: const TextStyle(color: Colors.white, fontSize: 16),
-            subtitle2: const TextStyle(color: Colors.white, fontSize: 14),
-            overline: const TextStyle(color: Colors.white, fontSize: 10),
-            button: const TextStyle(color: Colors.white, fontSize: 16),
+            bodyLarge: const TextStyle(color: Colors.white, fontSize: 16),
+            bodyMedium: const TextStyle(color: Colors.white, fontSize: 14),
+            bodySmall: const TextStyle(color: Colors.white, fontSize: 12),
+            displayLarge: const TextStyle(color: Colors.white, fontSize: 96),
+            displayMedium: const TextStyle(color: Colors.white, fontSize: 60),
+            displaySmall: const TextStyle(color: Colors.white, fontSize: 48),
+            headlineMedium: const TextStyle(color: Colors.white, fontSize: 34),
+            headlineSmall: const TextStyle(color: Colors.white, fontSize: 24),
+            titleLarge: const TextStyle(color: Colors.white, fontSize: 20),
+            titleMedium: const TextStyle(color: Colors.white, fontSize: 16),
+            titleSmall: const TextStyle(color: Colors.white, fontSize: 14),
+            labelSmall: const TextStyle(color: Colors.white, fontSize: 10),
+            labelLarge: const TextStyle(color: Colors.white, fontSize: 16),
           ),
       iconTheme: const IconThemeData(color: Colors.white),
       dividerTheme: const DividerThemeData(
@@ -139,7 +136,7 @@ ThemeData customDarkTheme(
         fillColor: const Color.fromRGBO(31, 31, 31, 1),
         filled: true,
         alignLabelWithHint: true,
-        hintStyle: Theme.of(context).textTheme.bodyText1,
+        hintStyle: Theme.of(context).textTheme.bodyLarge,
         contentPadding: const EdgeInsets.all(15.0),
         floatingLabelBehavior: FloatingLabelBehavior.auto,
         focusedBorder: UnderlineInputBorder(
@@ -159,10 +156,10 @@ ThemeData customDarkTheme(
             borderSide: BorderSide(color: Color(0xffCF6679)),
             borderRadius: BorderRadius.all(Radius.circular(5))),
         labelStyle:
-            Theme.of(context).textTheme.bodyText2!.copyWith(color: Colors.white),
+            Theme.of(context).textTheme.bodyMedium!.copyWith(color: Colors.white),
         errorStyle: Theme.of(context)
             .textTheme
-            .bodyText2!
+            .bodyMedium!
             .copyWith(color: const Color(0xffCF6679)),
       ),
       appBarTheme: const AppBarTheme(
@@ -171,6 +168,5 @@ ThemeData customDarkTheme(
         color: Color(0xff121212),
         iconTheme: IconThemeData(color: Colors.white),
         titleTextStyle: TextStyle(color: Colors.white),
-      ),
-      colorScheme: const ColorScheme.dark(secondary: customRedColor));
+      ), colorScheme: const ColorScheme.dark(secondary: customRedColor).copyWith(error: const Color(0xffCF6679)));
 }

@@ -44,7 +44,7 @@ class CustomAppBarWidget extends StatelessWidget implements PreferredSizeWidget 
       ),
       title: Text(
         title,
-        style: Theme.of(context).textTheme.headline6!.copyWith(fontWeight: FontWeight.bold),
+        style: Theme.of(context).textTheme.titleLarge!.copyWith(fontWeight: FontWeight.bold),
       ),
       actions: [
         IconButton(
@@ -61,7 +61,7 @@ class CustomAppBarWidget extends StatelessWidget implements PreferredSizeWidget 
             list.addAll([
               PopupMenuItem(
                 value: 1,
-                child: Text("Share", style: Theme.of(context).textTheme.bodyText1),
+                child: Text("Share", style: Theme.of(context).textTheme.bodyLarge),
               ),
               const PopupMenuDivider(
                 height: 10,
@@ -70,7 +70,7 @@ class CustomAppBarWidget extends StatelessWidget implements PreferredSizeWidget 
                 value: 2,
                 child: Text(
                   "Invite",
-                  style: Theme.of(context).textTheme.bodyText1,
+                  style: Theme.of(context).textTheme.bodyLarge,
                 ),
               )
             ]);

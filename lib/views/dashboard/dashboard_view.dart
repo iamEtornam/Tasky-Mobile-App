@@ -180,10 +180,10 @@ class _DashboardViewState extends State<DashboardView> {
               onTap: _onChanged,
               selectedIconTheme: Theme.of(context).iconTheme.copyWith(color: customRedColor),
               selectedLabelStyle:
-                  Theme.of(context).textTheme.bodyText2!.copyWith(color: customRedColor),
+                  Theme.of(context).textTheme.bodyMedium!.copyWith(color: customRedColor),
               unselectedIconTheme: Theme.of(context).iconTheme.copyWith(color: customGreyColor),
               unselectedLabelStyle:
-                  Theme.of(context).textTheme.bodyText2!.copyWith(color: customGreyColor),
+                  Theme.of(context).textTheme.bodyMedium!.copyWith(color: customGreyColor),
               type: BottomNavigationBarType.fixed,
               showUnselectedLabels: true,
               backgroundColor: Theme.of(context).bottomNavigationBarTheme.backgroundColor,
@@ -235,7 +235,7 @@ class _DashboardViewState extends State<DashboardView> {
                   title: Text(
                     'Update your Team',
                     style:
-                        Theme.of(context).textTheme.button!.copyWith(fontWeight: FontWeight.w600),
+                        Theme.of(context).textTheme.labelLarge!.copyWith(fontWeight: FontWeight.w600),
                   ),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                   content: SizedBox(
@@ -274,13 +274,13 @@ class _DashboardViewState extends State<DashboardView> {
                                       value: value,
                                       child: Text(
                                         value,
-                                        style: Theme.of(context).textTheme.bodyText1,
+                                        style: Theme.of(context).textTheme.bodyLarge,
                                       )))
                                   .toList(),
                               value: team,
                               hint: Text(
                                 'Select your team',
-                                style: Theme.of(context).textTheme.bodyText2,
+                                style: Theme.of(context).textTheme.bodyMedium,
                               ),
                               onChanged: (value) {
                                 setState(() {
@@ -311,6 +311,8 @@ class _DashboardViewState extends State<DashboardView> {
                                     backButtonBehavior: BackButtonBehavior.ignore);
                                 bool isUpdated = await _userManager.updateUserTeam(team: team);
                                 BotToast.closeAllLoading();
+                  if (!mounted) return;
+
                                 if (isUpdated) {
                                   uiUtilities.actionAlertWidget(
                                       context: context, alertType: 'success');
@@ -327,7 +329,7 @@ class _DashboardViewState extends State<DashboardView> {
                             child: Text(
                               'Update team',
                               style:
-                                  Theme.of(context).textTheme.button!.copyWith(color: Colors.white),
+                                  Theme.of(context).textTheme.labelLarge!.copyWith(color: Colors.white),
                             ))
                       ],
                     ),

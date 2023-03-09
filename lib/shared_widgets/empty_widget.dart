@@ -29,7 +29,7 @@ class EmptyWidget extends StatelessWidget {
               child: Text(
                 message,
                 textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.bodyText1,
+                style: Theme.of(context).textTheme.bodyLarge,
               ),
             )
           ],

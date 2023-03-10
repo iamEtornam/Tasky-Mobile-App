@@ -54,7 +54,7 @@ class Data {
   DateTime? updatedAt;
   List<User>? members;
 
-  factory Data.fromMap(Map<String, dynamic> json) => Data(
+  factory Data.fromMap(dynamic json) => Data(
         id: json["id"],
         name: json["name"],
         logo: json["logo"],

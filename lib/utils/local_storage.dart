@@ -50,7 +50,7 @@ class LocalStorage {
     String? team = await box.get('team');
     String? fcmToken = await box.get('fcm_token');
     String? phoneNumber = await box.get('phone_number');
-    Map<String, dynamic>? organization = await box.get('organization');
+    Map<dynamic,dynamic> organization = await box.get('organization') ?? {};
     DateTime? createdAt = await box.get('createdAt');
     DateTime? updatedAt = await box.get('updatedAt');
     return Data(
@@ -67,10 +67,10 @@ class LocalStorage {
         signInProvider: signInProvider,
         createdAt: createdAt,
         updatedAt: updatedAt,
-        organization: organization != null ? org.Data.fromMap(organization) : null);
+        organization: org.Data.fromMap(organization));
   }
 
-  Future<int?> getId() async {
+  Future<int> getId() async {
     final Box box = await Hive.openBox(_tasky);
     return await box.get('id');
   }
@@ -90,7 +90,7 @@ class LocalStorage {
     return await box.get('user_id');
   }
 
-  Future<int?> getOrganizationId() async {
+  Future<int> getOrganizationId() async {
     final Box box = await Hive.openBox(_tasky);
     return await box.get('organizationId');
   }

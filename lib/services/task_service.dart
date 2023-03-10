@@ -3,9 +3,8 @@ import 'package:http/http.dart';
 import 'package:tasky_mobile_app/utils/network_utils/custom_http_client.dart';
 import 'package:tasky_mobile_app/utils/network_utils/endpoints.dart';
 
-
 class TaskService {
-final CustomHttpClient _customHttpClient = GetIt.I.get<CustomHttpClient>();
+  final CustomHttpClient _customHttpClient = GetIt.I.get<CustomHttpClient>();
 
   Future<Response> createTaskRequest(
       {String? description,
@@ -24,15 +23,14 @@ final CustomHttpClient _customHttpClient = GetIt.I.get<CustomHttpClient>();
       'created_by': createdBy,
       'team': team
     };
-    return await _customHttpClient.postRequest(
-        path: createTaskPath, body: body);
+    return await _customHttpClient.postRequest(path: createTaskPath, body: body);
   }
 
-  Future<Response> getTaskRequest(int? organizationId) async {
+  Future<Response> getTaskRequest(int organizationId) async {
     return await _customHttpClient.getRequest(getTaskPath(organizationId));
   }
 
-  Future<Response> getTaskStatisticsRequest(int? userId) async {
+  Future<Response> getTaskStatisticsRequest(int userId) async {
     return await _customHttpClient.getRequest(getTaskStatisticsPath(userId));
   }
 
@@ -54,13 +52,11 @@ final CustomHttpClient _customHttpClient = GetIt.I.get<CustomHttpClient>();
       'team': team,
       'priority_level': priorityLevel
     };
-    return await _customHttpClient.putRequest(
-        path: '$updateTaskPath/taskId', body: body);
+    return await _customHttpClient.putRequest(path: '$updateTaskPath/taskId', body: body);
   }
 
-  Future<Response> markAsCompletedRequest({int? taskId, String? status}) async {
+  Future<Response> markAsCompletedRequest({required int taskId, required String status}) async {
     Map body = {'status': status};
-    return await _customHttpClient.putRequest(
-        path: '$updateTaskPath/$taskId', body: body);
+    return await _customHttpClient.putRequest(path: '$updateTaskPath/$taskId', body: body);
   }
 }

@@ -12,6 +12,7 @@ import 'package:tasky_mobile_app/models/comment.dart' as comment;
 import 'package:tasky_mobile_app/models/inbox.dart';
 import 'package:tasky_mobile_app/shared_widgets/empty_widget.dart';
 import 'package:tasky_mobile_app/utils/ui_utils/custom_colors.dart';
+import 'package:tasky_mobile_app/utils/ui_utils/extentions.dart';
 import 'package:tasky_mobile_app/utils/ui_utils/ui_utils.dart';
 import 'package:time_ago_provider/time_ago_provider.dart' as time_ago;
 
@@ -136,7 +137,7 @@ class _InboxViewState extends State<InboxView> {
                               .contains(_firebaseAuth.currentUser!.uid),
                       teamName: snapshot.data!.data![index].team,
                       title: snapshot.data!.data![index].title,
-                      timestamp: time_ago.format(snapshot.data!.data![index].createdAt!),
+                      timestamp: time_ago.format(snapshot.data!.data![index].updatedAt!),
                       dueDate: snapshot.data!.data![index].status!,
                       replies: snapshot.data!.data![index].like == null
                           ? 0
@@ -376,7 +377,7 @@ class _MessageDisplayWidgetState extends State<MessageDisplayWidget> {
             height: 25,
           ),
           StreamBuilder<comment.Comment?>(
-              stream: widget.inboxManager.getInboxComments(inboxId: widget.snapshot.id).asStream(),
+              stream: widget.inboxManager.getInboxComments(inboxId: widget.snapshot.id!).asStream(),
               builder: (context, commentSnapshot) {
                 return ListView.separated(
                     shrinkWrap: true,
@@ -478,7 +479,7 @@ class _MessageDisplayWidgetState extends State<MessageDisplayWidget> {
                           backButtonBehavior: BackButtonBehavior.ignore);
 
                       bool isSent = await widget.inboxManager.submitInboxComment(
-                          comment: _commentController.text, inboxId: widget.snapshot.id);
+                          comment: _commentController.text, inboxId: widget.snapshot.id!);
                       BotToast.closeAllLoading();
                       if (!mounted) return;
 
@@ -577,7 +578,7 @@ class InboxItemWidget extends StatelessWidget {
                       width: 8,
                     ),
                     Text(
-                      teamName!,
+                      teamName!.toCapitalize(),
                       style: Theme.of(context).textTheme.bodyLarge,
                     ),
                   ],

@@ -76,8 +76,8 @@ class _DashboardViewState extends State<DashboardView> {
     }
   }
 
-  Future onSelectNotification(String? payload) async {
-    _logger.d("payload : $payload");
+  static onSelectNotification(NotificationResponse payload) async {
+    Logger().d("payload : $payload");
   }
 
   initialNotification({required BuildContext context}) async {
@@ -88,9 +88,8 @@ class _DashboardViewState extends State<DashboardView> {
     const initSettings = InitializationSettings(android: android, iOS: iOS);
     flutterLocalNotificationsPlugin.initialize(
       initSettings,
-      onDidReceiveNotificationResponse: (details) => onSelectNotification(details.payload),
-      onDidReceiveBackgroundNotificationResponse: (details) =>
-          onSelectNotification(details.payload),
+      onDidReceiveNotificationResponse: onSelectNotification,
+      onDidReceiveBackgroundNotificationResponse: onSelectNotification,
     );
 
     if (Platform.isIOS) {

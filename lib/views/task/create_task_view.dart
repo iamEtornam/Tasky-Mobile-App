@@ -31,7 +31,7 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
   final OrganizationManager _organizationManager = GetIt.I.get<OrganizationManager>();
   final TaskManager _taskManager = GetIt.I.get<TaskManager>();
   final UiUtilities uiUtilities = UiUtilities();
-  static final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final FocusNode taskFocusNode = FocusNode();
   bool isSwitched = false;
   final TextEditingController descriptionTextEditingController = TextEditingController();
@@ -345,8 +345,8 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
                       ? Padding(
                           padding: const EdgeInsets.only(right: 8.0),
                           child: FlutterImageStack(
-                            imageList: _taskManager.assignees.map((e) => e.picture).toList()
-                                as List<String>,
+                            imageList:
+                                _taskManager.assignees.map((e) => e.picture ?? defaultAvatarUrl).toList() as dynamic,
                             extraCountTextStyle: Theme.of(context).textTheme.titleSmall!,
                             itemBorderColor: Theme.of(context).scaffoldBackgroundColor,
                             itemRadius: 50,
@@ -363,8 +363,6 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
                   FutureBuilder<Member?>(
                       future: _organizationManager.getOrganizationMembers(),
                       builder: (context, snapshot) {
-   
-
                         if (snapshot.connectionState == ConnectionState.waiting &&
                             !snapshot.hasData) {
                           return const CupertinoActivityIndicator();

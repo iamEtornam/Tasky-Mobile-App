@@ -10,6 +10,8 @@ import 'package:image_picker/image_picker.dart' as image_picker;
 
 import 'custom_colors.dart';
 
+const defaultAvatarUrl = 'https://asset.cloudinary.com/iametornam/6ccefc294e57bc7f90054f08f5e4fe0f';
+
 class UiUtilities {
   actionAlertWidget({required BuildContext context, required String alertType}) {
     final yyDialog = YYDialog();

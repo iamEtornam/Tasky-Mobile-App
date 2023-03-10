@@ -27,6 +27,24 @@ class _TaskViewState extends State<TaskView> {
   final UiUtilities uiUtilities = UiUtilities();
   final ScrollController _scrollController = ScrollController();
   final TaskManager _taskManager = GetIt.I.get<TaskManager>();
+  Task? tasks;
+
+  @override
+  void initState() {
+    super.initState();
+    getTasks();
+  }
+
+  @override
+  void didUpdateWidget(covariant TaskView oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    getTasks();
+  }
+
+  getTasks() async {
+    tasks = await _taskManager.getTasks();
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,311 +52,320 @@ class _TaskViewState extends State<TaskView> {
       appBar: const CustomAppBarWidget(
         title: 'Tasks',
       ),
-      body: StreamBuilder<Task?>(
-          stream: _taskManager.getTasks().asStream(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting && !snapshot.hasData) {
-              return const Center(child: CupertinoActivityIndicator());
-            }
+      body: RefreshIndicator(
+        onRefresh: () async {
+          await getTasks();
+        },
+        child: StreamBuilder<Task?>(
+            stream: Stream.value(tasks),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting && !snapshot.hasData) {
+                return const Center(child: CupertinoActivityIndicator());
+              }
 
-            if (snapshot.connectionState == ConnectionState.done && !snapshot.hasData) {
-              return const EmptyWidget(
-                imageAsset: 'no_task.png',
-                message: 'Tasks aasigned to you and tasks created for you appears here.',
-              );
-            }
+              if (snapshot.connectionState == ConnectionState.done && !snapshot.hasData) {
+                return const EmptyWidget(
+                  imageAsset: 'no_task.png',
+                  message: 'Tasks aasigned to you and tasks created for you appears here.',
+                );
+              }
 
-            if (snapshot.data == null) {
-              return const EmptyWidget(
-                imageAsset: 'no_task.png',
-                message: 'Tasks aasigned to you and tasks created for you appears here.',
-              );
-            }
+              if (snapshot.data == null) {
+                return const EmptyWidget(
+                  imageAsset: 'no_task.png',
+                  message: 'Tasks aasigned to you and tasks created for you appears here.',
+                );
+              }
 
-            return ListView(
-              controller: _scrollController,
-              children: [
-                const Divider(),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
-                  child: Row(
-                    children: [
-                      const Icon(
-                        Icons.star_rate_rounded,
-                        color: Color.fromRGBO(245, 101, 101, 1),
-                      ),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      Text(
-                        'Starred',
-                        style: Theme.of(context).textTheme.bodyLarge,
-                      )
-                    ],
-                  ),
-                ),
-                const Divider(),
-                Padding(
+              return ListView(
+                controller: _scrollController,
+                children: [
+                  const Divider(),
+                  Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
-                    child: Text(
-                      'Tasks',
-                      style: Theme.of(context).textTheme.bodyLarge,
-                    )),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 24),
-                  child: ListView.separated(
-                      controller: _scrollController,
-                      shrinkWrap: true,
-                      itemBuilder: (context, index) {
-                        return TaskListTile(
-                          dueDate: snapshot.data!.data![index].dueDate,
-                          images: snapshot.data!.data![index].participants,
-                          taskTitle: snapshot.data!.data![index].description,
-                          isCompleted: snapshot.data!.data![index].status == 'completed',
-                          onTap: (bool value) async {
-                            BotToast.showLoading(
-                                allowClick: false,
-                                clickClose: false,
-                                backButtonBehavior: BackButtonBehavior.ignore);
-                            bool isChanged = await _taskManager.markTaskAsCompleted(
-                                status: 'completed', taskId: snapshot.data!.data![index].id);
-                            BotToast.closeAllLoading();
-                            if (!mounted) return;
+                    child: Row(
+                      children: [
+                        const Icon(
+                          Icons.star_rate_rounded,
+                          color: Color.fromRGBO(245, 101, 101, 1),
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Text(
+                          'Starred',
+                          style: Theme.of(context).textTheme.bodyLarge,
+                        )
+                      ],
+                    ),
+                  ),
+                  const Divider(),
+                  Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
+                      child: Text(
+                        'Tasks',
+                        style: Theme.of(context).textTheme.bodyLarge,
+                      )),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 24),
+                    child: ListView.separated(
+                        controller: _scrollController,
+                        shrinkWrap: true,
+                        itemBuilder: (context, index) {
+                          return TaskListTile(
+                            dueDate: snapshot.data!.data![index].dueDate,
+                            images: snapshot.data!.data![index].participants,
+                            taskTitle: snapshot.data!.data![index].description,
+                            isCompleted: snapshot.data!.data![index].status == 'completed',
+                            onTap: (bool value) async {
+                              BotToast.showLoading(
+                                  allowClick: false,
+                                  clickClose: false,
+                                  backButtonBehavior: BackButtonBehavior.ignore);
+                              bool isChanged = await _taskManager.markTaskAsCompleted(
+                                  status: 'completed', taskId: snapshot.data!.data![index].id!);
+                              BotToast.closeAllLoading();
+                              if (!mounted) return;
 
-                            if (isChanged) {
-                              uiUtilities.actionAlertWidget(context: context, alertType: 'success');
-                              uiUtilities.alertNotification(
-                                  context: context, message: 'Marked as completed!');
-                              setState(() {
-                                snapshot.data!.data![index].status = value ? 'complete' : 'todo';
-                              });
-                            } else {
-                              uiUtilities.actionAlertWidget(context: context, alertType: 'error');
-                              uiUtilities.alertNotification(
-                                  context: context, message: _taskManager.message!);
-                            }
-                          },
-                          changeStatus: () async {
-                            showDialog(
-                                context: context,
-                                builder: (dialogContext) {
-                                  return AlertDialog(
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(5)),
-                                    content: SizedBox(
-                                      height: 170,
-                                      child: Column(
-                                        children: [
-                                          RadioListTile(
-                                              title: Text(
-                                                'To do',
-                                                style: Theme.of(context).textTheme.bodyLarge,
-                                              ),
-                                              value: 'todo',
-                                              groupValue: 'status',
-                                              onChanged: (dynamic value) async {
-                                                BotToast.showLoading(
-                                                    allowClick: false,
-                                                    clickClose: false,
-                                                    backButtonBehavior: BackButtonBehavior.ignore);
-                                                bool isChanged =
-                                                    await _taskManager.markTaskAsCompleted(
-                                                        status: value,
-                                                        taskId: snapshot.data!.data![index].id);
-                                                BotToast.closeAllLoading();
-                                                await _taskManager.getTasks();
-                                                if (!mounted) return;
-
-                                                if (isChanged) {
-                                                  uiUtilities.actionAlertWidget(
-                                                      context: context, alertType: 'success');
-                                                  uiUtilities.alertNotification(
-                                                      context: context,
-                                                      message: 'Marked as a To-do!');
-                                                  if (!mounted) return;
-
-                                                  Navigator.of(dialogContext, rootNavigator: true)
-                                                      .pop();
-                                                } else {
-                                                  uiUtilities.actionAlertWidget(
-                                                      context: context, alertType: 'error');
-                                                  uiUtilities.alertNotification(
-                                                      context: context,
-                                                      message: _taskManager.message!);
-                                                }
-                                              }),
-                                          RadioListTile(
-                                              title: Text(
-                                                'In Progress',
-                                                style: Theme.of(context).textTheme.bodyLarge,
-                                              ),
-                                              value: 'in progress',
-                                              groupValue: 'status',
-                                              onChanged: (dynamic value) async {
-                                                BotToast.showLoading(
-                                                    allowClick: false,
-                                                    clickClose: false,
-                                                    backButtonBehavior: BackButtonBehavior.ignore);
-                                                bool isChanged =
-                                                    await _taskManager.markTaskAsCompleted(
-                                                        status: value,
-                                                        taskId: snapshot.data!.data![index].id);
-                                                BotToast.closeAllLoading();
-                                                await _taskManager.getTasks();
-                                                if (!mounted) return;
-
-                                                if (isChanged) {
-                                                  uiUtilities.actionAlertWidget(
-                                                      context: context, alertType: 'success');
-                                                  uiUtilities.alertNotification(
-                                                      context: context,
-                                                      message: 'Marked as In Progress!');
-                                                  if (!mounted) return;
-
-                                                  Navigator.of(dialogContext, rootNavigator: true)
-                                                      .pop();
-                                                } else {
-                                                  uiUtilities.actionAlertWidget(
-                                                      context: context, alertType: 'error');
-                                                  uiUtilities.alertNotification(
-                                                      context: context,
-                                                      message: _taskManager.message!);
-                                                }
-                                              }),
-                                          RadioListTile(
-                                              title: Text(
-                                                'Complete',
-                                                style: Theme.of(context).textTheme.bodyLarge,
-                                              ),
-                                              value: 'completed',
-                                              groupValue: 'status',
-                                              onChanged: (dynamic value) async {
-                                                BotToast.showLoading(
-                                                    allowClick: false,
-                                                    clickClose: false,
-                                                    backButtonBehavior: BackButtonBehavior.ignore);
-                                                bool isChanged =
-                                                    await _taskManager.markTaskAsCompleted(
-                                                        status: value,
-                                                        taskId: snapshot.data!.data![index].id);
-                                                BotToast.closeAllLoading();
-                                                if (!mounted) return;
-
-                                                if (isChanged) {
+                              if (isChanged) {
+                                uiUtilities.actionAlertWidget(
+                                    context: context, alertType: 'success');
+                                uiUtilities.alertNotification(
+                                    context: context, message: 'Marked as completed!');
+                                setState(() {
+                                  snapshot.data!.data![index].status = value ? 'complete' : 'todo';
+                                });
+                              } else {
+                                uiUtilities.actionAlertWidget(context: context, alertType: 'error');
+                                uiUtilities.alertNotification(
+                                    context: context, message: _taskManager.message!);
+                              }
+                            },
+                            changeStatus: () async {
+                              showDialog(
+                                  context: context,
+                                  builder: (dialogContext) {
+                                    return AlertDialog(
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(5)),
+                                      content: SizedBox(
+                                        height: 170,
+                                        child: Column(
+                                          children: [
+                                            RadioListTile(
+                                                title: Text(
+                                                  'To do',
+                                                  style: Theme.of(context).textTheme.bodyLarge,
+                                                ),
+                                                value: 'todo',
+                                                groupValue: 'status',
+                                                onChanged: (dynamic value) async {
+                                                  BotToast.showLoading(
+                                                      allowClick: false,
+                                                      clickClose: false,
+                                                      backButtonBehavior:
+                                                          BackButtonBehavior.ignore);
+                                                  bool isChanged =
+                                                      await _taskManager.markTaskAsCompleted(
+                                                          status: value,
+                                                          taskId: snapshot.data!.data![index].id!);
+                                                  BotToast.closeAllLoading();
                                                   await _taskManager.getTasks();
                                                   if (!mounted) return;
 
-                                                  uiUtilities.actionAlertWidget(
-                                                      context: context, alertType: 'success');
-                                                  uiUtilities.alertNotification(
-                                                      context: context,
-                                                      message: 'Marked as completed!');
+                                                  if (isChanged) {
+                                                    uiUtilities.actionAlertWidget(
+                                                        context: context, alertType: 'success');
+                                                    uiUtilities.alertNotification(
+                                                        context: context,
+                                                        message: 'Marked as a To-do!');
+                                                    if (!mounted) return;
+
+                                                    Navigator.of(dialogContext, rootNavigator: true)
+                                                        .pop();
+                                                  } else {
+                                                    uiUtilities.actionAlertWidget(
+                                                        context: context, alertType: 'error');
+                                                    uiUtilities.alertNotification(
+                                                        context: context,
+                                                        message: _taskManager.message!);
+                                                  }
+                                                }),
+                                            RadioListTile(
+                                                title: Text(
+                                                  'In Progress',
+                                                  style: Theme.of(context).textTheme.bodyLarge,
+                                                ),
+                                                value: 'in progress',
+                                                groupValue: 'status',
+                                                onChanged: (dynamic value) async {
+                                                  BotToast.showLoading(
+                                                      allowClick: false,
+                                                      clickClose: false,
+                                                      backButtonBehavior:
+                                                          BackButtonBehavior.ignore);
+                                                  bool isChanged =
+                                                      await _taskManager.markTaskAsCompleted(
+                                                          status: value,
+                                                          taskId: snapshot.data!.data![index].id!);
+                                                  BotToast.closeAllLoading();
+                                                  await _taskManager.getTasks();
                                                   if (!mounted) return;
 
-                                                  Navigator.of(dialogContext, rootNavigator: true)
-                                                      .pop();
-                                                } else {
-                                                  uiUtilities.actionAlertWidget(
-                                                      context: context, alertType: 'error');
-                                                  uiUtilities.alertNotification(
-                                                      context: context,
-                                                      message: _taskManager.message!);
-                                                }
-                                              })
-                                        ],
-                                      ),
-                                    ),
-                                  );
-                                });
-                          },
-                          onOpened: () {
-                            showBarModalBottomSheet(
-                                context: context,
-                                builder: (context) {
-                                  return ListView(
-                                    padding: const EdgeInsets.all(16),
-                                    children: [
-                                      Text(
-                                        'Task:',
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodyMedium!
-                                            .copyWith(fontWeight: FontWeight.w600),
-                                      ),
-                                      Text(
-                                        snapshot.data!.data![index].description!,
-                                        style: Theme.of(context).textTheme.bodyLarge,
-                                      ),
-                                      const SizedBox(
-                                        height: 15,
-                                      ),
-                                      Text(
-                                        'Assignees:',
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodyMedium!
-                                            .copyWith(fontWeight: FontWeight.w600),
-                                      ),
-                                      const SizedBox(
-                                        height: 6,
-                                      ),
-                                      SizedBox(
-                                        height: 60,
-                                        width: MediaQuery.of(context).size.width,
-                                        child: ListView.separated(
-                                            scrollDirection: Axis.horizontal,
-                                            itemBuilder: (context, index) => ClipRRect(
-                                                borderRadius: BorderRadius.circular(10),
-                                                child: ExtendedImage.network(
-                                                  snapshot.data!.data![index].assignees![index]
-                                                      .picture!,
-                                                  fit: BoxFit.cover,
-                                                  width: 60,
-                                                  height: 60,
-                                                  cache: true,
-                                                  loadStateChanged: (ExtendedImageState state) {
-                                                    if (state.extendedImageLoadState ==
-                                                        LoadState.failed) {
-                                                      return Image.asset(
-                                                        'assets/avatar.png',
-                                                        fit: BoxFit.cover,
-                                                        width: 60,
-                                                        height: 60,
-                                                      );
-                                                    } else {
-                                                      return ExtendedRawImage(
-                                                        image: state.extendedImageInfo?.image,
-                                                        fit: BoxFit.cover,
-                                                        width: 60,
-                                                        height: 60,
-                                                      );
-                                                    }
-                                                  },
-                                                )),
-                                            separatorBuilder: (context, index) => const SizedBox(
-                                                  width: 4,
+                                                  if (isChanged) {
+                                                    uiUtilities.actionAlertWidget(
+                                                        context: context, alertType: 'success');
+                                                    uiUtilities.alertNotification(
+                                                        context: context,
+                                                        message: 'Marked as In Progress!');
+                                                    if (!mounted) return;
+
+                                                    Navigator.of(dialogContext, rootNavigator: true)
+                                                        .pop();
+                                                  } else {
+                                                    uiUtilities.actionAlertWidget(
+                                                        context: context, alertType: 'error');
+                                                    uiUtilities.alertNotification(
+                                                        context: context,
+                                                        message: _taskManager.message!);
+                                                  }
+                                                }),
+                                            RadioListTile(
+                                                title: Text(
+                                                  'Complete',
+                                                  style: Theme.of(context).textTheme.bodyLarge,
                                                 ),
-                                            itemCount:
-                                                snapshot.data!.data![index].assignees!.length),
-                                      )
-                                    ],
-                                  );
-                                });
-                          },
-                        );
-                      },
-                      separatorBuilder: (context, index) => const Padding(
-                            padding: EdgeInsets.symmetric(vertical: 10),
-                            child: Divider(
-                              endIndent: 10,
-                              indent: 40,
+                                                value: 'completed',
+                                                groupValue: 'status',
+                                                onChanged: (dynamic value) async {
+                                                  BotToast.showLoading(
+                                                      allowClick: false,
+                                                      clickClose: false,
+                                                      backButtonBehavior:
+                                                          BackButtonBehavior.ignore);
+                                                  bool isChanged =
+                                                      await _taskManager.markTaskAsCompleted(
+                                                          status: value,
+                                                          taskId: snapshot.data!.data![index].id!);
+                                                  BotToast.closeAllLoading();
+                                                  if (!mounted) return;
+
+                                                  if (isChanged) {
+                                                    await _taskManager.getTasks();
+                                                    if (!mounted) return;
+
+                                                    uiUtilities.actionAlertWidget(
+                                                        context: context, alertType: 'success');
+                                                    uiUtilities.alertNotification(
+                                                        context: context,
+                                                        message: 'Marked as completed!');
+                                                    if (!mounted) return;
+
+                                                    Navigator.of(dialogContext, rootNavigator: true)
+                                                        .pop();
+                                                  } else {
+                                                    uiUtilities.actionAlertWidget(
+                                                        context: context, alertType: 'error');
+                                                    uiUtilities.alertNotification(
+                                                        context: context,
+                                                        message: _taskManager.message!);
+                                                  }
+                                                })
+                                          ],
+                                        ),
+                                      ),
+                                    );
+                                  });
+                            },
+                            onOpened: () {
+                              showBarModalBottomSheet(
+                                  context: context,
+                                  builder: (context) {
+                                    return ListView(
+                                      padding: const EdgeInsets.all(16),
+                                      children: [
+                                        Text(
+                                          'Task:',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodyMedium!
+                                              .copyWith(fontWeight: FontWeight.w600),
+                                        ),
+                                        Text(
+                                          snapshot.data!.data![index].description!,
+                                          style: Theme.of(context).textTheme.bodyLarge,
+                                        ),
+                                        const SizedBox(
+                                          height: 15,
+                                        ),
+                                        Text(
+                                          'Assignees:',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodyMedium!
+                                              .copyWith(fontWeight: FontWeight.w600),
+                                        ),
+                                        const SizedBox(
+                                          height: 6,
+                                        ),
+                                        SizedBox(
+                                          height: 60,
+                                          width: MediaQuery.of(context).size.width,
+                                          child: ListView.separated(
+                                              scrollDirection: Axis.horizontal,
+                                              itemBuilder: (context, index) => ClipRRect(
+                                                  borderRadius: BorderRadius.circular(10),
+                                                  child: ExtendedImage.network(
+                                                    snapshot.data!.data![index].assignees![index]
+                                                        .picture!,
+                                                    fit: BoxFit.cover,
+                                                    width: 60,
+                                                    height: 60,
+                                                    cache: true,
+                                                    loadStateChanged: (ExtendedImageState state) {
+                                                      if (state.extendedImageLoadState ==
+                                                          LoadState.failed) {
+                                                        return Image.asset(
+                                                          'assets/avatar.png',
+                                                          fit: BoxFit.cover,
+                                                          width: 60,
+                                                          height: 60,
+                                                        );
+                                                      } else {
+                                                        return ExtendedRawImage(
+                                                          image: state.extendedImageInfo?.image,
+                                                          fit: BoxFit.cover,
+                                                          width: 60,
+                                                          height: 60,
+                                                        );
+                                                      }
+                                                    },
+                                                  )),
+                                              separatorBuilder: (context, index) => const SizedBox(
+                                                    width: 4,
+                                                  ),
+                                              itemCount:
+                                                  snapshot.data!.data![index].assignees!.length),
+                                        )
+                                      ],
+                                    );
+                                  });
+                            },
+                          );
+                        },
+                        separatorBuilder: (context, index) => const Padding(
+                              padding: EdgeInsets.symmetric(vertical: 10),
+                              child: Divider(
+                                endIndent: 10,
+                                indent: 40,
+                              ),
                             ),
-                          ),
-                      itemCount: snapshot.data!.data!.length),
-                ),
-              ],
-            );
-          }),
+                        itemCount: snapshot.data!.data!.length),
+                  ),
+                ],
+              );
+            }),
+      ),
       floatingActionButton: FloatingActionButton(
         heroTag: 'create_task',
         backgroundColor: customRedColor,

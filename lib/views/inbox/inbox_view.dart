@@ -153,7 +153,12 @@ class _InboxViewState extends State<InboxView> {
           MaterialCommunityIcons.chat_outline,
           color: Colors.white,
         ),
-        onPressed: () => Navigator.of(context).pushNamed('/createInboxView'),
+        onPressed: () async {
+          final res = await Navigator.of(context).pushNamed('/createInboxView');
+          if (res != null) {
+            setState(() {});
+          }
+        },
       ),
     );
   }

@@ -129,6 +129,7 @@ class _CreateInboxViewState extends State<CreateInboxView> {
                   bool isSaved = await _inboxManager.submitInbox(
                     title: titleTextEditController.text,
                     message: messageTextEditController.text,
+
                   );
                   BotToast.closeAllLoading();
                   if (!mounted) return;
@@ -139,7 +140,7 @@ class _CreateInboxViewState extends State<CreateInboxView> {
                         context: context, message: _inboxManager.message!);
 
                     Future.delayed(const Duration(seconds: 2), () {
-                      Navigator.of(context).pop();
+                      Navigator.of(context).pop(true);
                     });
                   } else {
                     uiUtilities.actionAlertWidget(context: context, alertType: 'error');

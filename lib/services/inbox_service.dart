@@ -19,8 +19,8 @@ class InboxService {
         .postRequest(path: submitUserInboxCommentPath(inbox), body: {'comment': comment});
   }
 
-    Future<Response> submitInboxRequest({required String title, required String message}) async {
+    Future<Response> submitInboxRequest({required String title, required String message, required String team, required int userId}) async {
     return await _customHttpClient
-        .postRequest(path: submitUserInbox, body: {'title': title,'message': message});
+        .postRequest(path: submitUserInbox, body: {'title': title,'message': message, 'team':team, 'userId': userId,'status':"Pending",'like':[userId]});
   }
 }

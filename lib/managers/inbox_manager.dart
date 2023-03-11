@@ -129,7 +129,11 @@ class InboxManager with ChangeNotifier {
 
   Future<bool> submitInbox({required String title, required String message}) async {
     bool isSent = true;
-    await _inboxService.submitInboxRequest(title: title, message: message).then((response) {
+    int? userId = await _localStorage.getId();
+    Data? userInfo = await _localStorage.getUserInfo();
+    await _inboxService
+        .submitInboxRequest(title: title, message: message, team: userInfo.team!, userId: userId)
+        .then((response) {
       int statusCode = response.statusCode;
       Map<String, dynamic> body = json.decode(response.body);
       setMessage(body['message']);

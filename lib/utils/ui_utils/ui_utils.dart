@@ -14,8 +14,7 @@ const defaultAvatarUrl = 'https://asset.cloudinary.com/iametornam/6ccefc294e57bc
 
 class UiUtilities {
   actionAlertWidget({required BuildContext context, required String alertType}) {
-    final yyDialog = YYDialog();
-    yyDialog.build(context)
+    final yyDialog = YYDialog()..build(context)
       ..width = 120
       ..height = 110
       ..backgroundColor = Colors.black.withOpacity(0.8)
@@ -63,7 +62,7 @@ class UiUtilities {
     return BotToast.showSimpleNotification(
         title: message,
         backgroundColor: Theme.of(context).scaffoldBackgroundColor.withOpacity(.1),
-        borderRadius: 10,
+        borderRadius: 10.0,
         duration: const Duration(seconds: 4),
         align: Alignment.topCenter);
   }

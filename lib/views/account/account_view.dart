@@ -246,7 +246,7 @@ class _AccountViewState extends State<AccountView> {
                                   showDialog(
                                       context: context,
                                       builder: (context) {
-                                        return AlertDialog(
+                                        return AlertDialog.adaptive(
                                           shape: RoundedRectangleBorder(
                                               borderRadius: BorderRadius.circular(10)),
                                           content: SizedBox(
@@ -461,7 +461,7 @@ class _AccountViewState extends State<AccountView> {
                         showDialog(
                             context: context,
                             builder: (context) {
-                              return AlertDialog(
+                              return AlertDialog.adaptive(
                                 content: Text(
                                   userData?.fcmToken == null
                                       ? 'Are you sure you want to receive Notifications?'
@@ -694,7 +694,7 @@ class _AccountViewState extends State<AccountView> {
                         showDialog(
                             context: context,
                             builder: (context) {
-                              return AlertDialog(
+                              return AlertDialog.adaptive(
                                 shape:
                                     RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
                                 title: Text(
@@ -751,7 +751,7 @@ class _AccountViewState extends State<AccountView> {
                     showDialog(
                         context: context,
                         builder: (context) {
-                          return AlertDialog(
+                          return AlertDialog.adaptive(
                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
                             title: Text(
                               'Information',

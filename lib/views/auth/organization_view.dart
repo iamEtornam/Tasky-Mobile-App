@@ -24,7 +24,8 @@ class OrganizationView extends StatefulWidget {
 class _OrganizationViewState extends State<OrganizationView> {
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
   final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
-  final OrganizationManager _organizationManager = GetIt.I.get<OrganizationManager>();
+  final OrganizationManager _organizationManager =
+      GetIt.I.get<OrganizationManager>();
   final UiUtilities uiUtilities = UiUtilities();
   static final GlobalKey<FormState> _myFormKey = GlobalKey<FormState>();
   TextEditingController nameTextEditingController = TextEditingController();
@@ -35,8 +36,13 @@ class _OrganizationViewState extends State<OrganizationView> {
   List<Options>? options;
 
   getProfileFromCamera() async {
-    await uiUtilities.getImage(imageSource: ImageSource.camera).then((file) async {
-      File? croppedFile = await uiUtilities.getCroppedFile(file: file!.path);
+    await uiUtilities
+        .getImage(imageSource: ImageSource.camera)
+        .then((file) async {
+      if (file == null) {
+        return;
+      }
+      final croppedFile = await uiUtilities.getCroppedFile(file: file.path);
 
       if (croppedFile != null) {
         setState(() {
@@ -47,8 +53,13 @@ class _OrganizationViewState extends State<OrganizationView> {
   }
 
   getProfileFromGallery() async {
-    await uiUtilities.getImage(imageSource: ImageSource.gallery).then((file) async {
-      File? croppedFile = await uiUtilities.getCroppedFile(file: file!.path);
+    await uiUtilities
+        .getImage(imageSource: ImageSource.gallery)
+        .then((file) async {
+      if (file == null) {
+        return;
+      }
+      final croppedFile = await uiUtilities.getCroppedFile(file: file.path);
 
       if (croppedFile != null) {
         setState(() {
@@ -99,12 +110,16 @@ class _OrganizationViewState extends State<OrganizationView> {
                   await _localStorage.clearStorage();
                   BotToast.closeAllLoading();
                   if (!mounted) return;
-                  Navigator.pushNamedAndRemoveUntil(context, '/loginView', (route) => false);
+                  Navigator.pushNamedAndRemoveUntil(
+                      context, '/loginView', (route) => false);
                 });
               },
               child: Text(
                 'Logout',
-                style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: Colors.red),
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyLarge!
+                    .copyWith(color: Colors.red),
               ))
         ],
       ),
@@ -116,11 +131,14 @@ class _OrganizationViewState extends State<OrganizationView> {
           children: [
             Center(
               child: CircleAvatar(
-                backgroundColor:
-                    Colors.primaries[Random().nextInt(Colors.primaries.length)].withOpacity(.2),
+                backgroundColor: Colors
+                    .primaries[Random().nextInt(Colors.primaries.length)]
+                    .withOpacity(.2),
                 radius: 60,
                 backgroundImage: (_imageFile == null
-                    ? const ExactAssetImage('assets/company.png',)
+                    ? const ExactAssetImage(
+                        'assets/company.png',
+                      )
                     : FileImage(_imageFile!)) as ImageProvider<Object>?,
               ),
             ),
@@ -131,10 +149,8 @@ class _OrganizationViewState extends State<OrganizationView> {
                 child: TextButton(
               child: Text(
                 'update company logo',
-                style: Theme.of(context)
-                    .textTheme
-                    .titleSmall!
-                    .copyWith(fontWeight: FontWeight.w600, color: customRedColor),
+                style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                    fontWeight: FontWeight.w600, color: customRedColor),
               ),
               onPressed: () {
                 Platform.isIOS
@@ -172,12 +188,16 @@ class _OrganizationViewState extends State<OrganizationView> {
               decoration: InputDecoration(
                   filled: false,
                   hintText: 'Organization Name',
-                  enabledBorder:
-                      const UnderlineInputBorder(borderSide: BorderSide(color: customGreyColor)),
-                  focusedBorder:
-                      const UnderlineInputBorder(borderSide: BorderSide(color: customGreyColor)),
-                  border: const UnderlineInputBorder(borderSide: BorderSide(color: Colors.black)),
-                  hintStyle: Theme.of(context).textTheme.bodyLarge!.copyWith(color: Colors.grey)),
+                  enabledBorder: const UnderlineInputBorder(
+                      borderSide: BorderSide(color: customGreyColor)),
+                  focusedBorder: const UnderlineInputBorder(
+                      borderSide: BorderSide(color: customGreyColor)),
+                  border: const UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.black)),
+                  hintStyle: Theme.of(context)
+                      .textTheme
+                      .bodyLarge!
+                      .copyWith(color: Colors.grey)),
               validator: (value) {
                 if (value!.isEmpty) {
                   return 'Organization Name cannot be Empty';
@@ -190,7 +210,8 @@ class _OrganizationViewState extends State<OrganizationView> {
             ),
             TextFieldTags(
               textfieldTagsController: _tagsController,
-              inputfieldBuilder: (context, tec, fn, error, onChanged, onSubmitted) {
+              inputfieldBuilder:
+                  (context, tec, fn, error, onChanged, onSubmitted) {
                 return ((context, sc, tags, onTagDelete) {
                   return Padding(
                     padding: const EdgeInsets.all(10.0),
@@ -203,9 +224,12 @@ class _OrganizationViewState extends State<OrganizationView> {
                             borderSide: BorderSide(color: customGreyColor)),
                         focusedBorder: const UnderlineInputBorder(
                             borderSide: BorderSide(color: customGreyColor)),
-                        hintText: _tagsController.hasTags ? '' : "Organization Teams",
-                        hintStyle:
-                            Theme.of(context).textTheme.bodyLarge!.copyWith(color: Colors.grey),
+                        hintText:
+                            _tagsController.hasTags ? '' : "Organization Teams",
+                        hintStyle: Theme.of(context)
+                            .textTheme
+                            .bodyLarge!
+                            .copyWith(color: Colors.grey),
                         errorText: error,
                         prefixIcon: tags.isNotEmpty
                             ? SingleChildScrollView(
@@ -221,7 +245,8 @@ class _OrganizationViewState extends State<OrganizationView> {
                                     padding: const EdgeInsets.all(8.0),
                                     margin: const EdgeInsets.only(right: 8),
                                     child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
                                           tag,
@@ -274,26 +299,32 @@ class _OrganizationViewState extends State<OrganizationView> {
                       allowClick: false,
                       clickClose: false,
                       backButtonBehavior: BackButtonBehavior.ignore);
-                  bool isCreated = await _organizationManager.createOrganization(
-                      image: _imageFile!,
-                      name: nameTextEditingController.text,
-                      teams: _tagsController.getTags);
+                  bool isCreated =
+                      await _organizationManager.createOrganization(
+                          image: _imageFile!,
+                          name: nameTextEditingController.text,
+                          teams: _tagsController.getTags);
                   BotToast.closeAllLoading();
                   if (!mounted) return;
 
                   if (isCreated) {
                     uiUtilities.alertNotification(
-                        context: context, message: _organizationManager.message!);
+                        context: context,
+                        message: _organizationManager.message!);
                     Future.delayed(const Duration(seconds: 3), () {
-                      Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
+                      Navigator.pushNamedAndRemoveUntil(
+                          context, '/', (route) => false);
                     });
                   } else {
-                    uiUtilities.actionAlertWidget(context: context, alertType: 'error');
+                    uiUtilities.actionAlertWidget(
+                        context: context, alertType: 'error');
                     uiUtilities.alertNotification(
-                        context: context, message: _organizationManager.message!);
+                        context: context,
+                        message: _organizationManager.message!);
                   }
                 } else {
-                  uiUtilities.actionAlertWidget(context: context, alertType: 'error');
+                  uiUtilities.actionAlertWidget(
+                      context: context, alertType: 'error');
                   uiUtilities.alertNotification(
                       context: context, message: 'Fields cannot be Empty!');
                 }
@@ -305,7 +336,10 @@ class _OrganizationViewState extends State<OrganizationView> {
                   )),
               child: Text(
                 'Create Organization',
-                style: Theme.of(context).textTheme.labelLarge!.copyWith(color: Colors.white),
+                style: Theme.of(context)
+                    .textTheme
+                    .labelLarge!
+                    .copyWith(color: Colors.white),
               ),
             )
           ],

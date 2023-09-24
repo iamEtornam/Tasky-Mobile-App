@@ -252,7 +252,7 @@ class OverView extends StatelessWidget {
                               });
                         },
                         size: size,
-                        priority: camelize(
+                        priority: Strings.toCapitalised(
                             snapshot.data!.data![index].priorityLevel!),
                         time: UiUtilities().twenty4to12conventer(dateList[1]),
                         title: snapshot.data!.data![index].description,

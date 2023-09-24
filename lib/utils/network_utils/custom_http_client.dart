@@ -21,7 +21,7 @@ class CustomHttpClient {
     Map<String, String> headers;
     User? user = firebaseAuth.currentUser;
     if (user != null) {
-      String token = await user.getIdToken();
+      String? token = await user.getIdToken();
       headers = {
         "Accept": "application/json",
         "Content-Type": "application/json",

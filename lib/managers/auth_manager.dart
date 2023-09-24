@@ -36,7 +36,7 @@ class AuthManager with ChangeNotifier {
       setIsLoading(true);
       await _authService.signInWithGoogle().then((UserCredential? googleUserCredential) async {
         if (googleUserCredential != null) {
-          String token = await googleUserCredential.user!.getIdToken();
+          String? token = await googleUserCredential.user!.getIdToken();
 
           Response response = await _authService.sendTokenToBackend(token: token);
           int statusCode = response.statusCode;
@@ -96,7 +96,7 @@ class AuthManager with ChangeNotifier {
     bool isSuccessful = false;
     await _authService.signInWithApple().then((appleUserCredential) async {
       if (appleUserCredential != null) {
-        String token = await appleUserCredential.user!.getIdToken();
+        String? token = await appleUserCredential.user!.getIdToken();
 
         Response response = await _authService.sendTokenToBackend(token: token);
         int statusCode = response.statusCode;

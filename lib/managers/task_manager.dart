@@ -45,8 +45,8 @@ class TaskManager with ChangeNotifier {
       required List<int?> assignees}) async {
     setisLoading(true);
     bool isSaved = false;
-    int userId = await _localStorage.getId();
-    int organizationId = await _localStorage.getOrganizationId();
+    int? userId = await _localStorage.getId();
+    int? organizationId = await _localStorage.getOrganizationId();
     await _taskService
         .createTaskRequest(
             team: team,
@@ -81,7 +81,10 @@ class TaskManager with ChangeNotifier {
 
   Future<Task?> getTasks() async {
     Task? tasks;
-    int organizationId = await _localStorage.getOrganizationId();
+    int? organizationId = await _localStorage.getOrganizationId();
+    if (organizationId == null) {
+      return null;
+    }
     await _taskService.getTaskRequest(organizationId).then((response) {
       int statusCode = response.statusCode;
       Map<String, dynamic> body = json.decode(response.body);
@@ -108,7 +111,7 @@ class TaskManager with ChangeNotifier {
   Future<TaskStatistic?> getTaskStatistics() async {
     TaskStatistic? taskStatistic;
     int? userId = await _localStorage.getId();
-    await _taskService.getTaskStatisticsRequest(userId).then((response) {
+    await _taskService.getTaskStatisticsRequest(userId!).then((response) {
       int statusCode = response.statusCode;
       Map<String, dynamic> body = json.decode(response.body);
       setMessage(body['message']);
@@ -133,9 +136,12 @@ class TaskManager with ChangeNotifier {
     return taskStatistic;
   }
 
-  Future<bool> markTaskAsCompleted({required int taskId, required String status}) async {
+  Future<bool> markTaskAsCompleted(
+      {required int taskId, required String status}) async {
     bool isDone = false;
-    await _taskService.markAsCompletedRequest(status: status, taskId: taskId).then((response) {
+    await _taskService
+        .markAsCompletedRequest(status: status, taskId: taskId)
+        .then((response) {
       int statusCode = response.statusCode;
       Map<String, dynamic> body = json.decode(response.body);
       setMessage('${body['mesage']}');

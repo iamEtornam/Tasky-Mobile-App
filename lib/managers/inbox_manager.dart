@@ -36,7 +36,7 @@ class InboxManager with ChangeNotifier {
       inbox.Inbox? i;
       int? userId = await _localStorage.getId();
       Data? userInfo = await _localStorage.getUserInfo();
-      await _inboxService.getInboxRequest(userId: userId).then((response) {
+      await _inboxService.getInboxRequest(userId: userId!).then((response) {
         int statusCode = response.statusCode;
         Map<String, dynamic> body = json.decode(response.body);
 
@@ -132,7 +132,7 @@ class InboxManager with ChangeNotifier {
     int? userId = await _localStorage.getId();
     Data? userInfo = await _localStorage.getUserInfo();
     await _inboxService
-        .submitInboxRequest(title: title, message: message, team: userInfo.team!, userId: userId)
+        .submitInboxRequest(title: title, message: message, team: userInfo.team!, userId: userId!)
         .then((response) {
       int statusCode = response.statusCode;
       Map<String, dynamic> body = json.decode(response.body);

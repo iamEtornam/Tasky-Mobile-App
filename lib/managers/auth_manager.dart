@@ -75,6 +75,7 @@ class AuthManager with ChangeNotifier {
           setMessage('Authentication failed. Try gain!');
         }
       }).catchError((onError) {
+        print(onError);
         isSuccessful = false;
         setMessage('Process has been cancelled!');
         setIsLoading(false);

@@ -9,7 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get_it/get_it.dart';
-import 'package:groovin_widgets/groovin_widgets.dart';
 import 'package:logger/logger.dart';
 import 'package:tasky_mobile_app/managers/organization_manager.dart';
 import 'package:tasky_mobile_app/managers/user_manager.dart';
@@ -253,8 +252,8 @@ class _DashboardViewState extends State<DashboardView> {
                               side: const BorderSide(color: Colors.grey, width: 1)),
                           child: Padding(
                             padding: const EdgeInsets.all(5.0),
-                            child: OutlineDropdownButton(
-                              inputDecoration: InputDecoration(
+                            child: DropdownButtonFormField<String>(
+                              decoration: InputDecoration(
                                 alignLabelWithHint: true,
                                 hintStyle: Theme.of(context).inputDecorationTheme.hintStyle,
                                 contentPadding: const EdgeInsets.fromLTRB(15, 1, 15, 1),

@@ -210,7 +210,7 @@ DEPENDENCIES:
   - in_app_review (from `.symlinks/plugins/in_app_review/ios`)
   - open_apps_settings (from `.symlinks/plugins/open_apps_settings/ios`)
   - package_info_plus (from `.symlinks/plugins/package_info_plus/ios`)
-  - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/ios`)
+  - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
   - the_apple_sign_in (from `.symlinks/plugins/the_apple_sign_in/ios`)
   - url_launcher_ios (from `.symlinks/plugins/url_launcher_ios/ios`)
   - webview_flutter_wkwebview (from `.symlinks/plugins/webview_flutter_wkwebview/ios`)
@@ -272,7 +272,7 @@ EXTERNAL SOURCES:
   package_info_plus:
     :path: ".symlinks/plugins/package_info_plus/ios"
   path_provider_foundation:
-    :path: ".symlinks/plugins/path_provider_foundation/ios"
+    :path: ".symlinks/plugins/path_provider_foundation/darwin"
   the_apple_sign_in:
     :path: ".symlinks/plugins/the_apple_sign_in/ios"
   url_launcher_ios:
@@ -325,4 +325,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: c4976fb262bf0e704e3086d7b24b447ec821ddb1
 
-COCOAPODS: 1.12.0
+COCOAPODS: 1.12.1

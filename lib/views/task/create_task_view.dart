@@ -9,7 +9,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_font_icons/flutter_font_icons.dart';
 import 'package:flutter_image_stack/flutter_image_stack.dart';
 import 'package:get_it/get_it.dart';
-import 'package:groovin_widgets/groovin_widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:tasky_mobile_app/managers/organization_manager.dart';
@@ -180,9 +179,9 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
                   future: _organizationManager.getOrganization(),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting && !snapshot.hasData) {
-                      return OutlineDropdownButton(
+                      return DropdownButtonFormField<String>(
                         value: teamTextEditingController,
-                        inputDecoration: InputDecoration(
+                        decoration: InputDecoration(
                           alignLabelWithHint: true,
                           hintStyle: Theme.of(context)
                               .textTheme
@@ -211,9 +210,9 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
                     }
 
                     if (snapshot.connectionState == ConnectionState.done && snapshot.data == null) {
-                      return OutlineDropdownButton(
+                      return DropdownButtonFormField<String>(
                         value: teamTextEditingController,
-                        inputDecoration: InputDecoration(
+                        decoration: InputDecoration(
                           alignLabelWithHint: true,
                           hintStyle: Theme.of(context)
                               .textTheme
@@ -241,8 +240,8 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
                       );
                     }
 
-                    return OutlineDropdownButton(
-                      inputDecoration: InputDecoration(
+                    return DropdownButtonFormField<String>(
+                      decoration: InputDecoration(
                         alignLabelWithHint: true,
                         hintStyle: Theme.of(context)
                             .textTheme

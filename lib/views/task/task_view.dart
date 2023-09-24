@@ -59,21 +59,25 @@ class _TaskViewState extends State<TaskView> {
         child: StreamBuilder<Task?>(
             stream: Stream.value(tasks),
             builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting && !snapshot.hasData) {
+              if (snapshot.connectionState == ConnectionState.waiting &&
+                  !snapshot.hasData) {
                 return const Center(child: CupertinoActivityIndicator());
               }
 
-              if (snapshot.connectionState == ConnectionState.done && !snapshot.hasData) {
+              if (snapshot.connectionState == ConnectionState.done &&
+                  !snapshot.hasData) {
                 return const EmptyWidget(
                   imageAsset: 'no_task.png',
-                  message: 'Tasks aasigned to you and tasks created for you appears here.',
+                  message:
+                      'Tasks aasigned to you and tasks created for you appears here.',
                 );
               }
 
               if (snapshot.data == null) {
                 return const EmptyWidget(
                   imageAsset: 'no_task.png',
-                  message: 'Tasks aasigned to you and tasks created for you appears here.',
+                  message:
+                      'Tasks aasigned to you and tasks created for you appears here.',
                 );
               }
 
@@ -82,7 +86,8 @@ class _TaskViewState extends State<TaskView> {
                 children: [
                   const Divider(),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 24, vertical: 10),
                     child: Row(
                       children: [
                         const Icon(
@@ -101,7 +106,8 @@ class _TaskViewState extends State<TaskView> {
                   ),
                   const Divider(),
                   Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 24, vertical: 10),
                       child: Text(
                         'Tasks',
                         style: Theme.of(context).textTheme.bodyLarge,
@@ -116,29 +122,39 @@ class _TaskViewState extends State<TaskView> {
                             dueDate: snapshot.data!.data![index].dueDate,
                             images: snapshot.data!.data![index].participants,
                             taskTitle: snapshot.data!.data![index].description,
-                            isCompleted: snapshot.data!.data![index].status == 'completed',
+                            isCompleted: snapshot.data!.data![index].status ==
+                                'completed',
                             onTap: (bool value) async {
                               BotToast.showLoading(
                                   allowClick: false,
                                   clickClose: false,
-                                  backButtonBehavior: BackButtonBehavior.ignore);
-                              bool isChanged = await _taskManager.markTaskAsCompleted(
-                                  status: 'completed', taskId: snapshot.data!.data![index].id!);
+                                  backButtonBehavior:
+                                      BackButtonBehavior.ignore);
+                              bool isChanged =
+                                  await _taskManager.markTaskAsCompleted(
+                                      status: 'completed',
+                                      taskId: snapshot.data!.data![index].id!);
                               BotToast.closeAllLoading();
                               if (!mounted) return;
 
                               if (isChanged) {
                                 uiUtilities.actionAlertWidget(
-                                    context: context, alertType: 'success');
+                                    context: context,
+                                    alertType: AlertType.success);
                                 uiUtilities.alertNotification(
-                                    context: context, message: 'Marked as completed!');
+                                    context: context,
+                                    message: 'Marked as completed!');
                                 setState(() {
-                                  snapshot.data!.data![index].status = value ? 'complete' : 'todo';
+                                  snapshot.data!.data![index].status =
+                                      value ? 'complete' : 'todo';
                                 });
                               } else {
-                                uiUtilities.actionAlertWidget(context: context, alertType: 'error');
+                                uiUtilities.actionAlertWidget(
+                                    context: context,
+                                    alertType: AlertType.error);
                                 uiUtilities.alertNotification(
-                                    context: context, message: _taskManager.message!);
+                                    context: context,
+                                    message: _taskManager.message!);
                               }
                             },
                             changeStatus: () async {
@@ -147,131 +163,88 @@ class _TaskViewState extends State<TaskView> {
                                   builder: (dialogContext) {
                                     return AlertDialog(
                                       shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(5)),
+                                          borderRadius:
+                                              BorderRadius.circular(5)),
                                       content: SizedBox(
                                         height: 170,
-                                        child: Column(
-                                          children: [
-                                            RadioListTile(
-                                                title: Text(
-                                                  'To do',
-                                                  style: Theme.of(context).textTheme.bodyLarge,
-                                                ),
-                                                value: 'todo',
-                                                groupValue: 'status',
-                                                onChanged: (dynamic value) async {
-                                                  BotToast.showLoading(
-                                                      allowClick: false,
-                                                      clickClose: false,
-                                                      backButtonBehavior:
-                                                          BackButtonBehavior.ignore);
-                                                  bool isChanged =
-                                                      await _taskManager.markTaskAsCompleted(
-                                                          status: value,
-                                                          taskId: snapshot.data!.data![index].id!);
-                                                  BotToast.closeAllLoading();
-                                                  await _taskManager.getTasks();
-                                                  if (!mounted) return;
-
-                                                  if (isChanged) {
-                                                    uiUtilities.actionAlertWidget(
-                                                        context: context, alertType: 'success');
-                                                    uiUtilities.alertNotification(
-                                                        context: context,
-                                                        message: 'Marked as a To-do!');
-                                                    if (!mounted) return;
-
-                                                    Navigator.of(dialogContext, rootNavigator: true)
+                                        child: Material(
+                                          child: Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              RadioListTile.adaptive(
+                                                  title: Text(
+                                                    'To do',
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .bodyLarge,
+                                                  ),
+                                                  value: 'todo',
+                                                  groupValue: 'status',
+                                                  onChanged:
+                                                      (String? value) async {
+                                                    if (value == null ||
+                                                        snapshot
+                                                                .data
+                                                                ?.data?[index]
+                                                                .id ==
+                                                            null) return;
+                                                    Navigator.of(dialogContext)
                                                         .pop();
-                                                  } else {
-                                                    uiUtilities.actionAlertWidget(
-                                                        context: context, alertType: 'error');
-                                                    uiUtilities.alertNotification(
-                                                        context: context,
-                                                        message: _taskManager.message!);
-                                                  }
-                                                }),
-                                            RadioListTile(
-                                                title: Text(
-                                                  'In Progress',
-                                                  style: Theme.of(context).textTheme.bodyLarge,
-                                                ),
-                                                value: 'in progress',
-                                                groupValue: 'status',
-                                                onChanged: (dynamic value) async {
-                                                  BotToast.showLoading(
-                                                      allowClick: false,
-                                                      clickClose: false,
-                                                      backButtonBehavior:
-                                                          BackButtonBehavior.ignore);
-                                                  bool isChanged =
-                                                      await _taskManager.markTaskAsCompleted(
-                                                          status: value,
-                                                          taskId: snapshot.data!.data![index].id!);
-                                                  BotToast.closeAllLoading();
-                                                  await _taskManager.getTasks();
-                                                  if (!mounted) return;
-
-                                                  if (isChanged) {
-                                                    uiUtilities.actionAlertWidget(
-                                                        context: context, alertType: 'success');
-                                                    uiUtilities.alertNotification(
-                                                        context: context,
-                                                        message: 'Marked as In Progress!');
-                                                    if (!mounted) return;
-
-                                                    Navigator.of(dialogContext, rootNavigator: true)
+                                                    updateStatus(
+                                                        status: value,
+                                                        taskId: snapshot.data!
+                                                            .data![index].id!);
+                                                  }),
+                                              RadioListTile.adaptive(
+                                                  title: Text(
+                                                    'In Progress',
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .bodyLarge,
+                                                  ),
+                                                  value: 'in progress',
+                                                  groupValue: 'status',
+                                                  onChanged:
+                                                      (String? value) async {
+                                                    if (value == null ||
+                                                        snapshot
+                                                                .data
+                                                                ?.data?[index]
+                                                                .id ==
+                                                            null) return;
+                                                    Navigator.of(dialogContext)
                                                         .pop();
-                                                  } else {
-                                                    uiUtilities.actionAlertWidget(
-                                                        context: context, alertType: 'error');
-                                                    uiUtilities.alertNotification(
-                                                        context: context,
-                                                        message: _taskManager.message!);
-                                                  }
-                                                }),
-                                            RadioListTile(
-                                                title: Text(
-                                                  'Complete',
-                                                  style: Theme.of(context).textTheme.bodyLarge,
-                                                ),
-                                                value: 'completed',
-                                                groupValue: 'status',
-                                                onChanged: (dynamic value) async {
-                                                  BotToast.showLoading(
-                                                      allowClick: false,
-                                                      clickClose: false,
-                                                      backButtonBehavior:
-                                                          BackButtonBehavior.ignore);
-                                                  bool isChanged =
-                                                      await _taskManager.markTaskAsCompleted(
-                                                          status: value,
-                                                          taskId: snapshot.data!.data![index].id!);
-                                                  BotToast.closeAllLoading();
-                                                  if (!mounted) return;
-
-                                                  if (isChanged) {
-                                                    await _taskManager.getTasks();
-                                                    if (!mounted) return;
-
-                                                    uiUtilities.actionAlertWidget(
-                                                        context: context, alertType: 'success');
-                                                    uiUtilities.alertNotification(
-                                                        context: context,
-                                                        message: 'Marked as completed!');
-                                                    if (!mounted) return;
-
-                                                    Navigator.of(dialogContext, rootNavigator: true)
+                                                    updateStatus(
+                                                        status: value,
+                                                        taskId: snapshot.data!
+                                                            .data![index].id!);
+                                                  }),
+                                              RadioListTile.adaptive(
+                                                  title: Text(
+                                                    'Complete',
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .bodyLarge,
+                                                  ),
+                                                  value: 'completed',
+                                                  groupValue: 'status',
+                                                  onChanged:
+                                                      (String? value) async {
+                                                    if (value == null ||
+                                                        snapshot
+                                                                .data
+                                                                ?.data?[index]
+                                                                .id ==
+                                                            null) return;
+                                                    Navigator.of(dialogContext)
                                                         .pop();
-                                                  } else {
-                                                    uiUtilities.actionAlertWidget(
-                                                        context: context, alertType: 'error');
-                                                    uiUtilities.alertNotification(
-                                                        context: context,
-                                                        message: _taskManager.message!);
-                                                  }
-                                                })
-                                          ],
+                                                    updateStatus(
+                                                        status: value,
+                                                        taskId: snapshot.data!
+                                                            .data![index].id!);
+                                                  })
+                                            ],
+                                          ),
                                         ),
                                       ),
                                     );
@@ -289,11 +262,15 @@ class _TaskViewState extends State<TaskView> {
                                           style: Theme.of(context)
                                               .textTheme
                                               .bodyMedium!
-                                              .copyWith(fontWeight: FontWeight.w600),
+                                              .copyWith(
+                                                  fontWeight: FontWeight.w600),
                                         ),
                                         Text(
-                                          snapshot.data!.data![index].description!,
-                                          style: Theme.of(context).textTheme.bodyLarge,
+                                          snapshot
+                                              .data!.data![index].description!,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodyLarge,
                                         ),
                                         const SizedBox(
                                           height: 15,
@@ -303,49 +280,69 @@ class _TaskViewState extends State<TaskView> {
                                           style: Theme.of(context)
                                               .textTheme
                                               .bodyMedium!
-                                              .copyWith(fontWeight: FontWeight.w600),
+                                              .copyWith(
+                                                  fontWeight: FontWeight.w600),
                                         ),
                                         const SizedBox(
                                           height: 6,
                                         ),
                                         SizedBox(
                                           height: 60,
-                                          width: MediaQuery.of(context).size.width,
+                                          width:
+                                              MediaQuery.of(context).size.width,
                                           child: ListView.separated(
                                               scrollDirection: Axis.horizontal,
-                                              itemBuilder: (context, index) => ClipRRect(
-                                                  borderRadius: BorderRadius.circular(10),
-                                                  child: ExtendedImage.network(
-                                                    snapshot.data!.data![index].assignees![index]
-                                                        .picture!,
-                                                    fit: BoxFit.cover,
-                                                    width: 60,
-                                                    height: 60,
-                                                    cache: true,
-                                                    loadStateChanged: (ExtendedImageState state) {
-                                                      if (state.extendedImageLoadState ==
-                                                          LoadState.failed) {
-                                                        return Image.asset(
-                                                          'assets/avatar.png',
-                                                          fit: BoxFit.cover,
-                                                          width: 60,
-                                                          height: 60,
-                                                        );
-                                                      } else {
-                                                        return ExtendedRawImage(
-                                                          image: state.extendedImageInfo?.image,
-                                                          fit: BoxFit.cover,
-                                                          width: 60,
-                                                          height: 60,
-                                                        );
-                                                      }
-                                                    },
-                                                  )),
-                                              separatorBuilder: (context, index) => const SizedBox(
-                                                    width: 4,
-                                                  ),
-                                              itemCount:
-                                                  snapshot.data!.data![index].assignees!.length),
+                                              itemBuilder: (context, index) =>
+                                                  ClipRRect(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10),
+                                                      child:
+                                                          ExtendedImage.network(
+                                                        snapshot
+                                                            .data!
+                                                            .data![index]
+                                                            .assignees![index]
+                                                            .picture!,
+                                                        fit: BoxFit.cover,
+                                                        width: 60,
+                                                        height: 60,
+                                                        cache: true,
+                                                        loadStateChanged:
+                                                            (ExtendedImageState
+                                                                state) {
+                                                          if (state
+                                                                  .extendedImageLoadState ==
+                                                              LoadState
+                                                                  .failed) {
+                                                            return Image.asset(
+                                                              'assets/avatar.png',
+                                                              fit: BoxFit.cover,
+                                                              width: 60,
+                                                              height: 60,
+                                                            );
+                                                          } else {
+                                                            return ExtendedRawImage(
+                                                              image: state
+                                                                  .extendedImageInfo
+                                                                  ?.image,
+                                                              fit: BoxFit.cover,
+                                                              width: 60,
+                                                              height: 60,
+                                                            );
+                                                          }
+                                                        },
+                                                      )),
+                                              separatorBuilder:
+                                                  (context, index) =>
+                                                      const SizedBox(
+                                                        width: 4,
+                                                      ),
+                                              itemCount: snapshot
+                                                  .data!
+                                                  .data![index]
+                                                  .assignees!
+                                                  .length),
                                         )
                                       ],
                                     );
@@ -373,9 +370,35 @@ class _TaskViewState extends State<TaskView> {
           Icons.add,
           color: Colors.white,
         ),
-        onPressed: () => Navigator.pushReplacementNamed(context, '/createNewTaskView'),
+        onPressed: () =>
+            Navigator.pushReplacementNamed(context, '/createNewTaskView'),
       ),
     );
+  }
+
+  updateStatus({required String status, required int taskId}) async {
+    BotToast.showLoading(
+        allowClick: false,
+        clickClose: false,
+        backButtonBehavior: BackButtonBehavior.ignore);
+    bool isChanged =
+        await _taskManager.markTaskAsCompleted(status: status, taskId: taskId);
+    BotToast.closeAllLoading();
+
+    if (isChanged) {
+      await getTasks();
+      if (!mounted) return;
+
+      uiUtilities.actionAlertWidget(
+          context: context, alertType: AlertType.success);
+    } else {
+      if (!mounted) return;
+
+      uiUtilities.actionAlertWidget(
+          context: context, alertType: AlertType.error);
+      uiUtilities.alertNotification(
+          context: context, message: _taskManager.message!);
+    }
   }
 }
 
@@ -403,7 +426,8 @@ class TaskListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List dates = dueDate!.split(' ');
-    String dateFormat = DateFormat().add_yMMMEd().format(DateTime.tryParse(dates[0])!);
+    String dateFormat =
+        DateFormat().add_yMMMEd().format(DateTime.tryParse(dates[0])!);
 
     return GestureDetector(
       onTap: () => onOpened(),
@@ -440,7 +464,9 @@ class TaskListTile extends StatelessWidget {
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                        decoration: isCompleted ? TextDecoration.lineThrough : TextDecoration.none),
+                        decoration: isCompleted
+                            ? TextDecoration.lineThrough
+                            : TextDecoration.none),
                   ),
                 ),
               ],
@@ -454,19 +480,24 @@ class TaskListTile extends StatelessWidget {
                 FlutterImageStack(
                   imageList: images!,
                   extraCountTextStyle: Theme.of(context).textTheme.titleSmall!,
-                  itemBorderColor: Colors.primaries[Random().nextInt(Colors.primaries.length)],
+                  itemBorderColor: Colors
+                      .primaries[Random().nextInt(Colors.primaries.length)],
                   itemRadius: 25,
                   itemCount: images!.length,
                   itemBorderWidth: 1,
-                  backgroundColor:
-                      Colors.primaries[Random().nextInt(Colors.primaries.length)].withOpacity(.5),
+                  backgroundColor: Colors
+                      .primaries[Random().nextInt(Colors.primaries.length)]
+                      .withOpacity(.5),
                   totalCount: images!.length,
                 ),
                 Row(
                   children: [
                     Text(
                       '$dateFormat ${dates[1]}',
-                      style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: customRedColor),
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyLarge!
+                          .copyWith(color: customRedColor),
                     ),
                     const SizedBox(
                       width: 10,
@@ -476,7 +507,8 @@ class TaskListTile extends StatelessWidget {
                         showModalBottomSheet(
                             shape: const RoundedRectangleBorder(
                                 borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(10), topRight: Radius.circular(10))),
+                                    topLeft: Radius.circular(10),
+                                    topRight: Radius.circular(10))),
                             context: context,
                             elevation: 3,
                             builder: (context) {
@@ -496,7 +528,8 @@ class TaskListTile extends StatelessWidget {
                                       child: Container(
                                         decoration: BoxDecoration(
                                             color: Colors.white70,
-                                            borderRadius: BorderRadius.circular(45)),
+                                            borderRadius:
+                                                BorderRadius.circular(45)),
                                         height: 6,
                                         width: 40,
                                       ),

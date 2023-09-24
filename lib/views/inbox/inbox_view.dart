@@ -26,7 +26,12 @@ class InboxView extends StatefulWidget {
 class _InboxViewState extends State<InboxView> {
   final InboxManager _inboxManager = GetIt.I.get<InboxManager>();
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
-  final List<String> options = ['All', 'Assigned to me', '@Mentioned', 'Assigned to team'];
+  final List<String> options = [
+    'All',
+    'Assigned to me',
+    '@Mentioned',
+    'Assigned to team'
+  ];
   int currentIndex = 0;
   AsyncSnapshot<Inbox?>? _snapshot;
 
@@ -36,10 +41,14 @@ class _InboxViewState extends State<InboxView> {
       appBar: AppBar(
         title: Text(
           'Inbox',
-          style: Theme.of(context).textTheme.titleLarge!.copyWith(fontWeight: FontWeight.bold),
+          style: Theme.of(context)
+              .textTheme
+              .titleLarge!
+              .copyWith(fontWeight: FontWeight.bold),
         ),
         bottom: PreferredSize(
-          preferredSize: Size(MediaQuery.of(context).size.width, kToolbarHeight),
+          preferredSize:
+              Size(MediaQuery.of(context).size.width, kToolbarHeight),
           child: Column(
             children: [
               Padding(
@@ -69,10 +78,13 @@ class _InboxViewState extends State<InboxView> {
                                     child: Center(
                                         child: Text(
                                       options[index],
-                                      style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                                          color: currentIndex == index
-                                              ? customRedColor
-                                              : customGreyColor),
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyLarge!
+                                          .copyWith(
+                                              color: currentIndex == index
+                                                  ? customRedColor
+                                                  : customGreyColor),
                                     )),
                                   ),
                                 ),
@@ -92,21 +104,25 @@ class _InboxViewState extends State<InboxView> {
         ),
       ),
       body: StreamBuilder<Inbox?>(
-          stream: _inboxManager.getInboxes(query: options[currentIndex]).asStream(),
+          stream:
+              _inboxManager.getInboxes(query: options[currentIndex]).asStream(),
           builder: (context, snapshot) {
             _snapshot = snapshot;
-            if (snapshot.connectionState == ConnectionState.waiting && snapshot.data == null) {
+            if (snapshot.connectionState == ConnectionState.waiting &&
+                snapshot.data == null) {
               return const Center(child: CircularProgressIndicator.adaptive());
             }
 
-            if (snapshot.connectionState == ConnectionState.done && snapshot.data == null) {
+            if (snapshot.connectionState == ConnectionState.done &&
+                snapshot.data == null) {
               return const EmptyWidget(
                 message: 'You don\'t have any message yet.',
                 imageAsset: 'no_inbox.png',
               );
             }
 
-            if (snapshot.connectionState == ConnectionState.done && snapshot.data!.data!.isEmpty) {
+            if (snapshot.connectionState == ConnectionState.done &&
+                snapshot.data!.data!.isEmpty) {
               return const EmptyWidget(
                 message: 'You don\'t have any message yet.',
                 imageAsset: 'no_inbox.png',
@@ -121,7 +137,8 @@ class _InboxViewState extends State<InboxView> {
                         showBarModalBottomSheet(
                             context: context,
                             shape: const RoundedRectangleBorder(
-                                borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
+                                borderRadius: BorderRadius.vertical(
+                                    top: Radius.circular(20))),
                             builder: (context) {
                               return MessageDisplayWidget(
                                   firebaseAuth: _firebaseAuth,
@@ -137,7 +154,8 @@ class _InboxViewState extends State<InboxView> {
                               .contains(_firebaseAuth.currentUser!.uid),
                       teamName: snapshot.data!.data![index].team,
                       title: snapshot.data!.data![index].title,
-                      timestamp: time_ago.format(snapshot.data!.data![index].updatedAt!),
+                      timestamp: time_ago
+                          .format(snapshot.data!.data![index].updatedAt!),
                       dueDate: snapshot.data!.data![index].status!,
                       replies: snapshot.data!.data![index].like == null
                           ? 0
@@ -200,7 +218,8 @@ class _MessageDisplayWidgetState extends State<MessageDisplayWidget> {
                 children: [
                   CircleAvatar(
                     radius: 6,
-                    backgroundColor: Colors.primaries[Random().nextInt(Colors.primaries.length)],
+                    backgroundColor: Colors
+                        .primaries[Random().nextInt(Colors.primaries.length)],
                   ),
                   const SizedBox(
                     width: 8,
@@ -214,7 +233,9 @@ class _MessageDisplayWidgetState extends State<MessageDisplayWidget> {
               Text(
                 widget.snapshot.status!,
                 style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                    color: widget.snapshot.status! == 'Completed' ? Colors.green : customGreyColor),
+                    color: widget.snapshot.status! == 'Completed'
+                        ? Colors.green
+                        : customGreyColor),
               ),
             ],
           ),
@@ -242,8 +263,9 @@ class _MessageDisplayWidgetState extends State<MessageDisplayWidget> {
                           : Colors.transparent,
                       child: Icon(
                         Icons.check,
-                        color:
-                            widget.snapshot.status! == 'Completed' ? Colors.white : customGreyColor,
+                        color: widget.snapshot.status! == 'Completed'
+                            ? Colors.white
+                            : customGreyColor,
                         size: 18,
                       ),
                     ),
@@ -276,7 +298,9 @@ class _MessageDisplayWidgetState extends State<MessageDisplayWidget> {
                               style: Theme.of(context)
                                   .textTheme
                                   .titleSmall!
-                                  .copyWith(fontWeight: FontWeight.normal, color: Colors.white),
+                                  .copyWith(
+                                      fontWeight: FontWeight.normal,
+                                      color: Colors.white),
                             ),
                             const SizedBox(
                               width: 2,
@@ -300,12 +324,14 @@ class _MessageDisplayWidgetState extends State<MessageDisplayWidget> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               CircleAvatar(
-                backgroundColor:
-                    Colors.primaries[Random().nextInt(Colors.primaries.length)].withOpacity(.2),
+                backgroundColor: Colors
+                    .primaries[Random().nextInt(Colors.primaries.length)]
+                    .withOpacity(.2),
                 radius: 30,
                 backgroundImage: (widget.snapshot.user!.picture!.isEmpty
-                    ? const ExactAssetImage('assets/avatar.png')
-                    : NetworkImage(widget.snapshot.user!.picture!)) as ImageProvider,
+                        ? const ExactAssetImage('assets/avatar.png')
+                        : NetworkImage(widget.snapshot.user!.picture!))
+                    as ImageProvider,
               ),
               const SizedBox(
                 width: 10,
@@ -322,7 +348,9 @@ class _MessageDisplayWidgetState extends State<MessageDisplayWidget> {
                       lessStyle: Theme.of(context)
                           .textTheme
                           .bodyLarge!
-                          .copyWith(fontWeight: FontWeight.w600, color: customRedColor),
+                          .copyWith(
+                              fontWeight: FontWeight.w600,
+                              color: customRedColor),
                       trimMode: TrimMode.Line,
                       trimCollapsedText: 'Show more',
                       trimExpandedText: 'Show less',
@@ -333,7 +361,9 @@ class _MessageDisplayWidgetState extends State<MessageDisplayWidget> {
                       moreStyle: Theme.of(context)
                           .textTheme
                           .bodyLarge!
-                          .copyWith(fontWeight: FontWeight.w600, color: customRedColor),
+                          .copyWith(
+                              fontWeight: FontWeight.w600,
+                              color: customRedColor),
                     ),
                   ),
                   Row(
@@ -349,14 +379,14 @@ class _MessageDisplayWidgetState extends State<MessageDisplayWidget> {
                       Icon(
                         (widget.snapshot.like == null
                                 ? false
-                                : widget.snapshot.like
-                                    .contains(widget._firebaseAuth.currentUser!.uid))
+                                : widget.snapshot.like.contains(
+                                    widget._firebaseAuth.currentUser!.uid))
                             ? Icons.thumb_up
                             : Feather.thumbs_up,
                         color: (widget.snapshot.like == null
                                 ? false
-                                : widget.snapshot.like
-                                    .contains(widget._firebaseAuth.currentUser!.uid))
+                                : widget.snapshot.like.contains(
+                                    widget._firebaseAuth.currentUser!.uid))
                             ? customRedColor
                             : customGreyColor,
                         size: 20,
@@ -382,17 +412,22 @@ class _MessageDisplayWidgetState extends State<MessageDisplayWidget> {
             height: 25,
           ),
           StreamBuilder<comment.Comment?>(
-              stream: widget.inboxManager.getInboxComments(inboxId: widget.snapshot.id!).asStream(),
+              stream: widget.inboxManager
+                  .getInboxComments(inboxId: widget.snapshot.id!)
+                  .asStream(),
               builder: (context, commentSnapshot) {
                 return ListView.separated(
                     shrinkWrap: true,
                     itemBuilder: (context, index) {
-                      if (commentSnapshot.connectionState == ConnectionState.waiting &&
+                      if (commentSnapshot.connectionState ==
+                              ConnectionState.waiting &&
                           commentSnapshot.data == null) {
-                        return const Center(child: CircularProgressIndicator.adaptive());
+                        return const Center(
+                            child: CircularProgressIndicator.adaptive());
                       }
 
-                      if (commentSnapshot.connectionState == ConnectionState.done &&
+                      if (commentSnapshot.connectionState ==
+                              ConnectionState.done &&
                           commentSnapshot.data == null) {
                         return const SizedBox.shrink();
                       }
@@ -401,13 +436,16 @@ class _MessageDisplayWidgetState extends State<MessageDisplayWidget> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           CircleAvatar(
-                            backgroundColor: Colors
-                                .primaries[Random().nextInt(Colors.primaries.length)]
+                            backgroundColor: Colors.primaries[
+                                    Random().nextInt(Colors.primaries.length)]
                                 .withOpacity(.2),
                             radius: 30,
-                            backgroundImage: (widget.snapshot.user!.picture!.isEmpty
-                                ? const ExactAssetImage('assets/avatar.png')
-                                : NetworkImage(widget.snapshot.user!.picture!)) as ImageProvider,
+                            backgroundImage: (widget
+                                        .snapshot.user!.picture!.isEmpty
+                                    ? const ExactAssetImage('assets/avatar.png')
+                                    : NetworkImage(
+                                        widget.snapshot.user!.picture!))
+                                as ImageProvider,
                           ),
                           const SizedBox(
                             width: 10,
@@ -424,7 +462,9 @@ class _MessageDisplayWidgetState extends State<MessageDisplayWidget> {
                                   lessStyle: Theme.of(context)
                                       .textTheme
                                       .bodyLarge!
-                                      .copyWith(fontWeight: FontWeight.w600, color: customRedColor),
+                                      .copyWith(
+                                          fontWeight: FontWeight.w600,
+                                          color: customRedColor),
                                   trimMode: TrimMode.Line,
                                   trimCollapsedText: 'Show more',
                                   trimExpandedText: 'Show less',
@@ -435,7 +475,9 @@ class _MessageDisplayWidgetState extends State<MessageDisplayWidget> {
                                   moreStyle: Theme.of(context)
                                       .textTheme
                                       .bodyLarge!
-                                      .copyWith(fontWeight: FontWeight.w600, color: customRedColor),
+                                      .copyWith(
+                                          fontWeight: FontWeight.w600,
+                                          color: customRedColor),
                                 ),
                               ),
                               Row(
@@ -458,8 +500,9 @@ class _MessageDisplayWidgetState extends State<MessageDisplayWidget> {
                     separatorBuilder: (context, index) {
                       return const Divider();
                     },
-                    itemCount:
-                        commentSnapshot.data == null ? 0 : commentSnapshot.data!.data!.length);
+                    itemCount: commentSnapshot.data == null
+                        ? 0
+                        : commentSnapshot.data!.data!.length);
               })
         ],
       ),
@@ -483,20 +526,26 @@ class _MessageDisplayWidgetState extends State<MessageDisplayWidget> {
                           clickClose: false,
                           backButtonBehavior: BackButtonBehavior.ignore);
 
-                      bool isSent = await widget.inboxManager.submitInboxComment(
-                          comment: _commentController.text, inboxId: widget.snapshot.id!);
+                      bool isSent = await widget.inboxManager
+                          .submitInboxComment(
+                              comment: _commentController.text,
+                              inboxId: widget.snapshot.id!);
                       BotToast.closeAllLoading();
                       if (!mounted) return;
 
                       if (isSent) {
                         _commentController.clear();
-                        uiUtilities.actionAlertWidget(context: context, alertType: 'success');
+                        uiUtilities.actionAlertWidget(
+                            context: context, alertType: AlertType.success);
                         uiUtilities.alertNotification(
-                            context: context, message: widget.inboxManager.message!);
+                            context: context,
+                            message: widget.inboxManager.message!);
                       } else {
-                        uiUtilities.actionAlertWidget(context: context, alertType: 'error');
+                        uiUtilities.actionAlertWidget(
+                            context: context, alertType: AlertType.error);
                         uiUtilities.alertNotification(
-                            context: context, message: widget.inboxManager.message!);
+                            context: context,
+                            message: widget.inboxManager.message!);
                         debugPrint('$e');
                       }
                     },
@@ -510,17 +559,22 @@ class _MessageDisplayWidgetState extends State<MessageDisplayWidget> {
                 ),
                 filled: false,
                 enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: customGreyColor.withOpacity(.3)),
+                  borderSide:
+                      BorderSide(color: customGreyColor.withOpacity(.3)),
                   borderRadius: BorderRadius.circular(10),
                 ),
                 focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: customGreyColor.withOpacity(.3)),
+                  borderSide:
+                      BorderSide(color: customGreyColor.withOpacity(.3)),
                   borderRadius: BorderRadius.circular(10),
                 ),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
-                hintStyle: Theme.of(context).textTheme.bodyLarge!.copyWith(color: Colors.grey)),
+                hintStyle: Theme.of(context)
+                    .textTheme
+                    .bodyLarge!
+                    .copyWith(color: Colors.grey)),
             validator: (value) {
               if (value!.isEmpty) {
                 return 'Field cannot be Empty';
@@ -577,7 +631,8 @@ class InboxItemWidget extends StatelessWidget {
                   children: [
                     CircleAvatar(
                       radius: 6,
-                      backgroundColor: Colors.primaries[Random().nextInt(Colors.primaries.length)],
+                      backgroundColor: Colors
+                          .primaries[Random().nextInt(Colors.primaries.length)],
                     ),
                     const SizedBox(
                       width: 8,
@@ -590,10 +645,10 @@ class InboxItemWidget extends StatelessWidget {
                 ),
                 Text(
                   dueDate,
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyLarge!
-                      .copyWith(color: dueDate == 'Completed' ? Colors.green : customGreyColor),
+                  style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                      color: dueDate == 'Completed'
+                          ? Colors.green
+                          : customGreyColor),
                 ),
               ],
             ),
@@ -611,14 +666,19 @@ class InboxItemWidget extends StatelessWidget {
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(45),
                           side: BorderSide(
-                              color:
-                                  dueDate == 'Completed' ? Colors.transparent : customGreyColor)),
+                              color: dueDate == 'Completed'
+                                  ? Colors.transparent
+                                  : customGreyColor)),
                       child: CircleAvatar(
                         radius: 12,
-                        backgroundColor: dueDate == 'Completed' ? Colors.green : Colors.transparent,
+                        backgroundColor: dueDate == 'Completed'
+                            ? Colors.green
+                            : Colors.transparent,
                         child: Icon(
                           Icons.check,
-                          color: dueDate == 'Completed' ? Colors.white : customGreyColor,
+                          color: dueDate == 'Completed'
+                              ? Colors.white
+                              : customGreyColor,
                           size: 18,
                         ),
                       ),
@@ -651,7 +711,9 @@ class InboxItemWidget extends StatelessWidget {
                                 style: Theme.of(context)
                                     .textTheme
                                     .titleSmall!
-                                    .copyWith(fontWeight: FontWeight.normal, color: Colors.white),
+                                    .copyWith(
+                                        fontWeight: FontWeight.normal,
+                                        color: Colors.white),
                               ),
                               const SizedBox(
                                 width: 2,
@@ -673,8 +735,9 @@ class InboxItemWidget extends StatelessWidget {
             Row(
               children: [
                 CircleAvatar(
-                  backgroundColor:
-                      Colors.primaries[Random().nextInt(Colors.primaries.length)].withOpacity(.2),
+                  backgroundColor: Colors
+                      .primaries[Random().nextInt(Colors.primaries.length)]
+                      .withOpacity(.2),
                   radius: 30,
                   backgroundImage: (avatar!.isEmpty
                       ? const ExactAssetImage('assets/avatar.png')

@@ -47,12 +47,16 @@ class _LoginViewState extends State<LoginView> {
                 child: Text(
               'Tasky',
               style: Theme.of(context).textTheme.headlineMedium!.copyWith(
-                  fontWeight: FontWeight.bold, fontFamily: GoogleFonts.fugazOne().fontFamily),
+                  fontWeight: FontWeight.bold,
+                  fontFamily: GoogleFonts.fugazOne().fontFamily),
             )),
             const Spacer(),
             Text(
               'Login or Create a new account',
-              style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: Colors.grey),
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyMedium!
+                  .copyWith(color: Colors.grey),
             ),
             const SizedBox(
               height: 15,
@@ -79,7 +83,10 @@ class _LoginViewState extends State<LoginView> {
                     ),
                     Text(
                       'Continue with Google',
-                      style: Theme.of(context).textTheme.labelLarge!.copyWith(color: Colors.black),
+                      style: Theme.of(context)
+                          .textTheme
+                          .labelLarge!
+                          .copyWith(color: Colors.black),
                     ),
                   ],
                 ),
@@ -95,18 +102,24 @@ class _LoginViewState extends State<LoginView> {
                   Data data = await _localStorage.getUserInfo();
                   if (!mounted) return;
 
-                  uiUtilities.actionAlertWidget(context: context, alertType: 'success');
-                  uiUtilities.alertNotification(context: context, message: _authManager.message!);
+                  uiUtilities.actionAlertWidget(
+                      context: context, alertType: AlertType.success);
+                  uiUtilities.alertNotification(
+                      context: context, message: _authManager.message!);
 
                   Future.delayed(const Duration(seconds: 3), () {
-                    Navigator.pushNamedAndRemoveUntil(context,
-                        data.organizationId == null ? '/organizationView' : '/', (route) => false);
+                    Navigator.pushNamedAndRemoveUntil(
+                        context,
+                        data.organizationId == null ? '/organizationView' : '/',
+                        (route) => false);
                   });
                 } else {
                   if (!mounted) return;
 
-                  uiUtilities.actionAlertWidget(context: context, alertType: 'error');
-                  uiUtilities.alertNotification(context: context, message: _authManager.message!);
+                  uiUtilities.actionAlertWidget(
+                      context: context, alertType: AlertType.error);
+                  uiUtilities.alertNotification(
+                      context: context, message: _authManager.message!);
                 }
               },
             ),
@@ -118,7 +131,8 @@ class _LoginViewState extends State<LoginView> {
               child: TextButton(
                 style: TextButton.styleFrom(
                   padding: const EdgeInsets.only(left: 10, right: 10),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(45)),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(45)),
                   backgroundColor: Colors.black87,
                 ),
                 child: Padding(
@@ -135,8 +149,10 @@ class _LoginViewState extends State<LoginView> {
                       ),
                       Text(
                         'Sign in with Apple',
-                        style:
-                            Theme.of(context).textTheme.labelLarge!.copyWith(color: Colors.white),
+                        style: Theme.of(context)
+                            .textTheme
+                            .labelLarge!
+                            .copyWith(color: Colors.white),
                       ),
                     ],
                   ),
@@ -155,27 +171,33 @@ class _LoginViewState extends State<LoginView> {
                       Data data = await _localStorage.getUserInfo();
                       if (!mounted) return;
 
-                      uiUtilities.actionAlertWidget(context: context, alertType: 'success');
+                      uiUtilities.actionAlertWidget(
+                          context: context, alertType: AlertType.success);
                       uiUtilities.alertNotification(
                           context: context, message: _authManager.message!);
 
                       Future.delayed(const Duration(seconds: 3), () {
                         Navigator.pushNamedAndRemoveUntil(
                             context,
-                            data.organizationId == null ? '/organizationView' : '/',
+                            data.organizationId == null
+                                ? '/organizationView'
+                                : '/',
                             (route) => false);
                       });
                     } else {
                       if (!mounted) return;
 
-                      uiUtilities.actionAlertWidget(context: context, alertType: 'error');
+                      uiUtilities.actionAlertWidget(
+                          context: context, alertType: AlertType.error);
                       uiUtilities.alertNotification(
                           context: context, message: _authManager.message!);
                     }
                   } catch (e) {
                     BotToast.closeAllLoading();
-                    uiUtilities.actionAlertWidget(context: context, alertType: 'error');
-                    uiUtilities.alertNotification(context: context, message: _authManager.message!);
+                    uiUtilities.actionAlertWidget(
+                        context: context, alertType: AlertType.error);
+                    uiUtilities.alertNotification(
+                        context: context, message: _authManager.message!);
                     debugPrint('$e');
                   }
                 },

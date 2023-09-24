@@ -30,7 +30,10 @@ class _CreateInboxViewState extends State<CreateInboxView> {
           child: Center(
             child: Text(
               'Cancel',
-              style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: Colors.white),
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyLarge!
+                  .copyWith(color: Colors.white),
             ),
           ),
         ),
@@ -49,7 +52,10 @@ class _CreateInboxViewState extends State<CreateInboxView> {
           children: [
             Text(
               'What is the title?',
-              style: Theme.of(context).textTheme.bodyLarge!.copyWith(fontWeight: FontWeight.w600),
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyLarge!
+                  .copyWith(fontWeight: FontWeight.w600),
             ),
             const SizedBox(
               height: 15,
@@ -65,12 +71,16 @@ class _CreateInboxViewState extends State<CreateInboxView> {
               enableInteractiveSelection: true,
               decoration: InputDecoration(
                   filled: false,
-                  enabledBorder:
-                      const UnderlineInputBorder(borderSide: BorderSide(color: customGreyColor)),
-                  focusedBorder:
-                      const UnderlineInputBorder(borderSide: BorderSide(color: customGreyColor)),
-                  border: const UnderlineInputBorder(borderSide: BorderSide(color: Colors.black)),
-                  hintStyle: Theme.of(context).textTheme.bodyLarge!.copyWith(color: Colors.grey)),
+                  enabledBorder: const UnderlineInputBorder(
+                      borderSide: BorderSide(color: customGreyColor)),
+                  focusedBorder: const UnderlineInputBorder(
+                      borderSide: BorderSide(color: customGreyColor)),
+                  border: const UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.black)),
+                  hintStyle: Theme.of(context)
+                      .textTheme
+                      .bodyLarge!
+                      .copyWith(color: Colors.grey)),
               validator: (value) {
                 if (value!.isEmpty) {
                   return 'Field cannot be Empty';
@@ -83,7 +93,10 @@ class _CreateInboxViewState extends State<CreateInboxView> {
             ),
             Text(
               'What is the message?',
-              style: Theme.of(context).textTheme.bodyLarge!.copyWith(fontWeight: FontWeight.w600),
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyLarge!
+                  .copyWith(fontWeight: FontWeight.w600),
             ),
             const SizedBox(
               height: 15,
@@ -99,12 +112,16 @@ class _CreateInboxViewState extends State<CreateInboxView> {
               enableInteractiveSelection: true,
               decoration: InputDecoration(
                   filled: false,
-                  enabledBorder:
-                      const UnderlineInputBorder(borderSide: BorderSide(color: customGreyColor)),
-                  focusedBorder:
-                      const UnderlineInputBorder(borderSide: BorderSide(color: customGreyColor)),
-                  border: const UnderlineInputBorder(borderSide: BorderSide(color: Colors.black)),
-                  hintStyle: Theme.of(context).textTheme.bodyLarge!.copyWith(color: Colors.grey)),
+                  enabledBorder: const UnderlineInputBorder(
+                      borderSide: BorderSide(color: customGreyColor)),
+                  focusedBorder: const UnderlineInputBorder(
+                      borderSide: BorderSide(color: customGreyColor)),
+                  border: const UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.black)),
+                  hintStyle: Theme.of(context)
+                      .textTheme
+                      .bodyLarge!
+                      .copyWith(color: Colors.grey)),
               validator: (value) {
                 if (value!.isEmpty) {
                   return 'Field cannot be Empty';
@@ -129,13 +146,13 @@ class _CreateInboxViewState extends State<CreateInboxView> {
                   bool isSaved = await _inboxManager.submitInbox(
                     title: titleTextEditController.text,
                     message: messageTextEditController.text,
-
                   );
                   BotToast.closeAllLoading();
                   if (!mounted) return;
 
                   if (isSaved) {
-                    uiUtilities.actionAlertWidget(context: context, alertType: 'success');
+                    uiUtilities.actionAlertWidget(
+                        context: context, alertType: AlertType.success);
                     uiUtilities.alertNotification(
                         context: context, message: _inboxManager.message!);
 
@@ -143,12 +160,14 @@ class _CreateInboxViewState extends State<CreateInboxView> {
                       Navigator.of(context).pop(true);
                     });
                   } else {
-                    uiUtilities.actionAlertWidget(context: context, alertType: 'error');
+                    uiUtilities.actionAlertWidget(
+                        context: context, alertType: AlertType.error);
                     uiUtilities.alertNotification(
                         context: context, message: _inboxManager.message!);
                   }
                 } else {
-                  uiUtilities.actionAlertWidget(context: context, alertType: 'error');
+                  uiUtilities.actionAlertWidget(
+                      context: context, alertType: AlertType.error);
                   uiUtilities.alertNotification(
                       context: context, message: 'Fields cannot be empty');
                 }
@@ -156,7 +175,10 @@ class _CreateInboxViewState extends State<CreateInboxView> {
               child: Padding(
                 padding: const EdgeInsets.all(12.0),
                 child: Text('Sent message',
-                    style: Theme.of(context).textTheme.labelLarge!.copyWith(color: Colors.white)),
+                    style: Theme.of(context)
+                        .textTheme
+                        .labelLarge!
+                        .copyWith(color: Colors.white)),
               ),
             ),
             const SizedBox(height: 15),

@@ -52,11 +52,11 @@ class TaskService {
       'team': team,
       'priority_level': priorityLevel
     };
-    return await _customHttpClient.putRequest(path: '$updateTaskPath/taskId', body: body);
+    return await _customHttpClient.patchRequest(path: '$updateTaskPath/$taskId', body: body);
   }
 
   Future<Response> markAsCompletedRequest({required int taskId, required String status}) async {
     Map body = {'status': status};
-    return await _customHttpClient.putRequest(path: '$updateTaskPath/$taskId', body: body);
+    return await _customHttpClient.patchRequest(path: '$updateTaskPath/$taskId', body: body);
   }
 }

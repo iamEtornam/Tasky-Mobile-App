@@ -12,8 +12,10 @@ import 'custom_colors.dart';
 
 const defaultAvatarUrl = 'https://asset.cloudinary.com/iametornam/6ccefc294e57bc7f90054f08f5e4fe0f';
 
+enum AlertType { error , info, success }
+
 class UiUtilities {
-  actionAlertWidget({required BuildContext context, required String alertType}) {
+  actionAlertWidget({required BuildContext context, required AlertType alertType}) {
     final yyDialog = YYDialog()..build(context)
       ..width = 120
       ..height = 110
@@ -23,9 +25,9 @@ class UiUtilities {
       ..widget(Padding(
         padding: const EdgeInsets.only(top: 21),
         child: SvgPicture.asset(
-          alertType == 'error'
+          alertType == AlertType.error
               ? 'assets/error.svg'
-              : alertType == 'info'
+              : alertType == AlertType.info
                   ? 'assets/info.svg'
                   : 'assets/success.svg',
           width: 38,

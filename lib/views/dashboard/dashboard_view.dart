@@ -33,7 +33,8 @@ class _DashboardViewState extends State<DashboardView> {
   final FirebaseMessaging _messaging = FirebaseMessaging.instance;
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
-  final OrganizationManager _organizationManager = GetIt.I.get<OrganizationManager>();
+  final OrganizationManager _organizationManager =
+      GetIt.I.get<OrganizationManager>();
   final UserManager _userManager = GetIt.I.get<UserManager>();
   final Logger _logger = Logger();
   late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
@@ -83,7 +84,9 @@ class _DashboardViewState extends State<DashboardView> {
     flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
     const android = AndroidInitializationSettings('@mipmap/launcher_icon');
     const iOS = DarwinInitializationSettings(
-        defaultPresentAlert: true, defaultPresentBadge: true, defaultPresentSound: true);
+        defaultPresentAlert: true,
+        defaultPresentBadge: true,
+        defaultPresentSound: true);
     const initSettings = InitializationSettings(android: android, iOS: iOS);
     flutterLocalNotificationsPlugin.initialize(
       initSettings,
@@ -109,13 +112,14 @@ class _DashboardViewState extends State<DashboardView> {
       );
     }
 
-    const androidNotificationDetails = AndroidNotificationDetails('tasky', 'Tasky',
+    const androidNotificationDetails = AndroidNotificationDetails(
+        'tasky', 'Tasky',
         channelDescription: 'Notifications from Tasky app',
         priority: Priority.high,
         importance: Importance.max);
     const iOSNotificationDetails = DarwinNotificationDetails();
-    const platform =
-        NotificationDetails(android: androidNotificationDetails, iOS: iOSNotificationDetails);
+    const platform = NotificationDetails(
+        android: androidNotificationDetails, iOS: iOSNotificationDetails);
 
     FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
       RemoteNotification? notification = message.notification;
@@ -130,18 +134,24 @@ class _DashboardViewState extends State<DashboardView> {
 
     // Get any messages which caused the application to open from
     // a terminated state.
-    await _messaging.getInitialMessage().then((RemoteMessage? initialMessage) async {
+    await _messaging
+        .getInitialMessage()
+        .then((RemoteMessage? initialMessage) async {
       // ignore: null_aware_in_condition
       if (initialMessage != null) {
-        const androidNotificationDetails = AndroidNotificationDetails('tasky', 'Tasky',
+        const androidNotificationDetails = AndroidNotificationDetails(
+            'tasky', 'Tasky',
             channelDescription: 'Notifications from Tasky app',
             priority: Priority.high,
             importance: Importance.max);
         const iOSNotificationDetails = DarwinNotificationDetails();
-        const platform =
-            NotificationDetails(android: androidNotificationDetails, iOS: iOSNotificationDetails);
+        const platform = NotificationDetails(
+            android: androidNotificationDetails, iOS: iOSNotificationDetails);
         await flutterLocalNotificationsPlugin.show(
-            0, initialMessage.notification!.title, initialMessage.notification!.body, platform,
+            0,
+            initialMessage.notification!.title,
+            initialMessage.notification!.body,
+            platform,
             payload: json.encode(initialMessage.data));
       }
     });
@@ -150,16 +160,17 @@ class _DashboardViewState extends State<DashboardView> {
     // Stream listener
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage? message) async {
       if (message != null) {
-        const androidNotificationDetails = AndroidNotificationDetails('tasky', 'Tasky',
+        const androidNotificationDetails = AndroidNotificationDetails(
+            'tasky', 'Tasky',
             channelDescription: 'Notifications from Tasky app',
             priority: Priority.high,
             importance: Importance.max);
         const iOSNotificationDetails = DarwinNotificationDetails();
-        const platform =
-            NotificationDetails(android: androidNotificationDetails, iOS: iOSNotificationDetails);
+        const platform = NotificationDetails(
+            android: androidNotificationDetails, iOS: iOSNotificationDetails);
 
-        await flutterLocalNotificationsPlugin.show(
-            0, message.notification!.title, message.notification!.body, platform,
+        await flutterLocalNotificationsPlugin.show(0,
+            message.notification!.title, message.notification!.body, platform,
             payload: json.encode(message.data));
       }
     });
@@ -177,15 +188,22 @@ class _DashboardViewState extends State<DashboardView> {
             bottomNavigationBar: BottomNavigationBar(
               currentIndex: _currentIndex!,
               onTap: _onChanged,
-              selectedIconTheme: Theme.of(context).iconTheme.copyWith(color: customRedColor),
-              selectedLabelStyle:
-                  Theme.of(context).textTheme.bodyMedium!.copyWith(color: customRedColor),
-              unselectedIconTheme: Theme.of(context).iconTheme.copyWith(color: customGreyColor),
-              unselectedLabelStyle:
-                  Theme.of(context).textTheme.bodyMedium!.copyWith(color: customGreyColor),
+              selectedIconTheme:
+                  Theme.of(context).iconTheme.copyWith(color: customRedColor),
+              selectedLabelStyle: Theme.of(context)
+                  .textTheme
+                  .bodyMedium!
+                  .copyWith(color: customRedColor),
+              unselectedIconTheme:
+                  Theme.of(context).iconTheme.copyWith(color: customGreyColor),
+              unselectedLabelStyle: Theme.of(context)
+                  .textTheme
+                  .bodyMedium!
+                  .copyWith(color: customGreyColor),
               type: BottomNavigationBarType.fixed,
               showUnselectedLabels: true,
-              backgroundColor: Theme.of(context).bottomNavigationBarTheme.backgroundColor,
+              backgroundColor:
+                  Theme.of(context).bottomNavigationBarTheme.backgroundColor,
               selectedItemColor: customRedColor,
               unselectedItemColor: customGreyColor,
               items: [
@@ -230,7 +248,7 @@ class _DashboardViewState extends State<DashboardView> {
             context: context,
             builder: (context) {
               return StatefulBuilder(builder: (context, setState) {
-                return AlertDialog(
+                return AlertDialog.adaptive(
                   title: Text(
                     'Update your Team',
                     style: Theme.of(context)
@@ -238,7 +256,8 @@ class _DashboardViewState extends State<DashboardView> {
                         .labelLarge!
                         .copyWith(fontWeight: FontWeight.w600),
                   ),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10)),
                   content: SizedBox(
                     height: 150,
                     child: Column(
@@ -249,33 +268,54 @@ class _DashboardViewState extends State<DashboardView> {
                           elevation: 0,
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10),
-                              side: const BorderSide(color: Colors.grey, width: 1)),
+                              side: const BorderSide(
+                                  color: Colors.grey, width: 1)),
                           child: Padding(
                             padding: const EdgeInsets.all(5.0),
                             child: DropdownButtonFormField<String>(
                               decoration: InputDecoration(
                                 alignLabelWithHint: true,
-                                hintStyle: Theme.of(context).inputDecorationTheme.hintStyle,
-                                contentPadding: const EdgeInsets.fromLTRB(15, 1, 15, 1),
-                                floatingLabelBehavior: FloatingLabelBehavior.auto,
-                                focusedBorder: Theme.of(context).inputDecorationTheme.focusedBorder,
-                                enabledBorder: Theme.of(context).inputDecorationTheme.enabledBorder,
-                                disabledBorder:
-                                    Theme.of(context).inputDecorationTheme.disabledBorder,
-                                errorBorder: Theme.of(context).inputDecorationTheme.errorBorder,
-                                focusedErrorBorder:
-                                    Theme.of(context).inputDecorationTheme.focusedErrorBorder,
-                                fillColor: Theme.of(context).inputDecorationTheme.fillColor,
+                                hintStyle: Theme.of(context)
+                                    .inputDecorationTheme
+                                    .hintStyle,
+                                contentPadding:
+                                    const EdgeInsets.fromLTRB(15, 1, 15, 1),
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.auto,
+                                focusedBorder: Theme.of(context)
+                                    .inputDecorationTheme
+                                    .focusedBorder,
+                                enabledBorder: Theme.of(context)
+                                    .inputDecorationTheme
+                                    .enabledBorder,
+                                disabledBorder: Theme.of(context)
+                                    .inputDecorationTheme
+                                    .disabledBorder,
+                                errorBorder: Theme.of(context)
+                                    .inputDecorationTheme
+                                    .errorBorder,
+                                focusedErrorBorder: Theme.of(context)
+                                    .inputDecorationTheme
+                                    .focusedErrorBorder,
+                                fillColor: Theme.of(context)
+                                    .inputDecorationTheme
+                                    .fillColor,
                                 filled: true,
-                                labelStyle: Theme.of(context).inputDecorationTheme.labelStyle,
-                                errorStyle: Theme.of(context).inputDecorationTheme.errorStyle,
+                                labelStyle: Theme.of(context)
+                                    .inputDecorationTheme
+                                    .labelStyle,
+                                errorStyle: Theme.of(context)
+                                    .inputDecorationTheme
+                                    .errorStyle,
                               ),
                               items: organization.data!.teams!
                                   .map((value) => DropdownMenuItem<String>(
                                       value: value,
                                       child: Text(
                                         value,
-                                        style: Theme.of(context).textTheme.bodyLarge,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyLarge,
                                       )))
                                   .toList(),
                               value: team,
@@ -297,33 +337,41 @@ class _DashboardViewState extends State<DashboardView> {
                         TextButton(
                             style: TextButton.styleFrom(
                                 backgroundColor: customRedColor,
-                                shape:
-                                    RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8))),
                             onPressed: () async {
                               Navigator.pop(context);
                               if (team == null) {
-                                uiUtilities.actionAlertWidget(context: context, alertType: 'error');
+                                uiUtilities.actionAlertWidget(
+                                    context: context,
+                                    alertType: AlertType.error);
                                 uiUtilities.alertNotification(
                                     context: context, message: 'Select a team');
                               } else {
                                 BotToast.showLoading(
                                     allowClick: false,
                                     clickClose: false,
-                                    backButtonBehavior: BackButtonBehavior.ignore);
-                                bool isUpdated = await _userManager.updateUserTeam(team: team);
+                                    backButtonBehavior:
+                                        BackButtonBehavior.ignore);
+                                bool isUpdated = await _userManager
+                                    .updateUserTeam(team: team);
                                 BotToast.closeAllLoading();
                                 if (!mounted) return;
 
                                 if (isUpdated) {
                                   uiUtilities.actionAlertWidget(
-                                      context: context, alertType: 'success');
+                                      context: context,
+                                      alertType: AlertType.success);
                                   uiUtilities.alertNotification(
-                                      context: context, message: _userManager.message!);
+                                      context: context,
+                                      message: _userManager.message!);
                                 } else {
                                   uiUtilities.actionAlertWidget(
-                                      context: context, alertType: 'error');
+                                      context: context,
+                                      alertType: AlertType.error);
                                   uiUtilities.alertNotification(
-                                      context: context, message: _userManager.message!);
+                                      context: context,
+                                      message: _userManager.message!);
                                 }
                               }
                             },
@@ -353,11 +401,13 @@ class _DashboardViewState extends State<DashboardView> {
       if (user != null && userId != null && organizationId != null) {
         getUserTeam();
       } else if (organizationId == null && user != null) {
-        Navigator.pushNamedAndRemoveUntil(context, '/organizationView', (route) => false);
+        Navigator.pushNamedAndRemoveUntil(
+            context, '/organizationView', (route) => false);
       } else {
         auth.signOut();
         _localStorage.clearStorage();
-        Navigator.pushNamedAndRemoveUntil(context, '/loginView', (route) => false);
+        Navigator.pushNamedAndRemoveUntil(
+            context, '/loginView', (route) => false);
       }
     });
   }

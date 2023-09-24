@@ -317,14 +317,14 @@ class _OrganizationViewState extends State<OrganizationView> {
                     });
                   } else {
                     uiUtilities.actionAlertWidget(
-                        context: context, alertType: 'error');
+                        context: context, alertType: AlertType.error);
                     uiUtilities.alertNotification(
                         context: context,
                         message: _organizationManager.message!);
                   }
                 } else {
                   uiUtilities.actionAlertWidget(
-                      context: context, alertType: 'error');
+                      context: context, alertType: AlertType.error);
                   uiUtilities.alertNotification(
                       context: context, message: 'Fields cannot be Empty!');
                 }

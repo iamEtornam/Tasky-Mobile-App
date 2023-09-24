@@ -32,7 +32,8 @@ class AccountView extends StatefulWidget {
 class _AccountViewState extends State<AccountView> {
   final FirebaseMessaging _fcm = FirebaseMessaging.instance;
   final UserManager _userManager = GetIt.I.get<UserManager>();
-  final OrganizationManager _organizationManager = GetIt.I.get<OrganizationManager>();
+  final OrganizationManager _organizationManager =
+      GetIt.I.get<OrganizationManager>();
   final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
   final InAppReview _inAppReview = InAppReview.instance;
   final _tagsController = TextfieldTagsController();
@@ -63,7 +64,10 @@ class _AccountViewState extends State<AccountView> {
       appBar: AppBar(
         title: Text(
           'Account',
-          style: Theme.of(context).textTheme.titleLarge!.copyWith(fontWeight: FontWeight.bold),
+          style: Theme.of(context)
+              .textTheme
+              .titleLarge!
+              .copyWith(fontWeight: FontWeight.bold),
         ),
       ),
       body: SafeArea(
@@ -84,11 +88,12 @@ class _AccountViewState extends State<AccountView> {
                         children: [
                           Center(
                             child: CircleAvatar(
-                              backgroundColor: Colors
-                                  .primaries[Random().nextInt(Colors.primaries.length)]
+                              backgroundColor: Colors.primaries[
+                                      Random().nextInt(Colors.primaries.length)]
                                   .withOpacity(.2),
                               radius: 60,
-                              backgroundImage: const ExactAssetImage('assets/avatar.png'),
+                              backgroundImage:
+                                  const ExactAssetImage('assets/avatar.png'),
                             ),
                           ),
                           const SizedBox(
@@ -111,7 +116,9 @@ class _AccountViewState extends State<AccountView> {
                             style: Theme.of(context)
                                 .textTheme
                                 .bodyMedium!
-                                .copyWith(fontWeight: FontWeight.normal, color: customRedColor),
+                                .copyWith(
+                                    fontWeight: FontWeight.normal,
+                                    color: customRedColor),
                           )),
                           const SizedBox(
                             height: 25,
@@ -121,10 +128,13 @@ class _AccountViewState extends State<AccountView> {
                             style: Theme.of(context)
                                 .textTheme
                                 .bodyLarge!
-                                .copyWith(fontWeight: FontWeight.normal, color: customGreyColor),
+                                .copyWith(
+                                    fontWeight: FontWeight.normal,
+                                    color: customGreyColor),
                           ),
                           Material(
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10)),
                             child: ListTile(
                               title: Text(
                                 'My Company',
@@ -140,7 +150,8 @@ class _AccountViewState extends State<AccountView> {
                               trailing: TextButton(
                                   style: TextButton.styleFrom(
                                     shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(30)),
+                                        borderRadius:
+                                            BorderRadius.circular(30)),
                                     backgroundColor: customRedColor,
                                   ),
                                   onPressed: () {},
@@ -161,13 +172,14 @@ class _AccountViewState extends State<AccountView> {
                       children: [
                         Center(
                           child: CircleAvatar(
-                            backgroundColor: Colors
-                                .primaries[Random().nextInt(Colors.primaries.length)]
+                            backgroundColor: Colors.primaries[
+                                    Random().nextInt(Colors.primaries.length)]
                                 .withOpacity(.2),
                             radius: 60,
                             backgroundImage: (snapshot.data?.picture == null
-                                ? const ExactAssetImage('assets/avatar.png')
-                                : NetworkImage(snapshot.data!.picture!)) as ImageProvider<Object>?,
+                                    ? const ExactAssetImage('assets/avatar.png')
+                                    : NetworkImage(snapshot.data!.picture!))
+                                as ImageProvider<Object>?,
                           ),
                         ),
                         const SizedBox(
@@ -208,7 +220,9 @@ class _AccountViewState extends State<AccountView> {
                               style: Theme.of(context)
                                   .textTheme
                                   .bodyMedium!
-                                  .copyWith(fontWeight: FontWeight.normal, color: customRedColor),
+                                  .copyWith(
+                                      fontWeight: FontWeight.normal,
+                                      color: customRedColor),
                             ),
                           ),
                         ),
@@ -220,13 +234,17 @@ class _AccountViewState extends State<AccountView> {
                           style: Theme.of(context)
                               .textTheme
                               .bodyLarge!
-                              .copyWith(fontWeight: FontWeight.normal, color: customGreyColor),
+                              .copyWith(
+                                  fontWeight: FontWeight.normal,
+                                  color: customGreyColor),
                         ),
                         Material(
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10)),
                           child: ListTile(
                             title: Text(
-                              snapshot.data?.organization?.name ?? 'Not provided',
+                              snapshot.data?.organization?.name ??
+                                  'Not provided',
                               style: Theme.of(context).textTheme.bodyLarge,
                             ),
                             subtitle: Text(
@@ -248,77 +266,97 @@ class _AccountViewState extends State<AccountView> {
                                       builder: (context) {
                                         return AlertDialog.adaptive(
                                           shape: RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.circular(10)),
+                                              borderRadius:
+                                                  BorderRadius.circular(10)),
                                           content: SizedBox(
                                             height: 170,
                                             child: Column(
                                               children: [
                                                 TextFieldTags(
-                                                  textfieldTagsController: _tagsController,
-                                                  inputfieldBuilder: (context, tec, fn, error,
-                                                      onChanged, onSubmitted) {
-                                                    return ((context, sc, tags, onTagDelete) {
+                                                  textfieldTagsController:
+                                                      _tagsController,
+                                                  inputfieldBuilder: (context,
+                                                      tec,
+                                                      fn,
+                                                      error,
+                                                      onChanged,
+                                                      onSubmitted) {
+                                                    return ((context, sc, tags,
+                                                        onTagDelete) {
                                                       return Padding(
-                                                        padding: const EdgeInsets.all(10.0),
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(10.0),
                                                         child: TextField(
                                                           controller: tec,
                                                           focusNode: fn,
-                                                          decoration: InputDecoration(
+                                                          decoration:
+                                                              InputDecoration(
                                                             isDense: true,
                                                             border: const UnderlineInputBorder(
-                                                                borderSide: BorderSide(
-                                                                    color: customGreyColor)),
+                                                                borderSide:
+                                                                    BorderSide(
+                                                                        color:
+                                                                            customGreyColor)),
                                                             focusedBorder:
                                                                 const UnderlineInputBorder(
-                                                                    borderSide: BorderSide(
-                                                                        color: customGreyColor)),
-                                                            helperText: 'Emails',
-                                                            helperStyle: const TextStyle(
-                                                              color:
-                                                                  Color.fromARGB(255, 74, 137, 92),
+                                                                    borderSide:
+                                                                        BorderSide(
+                                                                            color:
+                                                                                customGreyColor)),
+                                                            helperText:
+                                                                'Emails',
+                                                            helperStyle:
+                                                                const TextStyle(
+                                                              color: Color
+                                                                  .fromARGB(
+                                                                      255,
+                                                                      74,
+                                                                      137,
+                                                                      92),
                                                             ),
-                                                            hintText: _tagsController.hasTags
-                                                                ? ''
-                                                                : "Enter emails",
+                                                            hintText:
+                                                                _tagsController
+                                                                        .hasTags
+                                                                    ? ''
+                                                                    : "Enter emails",
                                                             errorText: error,
-                                                            prefixIcon: tags.isNotEmpty
+                                                            prefixIcon: tags
+                                                                    .isNotEmpty
                                                                 ? SingleChildScrollView(
-                                                                    controller: sc,
+                                                                    controller:
+                                                                        sc,
                                                                     scrollDirection:
                                                                         Axis.horizontal,
                                                                     child: Row(
                                                                         children:
-                                                                            tags.map((String tag) {
+                                                                            tags.map((String
+                                                                                tag) {
                                                                       return Container(
-                                                                        decoration: BoxDecoration(
-                                                                          color: customRedColor,
+                                                                        decoration:
+                                                                            BoxDecoration(
+                                                                          color:
+                                                                              customRedColor,
                                                                           borderRadius:
-                                                                              BorderRadius.circular(
-                                                                                  5.0),
+                                                                              BorderRadius.circular(5.0),
                                                                         ),
-                                                                        padding:
-                                                                            const EdgeInsets.all(
+                                                                        padding: const EdgeInsets
+                                                                            .all(
+                                                                            8.0),
+                                                                        margin: const EdgeInsets
+                                                                            .only(
+                                                                            right:
                                                                                 8.0),
-                                                                        margin:
-                                                                            const EdgeInsets.only(
-                                                                                right: 8.0),
-                                                                        child: Row(
+                                                                        child:
+                                                                            Row(
                                                                           mainAxisAlignment:
-                                                                              MainAxisAlignment
-                                                                                  .spaceBetween,
+                                                                              MainAxisAlignment.spaceBetween,
                                                                           children: [
                                                                             Text(
                                                                               tag,
-                                                                              style: Theme.of(
-                                                                                      context)
-                                                                                  .textTheme
-                                                                                  .bodyLarge!
-                                                                                  .copyWith(
-                                                                                      color: Colors
-                                                                                          .white),
+                                                                              style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: Colors.white),
                                                                             ),
-                                                                            const SizedBox(
-                                                                                width: 4.0),
+                                                                            const SizedBox(width: 4.0),
                                                                             InkWell(
                                                                               child: const Icon(
                                                                                 Icons.cancel,
@@ -337,15 +375,21 @@ class _AccountViewState extends State<AccountView> {
                                                                 : null,
                                                           ),
                                                           onChanged: onChanged,
-                                                          onSubmitted: onSubmitted,
+                                                          onSubmitted:
+                                                              onSubmitted,
                                                         ),
                                                       );
                                                     });
                                                   },
-                                                  textSeparators: const [' ', ','],
+                                                  textSeparators: const [
+                                                    ' ',
+                                                    ','
+                                                  ],
                                                   letterCase: LetterCase.small,
                                                   validator: (String tag) {
-                                                    final tags = _tagsController.getTags ?? [];
+                                                    final tags = _tagsController
+                                                            .getTags ??
+                                                        [];
                                                     if (tags.contains(tag)) {
                                                       return 'you already entered that';
                                                     }
@@ -357,71 +401,115 @@ class _AccountViewState extends State<AccountView> {
                                                 ),
                                                 TextButton(
                                                     style: TextButton.styleFrom(
-                                                        backgroundColor: customRedColor,
-                                                        shape: RoundedRectangleBorder(
-                                                          borderRadius: BorderRadius.circular(8),
+                                                        backgroundColor:
+                                                            customRedColor,
+                                                        shape:
+                                                            RoundedRectangleBorder(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(8),
                                                         )),
                                                     onPressed: () async {
-                                                      if ((_tagsController.getTags ?? [])
+                                                      if ((_tagsController
+                                                                  .getTags ??
+                                                              [])
                                                           .isNotEmpty) {
                                                         BotToast.showLoading(
                                                             allowClick: false,
                                                             clickClose: false,
                                                             backButtonBehavior:
-                                                                BackButtonBehavior.ignore);
+                                                                BackButtonBehavior
+                                                                    .ignore);
                                                         await _organizationManager
                                                             .inviteMember(
-                                                                emails:
-                                                                    _tagsController.getTags ?? [])
+                                                                emails: _tagsController
+                                                                        .getTags ??
+                                                                    [])
                                                             .then((sent) {
-                                                          BotToast.closeAllLoading();
+                                                          BotToast
+                                                              .closeAllLoading();
                                                           if (sent) {
-                                                            uiUtilities.actionAlertWidget(
-                                                                context: context,
-                                                                alertType: 'success');
+                                                            uiUtilities
+                                                                .actionAlertWidget(
+                                                                    context:
+                                                                        context,
+                                                                    alertType:
+                                                                        AlertType
+                                                                            .success);
                                                             uiUtilities.alertNotification(
-                                                                context: context,
+                                                                context:
+                                                                    context,
                                                                 message:
-                                                                    _organizationManager.message!);
+                                                                    _organizationManager
+                                                                        .message!);
 
                                                             Future.delayed(
-                                                                const Duration(seconds: 2), () {
-                                                              Navigator.of(context).pop();
+                                                                const Duration(
+                                                                    seconds: 2),
+                                                                () {
+                                                              Navigator.of(
+                                                                      context)
+                                                                  .pop();
                                                             });
                                                           } else {
-                                                            uiUtilities.actionAlertWidget(
-                                                                context: context,
-                                                                alertType: 'error');
+                                                            uiUtilities
+                                                                .actionAlertWidget(
+                                                                    context:
+                                                                        context,
+                                                                    alertType:
+                                                                        AlertType
+                                                                            .error);
                                                             uiUtilities.alertNotification(
-                                                                context: context,
+                                                                context:
+                                                                    context,
                                                                 message:
-                                                                    _organizationManager.message!);
+                                                                    _organizationManager
+                                                                        .message!);
                                                           }
-                                                        }).catchError((onError) {
-                                                          uiUtilities.actionAlertWidget(
-                                                              context: context, alertType: 'error');
-                                                          uiUtilities.alertNotification(
-                                                              context: context,
-                                                              message:
-                                                                  'Failed to send email invitations');
+                                                        }).catchError(
+                                                                (onError) {
+                                                          uiUtilities
+                                                              .actionAlertWidget(
+                                                                  context:
+                                                                      context,
+                                                                  alertType:
+                                                                      AlertType
+                                                                          .error);
+                                                          uiUtilities
+                                                              .alertNotification(
+                                                                  context:
+                                                                      context,
+                                                                  message:
+                                                                      'Failed to send email invitations');
                                                         });
                                                       } else {
-                                                        uiUtilities.actionAlertWidget(
-                                                            context: context, alertType: 'info');
-                                                        uiUtilities.alertNotification(
-                                                            context: context,
-                                                            message: 'Fields cannot be empty');
+                                                        uiUtilities
+                                                            .actionAlertWidget(
+                                                                context:
+                                                                    context,
+                                                                alertType: AlertType
+                                                                        .info);
+                                                        uiUtilities
+                                                            .alertNotification(
+                                                                context:
+                                                                    context,
+                                                                message:
+                                                                    'Fields cannot be empty');
                                                       }
                                                     },
                                                     child: Padding(
-                                                      padding: const EdgeInsets.only(
-                                                          left: 15, right: 15),
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              left: 15,
+                                                              right: 15),
                                                       child: Text(
                                                         'Invite email(s)',
                                                         style: Theme.of(context)
                                                             .textTheme
                                                             .labelLarge!
-                                                            .copyWith(color: Colors.white),
+                                                            .copyWith(
+                                                                color: Colors
+                                                                    .white),
                                                       ),
                                                     ))
                                               ],
@@ -447,13 +535,12 @@ class _AccountViewState extends State<AccountView> {
               ),
               Text(
                 'Notifications',
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyLarge!
-                    .copyWith(fontWeight: FontWeight.normal, color: customGreyColor),
+                style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                    fontWeight: FontWeight.normal, color: customGreyColor),
               ),
               Material(
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10)),
                 child: Column(
                   children: [
                     ListTile(
@@ -466,8 +553,10 @@ class _AccountViewState extends State<AccountView> {
                                   userData?.fcmToken == null
                                       ? 'Are you sure you want to receive Notifications?'
                                       : 'Are you sure you don\'t want to receive Notifications?',
-                                  style:
-                                      Theme.of(context).textTheme.bodyLarge!.copyWith(fontSize: 18),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyLarge!
+                                      .copyWith(fontSize: 18),
                                 ),
                                 actions: [
                                   TextButton(
@@ -484,15 +573,20 @@ class _AccountViewState extends State<AccountView> {
                                         BotToast.showLoading(
                                             allowClick: false,
                                             clickClose: false,
-                                            backButtonBehavior: BackButtonBehavior.ignore);
-                                        final hasToken = userData?.fcmToken != null;
+                                            backButtonBehavior:
+                                                BackButtonBehavior.ignore);
+                                        final hasToken =
+                                            userData?.fcmToken != null;
                                         if (hasToken) {
                                           await _userManager
-                                              .sendNotificationToken(token: null)
+                                              .sendNotificationToken(
+                                                  token: null)
                                               .then((_) async {
                                             await getUserInfo();
 
-                                            await _fcm.deleteToken().then((value) {
+                                            await _fcm
+                                                .deleteToken()
+                                                .then((value) {
                                               BotToast.closeAllLoading();
                                               Navigator.pop(context);
                                             }).catchError((_) {
@@ -503,7 +597,8 @@ class _AccountViewState extends State<AccountView> {
                                           await _fcm.requestPermission();
                                           final token = await _fcm.getToken();
                                           await _userManager
-                                              .sendNotificationToken(token: token)
+                                              .sendNotificationToken(
+                                                  token: token)
                                               .then((_) async {
                                             await getUserInfo();
                                             BotToast.closeAllLoading();
@@ -529,20 +624,25 @@ class _AccountViewState extends State<AccountView> {
                       ),
                       subtitle: Text(
                         userData?.fcmToken == null ? 'On' : 'Off',
-                        style:
-                            Theme.of(context).textTheme.bodyLarge!.copyWith(color: customGreyColor),
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyLarge!
+                            .copyWith(color: customGreyColor),
                       ),
                       leading: Icon(Icons.notifications_paused_outlined,
                           color: Theme.of(context).iconTheme.color, size: 30),
                       trailing: Icon(
-                        Platform.isIOS ? Icons.arrow_forward_ios_sharp : Icons.arrow_forward,
+                        Platform.isIOS
+                            ? Icons.arrow_forward_ios_sharp
+                            : Icons.arrow_forward,
                         color: Theme.of(context).iconTheme.color,
                       ),
                     ),
                     const Divider(),
                     ListTile(
                       onTap: () {
-                        OpenAppsSettings.openAppsSettings(settingsCode: SettingsCode.NOTIFICATION);
+                        OpenAppsSettings.openAppsSettings(
+                            settingsCode: SettingsCode.NOTIFICATION);
                       },
                       title: Text(
                         'Push Notifications',
@@ -550,8 +650,10 @@ class _AccountViewState extends State<AccountView> {
                       ),
                       subtitle: Text(
                         'Manage',
-                        style:
-                            Theme.of(context).textTheme.bodyLarge!.copyWith(color: customGreyColor),
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyLarge!
+                            .copyWith(color: customGreyColor),
                       ),
                       leading: Icon(
                         Entypo.notification,
@@ -559,7 +661,9 @@ class _AccountViewState extends State<AccountView> {
                         size: 30,
                       ),
                       trailing: Icon(
-                        Platform.isIOS ? Icons.arrow_forward_ios_sharp : Icons.arrow_forward,
+                        Platform.isIOS
+                            ? Icons.arrow_forward_ios_sharp
+                            : Icons.arrow_forward,
                         color: Theme.of(context).iconTheme.color,
                       ),
                     ),
@@ -571,13 +675,12 @@ class _AccountViewState extends State<AccountView> {
               ),
               Text(
                 'Support',
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyLarge!
-                    .copyWith(fontWeight: FontWeight.normal, color: customGreyColor),
+                style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                    fontWeight: FontWeight.normal, color: customGreyColor),
               ),
               Material(
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10)),
                 child: Column(
                   children: [
                     ListTile(
@@ -588,13 +691,16 @@ class _AccountViewState extends State<AccountView> {
                       leading: Icon(Icons.info_outline_rounded,
                           color: Theme.of(context).iconTheme.color, size: 30),
                       trailing: Icon(
-                        Platform.isIOS ? Icons.arrow_forward_ios_sharp : Icons.arrow_forward,
+                        Platform.isIOS
+                            ? Icons.arrow_forward_ios_sharp
+                            : Icons.arrow_forward,
                         color: Theme.of(context).iconTheme.color,
                       ),
                     ),
                     const Divider(),
                     ListTile(
-                      onTap: ()=> Navigator.of(context).pushNamed('/supportView'),
+                      onTap: () =>
+                          Navigator.of(context).pushNamed('/supportView'),
                       title: Text(
                         'Contact support',
                         style: Theme.of(context).textTheme.bodyLarge,
@@ -605,7 +711,9 @@ class _AccountViewState extends State<AccountView> {
                         size: 30,
                       ),
                       trailing: Icon(
-                        Platform.isIOS ? Icons.arrow_forward_ios_sharp : Icons.arrow_forward,
+                        Platform.isIOS
+                            ? Icons.arrow_forward_ios_sharp
+                            : Icons.arrow_forward,
                         color: Theme.of(context).iconTheme.color,
                       ),
                     ),
@@ -617,13 +725,12 @@ class _AccountViewState extends State<AccountView> {
               ),
               Text(
                 'More',
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyLarge!
-                    .copyWith(fontWeight: FontWeight.normal, color: customGreyColor),
+                style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                    fontWeight: FontWeight.normal, color: customGreyColor),
               ),
               Material(
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10)),
                 child: Column(
                   children: [
                     ListTile(
@@ -631,7 +738,9 @@ class _AccountViewState extends State<AccountView> {
                         if (await _inAppReview.isAvailable()) {
                           await _inAppReview.requestReview();
                         } else {
-                          Platform.isIOS ? _launchURL(url: '') : _launchURL(url: '');
+                          Platform.isIOS
+                              ? _launchURL(url: '')
+                              : _launchURL(url: '');
                         }
                       },
                       title: Text(
@@ -641,7 +750,9 @@ class _AccountViewState extends State<AccountView> {
                       leading: Icon(Icons.star_border_rounded,
                           color: Theme.of(context).iconTheme.color, size: 30),
                       trailing: Icon(
-                        Platform.isIOS ? Icons.arrow_forward_ios_sharp : Icons.arrow_forward,
+                        Platform.isIOS
+                            ? Icons.arrow_forward_ios_sharp
+                            : Icons.arrow_forward,
                         color: Theme.of(context).iconTheme.color,
                       ),
                     ),
@@ -660,7 +771,9 @@ class _AccountViewState extends State<AccountView> {
                         size: 30,
                       ),
                       trailing: Icon(
-                        Platform.isIOS ? Icons.arrow_forward_ios_sharp : Icons.arrow_forward,
+                        Platform.isIOS
+                            ? Icons.arrow_forward_ios_sharp
+                            : Icons.arrow_forward,
                         color: Theme.of(context).iconTheme.color,
                       ),
                     ),
@@ -679,14 +792,17 @@ class _AccountViewState extends State<AccountView> {
                         size: 30,
                       ),
                       trailing: Icon(
-                        Platform.isIOS ? Icons.arrow_forward_ios_sharp : Icons.arrow_forward,
+                        Platform.isIOS
+                            ? Icons.arrow_forward_ios_sharp
+                            : Icons.arrow_forward,
                         color: Theme.of(context).iconTheme.color,
                       ),
                     ),
                     const Divider(),
                     ListTile(
                       onTap: () async {
-                        final PackageInfo packageInfo = await PackageInfo.fromPlatform();
+                        final PackageInfo packageInfo =
+                            await PackageInfo.fromPlatform();
 
                         String version = packageInfo.version;
                         String buildNumber = packageInfo.buildNumber;
@@ -695,8 +811,8 @@ class _AccountViewState extends State<AccountView> {
                             context: context,
                             builder: (context) {
                               return AlertDialog.adaptive(
-                                shape:
-                                    RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(15)),
                                 title: Text(
                                   'App version',
                                   style: Theme.of(context).textTheme.bodyLarge,
@@ -704,8 +820,10 @@ class _AccountViewState extends State<AccountView> {
                                 content: Text(
                                   'Current app version is $version+$buildNumber',
                                   textAlign: TextAlign.center,
-                                  style:
-                                      Theme.of(context).textTheme.bodyLarge!.copyWith(fontSize: 18),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyLarge!
+                                      .copyWith(fontSize: 18),
                                 ),
                                 actions: [
                                   TextButton(
@@ -726,12 +844,16 @@ class _AccountViewState extends State<AccountView> {
                         style: Theme.of(context).textTheme.bodyLarge,
                       ),
                       leading: Icon(
-                        Platform.isIOS ? Ionicons.ios_phone_portrait : Ionicons.md_phone_portrait,
+                        Platform.isIOS
+                            ? Ionicons.ios_phone_portrait
+                            : Ionicons.md_phone_portrait,
                         color: Theme.of(context).iconTheme.color,
                         size: 30,
                       ),
                       trailing: Icon(
-                        Platform.isIOS ? Icons.arrow_forward_ios_sharp : Icons.arrow_forward,
+                        Platform.isIOS
+                            ? Icons.arrow_forward_ios_sharp
+                            : Icons.arrow_forward,
                         color: Theme.of(context).iconTheme.color,
                       ),
                     ),
@@ -744,7 +866,8 @@ class _AccountViewState extends State<AccountView> {
               TextButton(
                   style: TextButton.styleFrom(
                     padding: const EdgeInsets.all(10),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8)),
                     backgroundColor: Theme.of(context).cardColor,
                   ),
                   onPressed: () async {
@@ -752,14 +875,18 @@ class _AccountViewState extends State<AccountView> {
                         context: context,
                         builder: (context) {
                           return AlertDialog.adaptive(
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15)),
                             title: Text(
                               'Information',
                               style: Theme.of(context).textTheme.bodyLarge,
                             ),
                             content: Text(
                               'Are you sure you want to log out?',
-                              style: Theme.of(context).textTheme.bodyLarge!.copyWith(fontSize: 18),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyLarge!
+                                  .copyWith(fontSize: 18),
                             ),
                             actions: [
                               TextButton(
@@ -776,26 +903,33 @@ class _AccountViewState extends State<AccountView> {
                                     BotToast.showLoading(
                                         allowClick: false,
                                         clickClose: false,
-                                        backButtonBehavior: BackButtonBehavior.ignore);
-                                    final fb.FirebaseAuth firebaseAuth = fb.FirebaseAuth.instance;
+                                        backButtonBehavior:
+                                            BackButtonBehavior.ignore);
+                                    final fb.FirebaseAuth firebaseAuth =
+                                        fb.FirebaseAuth.instance;
                                     firebaseAuth.signOut().then((_) async {
                                       await _localStorage.clearStorage();
                                       BotToast.closeAllLoading();
                                       if (!mounted) return;
 
-                                      Navigator.pushNamedAndRemoveUntil(
-                                          context, '/loginView', (route) => false);
+                                      Navigator.pushNamedAndRemoveUntil(context,
+                                          '/loginView', (route) => false);
                                     });
                                   },
-                                  child:
-                                      Text('Logout', style: Theme.of(context).textTheme.bodyLarge))
+                                  child: Text('Logout',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyLarge))
                             ],
                           );
                         });
                   },
                   child: Text(
                     'Log out',
-                    style: Theme.of(context).textTheme.labelLarge!.copyWith(color: customRedColor),
+                    style: Theme.of(context)
+                        .textTheme
+                        .labelLarge!
+                        .copyWith(color: customRedColor),
                   ))
             ],
           ),
@@ -804,7 +938,8 @@ class _AccountViewState extends State<AccountView> {
     );
   }
 
-  void _launchURL({required String url}) async => await canLaunchUrl(Uri.parse(url))
-      ? await launchUrl(Uri.parse(url))
-      : throw 'Could not launch $url';
+  void _launchURL({required String url}) async =>
+      await canLaunchUrl(Uri.parse(url))
+          ? await launchUrl(Uri.parse(url))
+          : throw 'Could not launch $url';
 }

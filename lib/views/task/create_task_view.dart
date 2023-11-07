@@ -33,14 +33,15 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
   final UiUtilities uiUtilities = UiUtilities();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final FocusNode taskFocusNode = FocusNode();
+  final FocusNode reminderFocusNode = FocusNode();
   bool isSwitched = false;
-  final TextEditingController descriptionTextEditingController =
-      TextEditingController();
-  final TextEditingController dueDateTextEditingController =
-      TextEditingController();
+  final descriptionTextEditingController = TextEditingController();
+  final dueDateTextEditingController = TextEditingController();
+  final reminderTextEditingController = TextEditingController();
   final DateFormat dateFormat = DateFormat('yyyy-MM-dd HH:mm');
   late DateTime dueDate;
   String? teamTextEditingController;
+  int _currentIndex = 0;
 
   @override
   void initState() {
@@ -377,6 +378,83 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
                     inactiveTrackColor: customGreyColor,
                   )
                 ],
+              ),
+
+              Visibility(
+                visible: isSwitched,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    Text(
+                      'Notify Before',
+                      style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                          fontWeight: FontWeight.normal, color: customGreyColor),
+                    ),
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    TextFormField(
+                      controller: reminderTextEditingController,
+                      focusNode: reminderFocusNode,
+                      style: Theme.of(context).textTheme.bodyLarge,
+                      textInputAction: TextInputAction.done,
+                      keyboardType: TextInputType.number,
+                      textCapitalization: TextCapitalization.none,
+                      maxLines: 1,
+                      cursorColor:
+                          Theme.of(context).textSelectionTheme.cursorColor,
+                      enableInteractiveSelection: true,
+                      decoration: InputDecoration(
+                          filled: false,
+                          hintText: '15',
+                          suffixIcon: CupertinoSlidingSegmentedControl<int>(
+                            backgroundColor: Colors.grey.withOpacity(.2),
+                            groupValue: _currentIndex,
+                            children: {
+                              0: Text('Min',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyLarge!
+                                      .copyWith(
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 12)),
+                              1: Text('Hr',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyLarge!
+                                      .copyWith(
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 12)),
+                            },
+                            onValueChanged: (value) {
+                              setState(() {
+                                _currentIndex = value ?? 0;
+                              });
+                            },
+                            thumbColor: Theme.of(context).scaffoldBackgroundColor,
+                          ),
+                          enabledBorder: const UnderlineInputBorder(
+                              borderSide: BorderSide(color: customGreyColor)),
+                          focusedBorder: const UnderlineInputBorder(
+                              borderSide: BorderSide(color: customGreyColor)),
+                          border: const UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.black)),
+                          hintStyle: Theme.of(context)
+                              .textTheme
+                              .bodyLarge!
+                              .copyWith(color: Colors.grey)),
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Field cannot be Empty';
+                        }
+                        return null;
+                      },
+                    )
+                  ],
+                ),
               ),
               const SizedBox(
                 height: 15,

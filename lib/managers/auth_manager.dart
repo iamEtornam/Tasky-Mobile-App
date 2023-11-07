@@ -14,13 +14,13 @@ class AuthManager with ChangeNotifier {
   final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
   final Logger _logger = Logger();
 
-  String? _message = '';
+  String _message = '';
   bool _isLoading = false;
 
-  String? get message => _message;
+  String get message => _message;
   bool get isLoading => _isLoading;
 
-  setMessage(String? message) {
+  setMessage(String message) {
     _message = message;
     notifyListeners();
   }

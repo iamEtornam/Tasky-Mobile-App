@@ -54,7 +54,10 @@ class InboxManager with ChangeNotifier {
             }
           });
 
-          i = inbox.Inbox(data: searchData.toList(), message: i!.message, status: i!.status);
+          i = inbox.Inbox(
+              data: searchData.toList(),
+              message: i!.message,
+              status: i!.status);
         } else {
           i = null;
         }
@@ -101,7 +104,8 @@ class InboxManager with ChangeNotifier {
     return c;
   }
 
-  Future<bool> submitInboxComment({required int inboxId, required String comment}) async {
+  Future<bool> submitInboxComment(
+      {required int inboxId, required String comment}) async {
     bool isSent = true;
     await _inboxService
         .submitInboxCommentRequest(inbox: inboxId, comment: comment)
@@ -127,12 +131,17 @@ class InboxManager with ChangeNotifier {
     return isSent;
   }
 
-  Future<bool> submitInbox({required String title, required String message}) async {
+  Future<bool> submitInbox(
+      {required String title, required String message}) async {
     bool isSent = true;
     int? userId = await _localStorage.getId();
     Data? userInfo = await _localStorage.getUserInfo();
     await _inboxService
-        .submitInboxRequest(title: title, message: message, team: userInfo.team!, userId: userId!)
+        .submitInboxRequest(
+            title: title,
+            message: message,
+            team: userInfo.team!,
+            userId: userId!)
         .then((response) {
       int statusCode = response.statusCode;
       Map<String, dynamic> body = json.decode(response.body);
@@ -144,6 +153,7 @@ class InboxManager with ChangeNotifier {
         isSent = false;
       }
     }).catchError((onError) {
+  
       isSent = false;
       setMessage('$onError');
       setisLoading(false);

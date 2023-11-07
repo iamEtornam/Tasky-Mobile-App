@@ -43,6 +43,7 @@ class _MyAppState extends State<MyApp> {
         builder: (context, snapshot) {
           return MaterialApp(
             title: 'Tasky',
+
             builder: BotToastInit(),
             theme: customLightTheme(context),
             darkTheme: customDarkTheme(context),

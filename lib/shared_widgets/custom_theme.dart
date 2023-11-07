@@ -9,6 +9,7 @@ ThemeData customLightTheme(
   BuildContext context,
 ) {
   return ThemeData(
+      useMaterial3: false,
       scaffoldBackgroundColor: Colors.white,
       visualDensity: VisualDensity.adaptivePlatformDensity,
       textSelectionTheme:
@@ -84,7 +85,9 @@ ThemeData customLightTheme(
         color: Colors.white,
         iconTheme: IconThemeData(color: Colors.black),
         titleTextStyle: TextStyle(color: Colors.black),
-      ), colorScheme: const ColorScheme.light(secondary: customRedColor).copyWith(error: const Color.fromRGBO(229, 62, 62, 1)));
+      ),
+      colorScheme: const ColorScheme.light(secondary: customRedColor)
+          .copyWith(error: const Color.fromRGBO(229, 62, 62, 1)));
 }
 
 ///dark theme
@@ -92,6 +95,7 @@ ThemeData customDarkTheme(
   BuildContext context,
 ) {
   return ThemeData(
+      useMaterial3: true,
       scaffoldBackgroundColor: const Color(0xff121212),
       visualDensity: VisualDensity.adaptivePlatformDensity,
       textSelectionTheme:
@@ -109,7 +113,7 @@ ThemeData customDarkTheme(
       tabBarTheme: TabBarTheme(
         unselectedLabelColor: Colors.white.withOpacity(.7),
       ),
-            progressIndicatorTheme: const ProgressIndicatorThemeData(
+      progressIndicatorTheme: const ProgressIndicatorThemeData(
         color: customRedColor,
       ),
       textTheme: Typography.material2018(platform: defaultTargetPlatform)
@@ -155,8 +159,10 @@ ThemeData customDarkTheme(
         focusedErrorBorder: const UnderlineInputBorder(
             borderSide: BorderSide(color: Color(0xffCF6679)),
             borderRadius: BorderRadius.all(Radius.circular(5))),
-        labelStyle:
-            Theme.of(context).textTheme.bodyMedium!.copyWith(color: Colors.white),
+        labelStyle: Theme.of(context)
+            .textTheme
+            .bodyMedium!
+            .copyWith(color: Colors.white),
         errorStyle: Theme.of(context)
             .textTheme
             .bodyMedium!
@@ -168,5 +174,7 @@ ThemeData customDarkTheme(
         color: Color(0xff121212),
         iconTheme: IconThemeData(color: Colors.white),
         titleTextStyle: TextStyle(color: Colors.white),
-      ), colorScheme: const ColorScheme.dark(secondary: customRedColor).copyWith(error: const Color(0xffCF6679)));
+      ),
+      colorScheme: const ColorScheme.dark(secondary: customRedColor)
+          .copyWith(error: const Color(0xffCF6679)));
 }

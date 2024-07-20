@@ -131,9 +131,8 @@ class _OrganizationViewState extends State<OrganizationView> {
           children: [
             Center(
               child: CircleAvatar(
-                backgroundColor: Colors
-                    .primaries[Random().nextInt(Colors.primaries.length)]
-                    .withOpacity(.2),
+                backgroundColor:
+                    Colors.primaries[Random().nextInt(Colors.primaries.length)].withOpacity(.2),
                 radius: 60,
                 backgroundImage: (_imageFile == null
                     ? const ExactAssetImage(
@@ -312,8 +311,7 @@ class _OrganizationViewState extends State<OrganizationView> {
                         context: context,
                         message: _organizationManager.message!);
                     Future.delayed(const Duration(seconds: 3), () {
-                      Navigator.pushNamedAndRemoveUntil(
-                          context, '/', (route) => false);
+                      Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
                     });
                   } else {
                     uiUtilities.actionAlertWidget(

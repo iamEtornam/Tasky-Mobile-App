@@ -63,8 +63,7 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
           iconTheme: const IconThemeData(color: Colors.white),
           leading: BackButton(
             color: Colors.white,
-            onPressed: () =>
-                Navigator.pushReplacementNamed(context, '/', arguments: 1),
+            onPressed: () => Navigator.pushReplacementNamed(context, '/', arguments: 1),
           ),
           title: Text(
             'New Task',
@@ -213,28 +212,16 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
                           contentPadding:
                               const EdgeInsets.fromLTRB(15, 1, 15, 1),
                           floatingLabelBehavior: FloatingLabelBehavior.auto,
-                          focusedBorder: Theme.of(context)
-                              .inputDecorationTheme
-                              .focusedBorder,
-                          enabledBorder: Theme.of(context)
-                              .inputDecorationTheme
-                              .enabledBorder,
-                          disabledBorder: Theme.of(context)
-                              .inputDecorationTheme
-                              .disabledBorder,
-                          errorBorder: Theme.of(context)
-                              .inputDecorationTheme
-                              .errorBorder,
-                          focusedErrorBorder: Theme.of(context)
-                              .inputDecorationTheme
-                              .focusedErrorBorder,
-                          fillColor:
-                              Theme.of(context).inputDecorationTheme.fillColor,
+                          focusedBorder: Theme.of(context).inputDecorationTheme.focusedBorder,
+                          enabledBorder: Theme.of(context).inputDecorationTheme.enabledBorder,
+                          disabledBorder: Theme.of(context).inputDecorationTheme.disabledBorder,
+                          errorBorder: Theme.of(context).inputDecorationTheme.errorBorder,
+                          focusedErrorBorder:
+                              Theme.of(context).inputDecorationTheme.focusedErrorBorder,
+                          fillColor: Theme.of(context).inputDecorationTheme.fillColor,
                           filled: true,
-                          labelStyle:
-                              Theme.of(context).inputDecorationTheme.labelStyle,
-                          errorStyle:
-                              Theme.of(context).inputDecorationTheme.errorStyle,
+                          labelStyle: Theme.of(context).inputDecorationTheme.labelStyle,
+                          errorStyle: Theme.of(context).inputDecorationTheme.errorStyle,
                         ),
                         items: const [],
                         hint: Text(
@@ -260,28 +247,16 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
                           contentPadding:
                               const EdgeInsets.fromLTRB(15, 1, 15, 1),
                           floatingLabelBehavior: FloatingLabelBehavior.auto,
-                          focusedBorder: Theme.of(context)
-                              .inputDecorationTheme
-                              .focusedBorder,
-                          enabledBorder: Theme.of(context)
-                              .inputDecorationTheme
-                              .enabledBorder,
-                          disabledBorder: Theme.of(context)
-                              .inputDecorationTheme
-                              .disabledBorder,
-                          errorBorder: Theme.of(context)
-                              .inputDecorationTheme
-                              .errorBorder,
-                          focusedErrorBorder: Theme.of(context)
-                              .inputDecorationTheme
-                              .focusedErrorBorder,
-                          fillColor:
-                              Theme.of(context).inputDecorationTheme.fillColor,
+                          focusedBorder: Theme.of(context).inputDecorationTheme.focusedBorder,
+                          enabledBorder: Theme.of(context).inputDecorationTheme.enabledBorder,
+                          disabledBorder: Theme.of(context).inputDecorationTheme.disabledBorder,
+                          errorBorder: Theme.of(context).inputDecorationTheme.errorBorder,
+                          focusedErrorBorder:
+                              Theme.of(context).inputDecorationTheme.focusedErrorBorder,
+                          fillColor: Theme.of(context).inputDecorationTheme.fillColor,
                           filled: true,
-                          labelStyle:
-                              Theme.of(context).inputDecorationTheme.labelStyle,
-                          errorStyle:
-                              Theme.of(context).inputDecorationTheme.errorStyle,
+                          labelStyle: Theme.of(context).inputDecorationTheme.labelStyle,
+                          errorStyle: Theme.of(context).inputDecorationTheme.errorStyle,
                         ),
                         items: const [],
                         hint: Text(
@@ -303,27 +278,16 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
                                 color: customGreyColor),
                         contentPadding: const EdgeInsets.fromLTRB(15, 1, 15, 1),
                         floatingLabelBehavior: FloatingLabelBehavior.auto,
-                        focusedBorder: Theme.of(context)
-                            .inputDecorationTheme
-                            .focusedBorder,
-                        enabledBorder: Theme.of(context)
-                            .inputDecorationTheme
-                            .enabledBorder,
-                        disabledBorder: Theme.of(context)
-                            .inputDecorationTheme
-                            .disabledBorder,
-                        errorBorder:
-                            Theme.of(context).inputDecorationTheme.errorBorder,
-                        focusedErrorBorder: Theme.of(context)
-                            .inputDecorationTheme
-                            .focusedErrorBorder,
-                        fillColor:
-                            Theme.of(context).inputDecorationTheme.fillColor,
+                        focusedBorder: Theme.of(context).inputDecorationTheme.focusedBorder,
+                        enabledBorder: Theme.of(context).inputDecorationTheme.enabledBorder,
+                        disabledBorder: Theme.of(context).inputDecorationTheme.disabledBorder,
+                        errorBorder: Theme.of(context).inputDecorationTheme.errorBorder,
+                        focusedErrorBorder:
+                            Theme.of(context).inputDecorationTheme.focusedErrorBorder,
+                        fillColor: Theme.of(context).inputDecorationTheme.fillColor,
                         filled: true,
-                        labelStyle:
-                            Theme.of(context).inputDecorationTheme.labelStyle,
-                        errorStyle:
-                            Theme.of(context).inputDecorationTheme.errorStyle,
+                        labelStyle: Theme.of(context).inputDecorationTheme.labelStyle,
+                        errorStyle: Theme.of(context).inputDecorationTheme.errorStyle,
                       ),
                       items: snapshot.data!.data!.teams!
                           .map((value) => DropdownMenuItem<String>(
@@ -498,8 +462,8 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
                             itemCount: _taskManager.assignees.length,
                             itemBorderWidth: 1,
                             showTotalCount: true,
-                            backgroundColor: Colors.primaries[
-                                    Random().nextInt(Colors.primaries.length)]
+                            backgroundColor: Colors
+                                .primaries[Random().nextInt(Colors.primaries.length)]
                                 .withOpacity(.5),
                             totalCount: _taskManager.assignees.length - 1,
                           ),
@@ -508,13 +472,11 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
                   FutureBuilder<Member?>(
                       future: _organizationManager.getOrganizationMembers(),
                       builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                                ConnectionState.waiting &&
+                        if (snapshot.connectionState == ConnectionState.waiting &&
                             !snapshot.hasData) {
                           return const CupertinoActivityIndicator();
                         }
-                        if (snapshot.connectionState == ConnectionState.done &&
-                            !snapshot.hasData) {
+                        if (snapshot.connectionState == ConnectionState.done && !snapshot.hasData) {
                           return Align(
                             alignment: Alignment.centerLeft,
                             child: DottedBorder(
@@ -523,8 +485,7 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
                               color: customGreyColor,
                               dashPattern: const [6, 3, 6, 3],
                               child: ClipRRect(
-                                borderRadius:
-                                    const BorderRadius.all(Radius.circular(45)),
+                                borderRadius: const BorderRadius.all(Radius.circular(45)),
                                 child: Container(
                                   height: 45,
                                   width: 45,
@@ -572,8 +533,7 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
                               color: customGreyColor,
                               dashPattern: const [6, 3, 6, 3],
                               child: ClipRRect(
-                                borderRadius:
-                                    const BorderRadius.all(Radius.circular(45)),
+                                borderRadius: const BorderRadius.all(Radius.circular(45)),
                                 child: Container(
                                   height: 45,
                                   width: 45,
@@ -626,8 +586,7 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
                           context: context, message: _taskManager.message!);
 
                       Future.delayed(const Duration(seconds: 3), () {
-                        Navigator.pushReplacementNamed(context, '/',
-                            arguments: 1);
+                        Navigator.pushReplacementNamed(context, '/', arguments: 1);
                       });
                     } else {
                       uiUtilities.actionAlertWidget(
@@ -701,8 +660,8 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
 
         if (timeOfDay != null) {
           setState(() {
-            dueDate = DateTime(picked.year, picked.month, picked.day,
-                timeOfDay.hour, timeOfDay.minute);
+            dueDate =
+                DateTime(picked.year, picked.month, picked.day, timeOfDay.hour, timeOfDay.minute);
             dueDateTextEditingController.text = dateFormat.format(dueDate);
           });
         }

@@ -370,8 +370,7 @@ class _TaskViewState extends State<TaskView> {
           Icons.add,
           color: Colors.white,
         ),
-        onPressed: () =>
-            Navigator.pushReplacementNamed(context, '/createNewTaskView'),
+        onPressed: () => Navigator.pushReplacementNamed(context, '/createNewTaskView'),
       ),
     );
   }
@@ -507,8 +506,7 @@ class TaskListTile extends StatelessWidget {
                         showModalBottomSheet(
                             shape: const RoundedRectangleBorder(
                                 borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(10),
-                                    topRight: Radius.circular(10))),
+                                    topLeft: Radius.circular(10), topRight: Radius.circular(10))),
                             context: context,
                             elevation: 3,
                             builder: (context) {
@@ -528,8 +526,7 @@ class TaskListTile extends StatelessWidget {
                                       child: Container(
                                         decoration: BoxDecoration(
                                             color: Colors.white70,
-                                            borderRadius:
-                                                BorderRadius.circular(45)),
+                                            borderRadius: BorderRadius.circular(45)),
                                         height: 6,
                                         width: 40,
                                       ),

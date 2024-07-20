@@ -26,11 +26,11 @@ class TaskService {
     return await _customHttpClient.postRequest(path: createTaskPath, body: body);
   }
 
-  Future<Response> getTaskRequest(int organizationId) async {
+  Future<Response> getTaskRequest(int? organizationId) async {
     return await _customHttpClient.getRequest(getTaskPath(organizationId));
   }
 
-  Future<Response> getTaskStatisticsRequest(int userId) async {
+  Future<Response> getTaskStatisticsRequest(int? userId) async {
     return await _customHttpClient.getRequest(getTaskStatisticsPath(userId));
   }
 

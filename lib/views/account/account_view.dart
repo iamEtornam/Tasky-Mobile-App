@@ -172,8 +172,8 @@ class _AccountViewState extends State<AccountView> {
                       children: [
                         Center(
                           child: CircleAvatar(
-                            backgroundColor: Colors.primaries[
-                                    Random().nextInt(Colors.primaries.length)]
+                            backgroundColor: Colors
+                                .primaries[Random().nextInt(Colors.primaries.length)]
                                 .withOpacity(.2),
                             radius: 60,
                             backgroundImage: (snapshot.data?.picture == null
@@ -239,8 +239,7 @@ class _AccountViewState extends State<AccountView> {
                                   color: customGreyColor),
                         ),
                         Material(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10)),
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                           child: ListTile(
                             title: Text(
                               snapshot.data?.organization?.name ??

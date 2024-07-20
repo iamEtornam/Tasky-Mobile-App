@@ -202,8 +202,7 @@ class _DashboardViewState extends State<DashboardView> {
                   .copyWith(color: customGreyColor),
               type: BottomNavigationBarType.fixed,
               showUnselectedLabels: true,
-              backgroundColor:
-                  Theme.of(context).bottomNavigationBarTheme.backgroundColor,
+              backgroundColor: Theme.of(context).bottomNavigationBarTheme.backgroundColor,
               selectedItemColor: customRedColor,
               unselectedItemColor: customGreyColor,
               items: [

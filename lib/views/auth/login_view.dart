@@ -19,6 +19,8 @@ class LoginView extends StatefulWidget {
 
 class _LoginViewState extends State<LoginView> {
   final UiUtilities uiUtilities = UiUtilities();
+  final AuthManager _authManager = GetIt.I.get<AuthManager>();
+  final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
 
   final AuthManager _authManager = GetIt.I.get<AuthManager>();
 
@@ -108,10 +110,8 @@ class _LoginViewState extends State<LoginView> {
                       context: context, message: _authManager.message!);
 
                   Future.delayed(const Duration(seconds: 3), () {
-                    Navigator.pushNamedAndRemoveUntil(
-                        context,
-                        data.organizationId == null ? '/organizationView' : '/',
-                        (route) => false);
+                    Navigator.pushNamedAndRemoveUntil(context,
+                        data.organizationId == null ? '/organizationView' : '/', (route) => false);
                   });
                 } else {
                   if (!mounted) return;
@@ -131,8 +131,7 @@ class _LoginViewState extends State<LoginView> {
               child: TextButton(
                 style: TextButton.styleFrom(
                   padding: const EdgeInsets.only(left: 10, right: 10),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(45)),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(45)),
                   backgroundColor: Colors.black87,
                 ),
                 child: Padding(
@@ -179,9 +178,7 @@ class _LoginViewState extends State<LoginView> {
                       Future.delayed(const Duration(seconds: 3), () {
                         Navigator.pushNamedAndRemoveUntil(
                             context,
-                            data.organizationId == null
-                                ? '/organizationView'
-                                : '/',
+                            data.organizationId == null ? '/organizationView' : '/',
                             (route) => false);
                       });
                     } else {

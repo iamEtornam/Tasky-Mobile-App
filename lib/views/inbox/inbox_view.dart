@@ -15,6 +15,7 @@ import 'package:tasky_mobile_app/utils/ui_utils/custom_colors.dart';
 import 'package:tasky_mobile_app/utils/ui_utils/extentions.dart';
 import 'package:tasky_mobile_app/utils/ui_utils/ui_utils.dart';
 import 'package:time_ago_provider/time_ago_provider.dart' as time_ago;
+import 'package:tasky_mobile_app/models/comment.dart' as comment;
 
 class InboxView extends StatefulWidget {
   const InboxView({Key? key}) : super(key: key);

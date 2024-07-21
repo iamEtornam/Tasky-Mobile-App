@@ -15,10 +15,9 @@ import 'package:tasky_mobile_app/utils/ui_utils/custom_colors.dart';
 import 'package:tasky_mobile_app/utils/ui_utils/extentions.dart';
 import 'package:tasky_mobile_app/utils/ui_utils/ui_utils.dart';
 import 'package:time_ago_provider/time_ago_provider.dart' as time_ago;
-import 'package:tasky_mobile_app/models/comment.dart' as comment;
 
 class InboxView extends StatefulWidget {
-  const InboxView({Key? key}) : super(key: key);
+  const InboxView({super.key});
 
   @override
   State<InboxView> createState() => _InboxViewState();
@@ -185,12 +184,11 @@ class _InboxViewState extends State<InboxView> {
 
 class MessageDisplayWidget extends StatefulWidget {
   const MessageDisplayWidget({
-    Key? key,
+    super.key,
     required FirebaseAuth firebaseAuth,
     required this.snapshot,
     required this.inboxManager,
-  })  : _firebaseAuth = firebaseAuth,
-        super(key: key);
+  })  : _firebaseAuth = firebaseAuth;
 
   final FirebaseAuth _firebaseAuth;
   final Datum snapshot;
@@ -532,7 +530,7 @@ class _MessageDisplayWidgetState extends State<MessageDisplayWidget> {
                               comment: _commentController.text,
                               inboxId: widget.snapshot.id!);
                       BotToast.closeAllLoading();
-                      if (!mounted) return;
+                      if (!context.mounted) return;
 
                       if (isSent) {
                         _commentController.clear();
@@ -601,7 +599,7 @@ class InboxItemWidget extends StatelessWidget {
   final VoidCallback onTap;
 
   const InboxItemWidget({
-    Key? key,
+    super.key,
     required this.teamName,
     required this.title,
     required this.description,
@@ -611,7 +609,7 @@ class InboxItemWidget extends StatelessWidget {
     required this.avatar,
     this.replies = 0,
     required this.onTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

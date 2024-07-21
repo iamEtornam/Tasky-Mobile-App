@@ -4,7 +4,7 @@ class EmptyWidget extends StatelessWidget {
   final String message;
   final String imageAsset;
 
-  const EmptyWidget({Key? key,required this.message,required this.imageAsset}) : super(key: key);
+  const EmptyWidget({super.key,required this.message,required this.imageAsset});
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;

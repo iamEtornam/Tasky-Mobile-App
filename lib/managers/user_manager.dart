@@ -144,30 +144,4 @@ class UserManager with ChangeNotifier {
     });
     return isUpdated;
   }
-
-  Future<bool> updateProfile({String? name, String? phone, File? image}) async {
-    bool isUpdated = false;
-    String? fileUrl = await _fileUploadManager.updateOrganizationPicture(image!);
-
-    await _userService.updateUserRequest(name: name, phone: phone, pic: fileUrl).then((response) {
-      int statusCode = response.statusCode;
-      Map<String, dynamic> body = json.decode(response.body);
-      setMessage(body['message']);
-      setisLoading(false);
-      if (statusCode == 200) {
-        isUpdated = true;
-      } else {
-        isUpdated = false;
-      }
-    }).catchError((onError) {
-      isUpdated = false;
-      setMessage('$onError');
-      setisLoading(false);
-    }).timeout(const Duration(seconds: 60), onTimeout: () {
-      isUpdated = false;
-      setMessage('Timeout! Check your internet connection.');
-      setisLoading(false);
-    });
-    return isUpdated;
-  }
 }

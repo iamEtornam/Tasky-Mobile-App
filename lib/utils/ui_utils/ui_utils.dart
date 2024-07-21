@@ -37,9 +37,9 @@ class UiUtilities {
       ..widget(Padding(
         padding: const EdgeInsets.only(top: 10),
         child: Text(
-          alertType == 'error'
+          alertType.name == 'error'
               ? 'Failed'
-              : alertType == 'info'
+              : alertType.name == 'info'
                   ? 'Info'
                   : 'Success',
           style: const TextStyle(

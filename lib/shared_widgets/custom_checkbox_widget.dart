@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 ///Widget that draw a beautiful checkbox rounded. Provided with animation if wanted
 class CustomCheckBox extends StatefulWidget {
   const CustomCheckBox({
-    Key? key,
+    super.key,
     this.isChecked,
     this.checkedWidget,
     this.uncheckedWidget,
@@ -12,7 +12,7 @@ class CustomCheckBox extends StatefulWidget {
     this.size,
     this.animationDuration,
     required this.onTap,
-  })  : super(key: key);
+  });
 
   ///Define wether the checkbox is marked or not
   final bool? isChecked;

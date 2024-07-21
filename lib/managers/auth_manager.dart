@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
@@ -75,7 +76,7 @@ class AuthManager with ChangeNotifier {
           setMessage('Authentication failed. Try gain!');
         }
       }).catchError((onError) {
-        print(onError);
+        log(onError);
         isSuccessful = false;
         setMessage('Process has been cancelled!');
         setIsLoading(false);

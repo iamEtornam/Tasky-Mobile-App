@@ -11,7 +11,7 @@ import 'package:tasky_mobile_app/utils/local_storage.dart';
 import 'package:tasky_mobile_app/utils/ui_utils/ui_utils.dart';
 
 class LoginView extends StatefulWidget {
-  const LoginView({Key? key}) : super(key: key);
+  const LoginView({super.key});
 
   @override
   State<LoginView> createState() => _LoginViewState();
@@ -20,10 +20,6 @@ class LoginView extends StatefulWidget {
 class _LoginViewState extends State<LoginView> {
   final UiUtilities uiUtilities = UiUtilities();
   final AuthManager _authManager = GetIt.I.get<AuthManager>();
-  final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
-
-  final AuthManager _authManager = GetIt.I.get<AuthManager>();
-
   final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
 
   @override
@@ -102,7 +98,7 @@ class _LoginViewState extends State<LoginView> {
                 BotToast.closeAllLoading();
                 if (isSuccess) {
                   Data data = await _localStorage.getUserInfo();
-                  if (!mounted) return;
+                  if (!context.mounted) return;
 
                   uiUtilities.actionAlertWidget(
                       context: context, alertType: AlertType.success);
@@ -114,7 +110,7 @@ class _LoginViewState extends State<LoginView> {
                         data.organizationId == null ? '/organizationView' : '/', (route) => false);
                   });
                 } else {
-                  if (!mounted) return;
+                  if (!context.mounted) return;
 
                   uiUtilities.actionAlertWidget(
                       context: context, alertType: AlertType.error);
@@ -168,7 +164,7 @@ class _LoginViewState extends State<LoginView> {
                     BotToast.closeAllLoading();
                     if (isSuccess) {
                       Data data = await _localStorage.getUserInfo();
-                      if (!mounted) return;
+                      if (!context.mounted) return;
 
                       uiUtilities.actionAlertWidget(
                           context: context, alertType: AlertType.success);
@@ -182,7 +178,7 @@ class _LoginViewState extends State<LoginView> {
                             (route) => false);
                       });
                     } else {
-                      if (!mounted) return;
+                      if (!context.mounted) return;
 
                       uiUtilities.actionAlertWidget(
                           context: context, alertType: AlertType.error);

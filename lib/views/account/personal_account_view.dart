@@ -13,7 +13,7 @@ import 'package:tasky_mobile_app/utils/ui_utils/custom_colors.dart';
 import 'package:tasky_mobile_app/utils/ui_utils/ui_utils.dart';
 
 class PersonalAccountView extends StatefulWidget {
-  const PersonalAccountView({Key? key}) : super(key: key);
+  const PersonalAccountView({super.key});
 
   @override
   State<PersonalAccountView> createState() => _PersonalAccountViewState();
@@ -263,7 +263,7 @@ class _PersonalAccountViewState extends State<PersonalAccountView> {
                         name: nameTextEditingController.text,
                         phone: phoneTextEditingController.text);
                     BotToast.closeAllLoading();
-                    if (!mounted) return;
+                    if (!context.mounted) return;
                     uiUtilities.alertNotification(
                         context: context, message: _userManager.message!);
                     if (isUpdated) {

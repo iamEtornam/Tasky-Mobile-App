@@ -20,7 +20,7 @@ import 'package:tasky_mobile_app/utils/ui_utils/ui_utils.dart';
 import 'package:tasky_mobile_app/views/task/components/task_assignee_widget.dart';
 
 class CreateNewTaskView extends StatefulWidget {
-  const CreateNewTaskView({Key? key}) : super(key: key);
+  const CreateNewTaskView({super.key});
 
   @override
   State<CreateNewTaskView> createState() => _CreateNewTaskViewState();
@@ -52,10 +52,9 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
+    return PopScope(
+      onPopInvoked: (value) async {
         Navigator.pushReplacementNamed(context, '/', arguments: 1);
-        return true;
       },
       child: Scaffold(
         appBar: AppBar(
@@ -63,7 +62,8 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
           iconTheme: const IconThemeData(color: Colors.white),
           leading: BackButton(
             color: Colors.white,
-            onPressed: () => Navigator.pushReplacementNamed(context, '/', arguments: 1),
+            onPressed: () =>
+                Navigator.pushReplacementNamed(context, '/', arguments: 1),
           ),
           title: Text(
             'New Task',
@@ -212,16 +212,28 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
                           contentPadding:
                               const EdgeInsets.fromLTRB(15, 1, 15, 1),
                           floatingLabelBehavior: FloatingLabelBehavior.auto,
-                          focusedBorder: Theme.of(context).inputDecorationTheme.focusedBorder,
-                          enabledBorder: Theme.of(context).inputDecorationTheme.enabledBorder,
-                          disabledBorder: Theme.of(context).inputDecorationTheme.disabledBorder,
-                          errorBorder: Theme.of(context).inputDecorationTheme.errorBorder,
-                          focusedErrorBorder:
-                              Theme.of(context).inputDecorationTheme.focusedErrorBorder,
-                          fillColor: Theme.of(context).inputDecorationTheme.fillColor,
+                          focusedBorder: Theme.of(context)
+                              .inputDecorationTheme
+                              .focusedBorder,
+                          enabledBorder: Theme.of(context)
+                              .inputDecorationTheme
+                              .enabledBorder,
+                          disabledBorder: Theme.of(context)
+                              .inputDecorationTheme
+                              .disabledBorder,
+                          errorBorder: Theme.of(context)
+                              .inputDecorationTheme
+                              .errorBorder,
+                          focusedErrorBorder: Theme.of(context)
+                              .inputDecorationTheme
+                              .focusedErrorBorder,
+                          fillColor:
+                              Theme.of(context).inputDecorationTheme.fillColor,
                           filled: true,
-                          labelStyle: Theme.of(context).inputDecorationTheme.labelStyle,
-                          errorStyle: Theme.of(context).inputDecorationTheme.errorStyle,
+                          labelStyle:
+                              Theme.of(context).inputDecorationTheme.labelStyle,
+                          errorStyle:
+                              Theme.of(context).inputDecorationTheme.errorStyle,
                         ),
                         items: const [],
                         hint: Text(
@@ -247,16 +259,28 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
                           contentPadding:
                               const EdgeInsets.fromLTRB(15, 1, 15, 1),
                           floatingLabelBehavior: FloatingLabelBehavior.auto,
-                          focusedBorder: Theme.of(context).inputDecorationTheme.focusedBorder,
-                          enabledBorder: Theme.of(context).inputDecorationTheme.enabledBorder,
-                          disabledBorder: Theme.of(context).inputDecorationTheme.disabledBorder,
-                          errorBorder: Theme.of(context).inputDecorationTheme.errorBorder,
-                          focusedErrorBorder:
-                              Theme.of(context).inputDecorationTheme.focusedErrorBorder,
-                          fillColor: Theme.of(context).inputDecorationTheme.fillColor,
+                          focusedBorder: Theme.of(context)
+                              .inputDecorationTheme
+                              .focusedBorder,
+                          enabledBorder: Theme.of(context)
+                              .inputDecorationTheme
+                              .enabledBorder,
+                          disabledBorder: Theme.of(context)
+                              .inputDecorationTheme
+                              .disabledBorder,
+                          errorBorder: Theme.of(context)
+                              .inputDecorationTheme
+                              .errorBorder,
+                          focusedErrorBorder: Theme.of(context)
+                              .inputDecorationTheme
+                              .focusedErrorBorder,
+                          fillColor:
+                              Theme.of(context).inputDecorationTheme.fillColor,
                           filled: true,
-                          labelStyle: Theme.of(context).inputDecorationTheme.labelStyle,
-                          errorStyle: Theme.of(context).inputDecorationTheme.errorStyle,
+                          labelStyle:
+                              Theme.of(context).inputDecorationTheme.labelStyle,
+                          errorStyle:
+                              Theme.of(context).inputDecorationTheme.errorStyle,
                         ),
                         items: const [],
                         hint: Text(
@@ -278,16 +302,27 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
                                 color: customGreyColor),
                         contentPadding: const EdgeInsets.fromLTRB(15, 1, 15, 1),
                         floatingLabelBehavior: FloatingLabelBehavior.auto,
-                        focusedBorder: Theme.of(context).inputDecorationTheme.focusedBorder,
-                        enabledBorder: Theme.of(context).inputDecorationTheme.enabledBorder,
-                        disabledBorder: Theme.of(context).inputDecorationTheme.disabledBorder,
-                        errorBorder: Theme.of(context).inputDecorationTheme.errorBorder,
-                        focusedErrorBorder:
-                            Theme.of(context).inputDecorationTheme.focusedErrorBorder,
-                        fillColor: Theme.of(context).inputDecorationTheme.fillColor,
+                        focusedBorder: Theme.of(context)
+                            .inputDecorationTheme
+                            .focusedBorder,
+                        enabledBorder: Theme.of(context)
+                            .inputDecorationTheme
+                            .enabledBorder,
+                        disabledBorder: Theme.of(context)
+                            .inputDecorationTheme
+                            .disabledBorder,
+                        errorBorder:
+                            Theme.of(context).inputDecorationTheme.errorBorder,
+                        focusedErrorBorder: Theme.of(context)
+                            .inputDecorationTheme
+                            .focusedErrorBorder,
+                        fillColor:
+                            Theme.of(context).inputDecorationTheme.fillColor,
                         filled: true,
-                        labelStyle: Theme.of(context).inputDecorationTheme.labelStyle,
-                        errorStyle: Theme.of(context).inputDecorationTheme.errorStyle,
+                        labelStyle:
+                            Theme.of(context).inputDecorationTheme.labelStyle,
+                        errorStyle:
+                            Theme.of(context).inputDecorationTheme.errorStyle,
                       ),
                       items: snapshot.data!.data!.teams!
                           .map((value) => DropdownMenuItem<String>(
@@ -343,7 +378,6 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
                   )
                 ],
               ),
-
               Visibility(
                 visible: isSwitched,
                 child: Column(
@@ -355,7 +389,8 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
                     Text(
                       'Notify Before',
                       style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                          fontWeight: FontWeight.normal, color: customGreyColor),
+                          fontWeight: FontWeight.normal,
+                          color: customGreyColor),
                     ),
                     const SizedBox(
                       height: 15,
@@ -398,7 +433,8 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
                                 _currentIndex = value ?? 0;
                               });
                             },
-                            thumbColor: Theme.of(context).scaffoldBackgroundColor,
+                            thumbColor:
+                                Theme.of(context).scaffoldBackgroundColor,
                           ),
                           enabledBorder: const UnderlineInputBorder(
                               borderSide: BorderSide(color: customGreyColor)),
@@ -462,8 +498,8 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
                             itemCount: _taskManager.assignees.length,
                             itemBorderWidth: 1,
                             showTotalCount: true,
-                            backgroundColor: Colors
-                                .primaries[Random().nextInt(Colors.primaries.length)]
+                            backgroundColor: Colors.primaries[
+                                    Random().nextInt(Colors.primaries.length)]
                                 .withOpacity(.5),
                             totalCount: _taskManager.assignees.length - 1,
                           ),
@@ -472,11 +508,13 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
                   FutureBuilder<Member?>(
                       future: _organizationManager.getOrganizationMembers(),
                       builder: (context, snapshot) {
-                        if (snapshot.connectionState == ConnectionState.waiting &&
+                        if (snapshot.connectionState ==
+                                ConnectionState.waiting &&
                             !snapshot.hasData) {
                           return const CupertinoActivityIndicator();
                         }
-                        if (snapshot.connectionState == ConnectionState.done && !snapshot.hasData) {
+                        if (snapshot.connectionState == ConnectionState.done &&
+                            !snapshot.hasData) {
                           return Align(
                             alignment: Alignment.centerLeft,
                             child: DottedBorder(
@@ -485,7 +523,8 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
                               color: customGreyColor,
                               dashPattern: const [6, 3, 6, 3],
                               child: ClipRRect(
-                                borderRadius: const BorderRadius.all(Radius.circular(45)),
+                                borderRadius:
+                                    const BorderRadius.all(Radius.circular(45)),
                                 child: Container(
                                   height: 45,
                                   width: 45,
@@ -533,7 +572,8 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
                               color: customGreyColor,
                               dashPattern: const [6, 3, 6, 3],
                               child: ClipRRect(
-                                borderRadius: const BorderRadius.all(Radius.circular(45)),
+                                borderRadius:
+                                    const BorderRadius.all(Radius.circular(45)),
                                 child: Container(
                                   height: 45,
                                   width: 45,
@@ -577,7 +617,7 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
                       assignees: userIds,
                     );
                     BotToast.closeAllLoading();
-                    if (!mounted) return;
+                    if (!context.mounted) return;
 
                     if (isSaved) {
                       uiUtilities.actionAlertWidget(
@@ -586,7 +626,8 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
                           context: context, message: _taskManager.message!);
 
                       Future.delayed(const Duration(seconds: 3), () {
-                        Navigator.pushReplacementNamed(context, '/', arguments: 1);
+                        Navigator.pushReplacementNamed(context, '/',
+                            arguments: 1);
                       });
                     } else {
                       uiUtilities.actionAlertWidget(
@@ -649,7 +690,7 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
         lastDate: DateTime(2030),
         helpText: 'Select due date',
       );
-      if (!mounted) return;
+      if (!context.mounted) return;
 
       if (picked != null) {
         TimeOfDay? timeOfDay = await showTimePicker(
@@ -660,8 +701,8 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
 
         if (timeOfDay != null) {
           setState(() {
-            dueDate =
-                DateTime(picked.year, picked.month, picked.day, timeOfDay.hour, timeOfDay.minute);
+            dueDate = DateTime(picked.year, picked.month, picked.day,
+                timeOfDay.hour, timeOfDay.minute);
             dueDateTextEditingController.text = dateFormat.format(dueDate);
           });
         }

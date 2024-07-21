@@ -15,7 +15,7 @@ import 'package:tasky_mobile_app/utils/ui_utils/ui_utils.dart';
 import 'package:textfield_tags/textfield_tags.dart';
 
 class OrganizationView extends StatefulWidget {
-  const OrganizationView({Key? key}) : super(key: key);
+  const OrganizationView({super.key});
 
   @override
   State<OrganizationView> createState() => _OrganizationViewState();
@@ -109,7 +109,7 @@ class _OrganizationViewState extends State<OrganizationView> {
                 firebaseAuth.signOut().then((_) async {
                   await _localStorage.clearStorage();
                   BotToast.closeAllLoading();
-                  if (!mounted) return;
+                  if (!context.mounted) return;
                   Navigator.pushNamedAndRemoveUntil(
                       context, '/loginView', (route) => false);
                 });
@@ -304,7 +304,7 @@ class _OrganizationViewState extends State<OrganizationView> {
                           name: nameTextEditingController.text,
                           teams: _tagsController.getTags);
                   BotToast.closeAllLoading();
-                  if (!mounted) return;
+                  if (!context.mounted) return;
 
                   if (isCreated) {
                     uiUtilities.alertNotification(

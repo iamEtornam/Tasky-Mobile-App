@@ -10,7 +10,7 @@ import 'package:tasky_mobile_app/views/auth/login_view.dart';
 import 'package:tasky_mobile_app/views/dashboard/dashboard_view.dart';
 
 class MyApp extends StatefulWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({super.key});
 
   @override
   State<MyApp> createState() => _MyAppState();

@@ -23,7 +23,7 @@ import 'package:textfield_tags/textfield_tags.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AccountView extends StatefulWidget {
-  const AccountView({Key? key}) : super(key: key);
+  const AccountView({super.key});
 
   @override
   State<AccountView> createState() => _AccountViewState();
@@ -805,7 +805,7 @@ class _AccountViewState extends State<AccountView> {
 
                         String version = packageInfo.version;
                         String buildNumber = packageInfo.buildNumber;
-                        if (!mounted) return;
+                        if (!context.mounted) return;
                         showDialog(
                             context: context,
                             builder: (context) {
@@ -909,7 +909,7 @@ class _AccountViewState extends State<AccountView> {
                                     firebaseAuth.signOut().then((_) async {
                                       await _localStorage.clearStorage();
                                       BotToast.closeAllLoading();
-                                      if (!mounted) return;
+                                      if (!context.mounted) return;
 
                                       Navigator.pushNamedAndRemoveUntil(context,
                                           '/loginView', (route) => false);

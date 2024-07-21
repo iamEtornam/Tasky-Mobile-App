@@ -88,9 +88,9 @@ class Datum {
         "type": type,
         "action": action,
         "inboxId": inboxId,
-        "createdAt": createdAt == null ? null : createdAt!.toIso8601String(),
-        "updatedAt": updatedAt == null ? null : updatedAt!.toIso8601String(),
-        "user": user == null ? null : user!.toJson(),
+        "createdAt": createdAt?.toIso8601String(),
+        "updatedAt": updatedAt?.toIso8601String(),
+        "user": user?.toJson(),
       };
 }
 
@@ -157,7 +157,7 @@ class User {
         "phone_number": phoneNumber,
         "user_id": userId,
         "sign_in_provider": signInProvider,
-        "createdAt": createdAt == null ? null : createdAt!.toIso8601String(),
-        "updatedAt": updatedAt == null ? null : updatedAt!.toIso8601String(),
+        "createdAt": createdAt?.toIso8601String(),
+        "updatedAt": updatedAt?.toIso8601String(),
       };
 }

@@ -4,8 +4,7 @@ import 'package:tasky_mobile_app/utils/ui_utils/custom_colors.dart';
 
 class AssigneeTileWidget extends StatelessWidget {
   const AssigneeTileWidget(
-      {Key? key, required this.onTap, required this.selectedUser, required this.isChecked})
-      : super(key: key);
+      {super.key, required this.onTap, required this.selectedUser, required this.isChecked});
   final bool isChecked;
   final Data selectedUser;
   final Function onTap;

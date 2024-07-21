@@ -24,7 +24,7 @@ import 'package:tasky_mobile_app/views/task/task_view.dart';
 class DashboardView extends StatefulWidget {
   final int currentIndex;
 
-  const DashboardView({Key? key, this.currentIndex = 0}) : super(key: key);
+  const DashboardView({super.key, this.currentIndex = 0});
   @override
   State<DashboardView> createState() => _DashboardViewState();
 }
@@ -202,7 +202,8 @@ class _DashboardViewState extends State<DashboardView> {
                   .copyWith(color: customGreyColor),
               type: BottomNavigationBarType.fixed,
               showUnselectedLabels: true,
-              backgroundColor: Theme.of(context).bottomNavigationBarTheme.backgroundColor,
+              backgroundColor:
+                  Theme.of(context).bottomNavigationBarTheme.backgroundColor,
               selectedItemColor: customRedColor,
               unselectedItemColor: customGreyColor,
               items: [
@@ -211,28 +212,32 @@ class _DashboardViewState extends State<DashboardView> {
                     label: 'Overview',
                     activeIcon: SvgPicture.asset(
                       'assets/chart_pie.svg',
-                      color: customRedColor,
+                      colorFilter: const ColorFilter.mode(
+                          customRedColor, BlendMode.srcIn),
                     )),
                 BottomNavigationBarItem(
                     icon: SvgPicture.asset('assets/lightning_bolt.svg'),
                     label: 'Task',
                     activeIcon: SvgPicture.asset(
                       'assets/lightning_bolt.svg',
-                      color: customRedColor,
+                      colorFilter: const ColorFilter.mode(
+                          customRedColor, BlendMode.srcIn),
                     )),
                 BottomNavigationBarItem(
                     icon: SvgPicture.asset('assets/inbox.svg'),
                     label: 'Inbox',
                     activeIcon: SvgPicture.asset(
                       'assets/inbox.svg',
-                      color: customRedColor,
+                        colorFilter: const ColorFilter.mode(
+                          customRedColor, BlendMode.srcIn),
                     )),
                 BottomNavigationBarItem(
                     icon: SvgPicture.asset('assets/user_circle.svg'),
                     label: 'Account',
                     activeIcon: SvgPicture.asset(
                       'assets/user_circle.svg',
-                      color: customRedColor,
+                        colorFilter: const ColorFilter.mode(
+                          customRedColor, BlendMode.srcIn),
                     ))
               ],
             ),
@@ -355,7 +360,7 @@ class _DashboardViewState extends State<DashboardView> {
                                 bool isUpdated = await _userManager
                                     .updateUserTeam(team: team);
                                 BotToast.closeAllLoading();
-                                if (!mounted) return;
+                                if (!context.mounted) return;
 
                                 if (isUpdated) {
                                   uiUtilities.actionAlertWidget(

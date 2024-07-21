@@ -6,7 +6,7 @@ import 'package:tasky_mobile_app/utils/ui_utils/custom_colors.dart';
 import 'package:tasky_mobile_app/utils/ui_utils/ui_utils.dart';
 
 class CreateInboxView extends StatefulWidget {
-  const CreateInboxView({Key? key}) : super(key: key);
+  const CreateInboxView({super.key});
 
   @override
   State<CreateInboxView> createState() => _CreateInboxViewState();
@@ -148,7 +148,7 @@ class _CreateInboxViewState extends State<CreateInboxView> {
                     message: messageTextEditController.text,
                   );
                   BotToast.closeAllLoading();
-                  if (!mounted) return;
+                  if (!context.mounted) return;
 
                   if (isSaved) {
                     uiUtilities.actionAlertWidget(

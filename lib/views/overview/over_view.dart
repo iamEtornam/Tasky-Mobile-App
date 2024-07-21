@@ -16,7 +16,7 @@ import 'package:tasky_mobile_app/utils/ui_utils/ui_utils.dart';
 class OverView extends StatelessWidget {
   final ScrollController _scrollController = ScrollController();
 
-  OverView({Key? key}) : super(key: key);
+  OverView({super.key});
   final TaskManager _taskManager = GetIt.I.get<TaskManager>();
 
   @override
@@ -268,13 +268,13 @@ class OverView extends StatelessWidget {
 
 class HomeTaskSummary extends StatelessWidget {
   const HomeTaskSummary({
-    Key? key,
+    super.key,
     required this.size,
     required this.title,
     required this.priority,
     required this.time,
     required this.onTap,
-  }) : super(key: key);
+  });
 
   final Size size;
   final String? title;
@@ -387,13 +387,13 @@ class HomeTaskSummary extends StatelessWidget {
 
 class HomeTaskCountCard extends StatelessWidget {
   const HomeTaskCountCard({
-    Key? key,
+    super.key,
     required this.size,
     required this.desc,
     required this.count,
     required this.image,
     this.color,
-  }) : super(key: key);
+  });
 
   final Size size;
   final String desc;

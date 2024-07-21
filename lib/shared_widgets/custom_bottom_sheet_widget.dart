@@ -9,8 +9,7 @@ class CustomBottomSheetWidget extends StatelessWidget {
   final double height;
   final String? title;
 
-  const CustomBottomSheetWidget({Key? key, required this.options, this.height = 170.0, this.title})
-      : super(key: key);
+  const CustomBottomSheetWidget({super.key, required this.options, this.height = 170.0, this.title});
 
   @override
   Widget build(BuildContext context) {

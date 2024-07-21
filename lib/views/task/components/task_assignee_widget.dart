@@ -11,10 +11,10 @@ class TaskAssigneeWidget extends StatefulWidget {
   final Member? data;
   final TaskManager taskManager;
   const TaskAssigneeWidget({
-    Key? key,
+    super.key,
     required this.data,
     required this.taskManager,
-  }) : super(key: key);
+  });
 
   @override
   State<TaskAssigneeWidget> createState() => _TaskAssigneeWidgetState();

@@ -17,7 +17,7 @@ import 'package:tasky_mobile_app/utils/ui_utils/custom_colors.dart';
 import 'package:tasky_mobile_app/utils/ui_utils/ui_utils.dart';
 
 class TaskView extends StatefulWidget {
-  const TaskView({Key? key}) : super(key: key);
+  const TaskView({super.key});
 
   @override
   State<TaskView> createState() => _TaskViewState();
@@ -135,7 +135,7 @@ class _TaskViewState extends State<TaskView> {
                                       status: 'completed',
                                       taskId: snapshot.data!.data![index].id!);
                               BotToast.closeAllLoading();
-                              if (!mounted) return;
+                              if (!context.mounted) return;
 
                               if (isChanged) {
                                 uiUtilities.actionAlertWidget(
@@ -404,7 +404,7 @@ class _TaskViewState extends State<TaskView> {
 // this widget represent each individual task list tile
 class TaskListTile extends StatelessWidget {
   const TaskListTile({
-    Key? key,
+    super.key,
     required this.images,
     required this.isCompleted,
     required this.taskTitle,
@@ -412,7 +412,7 @@ class TaskListTile extends StatelessWidget {
     required this.changeStatus,
     required this.dueDate,
     required this.onOpened,
-  }) : super(key: key);
+  });
 
   final List<String>? images;
   final bool isCompleted;

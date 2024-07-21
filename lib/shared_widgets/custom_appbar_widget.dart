@@ -10,7 +10,7 @@ final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
 class CustomAppBarWidget extends StatelessWidget implements PreferredSizeWidget {
   final String title;
 
-  const CustomAppBarWidget({Key? key, required this.title}) : super(key: key);
+  const CustomAppBarWidget({super.key, required this.title});
   @override
   Widget build(BuildContext context) {
     return AppBar(

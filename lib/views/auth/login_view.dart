@@ -106,6 +106,7 @@ class _LoginViewState extends State<LoginView> {
                       context: context, message: _authManager.message!);
 
                   Future.delayed(const Duration(seconds: 3), () {
+                    if (!context.mounted) return;
                     Navigator.pushNamedAndRemoveUntil(context,
                         data.organizationId == null ? '/organizationView' : '/', (route) => false);
                   });
@@ -172,6 +173,7 @@ class _LoginViewState extends State<LoginView> {
                           context: context, message: _authManager.message!);
 
                       Future.delayed(const Duration(seconds: 3), () {
+                        if (!context.mounted) return;
                         Navigator.pushNamedAndRemoveUntil(
                             context,
                             data.organizationId == null ? '/organizationView' : '/',

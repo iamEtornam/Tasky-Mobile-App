@@ -68,8 +68,8 @@ class _InboxViewState extends State<InboxView> {
                                 },
                                 child: Material(
                                   color: currentIndex == index
-                                      ? customRedColor.withOpacity(.2)
-                                      : customGreyColor.withOpacity(.2),
+                                      ? customRedColor.withValues(alpha: .2)
+                                      : customGreyColor.withValues(alpha: .2),
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(35),
                                   ),
@@ -188,7 +188,7 @@ class MessageDisplayWidget extends StatefulWidget {
     required FirebaseAuth firebaseAuth,
     required this.snapshot,
     required this.inboxManager,
-  })  : _firebaseAuth = firebaseAuth;
+  }) : _firebaseAuth = firebaseAuth;
 
   final FirebaseAuth _firebaseAuth;
   final Datum snapshot;
@@ -325,7 +325,7 @@ class _MessageDisplayWidgetState extends State<MessageDisplayWidget> {
               CircleAvatar(
                 backgroundColor: Colors
                     .primaries[Random().nextInt(Colors.primaries.length)]
-                    .withOpacity(.2),
+                    .withValues(alpha: .2),
                 radius: 30,
                 backgroundImage: (widget.snapshot.user!.picture!.isEmpty
                         ? const ExactAssetImage('assets/avatar.png')
@@ -437,7 +437,7 @@ class _MessageDisplayWidgetState extends State<MessageDisplayWidget> {
                           CircleAvatar(
                             backgroundColor: Colors.primaries[
                                     Random().nextInt(Colors.primaries.length)]
-                                .withOpacity(.2),
+                                .withValues(alpha: .2),
                             radius: 30,
                             backgroundImage: (widget
                                         .snapshot.user!.picture!.isEmpty
@@ -559,12 +559,12 @@ class _MessageDisplayWidgetState extends State<MessageDisplayWidget> {
                 filled: false,
                 enabledBorder: OutlineInputBorder(
                   borderSide:
-                      BorderSide(color: customGreyColor.withOpacity(.3)),
+                      BorderSide(color: customGreyColor.withValues(alpha: .3)),
                   borderRadius: BorderRadius.circular(10),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderSide:
-                      BorderSide(color: customGreyColor.withOpacity(.3)),
+                      BorderSide(color: customGreyColor.withValues(alpha: .3)),
                   borderRadius: BorderRadius.circular(10),
                 ),
                 border: OutlineInputBorder(
@@ -736,7 +736,7 @@ class InboxItemWidget extends StatelessWidget {
                 CircleAvatar(
                   backgroundColor: Colors
                       .primaries[Random().nextInt(Colors.primaries.length)]
-                      .withOpacity(.2),
+                      .withValues(alpha: .2),
                   radius: 30,
                   backgroundImage: (avatar!.isEmpty
                       ? const ExactAssetImage('assets/avatar.png')

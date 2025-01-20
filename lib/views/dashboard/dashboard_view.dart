@@ -247,7 +247,7 @@ class _DashboardViewState extends State<DashboardView> {
   void getUserTeam() async {
     Organization? organization = await _organizationManager.getOrganization();
     _localStorage.getUserInfo().then((data) {
-      if (data.team == null && organization != null) {
+      if (data.team == null && organization != null && mounted) {
         showDialog(
             context: context,
             builder: (context) {
@@ -402,6 +402,7 @@ class _DashboardViewState extends State<DashboardView> {
     int? userId = await _localStorage.getId();
     int? organizationId = await _localStorage.getOrganizationId();
     auth.userChanges().listen((user) {
+      if(!mounted) return;
       if (user != null && userId != null && organizationId != null) {
         getUserTeam();
       } else if (organizationId == null && user != null) {

@@ -63,7 +63,7 @@ class OverView extends StatelessWidget {
                 return Column(
                   children: [
                     Container(
-                      color: customGreyColor.withOpacity(.1),
+                      color: customGreyColor.withValues(alpha: .1),
                       height: 45,
                       width: size.width,
                       child: Align(
@@ -113,7 +113,7 @@ class OverView extends StatelessWidget {
                 );
               }),
           Container(
-            color: customGreyColor.withOpacity(.1),
+            color: customGreyColor.withValues(alpha: .1),
             height: 45,
             width: size.width,
             child: Align(
@@ -292,7 +292,7 @@ class HomeTaskSummary extends StatelessWidget {
         child: Card(
           elevation: 0,
           color: brightness == Brightness.dark
-              ? customGreyColor.withOpacity(.1)
+              ? customGreyColor.withValues(alpha: .1)
               : priority == 'Low'
                   ? const Color.fromRGBO(236, 249, 245, 1)
                   : priority == 'Medium'
@@ -330,8 +330,10 @@ class HomeTaskSummary extends StatelessWidget {
                         children: [
                           Text(
                             '$priority Priority',
-                            style:
-                                Theme.of(context).textTheme.titleSmall!.copyWith(
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleSmall!
+                                .copyWith(
                                     color: priority == 'Low'
                                         ? Colors.green
                                         : priority == 'Medium'
@@ -404,7 +406,7 @@ class HomeTaskCountCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: color!.withOpacity(.4),
+      color: color!.withValues(alpha: .4),
       elevation: 0.5,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       child: SizedBox(
@@ -426,7 +428,7 @@ class HomeTaskCountCard extends StatelessWidget {
               child: Container(
                 height: 130,
                 width: size.width / 3 - 32,
-                color: Colors.black87.withOpacity(.3),
+                color: Colors.black87.withValues(alpha: .3),
               ),
             )),
             Padding(

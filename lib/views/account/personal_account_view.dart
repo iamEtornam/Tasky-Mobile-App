@@ -111,7 +111,7 @@ class _PersonalAccountViewState extends State<PersonalAccountView> {
                 child: CircleAvatar(
                   backgroundColor: Colors
                       .primaries[Random().nextInt(Colors.primaries.length)]
-                      .withOpacity(.2),
+                      .withValues(alpha: .2),
                   radius: 60,
                   backgroundImage: (profileUrl == null
                       ? (_imageFile == null

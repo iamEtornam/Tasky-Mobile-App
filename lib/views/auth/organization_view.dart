@@ -29,7 +29,7 @@ class _OrganizationViewState extends State<OrganizationView> {
   final UiUtilities uiUtilities = UiUtilities();
   static final GlobalKey<FormState> _myFormKey = GlobalKey<FormState>();
   TextEditingController nameTextEditingController = TextEditingController();
-  final _tagsController = TextfieldTagsController();
+  final _tagsController = StringTagController();
 
   final nameFocusNode = FocusNode();
   File? _imageFile;
@@ -131,8 +131,9 @@ class _OrganizationViewState extends State<OrganizationView> {
           children: [
             Center(
               child: CircleAvatar(
-                backgroundColor:
-                    Colors.primaries[Random().nextInt(Colors.primaries.length)].withOpacity(.2),
+                backgroundColor: Colors
+                    .primaries[Random().nextInt(Colors.primaries.length)]
+                    .withValues(alpha: .2),
                 radius: 60,
                 backgroundImage: (_imageFile == null
                     ? const ExactAssetImage(
@@ -207,76 +208,74 @@ class _OrganizationViewState extends State<OrganizationView> {
             const SizedBox(
               height: 10,
             ),
-            TextFieldTags(
+            TextFieldTags<String>(
               textfieldTagsController: _tagsController,
-              inputfieldBuilder:
-                  (context, tec, fn, error, onChanged, onSubmitted) {
-                return ((context, sc, tags, onTagDelete) {
-                  return Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: TextField(
-                      controller: tec,
-                      focusNode: fn,
-                      decoration: InputDecoration(
-                        isDense: true,
-                        border: const UnderlineInputBorder(
-                            borderSide: BorderSide(color: customGreyColor)),
-                        focusedBorder: const UnderlineInputBorder(
-                            borderSide: BorderSide(color: customGreyColor)),
-                        hintText:
-                            _tagsController.hasTags ? '' : "Organization Teams",
-                        hintStyle: Theme.of(context)
-                            .textTheme
-                            .bodyLarge!
-                            .copyWith(color: Colors.grey),
-                        errorText: error,
-                        prefixIcon: tags.isNotEmpty
-                            ? SingleChildScrollView(
-                                controller: sc,
-                                scrollDirection: Axis.horizontal,
-                                child: Row(
-                                    children: tags.map((String tag) {
-                                  return Container(
-                                    decoration: BoxDecoration(
-                                      color: customRedColor,
-                                      borderRadius: BorderRadius.circular(5.0),
-                                    ),
-                                    padding: const EdgeInsets.all(8.0),
-                                    margin: const EdgeInsets.only(right: 8),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          tag,
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .bodyLarge!
-                                              .copyWith(color: Colors.white),
+              inputFieldBuilder: (context, inputFieldValues) {
+                return Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: TextField(
+                    controller: inputFieldValues.textEditingController,
+                    focusNode: inputFieldValues.focusNode,
+                    decoration: InputDecoration(
+                      isDense: true,
+                      border: const UnderlineInputBorder(
+                          borderSide: BorderSide(color: customGreyColor)),
+                      focusedBorder: const UnderlineInputBorder(
+                          borderSide: BorderSide(color: customGreyColor)),
+                      hintText: inputFieldValues.tags.isNotEmpty
+                          ? ''
+                          : "Organization Teams",
+                      hintStyle: Theme.of(context)
+                          .textTheme
+                          .bodyLarge!
+                          .copyWith(color: Colors.grey),
+                      errorText: inputFieldValues.error,
+                      prefixIcon: inputFieldValues.tags.isNotEmpty
+                          ? SingleChildScrollView(
+                              controller: inputFieldValues.tagScrollController,
+                              scrollDirection: Axis.horizontal,
+                              child: Row(
+                                  children: inputFieldValues.tags.map((tag) {
+                                return Container(
+                                  decoration: BoxDecoration(
+                                    color: customRedColor,
+                                    borderRadius: BorderRadius.circular(5.0),
+                                  ),
+                                  padding: const EdgeInsets.all(8.0),
+                                  margin: const EdgeInsets.only(right: 8),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        tag,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyLarge!
+                                            .copyWith(color: Colors.white),
+                                      ),
+                                      const SizedBox(width: 4.0),
+                                      InkWell(
+                                        child: const Icon(
+                                          Icons.cancel,
+                                          size: 14.0,
+                                          color: Colors.white,
                                         ),
-                                        const SizedBox(width: 4.0),
-                                        InkWell(
-                                          child: const Icon(
-                                            Icons.cancel,
-                                            size: 14.0,
-                                            color: Colors.white,
-                                          ),
-                                          onTap: () {
-                                            onTagDelete(tag);
-                                          },
-                                        )
-                                      ],
-                                    ),
-                                  );
-                                }).toList()),
-                              )
-                            : null,
-                      ),
-                      onChanged: onChanged,
-                      onSubmitted: onSubmitted,
+                                        onTap: () {
+                                          inputFieldValues.onTagRemoved(tag);
+                                        },
+                                      )
+                                    ],
+                                  ),
+                                );
+                              }).toList()),
+                            )
+                          : null,
                     ),
-                  );
-                });
+                    onChanged: inputFieldValues.onTagChanged,
+                    onSubmitted: inputFieldValues.onTagSubmitted,
+                  ),
+                );
               },
               textSeparators: const [' ', ','],
               letterCase: LetterCase.small,
@@ -311,7 +310,9 @@ class _OrganizationViewState extends State<OrganizationView> {
                         context: context,
                         message: _organizationManager.message!);
                     Future.delayed(const Duration(seconds: 3), () {
-                      Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
+                      if (!context.mounted) return;
+                      Navigator.pushNamedAndRemoveUntil(
+                          context, '/', (route) => false);
                     });
                   } else {
                     uiUtilities.actionAlertWidget(

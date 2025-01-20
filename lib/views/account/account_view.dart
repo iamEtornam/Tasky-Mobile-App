@@ -36,7 +36,7 @@ class _AccountViewState extends State<AccountView> {
       GetIt.I.get<OrganizationManager>();
   final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
   final InAppReview _inAppReview = InAppReview.instance;
-  final _tagsController = TextfieldTagsController();
+  final _tagsController = StringTagController();
   final UiUtilities uiUtilities = UiUtilities();
   Data? userData;
 
@@ -90,7 +90,7 @@ class _AccountViewState extends State<AccountView> {
                             child: CircleAvatar(
                               backgroundColor: Colors.primaries[
                                       Random().nextInt(Colors.primaries.length)]
-                                  .withOpacity(.2),
+                                  .withValues(alpha: .2),
                               radius: 60,
                               backgroundImage:
                                   const ExactAssetImage('assets/avatar.png'),
@@ -172,9 +172,9 @@ class _AccountViewState extends State<AccountView> {
                       children: [
                         Center(
                           child: CircleAvatar(
-                            backgroundColor: Colors
-                                .primaries[Random().nextInt(Colors.primaries.length)]
-                                .withOpacity(.2),
+                            backgroundColor: Colors.primaries[
+                                    Random().nextInt(Colors.primaries.length)]
+                                .withValues(alpha: .2),
                             radius: 60,
                             backgroundImage: (snapshot.data?.picture == null
                                     ? const ExactAssetImage('assets/avatar.png')
@@ -239,7 +239,8 @@ class _AccountViewState extends State<AccountView> {
                                   color: customGreyColor),
                         ),
                         Material(
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10)),
                           child: ListTile(
                             title: Text(
                               snapshot.data?.organization?.name ??
@@ -271,114 +272,117 @@ class _AccountViewState extends State<AccountView> {
                                             height: 170,
                                             child: Column(
                                               children: [
-                                                TextFieldTags(
+                                                TextFieldTags<String>(
                                                   textfieldTagsController:
                                                       _tagsController,
-                                                  inputfieldBuilder: (context,
-                                                      tec,
-                                                      fn,
-                                                      error,
-                                                      onChanged,
-                                                      onSubmitted) {
-                                                    return ((context, sc, tags,
-                                                        onTagDelete) {
-                                                      return Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .all(10.0),
-                                                        child: TextField(
-                                                          controller: tec,
-                                                          focusNode: fn,
-                                                          decoration:
-                                                              InputDecoration(
-                                                            isDense: true,
-                                                            border: const UnderlineInputBorder(
-                                                                borderSide:
-                                                                    BorderSide(
-                                                                        color:
-                                                                            customGreyColor)),
-                                                            focusedBorder:
-                                                                const UnderlineInputBorder(
-                                                                    borderSide:
-                                                                        BorderSide(
-                                                                            color:
-                                                                                customGreyColor)),
-                                                            helperText:
-                                                                'Emails',
-                                                            helperStyle:
-                                                                const TextStyle(
-                                                              color: Color
-                                                                  .fromARGB(
-                                                                      255,
-                                                                      74,
-                                                                      137,
-                                                                      92),
-                                                            ),
-                                                            hintText:
-                                                                _tagsController
-                                                                        .hasTags
-                                                                    ? ''
-                                                                    : "Enter emails",
-                                                            errorText: error,
-                                                            prefixIcon: tags
-                                                                    .isNotEmpty
-                                                                ? SingleChildScrollView(
-                                                                    controller:
-                                                                        sc,
-                                                                    scrollDirection:
-                                                                        Axis.horizontal,
-                                                                    child: Row(
-                                                                        children:
-                                                                            tags.map((String
-                                                                                tag) {
-                                                                      return Container(
-                                                                        decoration:
-                                                                            BoxDecoration(
+                                                  inputFieldBuilder: (
+                                                    context,
+                                                    InputFieldValues
+                                                        inputFieldValues,
+                                                  ) {
+                                                    return Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              10.0),
+                                                      child: TextField(
+                                                        controller: inputFieldValues
+                                                            .textEditingController,
+                                                        focusNode:
+                                                            inputFieldValues
+                                                                .focusNode,
+                                                        decoration:
+                                                            InputDecoration(
+                                                          isDense: true,
+                                                          border: const UnderlineInputBorder(
+                                                              borderSide:
+                                                                  BorderSide(
+                                                                      color:
+                                                                          customGreyColor)),
+                                                          focusedBorder:
+                                                              const UnderlineInputBorder(
+                                                                  borderSide:
+                                                                      BorderSide(
                                                                           color:
-                                                                              customRedColor,
-                                                                          borderRadius:
-                                                                              BorderRadius.circular(5.0),
-                                                                        ),
-                                                                        padding: const EdgeInsets
-                                                                            .all(
-                                                                            8.0),
-                                                                        margin: const EdgeInsets
-                                                                            .only(
-                                                                            right:
-                                                                                8.0),
-                                                                        child:
-                                                                            Row(
-                                                                          mainAxisAlignment:
-                                                                              MainAxisAlignment.spaceBetween,
-                                                                          children: [
-                                                                            Text(
-                                                                              tag,
-                                                                              style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: Colors.white),
-                                                                            ),
-                                                                            const SizedBox(width: 4.0),
-                                                                            InkWell(
-                                                                              child: const Icon(
-                                                                                Icons.cancel,
-                                                                                size: 14.0,
-                                                                                color: Colors.white,
-                                                                              ),
-                                                                              onTap: () {
-                                                                                onTagDelete(tag);
-                                                                              },
-                                                                            )
-                                                                          ],
-                                                                        ),
-                                                                      );
-                                                                    }).toList()),
-                                                                  )
-                                                                : null,
+                                                                              customGreyColor)),
+                                                          helperText: 'Emails',
+                                                          helperStyle:
+                                                              const TextStyle(
+                                                            color:
+                                                                Color.fromARGB(
+                                                                    255,
+                                                                    74,
+                                                                    137,
+                                                                    92),
                                                           ),
-                                                          onChanged: onChanged,
-                                                          onSubmitted:
-                                                              onSubmitted,
+                                                          hintText: inputFieldValues
+                                                                  .tags
+                                                                  .isNotEmpty
+                                                              ? ''
+                                                              : "Enter emails",
+                                                          errorText:
+                                                              inputFieldValues
+                                                                  .error,
+                                                          prefixIcon:
+                                                              inputFieldValues
+                                                                      .tags
+                                                                      .isNotEmpty
+                                                                  ? SingleChildScrollView(
+                                                                      controller:
+                                                                          inputFieldValues
+                                                                              .tagScrollController,
+                                                                      scrollDirection:
+                                                                          Axis.horizontal,
+                                                                      child: Row(
+                                                                          children: inputFieldValues.tags.map((tag) {
+                                                                        return Container(
+                                                                          decoration:
+                                                                              BoxDecoration(
+                                                                            color:
+                                                                                customRedColor,
+                                                                            borderRadius:
+                                                                                BorderRadius.circular(5.0),
+                                                                          ),
+                                                                          padding: const EdgeInsets
+                                                                              .all(
+                                                                              8.0),
+                                                                          margin: const EdgeInsets
+                                                                              .only(
+                                                                              right: 8.0),
+                                                                          child:
+                                                                              Row(
+                                                                            mainAxisAlignment:
+                                                                                MainAxisAlignment.spaceBetween,
+                                                                            children: [
+                                                                              Text(
+                                                                                tag,
+                                                                                style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: Colors.white),
+                                                                              ),
+                                                                              const SizedBox(width: 4.0),
+                                                                              InkWell(
+                                                                                child: const Icon(
+                                                                                  Icons.cancel,
+                                                                                  size: 14.0,
+                                                                                  color: Colors.white,
+                                                                                ),
+                                                                                onTap: () {
+                                                                                  inputFieldValues.onTagRemoved(tag);
+                                                                                },
+                                                                              )
+                                                                            ],
+                                                                          ),
+                                                                        );
+                                                                      }).toList()),
+                                                                    )
+                                                                  : null,
                                                         ),
-                                                      );
-                                                    });
+                                                        onChanged:
+                                                            inputFieldValues
+                                                                .onTagChanged,
+                                                        onSubmitted:
+                                                            inputFieldValues
+                                                                .onTagSubmitted,
+                                                      ),
+                                                    );
                                                   },
                                                   textSeparators: const [
                                                     ' ',
@@ -427,6 +431,10 @@ class _AccountViewState extends State<AccountView> {
                                                             .then((sent) {
                                                           BotToast
                                                               .closeAllLoading();
+                                                          if (!context
+                                                              .mounted) {
+                                                            return;
+                                                          }
                                                           if (sent) {
                                                             uiUtilities
                                                                 .actionAlertWidget(
@@ -446,6 +454,10 @@ class _AccountViewState extends State<AccountView> {
                                                                 const Duration(
                                                                     seconds: 2),
                                                                 () {
+                                                              if (!context
+                                                                  .mounted) {
+                                                                return;
+                                                              }
                                                               Navigator.of(
                                                                       context)
                                                                   .pop();
@@ -467,6 +479,10 @@ class _AccountViewState extends State<AccountView> {
                                                           }
                                                         }).catchError(
                                                                 (onError) {
+                                                          if (!context
+                                                              .mounted) {
+                                                            return;
+                                                          }
                                                           uiUtilities
                                                               .actionAlertWidget(
                                                                   context:
@@ -486,7 +502,8 @@ class _AccountViewState extends State<AccountView> {
                                                             .actionAlertWidget(
                                                                 context:
                                                                     context,
-                                                                alertType: AlertType
+                                                                alertType:
+                                                                    AlertType
                                                                         .info);
                                                         uiUtilities
                                                             .alertNotification(
@@ -586,6 +603,7 @@ class _AccountViewState extends State<AccountView> {
                                             await _fcm
                                                 .deleteToken()
                                                 .then((value) {
+                                              if (!context.mounted) return;
                                               BotToast.closeAllLoading();
                                               Navigator.pop(context);
                                             }).catchError((_) {

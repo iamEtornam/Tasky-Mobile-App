@@ -53,7 +53,7 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
   @override
   Widget build(BuildContext context) {
     return PopScope(
-      onPopInvoked: (value) async {
+      onPopInvokedWithResult: (bool canPop, value) async {
         Navigator.pushReplacementNamed(context, '/', arguments: 1);
       },
       child: Scaffold(
@@ -372,7 +372,7 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
                     },
                     value: isSwitched,
                     activeColor: customRedColor,
-                    activeTrackColor: customRedColor.withOpacity(.5),
+                    activeTrackColor: customRedColor.withValues(alpha: .5),
                     inactiveThumbColor: customGreyColor,
                     inactiveTrackColor: customGreyColor,
                   )
@@ -410,7 +410,7 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
                           filled: false,
                           hintText: '15',
                           suffixIcon: CupertinoSlidingSegmentedControl<int>(
-                            backgroundColor: Colors.grey.withOpacity(.2),
+                            backgroundColor: Colors.grey.withValues(alpha: .2),
                             groupValue: _currentIndex,
                             children: {
                               0: Text('Min',
@@ -500,7 +500,7 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
                             showTotalCount: true,
                             backgroundColor: Colors.primaries[
                                     Random().nextInt(Colors.primaries.length)]
-                                .withOpacity(.5),
+                                .withValues(alpha: .5),
                             totalCount: _taskManager.assignees.length - 1,
                           ),
                         )
@@ -528,7 +528,7 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
                                 child: Container(
                                   height: 45,
                                   width: 45,
-                                  color: customGreyColor.withOpacity(.2),
+                                  color: customGreyColor.withValues(alpha: .2),
                                   child: const Center(
                                       child: Icon(
                                     MaterialIcons.person_add,
@@ -577,7 +577,7 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
                                 child: Container(
                                   height: 45,
                                   width: 45,
-                                  color: customGreyColor.withOpacity(.2),
+                                  color: customGreyColor.withValues(alpha: .2),
                                   child: const Center(
                                       child: Icon(
                                     MaterialIcons.person_add,
@@ -626,6 +626,7 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
                           context: context, message: _taskManager.message!);
 
                       Future.delayed(const Duration(seconds: 3), () {
+                        if (!context.mounted) return;
                         Navigator.pushReplacementNamed(context, '/',
                             arguments: 1);
                       });

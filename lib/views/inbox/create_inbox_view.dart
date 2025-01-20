@@ -157,6 +157,7 @@ class _CreateInboxViewState extends State<CreateInboxView> {
                         context: context, message: _inboxManager.message!);
 
                     Future.delayed(const Duration(seconds: 2), () {
+                      if (!context.mounted) return;
                       Navigator.of(context).pop(true);
                     });
                   } else {

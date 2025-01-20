@@ -15,7 +15,7 @@ ThemeData customLightTheme(
       textSelectionTheme:
           const TextSelectionThemeData(cursorColor: customGreyColor),
       platform: defaultTargetPlatform,
-      highlightColor: customRedColor.withOpacity(.5),
+      highlightColor: customRedColor.withValues(alpha: .5),
       primaryColor: Colors.white,
       indicatorColor: customRedColor,
       floatingActionButtonTheme:
@@ -44,8 +44,8 @@ ThemeData customLightTheme(
             borderSide: BorderSide(color: Color(0xffE5E5E5)),
             borderRadius: BorderRadius.all(Radius.circular(5))),
         errorBorder: UnderlineInputBorder(
-            borderSide:
-                BorderSide(color: const Color(0xffB00020).withOpacity(.5)),
+            borderSide: BorderSide(
+                color: const Color(0xffB00020).withValues(alpha: .5)),
             borderRadius: const BorderRadius.all(Radius.circular(5))),
         focusedErrorBorder: const UnderlineInputBorder(
             borderSide: BorderSide(color: Color(0xffB00020)),
@@ -58,7 +58,7 @@ ThemeData customLightTheme(
       ),
       iconTheme: const IconThemeData(color: Colors.black),
       tabBarTheme: TabBarTheme(
-        unselectedLabelColor: Colors.black.withOpacity(.5),
+        unselectedLabelColor: Colors.black.withValues(alpha: .5),
       ),
       textTheme: Typography.material2018(platform: defaultTargetPlatform)
           .white
@@ -102,7 +102,7 @@ ThemeData customDarkTheme(
           const TextSelectionThemeData(cursorColor: customGreyColor),
       primaryColor: Colors.black,
       indicatorColor: customRedColor,
-      highlightColor: customRedColor.withOpacity(.5),
+      highlightColor: customRedColor.withValues(alpha: .5),
       floatingActionButtonTheme:
           const FloatingActionButtonThemeData(backgroundColor: customRedColor),
       platform: defaultTargetPlatform,
@@ -111,7 +111,7 @@ ThemeData customDarkTheme(
       fontFamily: GoogleFonts.poppins().fontFamily,
       cardColor: const Color.fromRGBO(31, 31, 31, 1),
       tabBarTheme: TabBarTheme(
-        unselectedLabelColor: Colors.white.withOpacity(.7),
+        unselectedLabelColor: Colors.white.withValues(alpha: .7),
       ),
       progressIndicatorTheme: const ProgressIndicatorThemeData(
         color: customRedColor,
@@ -153,8 +153,8 @@ ThemeData customDarkTheme(
             borderSide: BorderSide(color: Color(0xffE5E5E5)),
             borderRadius: BorderRadius.all(Radius.circular(5))),
         errorBorder: UnderlineInputBorder(
-            borderSide:
-                BorderSide(color: const Color(0xffCF6679).withOpacity(.5)),
+            borderSide: BorderSide(
+                color: const Color(0xffCF6679).withValues(alpha: .5)),
             borderRadius: const BorderRadius.all(Radius.circular(5))),
         focusedErrorBorder: const UnderlineInputBorder(
             borderSide: BorderSide(color: Color(0xffCF6679)),

@@ -7,7 +7,8 @@ import 'package:tasky_mobile_app/views/search/search_view.dart';
 
 final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
 
-class CustomAppBarWidget extends StatelessWidget implements PreferredSizeWidget {
+class CustomAppBarWidget extends StatelessWidget
+    implements PreferredSizeWidget {
   final String title;
 
   const CustomAppBarWidget({super.key, required this.title});
@@ -27,8 +28,9 @@ class CustomAppBarWidget extends StatelessWidget implements PreferredSizeWidget 
                     backgroundImage: const ExactAssetImage(
                       'assets/avatar.png',
                     ),
-                    backgroundColor:
-                        Colors.primaries[Random().nextInt(Colors.primaries.length)].withOpacity(.4),
+                    backgroundColor: Colors
+                        .primaries[Random().nextInt(Colors.primaries.length)]
+                        .withValues(alpha: .4),
                   );
                 }
                 return CircleAvatar(
@@ -36,15 +38,19 @@ class CustomAppBarWidget extends StatelessWidget implements PreferredSizeWidget 
                   backgroundImage: NetworkImage(
                     snapshot.data!,
                   ),
-                  backgroundColor:
-                      Colors.primaries[Random().nextInt(Colors.primaries.length)].withOpacity(.4),
+                  backgroundColor: Colors
+                      .primaries[Random().nextInt(Colors.primaries.length)]
+                      .withValues(alpha: .4),
                 );
               }),
         ),
       ),
       title: Text(
         title,
-        style: Theme.of(context).textTheme.titleLarge!.copyWith(fontWeight: FontWeight.bold),
+        style: Theme.of(context)
+            .textTheme
+            .titleLarge!
+            .copyWith(fontWeight: FontWeight.bold),
       ),
       actions: [
         IconButton(
@@ -61,7 +67,8 @@ class CustomAppBarWidget extends StatelessWidget implements PreferredSizeWidget 
             list.addAll([
               PopupMenuItem(
                 value: 1,
-                child: Text("Share", style: Theme.of(context).textTheme.bodyLarge),
+                child:
+                    Text("Share", style: Theme.of(context).textTheme.bodyLarge),
               ),
               const PopupMenuDivider(
                 height: 10,

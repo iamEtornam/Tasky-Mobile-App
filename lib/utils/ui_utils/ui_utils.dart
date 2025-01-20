@@ -5,21 +5,24 @@ import 'package:flutter/material.dart';
 import 'package:flutter_custom_dialog/flutter_custom_dialog.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_cropper/image_cropper.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:image_picker/image_picker.dart' as image_picker;
+import 'package:image_picker/image_picker.dart';
 
 import 'custom_colors.dart';
 
-const defaultAvatarUrl = 'https://asset.cloudinary.com/iametornam/6ccefc294e57bc7f90054f08f5e4fe0f';
+const defaultAvatarUrl =
+    'https://asset.cloudinary.com/iametornam/6ccefc294e57bc7f90054f08f5e4fe0f';
 
-enum AlertType { error , info, success }
+enum AlertType { error, info, success }
 
 class UiUtilities {
-  actionAlertWidget({required BuildContext context, required AlertType alertType}) {
-    final yyDialog = YYDialog()..build(context)
+  actionAlertWidget(
+      {required BuildContext context, required AlertType alertType}) {
+    final yyDialog = YYDialog()
+      ..build(context)
       ..width = 120
       ..height = 110
-      ..backgroundColor = Colors.black.withOpacity(0.8)
+      ..backgroundColor = Colors.black.withValues(alpha: .8)
       ..borderRadius = 10.0
       ..useRootNavigator = false
       ..widget(Padding(
@@ -63,51 +66,48 @@ class UiUtilities {
   alertNotification({required String message, required BuildContext context}) {
     return BotToast.showSimpleNotification(
         title: message,
-        backgroundColor: Theme.of(context).scaffoldBackgroundColor.withOpacity(.1),
+        backgroundColor:
+            Theme.of(context).scaffoldBackgroundColor.withValues(alpha: .1),
         borderRadius: 10.0,
         duration: const Duration(seconds: 4),
         align: Alignment.topCenter);
   }
 
-  Future<XFile?> getImage({required image_picker.ImageSource imageSource}) async {
+  Future<XFile?> getImage(
+      {required image_picker.ImageSource imageSource}) async {
     return await image_picker.ImagePicker().pickImage(source: imageSource);
   }
 
   Future<File?> getCroppedFile({required String file}) async {
     final croppedFile = await ImageCropper().cropImage(
-      sourcePath: file,
-      compressFormat: ImageCompressFormat.png,
-      compressQuality: 70,
-      aspectRatioPresets: Platform.isAndroid
-          ? [
-              CropAspectRatioPreset.square,
-              CropAspectRatioPreset.ratio3x2,
-              CropAspectRatioPreset.original,
-              CropAspectRatioPreset.ratio4x3,
-              CropAspectRatioPreset.ratio16x9
-            ]
-          : [
-              CropAspectRatioPreset.original,
-              CropAspectRatioPreset.square,
-              CropAspectRatioPreset.ratio3x2,
-              CropAspectRatioPreset.ratio4x3,
-              CropAspectRatioPreset.ratio5x3,
-              CropAspectRatioPreset.ratio5x4,
-              CropAspectRatioPreset.ratio7x5,
-              CropAspectRatioPreset.ratio16x9
-            ],
-      uiSettings: [
-        AndroidUiSettings(
-            toolbarTitle: 'Crop Image',
-            toolbarColor: customRedColor,
-            toolbarWidgetColor: Colors.white,
-            initAspectRatio: CropAspectRatioPreset.original,
-            lockAspectRatio: false),
-        IOSUiSettings(
-          title: 'Crop Image',
-        )
-      ],
-    );
+        sourcePath: file,
+        compressFormat: ImageCompressFormat.png,
+        compressQuality: 70,
+        uiSettings: [
+          AndroidUiSettings(
+              toolbarTitle: 'Crop Image',
+              toolbarColor: customRedColor,
+              toolbarWidgetColor: Colors.white,
+              initAspectRatio: CropAspectRatioPreset.original,
+              lockAspectRatio: false,
+              aspectRatioPresets: [
+                CropAspectRatioPreset.square,
+                CropAspectRatioPreset.ratio3x2,
+                CropAspectRatioPreset.original,
+                CropAspectRatioPreset.ratio4x3,
+                CropAspectRatioPreset.ratio16x9
+              ]),
+          IOSUiSettings(title: 'Crop Image', aspectRatioPresets: [
+            CropAspectRatioPreset.original,
+            CropAspectRatioPreset.square,
+            CropAspectRatioPreset.ratio3x2,
+            CropAspectRatioPreset.ratio4x3,
+            CropAspectRatioPreset.ratio5x3,
+            CropAspectRatioPreset.ratio5x4,
+            CropAspectRatioPreset.ratio7x5,
+            CropAspectRatioPreset.ratio16x9
+          ])
+        ]);
 
     if (croppedFile == null) return null;
     return File(croppedFile.path);

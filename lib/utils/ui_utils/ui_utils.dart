@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_custom_dialog/flutter_custom_dialog.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart' as image_picker;
@@ -18,49 +17,49 @@ enum AlertType { error, info, success }
 class UiUtilities {
   actionAlertWidget(
       {required BuildContext context, required AlertType alertType}) {
-    final yyDialog = YYDialog()
-      ..build(context)
-      ..width = 120
-      ..height = 110
-      ..backgroundColor = Colors.black.withValues(alpha: .8)
-      ..borderRadius = 10.0
-      ..useRootNavigator = false
-      ..widget(Padding(
-        padding: const EdgeInsets.only(top: 21),
-        child: SvgPicture.asset(
-          alertType == AlertType.error
-              ? 'assets/error.svg'
-              : alertType == AlertType.info
-                  ? 'assets/info.svg'
-                  : 'assets/success.svg',
-          width: 38,
-          height: 38,
-        ),
-      ))
-      ..widget(Padding(
-        padding: const EdgeInsets.only(top: 10),
-        child: Text(
-          alertType.name == 'error'
-              ? 'Failed'
-              : alertType.name == 'info'
-                  ? 'Info'
-                  : 'Success',
-          style: const TextStyle(
-            fontSize: 15,
-            color: Colors.white,
-          ),
-        ),
-      ))
-      ..animatedFunc = (child, animation) {
-        return ScaleTransition(
-          scale: Tween(begin: 0.0, end: 1.0).animate(animation),
-          child: child,
-        );
-      };
-    yyDialog.show();
-    Future.delayed(const Duration(seconds: 2), () {
-      yyDialog.dismiss();
+    Future.delayed(const Duration(seconds: 3), () {
+      if (!context.mounted) return;
+      Navigator.of(context).pop();
     });
+    return showAdaptiveDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            contentPadding: const EdgeInsets.all(16),
+            content: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              spacing: 10,
+              children: [
+                Center(
+                  child: SvgPicture.asset(
+                    alertType == AlertType.error
+                        ? 'assets/error.svg'
+                        : alertType == AlertType.info
+                            ? 'assets/info.svg'
+                            : 'assets/success.svg',
+                    width: 38,
+                    height: 38,
+                  ),
+                ),
+                Center(
+                  child: Text(
+                    alertType.name == 'error'
+                        ? 'Failed'
+                        : alertType.name == 'info'
+                            ? 'Info'
+                            : 'Success',
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      fontSize: 15,
+                      color: Colors.white,
+                    ),
+                  ),
+                )
+              ],
+            ),
+          );
+        });
   }
 
   alertNotification({required String message, required BuildContext context}) {

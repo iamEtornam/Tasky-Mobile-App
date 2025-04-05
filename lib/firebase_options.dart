@@ -27,10 +27,7 @@ class DefaultFirebaseOptions {
       case TargetPlatform.macOS:
         return macos;
       case TargetPlatform.windows:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for windows - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return windows;
       case TargetPlatform.linux:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for linux - '
@@ -49,7 +46,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '997228587501',
     projectId: 'tasky-manager-app',
     authDomain: 'tasky-manager-app.firebaseapp.com',
-    storageBucket: 'tasky-manager-app.appspot.com',
+    storageBucket: 'tasky-manager-app.firebasestorage.app',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
@@ -57,7 +54,7 @@ class DefaultFirebaseOptions {
     appId: '1:997228587501:android:35e25abe5e337854f6dfe4',
     messagingSenderId: '997228587501',
     projectId: 'tasky-manager-app',
-    storageBucket: 'tasky-manager-app.appspot.com',
+    storageBucket: 'tasky-manager-app.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
@@ -65,7 +62,7 @@ class DefaultFirebaseOptions {
     appId: '1:997228587501:ios:5e5be6613c8fe7faf6dfe4',
     messagingSenderId: '997228587501',
     projectId: 'tasky-manager-app',
-    storageBucket: 'tasky-manager-app.appspot.com',
+    storageBucket: 'tasky-manager-app.firebasestorage.app',
     androidClientId: '997228587501-11i1efim7uov55qhnqiab4v4jvjo2ql3.apps.googleusercontent.com',
     iosClientId: '997228587501-dcfl2lm8moma3bclpoiief5s3blvehfa.apps.googleusercontent.com',
     iosBundleId: 'dev.etornam.tasky',
@@ -73,12 +70,22 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions macos = FirebaseOptions(
     apiKey: 'AIzaSyCZ4JOIGpx96gC_A1w0PeoklOpL4Av2bew',
-    appId: '1:997228587501:ios:5e5be6613c8fe7faf6dfe4',
+    appId: '1:997228587501:ios:a281c1f6c972d656f6dfe4',
     messagingSenderId: '997228587501',
     projectId: 'tasky-manager-app',
-    storageBucket: 'tasky-manager-app.appspot.com',
+    storageBucket: 'tasky-manager-app.firebasestorage.app',
     androidClientId: '997228587501-11i1efim7uov55qhnqiab4v4jvjo2ql3.apps.googleusercontent.com',
-    iosClientId: '997228587501-dcfl2lm8moma3bclpoiief5s3blvehfa.apps.googleusercontent.com',
-    iosBundleId: 'dev.etornam.tasky',
+    iosClientId: '997228587501-14fgh7380recpq1hdu2timne4u0fdifo.apps.googleusercontent.com',
+    iosBundleId: 'dev.etornam.taskyMobileApp',
   );
+
+  static const FirebaseOptions windows = FirebaseOptions(
+    apiKey: 'AIzaSyBHRqnLI76j1qCEJnVJaMH5p0koBx1roUw',
+    appId: '1:997228587501:web:5ef585b2e9fe93ecf6dfe4',
+    messagingSenderId: '997228587501',
+    projectId: 'tasky-manager-app',
+    authDomain: 'tasky-manager-app.firebaseapp.com',
+    storageBucket: 'tasky-manager-app.firebasestorage.app',
+  );
+
 }

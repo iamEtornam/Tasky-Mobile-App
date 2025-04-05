@@ -56,7 +56,8 @@ class _DashboardViewState extends State<DashboardView> {
 
   @override
   void initState() {
-    // checkAuth();
+    super.initState();
+
     confirmAuthStatus();
     setState(() {
       _currentIndex = widget.currentIndex;
@@ -64,7 +65,6 @@ class _DashboardViewState extends State<DashboardView> {
     initialNotification(context: context);
     uploadNotificationToken();
 
-    super.initState();
   }
 
   void uploadNotificationToken() async {

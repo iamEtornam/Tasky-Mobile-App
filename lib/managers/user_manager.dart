@@ -113,17 +113,20 @@ class UserManager with ChangeNotifier {
     return null;
   }
 
- 
-
   Future<void> sendNotificationToken({String? token}) async {
     await _userService.sendNotificationTokenRequest(token: token);
   }
 
   Future<bool> updateProfile({String? name, String? phone, File? image}) async {
     bool isUpdated = false;
-    String? fileUrl = await _fileUploadManager.imageFileUploader(image!);
+    String? fileUrl;
+    if (image != null) {
+      fileUrl = await _fileUploadManager.imageFileUploader(image);
+    }
 
-    await _userService.updateUserRequest(name: name, phone: phone, pic: fileUrl).then((response) {
+    await _userService
+        .updateUserRequest(name: name, phone: phone, pic: fileUrl)
+        .then((response) {
       int statusCode = response.statusCode;
       Map<String, dynamic> body = json.decode(response.body);
       setMessage(body['message']);

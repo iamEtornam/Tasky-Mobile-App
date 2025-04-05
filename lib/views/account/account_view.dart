@@ -640,7 +640,7 @@ class _AccountViewState extends State<AccountView> {
                         style: Theme.of(context).textTheme.bodyLarge,
                       ),
                       subtitle: Text(
-                        userData?.fcmToken == null ? 'On' : 'Off',
+                        userData?.fcmToken == null ? 'Off' : 'On',
                         style: Theme.of(context)
                             .textTheme
                             .bodyLarge!

@@ -2,7 +2,7 @@
   "project_info": {
     "project_number": "997228587501",
     "project_id": "tasky-manager-app",
-    "storage_bucket": "tasky-manager-app.appspot.com"
+    "storage_bucket": "tasky-manager-app.firebasestorage.app"
   },
   "client": [
     {

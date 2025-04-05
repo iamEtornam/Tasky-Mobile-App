@@ -4,7 +4,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:tasky_mobile_app/routes.dart';
 import 'package:tasky_mobile_app/shared_widgets/custom_theme.dart';
-import 'package:tasky_mobile_app/utils/local_storage.dart';
 import 'package:tasky_mobile_app/views/auth/login_view.dart';
 import 'package:tasky_mobile_app/views/dashboard/dashboard_view.dart';
 
@@ -20,20 +19,6 @@ class _MyAppState extends State<MyApp> {
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  final LocalStorage _localStorage = LocalStorage();
-  int? userId;
-
-  @override
-  void initState() {
-    super.initState();
-    getUser();
-  }
-
-  getUser() async {
-    userId = await _localStorage.getId();
-    setState(() {});
-  }
-
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<User?>(
@@ -41,17 +26,20 @@ class _MyAppState extends State<MyApp> {
         builder: (context, snapshot) {
           return MaterialApp(
             title: 'Tasky',
-
             builder: BotToastInit(),
             theme: customLightTheme(context),
             darkTheme: customDarkTheme(context),
             themeMode: ThemeMode.system,
             initialRoute: '/',
             onGenerateInitialRoutes: (_) {
-              if (_auth.currentUser != null && userId != null) {
-                return <Route>[MaterialPageRoute(builder: (context) => const DashboardView())];
+              if (_auth.currentUser != null) {
+                return <Route>[
+                  MaterialPageRoute(builder: (context) => const DashboardView())
+                ];
               } else {
-                return <Route>[MaterialPageRoute(builder: (context) => const LoginView())];
+                return <Route>[
+                  MaterialPageRoute(builder: (context) => const LoginView())
+                ];
               }
             },
             onGenerateRoute: Routes.generateRoute,
@@ -60,7 +48,8 @@ class _MyAppState extends State<MyApp> {
               FirebaseAnalyticsObserver(analytics: _analytics),
               BotToastNavigatorObserver(),
             ],
-            localeResolutionCallback: (Locale? locale, Iterable<Locale> supportedLocales) {
+            localeResolutionCallback:
+                (Locale? locale, Iterable<Locale> supportedLocales) {
               return locale;
             },
           );

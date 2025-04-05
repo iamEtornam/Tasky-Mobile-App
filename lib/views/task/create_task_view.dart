@@ -667,7 +667,7 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
           builder: (BuildContext builder) {
             return Container(
               height: MediaQuery.of(context).copyWith().size.height / 3,
-              color: Colors.white,
+              color: Theme.of(context).cardColor,
               child: CupertinoDatePicker(
                 mode: CupertinoDatePickerMode.dateAndTime,
                 onDateTimeChanged: (picked) {

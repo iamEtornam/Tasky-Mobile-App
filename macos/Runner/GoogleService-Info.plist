@@ -19,7 +19,7 @@
 	<key>PROJECT_ID</key>
 	<string>tasky-manager-app</string>
 	<key>STORAGE_BUCKET</key>
-	<string>tasky-manager-app.appspot.com</string>
+	<string>tasky-manager-app.firebasestorage.app</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -31,6 +31,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:997228587501:ios:9a5ede98d5a72101f6dfe4</string>
+	<string>1:997228587501:ios:a281c1f6c972d656f6dfe4</string>
 </dict>
 </plist>

@@ -1,7 +1,5 @@
 PODS:
   - Flutter (1.0.0)
-  - image_picker_ios (0.0.1):
-    - Flutter
   - open_apps_settings (0.0.1):
     - Flutter
   - the_apple_sign_in (1.0.0):
@@ -11,7 +9,6 @@ PODS:
 
 DEPENDENCIES:
   - Flutter (from `Flutter`)
-  - image_picker_ios (from `.symlinks/plugins/image_picker_ios/ios`)
   - open_apps_settings (from `.symlinks/plugins/open_apps_settings/ios`)
   - the_apple_sign_in (from `.symlinks/plugins/the_apple_sign_in/ios`)
   - webview_flutter_wkwebview (from `.symlinks/plugins/webview_flutter_wkwebview/ios`)
@@ -19,8 +16,6 @@ DEPENDENCIES:
 EXTERNAL SOURCES:
   Flutter:
     :path: Flutter
-  image_picker_ios:
-    :path: ".symlinks/plugins/image_picker_ios/ios"
   open_apps_settings:
     :path: ".symlinks/plugins/open_apps_settings/ios"
   the_apple_sign_in:
@@ -29,12 +24,11 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/webview_flutter_wkwebview/ios"
 
 SPEC CHECKSUMS:
-  Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
-  image_picker_ios: b545a5f16c0fa88e3ecbbce3ed4de45567a8ec18
+  Flutter: cabc95a1d2626b1b06e7179b784ebcf0c0cde467
   open_apps_settings: b15bcddca026a201319f58e24f36464218793efc
   the_apple_sign_in: 2e78c83cdb09eba07bb16dcc1f3bc12fcdc8263d
   webview_flutter_wkwebview: b7e70ef1ddded7e69c796c7390ee74180182971f
 
-PODFILE CHECKSUM: 84309b3bdc5f35fad470d09f7d0bc868754b2ac5
+PODFILE CHECKSUM: ace7e208117d4b9b57d1e6c59b648b05144dcf7f
 
 COCOAPODS: 1.16.2

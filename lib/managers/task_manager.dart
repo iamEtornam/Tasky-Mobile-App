@@ -22,17 +22,17 @@ class TaskManager with ChangeNotifier {
   bool get isLoading => _isLoading;
   List<Data> get assignees => _assignees;
 
-  setMessage(String? message) {
+  void setMessage(String? message) {
     _message = message;
     notifyListeners();
   }
 
-  setisLoading(bool isLoading) {
+  void setisLoading(bool isLoading) {
     _isLoading = isLoading;
     notifyListeners();
   }
 
-  setAssignees(List<Data> users) {
+  void setAssignees(List<Data> users) {
     _assignees = users;
     notifyListeners();
   }

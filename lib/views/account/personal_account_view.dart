@@ -34,7 +34,7 @@ class _PersonalAccountViewState extends State<PersonalAccountView> {
   final phoneFocusNode = FocusNode();
   String? profileUrl;
 
-  getProfileFromCamera() async {
+  Future<void> getProfileFromCamera() async {
     await uiUtilities
         .getImage(imageSource: ImageSource.camera)
         .then((file) async {
@@ -48,7 +48,7 @@ class _PersonalAccountViewState extends State<PersonalAccountView> {
     });
   }
 
-  getProfileFromGallery() async {
+  Future<void> getProfileFromGallery() async {
     await uiUtilities
         .getImage(imageSource: ImageSource.gallery)
         .then((file) async {

@@ -35,7 +35,7 @@ class _OrganizationViewState extends State<OrganizationView> {
   File? _imageFile;
   List<Options>? options;
 
-  getProfileFromCamera() async {
+  Future<void> getProfileFromCamera() async {
     await uiUtilities
         .getImage(imageSource: ImageSource.camera)
         .then((file) async {
@@ -52,7 +52,7 @@ class _OrganizationViewState extends State<OrganizationView> {
     });
   }
 
-  getProfileFromGallery() async {
+  Future<void> getProfileFromGallery() async {
     await uiUtilities
         .getImage(imageSource: ImageSource.gallery)
         .then((file) async {

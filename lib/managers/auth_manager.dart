@@ -21,12 +21,12 @@ class AuthManager with ChangeNotifier {
   String? get message => _message;
   bool get isLoading => _isLoading;
 
-  setMessage(String? message) {
+  void setMessage(String? message) {
     _message = message;
     notifyListeners();
   }
 
-  setIsLoading(bool isLoading) {
+  void setIsLoading(bool isLoading) {
     _isLoading = isLoading;
     notifyListeners();
   }

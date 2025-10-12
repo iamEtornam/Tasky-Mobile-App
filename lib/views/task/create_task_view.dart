@@ -27,8 +27,8 @@ class CreateNewTaskView extends StatefulWidget {
 }
 
 class _CreateNewTaskViewState extends State<CreateNewTaskView> {
-  final OrganizationManager _organizationManager =
-      GetIt.I.get<OrganizationManager>();
+  final OrganizationManager _organizationManager = GetIt.I
+      .get<OrganizationManager>();
   final TaskManager _taskManager = GetIt.I.get<TaskManager>();
   final UiUtilities uiUtilities = UiUtilities();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -46,7 +46,8 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
   @override
   void initState() {
     SystemChrome.setSystemUIOverlayStyle(
-        const SystemUiOverlayStyle(statusBarBrightness: Brightness.dark));
+      const SystemUiOverlayStyle(statusBarBrightness: Brightness.dark),
+    );
     super.initState();
   }
 
@@ -67,10 +68,10 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
           ),
           title: Text(
             'New Task',
-            style: Theme.of(context)
-                .textTheme
-                .titleLarge!
-                .copyWith(fontWeight: FontWeight.bold, color: Colors.white),
+            style: Theme.of(context).textTheme.titleLarge!.copyWith(
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
           ),
         ),
         body: Form(
@@ -80,14 +81,11 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
             children: [
               Text(
                 'What needs to be done ?',
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyLarge!
-                    .copyWith(fontWeight: FontWeight.w600),
+                style: Theme.of(
+                  context,
+                ).textTheme.bodyLarge!.copyWith(fontWeight: FontWeight.w600),
               ),
-              const SizedBox(
-                height: 15,
-              ),
+              const SizedBox(height: 15),
               TextFormField(
                 controller: descriptionTextEditingController,
                 focusNode: taskFocusNode,
@@ -99,18 +97,21 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
                 cursorColor: Theme.of(context).textSelectionTheme.cursorColor,
                 enableInteractiveSelection: true,
                 decoration: InputDecoration(
-                    filled: false,
-                    hintText: 'Start Typing ...',
-                    enabledBorder: const UnderlineInputBorder(
-                        borderSide: BorderSide(color: customGreyColor)),
-                    focusedBorder: const UnderlineInputBorder(
-                        borderSide: BorderSide(color: customGreyColor)),
-                    border: const UnderlineInputBorder(
-                        borderSide: BorderSide(color: Colors.black)),
-                    hintStyle: Theme.of(context)
-                        .textTheme
-                        .bodyLarge!
-                        .copyWith(color: Colors.grey)),
+                  filled: false,
+                  hintText: 'Start Typing ...',
+                  enabledBorder: const UnderlineInputBorder(
+                    borderSide: BorderSide(color: customGreyColor),
+                  ),
+                  focusedBorder: const UnderlineInputBorder(
+                    borderSide: BorderSide(color: customGreyColor),
+                  ),
+                  border: const UnderlineInputBorder(
+                    borderSide: BorderSide(color: Colors.black),
+                  ),
+                  hintStyle: Theme.of(
+                    context,
+                  ).textTheme.bodyLarge!.copyWith(color: Colors.grey),
+                ),
                 validator: (value) {
                   if (value!.isEmpty) {
                     return 'Field cannot be Empty';
@@ -118,27 +119,22 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
                   return null;
                 },
               ),
-              const SizedBox(
-                height: 20,
-              ),
+              const SizedBox(height: 20),
               Text(
                 'By when ?',
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyLarge!
-                    .copyWith(fontWeight: FontWeight.w600),
+                style: Theme.of(
+                  context,
+                ).textTheme.bodyLarge!.copyWith(fontWeight: FontWeight.w600),
               ),
-              const SizedBox(
-                height: 10,
-              ),
+              const SizedBox(height: 10),
               Text(
                 'Due date & time',
                 style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                    fontWeight: FontWeight.normal, color: customGreyColor),
+                  fontWeight: FontWeight.normal,
+                  color: customGreyColor,
+                ),
               ),
-              const SizedBox(
-                height: 10,
-              ),
+              const SizedBox(height: 10),
               InkWell(
                 onTap: () async {
                   await pickDateTime(context);
@@ -148,31 +144,33 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
                     await pickDateTime(context);
                   },
                   controller: dueDateTextEditingController,
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyLarge!
-                      .copyWith(fontWeight: FontWeight.w600),
+                  style: Theme.of(
+                    context,
+                  ).textTheme.bodyLarge!.copyWith(fontWeight: FontWeight.w600),
                   textInputAction: TextInputAction.done,
                   keyboardType: TextInputType.datetime,
                   maxLines: 1,
                   cursorColor: Theme.of(context).textSelectionTheme.cursorColor,
                   enableInteractiveSelection: true,
                   decoration: InputDecoration(
-                      filled: false,
-                      enabledBorder: const UnderlineInputBorder(
-                          borderSide: BorderSide(color: customGreyColor)),
-                      focusedBorder: const UnderlineInputBorder(
-                          borderSide: BorderSide(color: customGreyColor)),
-                      border: const UnderlineInputBorder(
-                          borderSide: BorderSide(color: Colors.black)),
-                      hintStyle: Theme.of(context)
-                          .textTheme
-                          .bodyLarge!
-                          .copyWith(color: Colors.grey),
-                      suffixIcon: const Icon(
-                        Icons.arrow_forward,
-                        color: customGreyColor,
-                      )),
+                    filled: false,
+                    enabledBorder: const UnderlineInputBorder(
+                      borderSide: BorderSide(color: customGreyColor),
+                    ),
+                    focusedBorder: const UnderlineInputBorder(
+                      borderSide: BorderSide(color: customGreyColor),
+                    ),
+                    border: const UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.black),
+                    ),
+                    hintStyle: Theme.of(
+                      context,
+                    ).textTheme.bodyLarge!.copyWith(color: Colors.grey),
+                    suffixIcon: const Icon(
+                      Icons.arrow_forward,
+                      color: customGreyColor,
+                    ),
+                  ),
                   validator: (value) {
                     if (value!.isEmpty) {
                       return 'Field cannot be Empty';
@@ -181,188 +179,185 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
                   },
                 ),
               ),
-              const SizedBox(
-                height: 15,
-              ),
+              const SizedBox(height: 15),
               Text(
                 'Which team?',
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyLarge!
-                    .copyWith(fontWeight: FontWeight.w600),
+                style: Theme.of(
+                  context,
+                ).textTheme.bodyLarge!.copyWith(fontWeight: FontWeight.w600),
               ),
-              const SizedBox(
-                height: 10,
-              ),
+              const SizedBox(height: 10),
               FutureBuilder<org.Organization?>(
-                  future: _organizationManager.getOrganization(),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting &&
-                        !snapshot.hasData) {
-                      return DropdownButtonFormField<String>(
-                        value: teamTextEditingController,
-                        decoration: InputDecoration(
-                          alignLabelWithHint: true,
-                          hintStyle: Theme.of(context)
-                              .textTheme
-                              .bodyMedium!
-                              .copyWith(
-                                  fontWeight: FontWeight.normal,
-                                  color: customGreyColor),
-                          contentPadding:
-                              const EdgeInsets.fromLTRB(15, 1, 15, 1),
-                          floatingLabelBehavior: FloatingLabelBehavior.auto,
-                          focusedBorder: Theme.of(context)
-                              .inputDecorationTheme
-                              .focusedBorder,
-                          enabledBorder: Theme.of(context)
-                              .inputDecorationTheme
-                              .enabledBorder,
-                          disabledBorder: Theme.of(context)
-                              .inputDecorationTheme
-                              .disabledBorder,
-                          errorBorder: Theme.of(context)
-                              .inputDecorationTheme
-                              .errorBorder,
-                          focusedErrorBorder: Theme.of(context)
-                              .inputDecorationTheme
-                              .focusedErrorBorder,
-                          fillColor:
-                              Theme.of(context).inputDecorationTheme.fillColor,
-                          filled: true,
-                          labelStyle:
-                              Theme.of(context).inputDecorationTheme.labelStyle,
-                          errorStyle:
-                              Theme.of(context).inputDecorationTheme.errorStyle,
-                        ),
-                        items: const [],
-                        hint: Text(
-                          'Select your team',
-                          style: Theme.of(context).textTheme.bodyMedium,
-                        ),
-                        onChanged: (value) {},
-                      );
-                    }
-
-                    if (snapshot.connectionState == ConnectionState.done &&
-                        snapshot.data == null) {
-                      return DropdownButtonFormField<String>(
-                        value: teamTextEditingController,
-                        decoration: InputDecoration(
-                          alignLabelWithHint: true,
-                          hintStyle: Theme.of(context)
-                              .textTheme
-                              .bodyMedium!
-                              .copyWith(
-                                  fontWeight: FontWeight.normal,
-                                  color: customGreyColor),
-                          contentPadding:
-                              const EdgeInsets.fromLTRB(15, 1, 15, 1),
-                          floatingLabelBehavior: FloatingLabelBehavior.auto,
-                          focusedBorder: Theme.of(context)
-                              .inputDecorationTheme
-                              .focusedBorder,
-                          enabledBorder: Theme.of(context)
-                              .inputDecorationTheme
-                              .enabledBorder,
-                          disabledBorder: Theme.of(context)
-                              .inputDecorationTheme
-                              .disabledBorder,
-                          errorBorder: Theme.of(context)
-                              .inputDecorationTheme
-                              .errorBorder,
-                          focusedErrorBorder: Theme.of(context)
-                              .inputDecorationTheme
-                              .focusedErrorBorder,
-                          fillColor:
-                              Theme.of(context).inputDecorationTheme.fillColor,
-                          filled: true,
-                          labelStyle:
-                              Theme.of(context).inputDecorationTheme.labelStyle,
-                          errorStyle:
-                              Theme.of(context).inputDecorationTheme.errorStyle,
-                        ),
-                        items: const [],
-                        hint: Text(
-                          'Select your team',
-                          style: Theme.of(context).textTheme.bodyMedium,
-                        ),
-                        onChanged: (value) {},
-                      );
-                    }
-
+                future: _organizationManager.getOrganization(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting &&
+                      !snapshot.hasData) {
                     return DropdownButtonFormField<String>(
+                      initialValue: teamTextEditingController,
                       decoration: InputDecoration(
                         alignLabelWithHint: true,
-                        hintStyle: Theme.of(context)
-                            .textTheme
-                            .bodyMedium!
+                        hintStyle: Theme.of(context).textTheme.bodyMedium!
                             .copyWith(
-                                fontWeight: FontWeight.normal,
-                                color: customGreyColor),
+                              fontWeight: FontWeight.normal,
+                              color: customGreyColor,
+                            ),
                         contentPadding: const EdgeInsets.fromLTRB(15, 1, 15, 1),
                         floatingLabelBehavior: FloatingLabelBehavior.auto,
-                        focusedBorder: Theme.of(context)
-                            .inputDecorationTheme
-                            .focusedBorder,
-                        enabledBorder: Theme.of(context)
-                            .inputDecorationTheme
-                            .enabledBorder,
-                        disabledBorder: Theme.of(context)
-                            .inputDecorationTheme
-                            .disabledBorder,
-                        errorBorder:
-                            Theme.of(context).inputDecorationTheme.errorBorder,
-                        focusedErrorBorder: Theme.of(context)
-                            .inputDecorationTheme
-                            .focusedErrorBorder,
-                        fillColor:
-                            Theme.of(context).inputDecorationTheme.fillColor,
+                        focusedBorder: Theme.of(
+                          context,
+                        ).inputDecorationTheme.focusedBorder,
+                        enabledBorder: Theme.of(
+                          context,
+                        ).inputDecorationTheme.enabledBorder,
+                        disabledBorder: Theme.of(
+                          context,
+                        ).inputDecorationTheme.disabledBorder,
+                        errorBorder: Theme.of(
+                          context,
+                        ).inputDecorationTheme.errorBorder,
+                        focusedErrorBorder: Theme.of(
+                          context,
+                        ).inputDecorationTheme.focusedErrorBorder,
+                        fillColor: Theme.of(
+                          context,
+                        ).inputDecorationTheme.fillColor,
                         filled: true,
-                        labelStyle:
-                            Theme.of(context).inputDecorationTheme.labelStyle,
-                        errorStyle:
-                            Theme.of(context).inputDecorationTheme.errorStyle,
+                        labelStyle: Theme.of(
+                          context,
+                        ).inputDecorationTheme.labelStyle,
+                        errorStyle: Theme.of(
+                          context,
+                        ).inputDecorationTheme.errorStyle,
                       ),
-                      items: snapshot.data!.data!.teams!
-                          .map((value) => DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(
-                                value,
-                                style: Theme.of(context).textTheme.bodyLarge,
-                              )))
-                          .toList(),
-                      value: teamTextEditingController,
+                      items: const [],
                       hint: Text(
                         'Select your team',
                         style: Theme.of(context).textTheme.bodyMedium,
                       ),
-                      onChanged: (value) {
-                        setState(() {
-                          teamTextEditingController = value;
-                        });
-                      },
+                      onChanged: (value) {},
                     );
-                  }),
-              const SizedBox(
-                height: 10,
+                  }
+
+                  if (snapshot.connectionState == ConnectionState.done &&
+                      snapshot.data == null) {
+                    return DropdownButtonFormField<String>(
+                      initialValue: teamTextEditingController,
+                      decoration: InputDecoration(
+                        alignLabelWithHint: true,
+                        hintStyle: Theme.of(context).textTheme.bodyMedium!
+                            .copyWith(
+                              fontWeight: FontWeight.normal,
+                              color: customGreyColor,
+                            ),
+                        contentPadding: const EdgeInsets.fromLTRB(15, 1, 15, 1),
+                        floatingLabelBehavior: FloatingLabelBehavior.auto,
+                        focusedBorder: Theme.of(
+                          context,
+                        ).inputDecorationTheme.focusedBorder,
+                        enabledBorder: Theme.of(
+                          context,
+                        ).inputDecorationTheme.enabledBorder,
+                        disabledBorder: Theme.of(
+                          context,
+                        ).inputDecorationTheme.disabledBorder,
+                        errorBorder: Theme.of(
+                          context,
+                        ).inputDecorationTheme.errorBorder,
+                        focusedErrorBorder: Theme.of(
+                          context,
+                        ).inputDecorationTheme.focusedErrorBorder,
+                        fillColor: Theme.of(
+                          context,
+                        ).inputDecorationTheme.fillColor,
+                        filled: true,
+                        labelStyle: Theme.of(
+                          context,
+                        ).inputDecorationTheme.labelStyle,
+                        errorStyle: Theme.of(
+                          context,
+                        ).inputDecorationTheme.errorStyle,
+                      ),
+                      items: const [],
+                      hint: Text(
+                        'Select your team',
+                        style: Theme.of(context).textTheme.bodyMedium,
+                      ),
+                      onChanged: (value) {},
+                    );
+                  }
+
+                  return DropdownButtonFormField<String>(
+                    decoration: InputDecoration(
+                      alignLabelWithHint: true,
+                      hintStyle: Theme.of(context).textTheme.bodyMedium!
+                          .copyWith(
+                            fontWeight: FontWeight.normal,
+                            color: customGreyColor,
+                          ),
+                      contentPadding: const EdgeInsets.fromLTRB(15, 1, 15, 1),
+                      floatingLabelBehavior: FloatingLabelBehavior.auto,
+                      focusedBorder: Theme.of(
+                        context,
+                      ).inputDecorationTheme.focusedBorder,
+                      enabledBorder: Theme.of(
+                        context,
+                      ).inputDecorationTheme.enabledBorder,
+                      disabledBorder: Theme.of(
+                        context,
+                      ).inputDecorationTheme.disabledBorder,
+                      errorBorder: Theme.of(
+                        context,
+                      ).inputDecorationTheme.errorBorder,
+                      focusedErrorBorder: Theme.of(
+                        context,
+                      ).inputDecorationTheme.focusedErrorBorder,
+                      fillColor: Theme.of(
+                        context,
+                      ).inputDecorationTheme.fillColor,
+                      filled: true,
+                      labelStyle: Theme.of(
+                        context,
+                      ).inputDecorationTheme.labelStyle,
+                      errorStyle: Theme.of(
+                        context,
+                      ).inputDecorationTheme.errorStyle,
+                    ),
+                    items: snapshot.data!.data!.teams!
+                        .map(
+                          (value) => DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(
+                              value,
+                              style: Theme.of(context).textTheme.bodyLarge,
+                            ),
+                          ),
+                        )
+                        .toList(),
+                    initialValue: teamTextEditingController,
+                    hint: Text(
+                      'Select your team',
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                    onChanged: (value) {
+                      setState(() {
+                        teamTextEditingController = value;
+                      });
+                    },
+                  );
+                },
               ),
-              const Divider(
-                color: Colors.grey,
-              ),
-              const SizedBox(
-                height: 15,
-              ),
+              const SizedBox(height: 10),
+              const Divider(color: Colors.grey),
+              const SizedBox(height: 15),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
                     'Set task reminder',
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyLarge!
-                        .copyWith(fontWeight: FontWeight.w600),
+                    style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                   Switch.adaptive(
                     onChanged: (value) {
@@ -371,11 +366,10 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
                       });
                     },
                     value: isSwitched,
-                    activeColor: customRedColor,
                     activeTrackColor: customRedColor.withValues(alpha: .5),
                     inactiveThumbColor: customGreyColor,
                     inactiveTrackColor: customGreyColor,
-                  )
+                  ),
                 ],
               ),
               Visibility(
@@ -383,18 +377,15 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const SizedBox(
-                      height: 15,
-                    ),
+                    const SizedBox(height: 15),
                     Text(
                       'Notify Before',
                       style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                          fontWeight: FontWeight.normal,
-                          color: customGreyColor),
+                        fontWeight: FontWeight.normal,
+                        color: customGreyColor,
+                      ),
                     ),
-                    const SizedBox(
-                      height: 15,
-                    ),
+                    const SizedBox(height: 15),
                     TextFormField(
                       controller: reminderTextEditingController,
                       focusNode: reminderFocusNode,
@@ -403,207 +394,219 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
                       keyboardType: TextInputType.number,
                       textCapitalization: TextCapitalization.none,
                       maxLines: 1,
-                      cursorColor:
-                          Theme.of(context).textSelectionTheme.cursorColor,
+                      cursorColor: Theme.of(
+                        context,
+                      ).textSelectionTheme.cursorColor,
                       enableInteractiveSelection: true,
                       decoration: InputDecoration(
-                          filled: false,
-                          hintText: '15',
-                          suffixIcon: CupertinoSlidingSegmentedControl<int>(
-                            backgroundColor: Colors.grey.withValues(alpha: .2),
-                            groupValue: _currentIndex,
-                            children: {
-                              0: Text('Min',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodyLarge!
-                                      .copyWith(
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 12)),
-                              1: Text('Hr',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodyLarge!
-                                      .copyWith(
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 12)),
-                            },
-                            onValueChanged: (value) {
-                              setState(() {
-                                _currentIndex = value ?? 0;
-                              });
-                            },
-                            thumbColor:
-                                Theme.of(context).scaffoldBackgroundColor,
-                          ),
-                          enabledBorder: const UnderlineInputBorder(
-                              borderSide: BorderSide(color: customGreyColor)),
-                          focusedBorder: const UnderlineInputBorder(
-                              borderSide: BorderSide(color: customGreyColor)),
-                          border: const UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.black)),
-                          hintStyle: Theme.of(context)
-                              .textTheme
-                              .bodyLarge!
-                              .copyWith(color: Colors.grey)),
+                        filled: false,
+                        hintText: '15',
+                        suffixIcon: CupertinoSlidingSegmentedControl<int>(
+                          backgroundColor: Colors.grey.withValues(alpha: .2),
+                          groupValue: _currentIndex,
+                          children: {
+                            0: Text(
+                              'Min',
+                              style: Theme.of(context).textTheme.bodyLarge!
+                                  .copyWith(
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 12,
+                                  ),
+                            ),
+                            1: Text(
+                              'Hr',
+                              style: Theme.of(context).textTheme.bodyLarge!
+                                  .copyWith(
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 12,
+                                  ),
+                            ),
+                          },
+                          onValueChanged: (value) {
+                            setState(() {
+                              _currentIndex = value ?? 0;
+                            });
+                          },
+                          thumbColor: Theme.of(context).scaffoldBackgroundColor,
+                        ),
+                        enabledBorder: const UnderlineInputBorder(
+                          borderSide: BorderSide(color: customGreyColor),
+                        ),
+                        focusedBorder: const UnderlineInputBorder(
+                          borderSide: BorderSide(color: customGreyColor),
+                        ),
+                        border: const UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.black),
+                        ),
+                        hintStyle: Theme.of(
+                          context,
+                        ).textTheme.bodyLarge!.copyWith(color: Colors.grey),
+                      ),
                       validator: (value) {
                         if (value!.isEmpty) {
                           return 'Field cannot be Empty';
                         }
                         return null;
                       },
-                    )
+                    ),
                   ],
                 ),
               ),
-              const SizedBox(
-                height: 15,
-              ),
+              const SizedBox(height: 15),
               const Divider(),
-              const SizedBox(
-                height: 20,
-              ),
+              const SizedBox(height: 20),
               Text(
                 'By whom ?',
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyLarge!
-                    .copyWith(fontWeight: FontWeight.w600),
+                style: Theme.of(
+                  context,
+                ).textTheme.bodyLarge!.copyWith(fontWeight: FontWeight.w600),
               ),
-              const SizedBox(
-                height: 10,
-              ),
+              const SizedBox(height: 10),
               Text(
                 'select Assignee',
                 style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                    fontWeight: FontWeight.normal, color: customGreyColor),
+                  fontWeight: FontWeight.normal,
+                  color: customGreyColor,
+                ),
               ),
-              const SizedBox(
-                height: 15,
-              ),
+              const SizedBox(height: 15),
               Row(
                 children: [
                   _taskManager.assignees.isNotEmpty
                       ? Padding(
                           padding: const EdgeInsets.only(right: 8.0),
                           child: FlutterImageStack(
-                            imageList: _taskManager.assignees
-                                .map((e) => e.picture ?? defaultAvatarUrl)
-                                .toList() as dynamic,
-                            extraCountTextStyle:
-                                Theme.of(context).textTheme.titleSmall!,
-                            itemBorderColor:
-                                Theme.of(context).scaffoldBackgroundColor,
+                            imageList:
+                                _taskManager.assignees
+                                        .map(
+                                          (e) => e.picture ?? defaultAvatarUrl,
+                                        )
+                                        .toList()
+                                    as dynamic,
+                            extraCountTextStyle: Theme.of(
+                              context,
+                            ).textTheme.titleSmall!,
+                            itemBorderColor: Theme.of(
+                              context,
+                            ).scaffoldBackgroundColor,
                             itemRadius: 50,
                             itemCount: _taskManager.assignees.length,
                             itemBorderWidth: 1,
                             showTotalCount: true,
-                            backgroundColor: Colors.primaries[
-                                    Random().nextInt(Colors.primaries.length)]
+                            backgroundColor: Colors
+                                .primaries[Random().nextInt(
+                                  Colors.primaries.length,
+                                )]
                                 .withValues(alpha: .5),
                             totalCount: _taskManager.assignees.length - 1,
                           ),
                         )
                       : const SizedBox.shrink(),
                   FutureBuilder<Member?>(
-                      future: _organizationManager.getOrganizationMembers(),
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                                ConnectionState.waiting &&
-                            !snapshot.hasData) {
-                          return const CupertinoActivityIndicator();
-                        }
-                        if (snapshot.connectionState == ConnectionState.done &&
-                            !snapshot.hasData) {
-                          return Align(
-                            alignment: Alignment.centerLeft,
-                            child: DottedBorder(
-                              borderType: BorderType.Circle,
-                              radius: const Radius.circular(6),
+                    future: _organizationManager.getOrganizationMembers(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting &&
+                          !snapshot.hasData) {
+                        return const CupertinoActivityIndicator();
+                      }
+                      if (snapshot.connectionState == ConnectionState.done &&
+                          !snapshot.hasData) {
+                        return Align(
+                          alignment: Alignment.centerLeft,
+                          child: DottedBorder(
+                            options: CircularDottedBorderOptions(
                               color: customGreyColor,
                               dashPattern: const [6, 3, 6, 3],
-                              child: ClipRRect(
-                                borderRadius:
-                                    const BorderRadius.all(Radius.circular(45)),
-                                child: Container(
-                                  height: 45,
-                                  width: 45,
-                                  color: customGreyColor.withValues(alpha: .2),
-                                  child: const Center(
-                                      child: Icon(
-                                    MaterialIcons.person_add,
-                                    color: customGreyColor,
-                                  )),
-                                ),
-                              ),
                             ),
-                          );
-                        }
-
-                        return GestureDetector(
-                          onTap: () async {
-                            if (Platform.isIOS) {
-                              showCupertinoModalBottomSheet(
-                                context: context,
-                                builder: (context) {
-                                  return TaskAssigneeWidget(
-                                    taskManager: _taskManager,
-                                    data: snapshot.data,
-                                  );
-                                },
-                              ).then((_) => setState(() {}));
-                            } else {
-                              showMaterialModalBottomSheet(
-                                context: context,
-                                builder: (context) {
-                                  return TaskAssigneeWidget(
-                                    taskManager: _taskManager,
-                                    data: snapshot.data,
-                                  );
-                                },
-                              ).then((_) => setState(() {}));
-                            }
-                          },
-                          child: Align(
-                            alignment: Alignment.centerLeft,
-                            child: DottedBorder(
-                              borderType: BorderType.Circle,
-                              radius: const Radius.circular(6),
-                              color: customGreyColor,
-                              dashPattern: const [6, 3, 6, 3],
-                              child: ClipRRect(
-                                borderRadius:
-                                    const BorderRadius.all(Radius.circular(45)),
-                                child: Container(
-                                  height: 45,
-                                  width: 45,
-                                  color: customGreyColor.withValues(alpha: .2),
-                                  child: const Center(
-                                      child: Icon(
+                            child: ClipRRect(
+                              borderRadius: const BorderRadius.all(
+                                Radius.circular(45),
+                              ),
+                              child: Container(
+                                height: 45,
+                                width: 45,
+                                color: customGreyColor.withValues(alpha: .2),
+                                child: const Center(
+                                  child: Icon(
                                     MaterialIcons.person_add,
                                     color: customGreyColor,
-                                  )),
+                                  ),
                                 ),
                               ),
                             ),
                           ),
                         );
-                      })
+                      }
+
+                      return GestureDetector(
+                        onTap: () async {
+                          if (Platform.isIOS) {
+                            showCupertinoModalBottomSheet(
+                              context: context,
+                              builder: (context) {
+                                return TaskAssigneeWidget(
+                                  taskManager: _taskManager,
+                                  data: snapshot.data,
+                                );
+                              },
+                            ).then((_) => setState(() {}));
+                          } else {
+                            showMaterialModalBottomSheet(
+                              context: context,
+                              builder: (context) {
+                                return TaskAssigneeWidget(
+                                  taskManager: _taskManager,
+                                  data: snapshot.data,
+                                );
+                              },
+                            ).then((_) => setState(() {}));
+                          }
+                        },
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: DottedBorder(
+                                   options: CircularDottedBorderOptions(
+                              color: customGreyColor,
+                              dashPattern: const [6, 3, 6, 3],
+                            ),
+                            child: ClipRRect(
+                              borderRadius: const BorderRadius.all(
+                                Radius.circular(45),
+                              ),
+                              child: Container(
+                                height: 45,
+                                width: 45,
+                                color: customGreyColor.withValues(alpha: .2),
+                                child: const Center(
+                                  child: Icon(
+                                    MaterialIcons.person_add,
+                                    color: customGreyColor,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
                 ],
               ),
               const SizedBox(height: 25),
               TextButton(
                 style: TextButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    backgroundColor: Colors.black),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  backgroundColor: Colors.black,
+                ),
                 onPressed: () async {
                   if (_formKey.currentState!.validate()) {
                     BotToast.showLoading(
-                        allowClick: false,
-                        clickClose: false,
-                        backButtonBehavior: BackButtonBehavior.ignore);
+                      allowClick: false,
+                      clickClose: false,
+                      backButtonBehavior: BackButtonBehavior.ignore,
+                    );
                     List<int?> userIds = [];
                     for (var element in _taskManager.assignees) {
                       userIds.add(element.id);
@@ -621,35 +624,51 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
 
                     if (isSaved) {
                       uiUtilities.actionAlertWidget(
-                          context: context, alertType: AlertType.success);
+                        context: context,
+                        alertType: AlertType.success,
+                      );
                       uiUtilities.alertNotification(
-                          context: context, message: _taskManager.message!);
+                        context: context,
+                        message: _taskManager.message!,
+                      );
 
                       Future.delayed(const Duration(seconds: 3), () {
                         if (!context.mounted) return;
-                        Navigator.pushReplacementNamed(context, '/',
-                            arguments: 1);
+                        Navigator.pushReplacementNamed(
+                          context,
+                          '/',
+                          arguments: 1,
+                        );
                       });
                     } else {
                       uiUtilities.actionAlertWidget(
-                          context: context, alertType: AlertType.error);
+                        context: context,
+                        alertType: AlertType.error,
+                      );
                       uiUtilities.alertNotification(
-                          context: context, message: _taskManager.message!);
+                        context: context,
+                        message: _taskManager.message!,
+                      );
                     }
                   } else {
                     uiUtilities.actionAlertWidget(
-                        context: context, alertType: AlertType.error);
+                      context: context,
+                      alertType: AlertType.error,
+                    );
                     uiUtilities.alertNotification(
-                        context: context, message: 'Fields cannot be empty');
+                      context: context,
+                      message: 'Fields cannot be empty',
+                    );
                   }
                 },
                 child: Padding(
                   padding: const EdgeInsets.all(12.0),
-                  child: Text('Create Task',
-                      style: Theme.of(context)
-                          .textTheme
-                          .labelLarge!
-                          .copyWith(color: Colors.white)),
+                  child: Text(
+                    'Create Task',
+                    style: Theme.of(
+                      context,
+                    ).textTheme.labelLarge!.copyWith(color: Colors.white),
+                  ),
                 ),
               ),
               const SizedBox(height: 15),
@@ -660,29 +679,31 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
     );
   }
 
-  pickDateTime(BuildContext context) async {
+  Future<void> pickDateTime(BuildContext context) async {
     if (Platform.isIOS) {
       showModalBottomSheet(
-          context: context,
-          builder: (BuildContext builder) {
-            return Container(
-              height: MediaQuery.of(context).copyWith().size.height / 3,
-              color: Theme.of(context).cardColor,
-              child: CupertinoDatePicker(
-                mode: CupertinoDatePickerMode.dateAndTime,
-                onDateTimeChanged: (picked) {
-                  setState(() {
-                    dueDate = picked;
-                    dueDateTextEditingController.text =
-                        dateFormat.format(dueDate);
-                  });
-                },
-                initialDateTime: DateTime.now(),
-                minimumYear: DateTime.now().year,
-                maximumYear: 2030,
-              ),
-            );
-          });
+        context: context,
+        builder: (BuildContext builder) {
+          return Container(
+            height: MediaQuery.of(context).copyWith().size.height / 3,
+            color: Theme.of(context).cardColor,
+            child: CupertinoDatePicker(
+              mode: CupertinoDatePickerMode.dateAndTime,
+              onDateTimeChanged: (picked) {
+                setState(() {
+                  dueDate = picked;
+                  dueDateTextEditingController.text = dateFormat.format(
+                    dueDate,
+                  );
+                });
+              },
+              initialDateTime: DateTime.now(),
+              minimumYear: DateTime.now().year,
+              maximumYear: 2030,
+            ),
+          );
+        },
+      );
     } else {
       DateTime? picked = await showDatePicker(
         context: context,
@@ -702,8 +723,13 @@ class _CreateNewTaskViewState extends State<CreateNewTaskView> {
 
         if (timeOfDay != null) {
           setState(() {
-            dueDate = DateTime(picked.year, picked.month, picked.day,
-                timeOfDay.hour, timeOfDay.minute);
+            dueDate = DateTime(
+              picked.year,
+              picked.month,
+              picked.day,
+              timeOfDay.hour,
+              timeOfDay.minute,
+            );
             dueDateTextEditingController.text = dateFormat.format(dueDate);
           });
         }

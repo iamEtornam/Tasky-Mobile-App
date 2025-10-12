@@ -15,7 +15,7 @@ const defaultAvatarUrl =
 enum AlertType { error, info, success }
 
 class UiUtilities {
-  actionAlertWidget(
+  Future actionAlertWidget(
       {required BuildContext context, required AlertType alertType}) {
     Future.delayed(const Duration(seconds: 3), () {
       if (!context.mounted) return;
@@ -62,7 +62,7 @@ class UiUtilities {
         });
   }
 
-  alertNotification({required String message, required BuildContext context}) {
+  CancelFunc alertNotification({required String message, required BuildContext context}) {
     return BotToast.showSimpleNotification(
         title: message,
         backgroundColor:

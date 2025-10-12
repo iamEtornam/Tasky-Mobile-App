@@ -48,7 +48,7 @@ class _DashboardViewState extends State<DashboardView> {
     const AccountView()
   ];
 
-  _onChanged(int index) {
+  void _onChanged(int index) {
     setState(() {
       _currentIndex = index;
     });
@@ -76,11 +76,11 @@ class _DashboardViewState extends State<DashboardView> {
     }
   }
 
-  static onSelectNotification(NotificationResponse payload) async {
+  static Future<void> onSelectNotification(NotificationResponse payload) async {
     Logger().d("payload : $payload");
   }
 
-  initialNotification({required BuildContext context}) async {
+  Future<void> initialNotification({required BuildContext context}) async {
     flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
     const android = AndroidInitializationSettings('@mipmap/launcher_icon');
     const iOS = DarwinInitializationSettings(
@@ -322,7 +322,7 @@ class _DashboardViewState extends State<DashboardView> {
                                             .bodyLarge,
                                       )))
                                   .toList(),
-                              value: team,
+                              initialValue: team,
                               hint: Text(
                                 'Select your team',
                                 style: Theme.of(context).textTheme.bodyMedium,

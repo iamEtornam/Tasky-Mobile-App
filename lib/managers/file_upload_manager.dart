@@ -11,7 +11,7 @@ class FileUploadManager with ChangeNotifier {
 
   String? get message => _message;
 
-  setMessage(String? message) {
+  void setMessage(String? message) {
     _message = message;
     notifyListeners();
   }

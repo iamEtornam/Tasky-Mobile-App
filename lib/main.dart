@@ -26,7 +26,7 @@ import 'services/user_service.dart';
 final FirebaseMessaging messaging = FirebaseMessaging.instance;
 GetIt locator = GetIt.instance;
 
-setupSingletons() async {
+Future<void> setupSingletons() async {
   locator.registerLazySingleton<CustomHttpClient>(() => CustomHttpClient());
 
   locator.registerLazySingleton<AuthService>(() => AuthService());
@@ -50,7 +50,7 @@ setupSingletons() async {
   locator.registerLazySingleton<FileUploadManager>(() => FileUploadManager());
 }
 
-main() async {
+Future<void> main() async {
   await setupSingletons();
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);

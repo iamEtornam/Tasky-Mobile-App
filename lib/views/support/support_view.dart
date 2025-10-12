@@ -24,7 +24,7 @@ class _SupportViewState extends State<SupportView> {
     getUserInfo();
   }
 
-  getUserInfo() async {
+  Future<void> getUserInfo() async {
     await _userManager.getUserInformation();
     userData = await _localStorage.getUserInfo();
     setState(() {});

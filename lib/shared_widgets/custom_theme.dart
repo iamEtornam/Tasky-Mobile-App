@@ -17,7 +17,6 @@ ThemeData customLightTheme(
       platform: defaultTargetPlatform,
       highlightColor: customRedColor.withValues(alpha: .5),
       primaryColor: Colors.white,
-      indicatorColor: customRedColor,
       floatingActionButtonTheme:
           const FloatingActionButtonThemeData(backgroundColor: customRedColor),
       unselectedWidgetColor: Colors.grey,
@@ -57,7 +56,7 @@ ThemeData customLightTheme(
             .copyWith(color: const Color.fromRGBO(229, 62, 62, 1)),
       ),
       iconTheme: const IconThemeData(color: Colors.black),
-      tabBarTheme: TabBarTheme(
+      tabBarTheme: TabBarThemeData(
         unselectedLabelColor: Colors.black.withValues(alpha: .5),
       ),
       textTheme: Typography.material2018(platform: defaultTargetPlatform)
@@ -82,7 +81,7 @@ ThemeData customLightTheme(
       appBarTheme: const AppBarTheme(
         elevation: 0,
         systemOverlayStyle: SystemUiOverlayStyle.dark,
-        color: Colors.white,
+        backgroundColor: Colors.white,
         iconTheme: IconThemeData(color: Colors.black),
         titleTextStyle: TextStyle(color: Colors.black),
       ),
@@ -101,7 +100,6 @@ ThemeData customDarkTheme(
       textSelectionTheme:
           const TextSelectionThemeData(cursorColor: customGreyColor),
       primaryColor: Colors.black,
-      indicatorColor: customRedColor,
       highlightColor: customRedColor.withValues(alpha: .5),
       floatingActionButtonTheme:
           const FloatingActionButtonThemeData(backgroundColor: customRedColor),
@@ -110,7 +108,7 @@ ThemeData customDarkTheme(
       brightness: Brightness.dark,
       fontFamily: GoogleFonts.poppins().fontFamily,
       cardColor: const Color.fromRGBO(31, 31, 31, 1),
-      tabBarTheme: TabBarTheme(
+      tabBarTheme: TabBarThemeData(
         unselectedLabelColor: Colors.white.withValues(alpha: .7),
       ),
       progressIndicatorTheme: const ProgressIndicatorThemeData(
@@ -171,7 +169,7 @@ ThemeData customDarkTheme(
       appBarTheme: const AppBarTheme(
         elevation: 0,
         systemOverlayStyle: SystemUiOverlayStyle.light,
-        color: Color(0xff121212),
+        backgroundColor: Color(0xff121212),
         iconTheme: IconThemeData(color: Colors.white),
         titleTextStyle: TextStyle(color: Colors.white),
       ),

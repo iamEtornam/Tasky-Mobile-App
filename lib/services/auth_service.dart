@@ -12,17 +12,15 @@ class AuthService {
   // final Logger _logger = Logger();
 
   Future<UserCredential?> signInWithGoogle() async {
-    // Trigger the authentication flow
-    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+    final googleUser = await GoogleSignIn.instance.authenticate();
 
     // Obtain the auth details from the request
-    final GoogleSignInAuthentication googleAuth = await googleUser!.authentication;
+    final GoogleSignInAuthentication googleAuth = googleUser.authentication;
 
     // Create a new credential
-    final GoogleAuthCredential credential = GoogleAuthProvider.credential(
-      accessToken: googleAuth.accessToken,
+    final credential = GoogleAuthProvider.credential(
       idToken: googleAuth.idToken,
-    ) as GoogleAuthCredential;
+    );
 
     // Once signed in, return the UserCredential
     return await auth.signInWithCredential(credential);
@@ -42,6 +40,9 @@ class AuthService {
   }
 
   Future<Response> sendTokenToBackend({String? token}) async {
-    return await _customHttpClient.postRequest(path: loginPath, body: {'token': token});
+    return await _customHttpClient.postRequest(
+      path: loginPath,
+      body: {'token': token},
+    );
   }
 }

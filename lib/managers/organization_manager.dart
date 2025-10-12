@@ -24,12 +24,12 @@ class OrganizationManager with ChangeNotifier {
   String? get message => _message;
   bool get isLoading => _isLoading;
 
-  setMessage(String? message) {
+  void setMessage(String? message) {
     _message = message;
     notifyListeners();
   }
 
-  setisLoading(bool isLoading) {
+  void setisLoading(bool isLoading) {
     _isLoading = isLoading;
     notifyListeners();
   }

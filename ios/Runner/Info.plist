@@ -35,6 +35,8 @@
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>FirebaseScreenReportingEnabled</key>
 	<true/>
+	<key>GIDClientID</key>
+	<string>997228587501-dcfl2lm8moma3bclpoiief5s3blvehfa.apps.googleusercontent.com</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>

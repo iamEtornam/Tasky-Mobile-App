@@ -24,8 +24,8 @@ class OrganizationView extends StatefulWidget {
 class _OrganizationViewState extends State<OrganizationView> {
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
   final LocalStorage _localStorage = GetIt.I.get<LocalStorage>();
-  final OrganizationManager _organizationManager =
-      GetIt.I.get<OrganizationManager>();
+  final OrganizationManager _organizationManager = GetIt.I
+      .get<OrganizationManager>();
   final UiUtilities uiUtilities = UiUtilities();
   static final GlobalKey<FormState> _myFormKey = GlobalKey<FormState>();
   TextEditingController nameTextEditingController = TextEditingController();
@@ -36,9 +36,9 @@ class _OrganizationViewState extends State<OrganizationView> {
   List<Options>? options;
 
   Future<void> getProfileFromCamera() async {
-    await uiUtilities
-        .getImage(imageSource: ImageSource.camera)
-        .then((file) async {
+    await uiUtilities.getImage(imageSource: ImageSource.camera).then((
+      file,
+    ) async {
       if (file == null) {
         return;
       }
@@ -53,9 +53,9 @@ class _OrganizationViewState extends State<OrganizationView> {
   }
 
   Future<void> getProfileFromGallery() async {
-    await uiUtilities
-        .getImage(imageSource: ImageSource.gallery)
-        .then((file) async {
+    await uiUtilities.getImage(imageSource: ImageSource.gallery).then((
+      file,
+    ) async {
       if (file == null) {
         return;
       }
@@ -73,17 +73,19 @@ class _OrganizationViewState extends State<OrganizationView> {
   void initState() {
     options = [
       Options(
-          label: 'Select from Camera',
-          onTap: () {
-            Navigator.pop(context);
-            getProfileFromCamera();
-          }),
+        label: 'Select from Camera',
+        onTap: () {
+          Navigator.pop(context);
+          getProfileFromCamera();
+        },
+      ),
       Options(
-          label: 'Select from Gallery',
-          onTap: () {
-            Navigator.pop(context);
-            getProfileFromGallery();
-          }),
+        label: 'Select from Gallery',
+        onTap: () {
+          Navigator.pop(context);
+          getProfileFromGallery();
+        },
+      ),
     ];
     super.initState();
   }
@@ -101,249 +103,282 @@ class _OrganizationViewState extends State<OrganizationView> {
       appBar: AppBar(
         actions: [
           TextButton(
-              onPressed: () async {
-                BotToast.showLoading(
-                    allowClick: false,
-                    clickClose: false,
-                    backButtonBehavior: BackButtonBehavior.ignore);
-                firebaseAuth.signOut().then((_) async {
-                  await _localStorage.clearStorage();
-                  BotToast.closeAllLoading();
-                  if (!context.mounted) return;
-                  Navigator.pushNamedAndRemoveUntil(
-                      context, '/loginView', (route) => false);
-                });
-              },
-              child: Text(
-                'Logout',
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyLarge!
-                    .copyWith(color: Colors.red),
-              ))
+            onPressed: () async {
+              BotToast.showLoading(
+                allowClick: false,
+                clickClose: false,
+                backButtonBehavior: BackButtonBehavior.ignore,
+              );
+              firebaseAuth.signOut().then((_) async {
+                await _localStorage.clearStorage();
+                BotToast.closeAllLoading();
+                if (!context.mounted) return;
+                Navigator.pushNamedAndRemoveUntil(
+                  context,
+                  '/loginView',
+                  (route) => false,
+                );
+              });
+            },
+            child: Text(
+              'Logout',
+              style: Theme.of(
+                context,
+              ).textTheme.bodyLarge!.copyWith(color: Colors.red),
+            ),
+          ),
         ],
       ),
       body: SafeArea(
-          child: Form(
-        key: _myFormKey,
-        child: ListView(
-          padding: const EdgeInsets.all(24),
-          children: [
-            Center(
-              child: CircleAvatar(
-                backgroundColor: Colors
-                    .primaries[Random().nextInt(Colors.primaries.length)]
-                    .withValues(alpha: .2),
-                radius: 60,
-                backgroundImage: (_imageFile == null
-                    ? const ExactAssetImage(
-                        'assets/company.png',
-                      )
-                    : FileImage(_imageFile!)) as ImageProvider<Object>?,
+        child: Form(
+          key: _myFormKey,
+          child: ListView(
+            padding: const EdgeInsets.all(24),
+            children: [
+              Center(
+                child: CircleAvatar(
+                  backgroundColor: Colors
+                      .primaries[Random().nextInt(Colors.primaries.length)]
+                      .withValues(alpha: .2),
+                  radius: 60,
+                  backgroundImage:
+                      (_imageFile == null
+                              ? const ExactAssetImage('assets/company.png')
+                              : FileImage(_imageFile!))
+                          as ImageProvider<Object>?,
+                ),
               ),
-            ),
-            const SizedBox(
-              height: 7,
-            ),
-            Center(
+              const SizedBox(height: 7),
+              Center(
                 child: TextButton(
-              child: Text(
-                'update company logo',
-                style: Theme.of(context).textTheme.titleSmall!.copyWith(
-                    fontWeight: FontWeight.w600, color: customRedColor),
+                  child: Text(
+                    'update company logo',
+                    style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                      fontWeight: FontWeight.w600,
+                      color: customRedColor,
+                    ),
+                  ),
+                  onPressed: () {
+                    Platform.isIOS
+                        ? showCupertinoModalPopup<void>(
+                            context: context,
+                            builder: (context) {
+                              return CustomBottomSheetWidget(options: options);
+                            },
+                          )
+                        : showModalBottomSheet<void>(
+                            context: context,
+                            builder: (context) {
+                              return CustomBottomSheetWidget(
+                                height: 205,
+                                options: options,
+                              );
+                            },
+                          );
+                  },
+                ),
               ),
-              onPressed: () {
-                Platform.isIOS
-                    ? showCupertinoModalPopup<void>(
-                        context: context,
-                        builder: (context) {
-                          return CustomBottomSheetWidget(
-                            options: options,
-                          );
-                        })
-                    : showModalBottomSheet<void>(
-                        context: context,
-                        builder: (context) {
-                          return CustomBottomSheetWidget(
-                            height: 205,
-                            options: options,
-                          );
-                        });
-              },
-            )),
-            const SizedBox(
-              height: 20,
-            ),
-            TextFormField(
-              controller: nameTextEditingController,
-              focusNode: nameFocusNode,
-              style: Theme.of(context).textTheme.bodyLarge,
-              textInputAction: TextInputAction.next,
-              keyboardType: TextInputType.name,
-              autofillHints: const [AutofillHints.organizationName],
-              maxLines: 1,
-              textCapitalization: TextCapitalization.words,
-              cursorColor: Theme.of(context).textSelectionTheme.cursorColor,
-              enableInteractiveSelection: true,
-              decoration: InputDecoration(
+              const SizedBox(height: 20),
+              TextFormField(
+                controller: nameTextEditingController,
+                focusNode: nameFocusNode,
+                style: Theme.of(context).textTheme.bodyLarge,
+                textInputAction: TextInputAction.next,
+                keyboardType: TextInputType.name,
+                autofillHints: const [AutofillHints.organizationName],
+                maxLines: 1,
+                textCapitalization: TextCapitalization.words,
+                cursorColor: Theme.of(context).textSelectionTheme.cursorColor,
+                enableInteractiveSelection: true,
+                decoration: InputDecoration(
                   filled: false,
                   hintText: 'Organization Name',
                   enabledBorder: const UnderlineInputBorder(
-                      borderSide: BorderSide(color: customGreyColor)),
-                  focusedBorder: const UnderlineInputBorder(
-                      borderSide: BorderSide(color: customGreyColor)),
-                  border: const UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.black)),
-                  hintStyle: Theme.of(context)
-                      .textTheme
-                      .bodyLarge!
-                      .copyWith(color: Colors.grey)),
-              validator: (value) {
-                if (value!.isEmpty) {
-                  return 'Organization Name cannot be Empty';
-                }
-                return null;
-              },
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            TextFieldTags<String>(
-              textfieldTagsController: _tagsController,
-              inputFieldBuilder: (context, inputFieldValues) {
-                return Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: TextField(
-                    controller: inputFieldValues.textEditingController,
-                    focusNode: inputFieldValues.focusNode,
-                    decoration: InputDecoration(
-                      isDense: true,
-                      border: const UnderlineInputBorder(
-                          borderSide: BorderSide(color: customGreyColor)),
-                      focusedBorder: const UnderlineInputBorder(
-                          borderSide: BorderSide(color: customGreyColor)),
-                      hintText: inputFieldValues.tags.isNotEmpty
-                          ? ''
-                          : "Organization Teams",
-                      hintStyle: Theme.of(context)
-                          .textTheme
-                          .bodyLarge!
-                          .copyWith(color: Colors.grey),
-                      errorText: inputFieldValues.error,
-                      prefixIcon: inputFieldValues.tags.isNotEmpty
-                          ? SingleChildScrollView(
-                              controller: inputFieldValues.tagScrollController,
-                              scrollDirection: Axis.horizontal,
-                              child: Row(
-                                  children: inputFieldValues.tags.map((tag) {
-                                return Container(
-                                  decoration: BoxDecoration(
-                                    color: customRedColor,
-                                    borderRadius: BorderRadius.circular(5.0),
-                                  ),
-                                  padding: const EdgeInsets.all(8.0),
-                                  margin: const EdgeInsets.only(right: 8),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        tag,
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodyLarge!
-                                            .copyWith(color: Colors.white),
-                                      ),
-                                      const SizedBox(width: 4.0),
-                                      InkWell(
-                                        child: const Icon(
-                                          Icons.cancel,
-                                          size: 14.0,
-                                          color: Colors.white,
-                                        ),
-                                        onTap: () {
-                                          inputFieldValues.onTagRemoved(tag);
-                                        },
-                                      )
-                                    ],
-                                  ),
-                                );
-                              }).toList()),
-                            )
-                          : null,
-                    ),
-                    onChanged: inputFieldValues.onTagChanged,
-                    onSubmitted: inputFieldValues.onTagSubmitted,
+                    borderSide: BorderSide(color: customGreyColor),
                   ),
-                );
-              },
-              textSeparators: const [' ', ','],
-              letterCase: LetterCase.small,
-              validator: (String tag) {
-                final tags = _tagsController.getTags ?? [];
-                if (tags.contains(tag)) {
-                  return 'you already entered that';
-                }
-                return null;
-              },
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            TextButton(
-              onPressed: () async {
-                if (_myFormKey.currentState!.validate()) {
-                  BotToast.showLoading(
+                  focusedBorder: const UnderlineInputBorder(
+                    borderSide: BorderSide(color: customGreyColor),
+                  ),
+                  border: const UnderlineInputBorder(
+                    borderSide: BorderSide(color: Colors.black),
+                  ),
+                  hintStyle: Theme.of(
+                    context,
+                  ).textTheme.bodyLarge!.copyWith(color: Colors.grey),
+                ),
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'Organization Name cannot be Empty';
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 10),
+              TextFieldTags<String>(
+                textfieldTagsController: _tagsController,
+                inputFieldBuilder: (context, inputFieldValues) {
+                  return Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: TextField(
+                      controller: inputFieldValues.textEditingController,
+                      focusNode: inputFieldValues.focusNode,
+                      decoration: InputDecoration(
+                        isDense: true,
+                        border: const UnderlineInputBorder(
+                          borderSide: BorderSide(color: customGreyColor),
+                        ),
+                        focusedBorder: const UnderlineInputBorder(
+                          borderSide: BorderSide(color: customGreyColor),
+                        ),
+                        hintText: inputFieldValues.tags.isNotEmpty
+                            ? ''
+                            : "Organization Teams",
+                        hintStyle: Theme.of(
+                          context,
+                        ).textTheme.bodyLarge!.copyWith(color: Colors.grey),
+                        errorText: inputFieldValues.error,
+                        prefixIcon: inputFieldValues.tags.isNotEmpty
+                            ? SingleChildScrollView(
+                                controller:
+                                    inputFieldValues.tagScrollController,
+                                scrollDirection: Axis.horizontal,
+                                child: Row(
+                                  children: inputFieldValues.tags.map((tag) {
+                                    return Container(
+                                      decoration: BoxDecoration(
+                                        color: customRedColor,
+                                        borderRadius: BorderRadius.circular(
+                                          5.0,
+                                        ),
+                                      ),
+                                      padding: const EdgeInsets.all(8.0),
+                                      margin: const EdgeInsets.only(right: 8),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            tag,
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .bodyLarge!
+                                                .copyWith(color: Colors.white),
+                                          ),
+                                          const SizedBox(width: 4.0),
+                                          InkWell(
+                                            child: const Icon(
+                                              Icons.cancel,
+                                              size: 14.0,
+                                              color: Colors.white,
+                                            ),
+                                            onTap: () {
+                                              inputFieldValues.onTagRemoved(
+                                                tag,
+                                              );
+                                            },
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                                  }).toList(),
+                                ),
+                              )
+                            : null,
+                      ),
+                      onChanged: inputFieldValues.onTagChanged,
+                      onSubmitted: inputFieldValues.onTagSubmitted,
+                    ),
+                  );
+                },
+                textSeparators: const [' ', ','],
+                letterCase: LetterCase.small,
+                validator: (String tag) {
+                  final tags = _tagsController.getTags ?? [];
+                  if (tags.contains(tag)) {
+                    return 'you already entered that';
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 10),
+              TextButton(
+                onPressed: () async {
+                  if (_myFormKey.currentState!.validate() &&
+                      _imageFile != null) {
+                    BotToast.showLoading(
                       allowClick: false,
                       clickClose: false,
-                      backButtonBehavior: BackButtonBehavior.ignore);
-                  bool isCreated =
-                      await _organizationManager.createOrganization(
+                      backButtonBehavior: BackButtonBehavior.ignore,
+                    );
+                    bool isCreated = await _organizationManager
+                        .createOrganization(
                           image: _imageFile!,
                           name: nameTextEditingController.text,
-                          teams: _tagsController.getTags);
-                  BotToast.closeAllLoading();
-                  if (!context.mounted) return;
+                          teams: _tagsController.getTags,
+                        );
+                    BotToast.closeAllLoading();
+                    if (!context.mounted) return;
 
-                  if (isCreated) {
-                    uiUtilities.alertNotification(
+                    if (isCreated) {
+                      uiUtilities.alertNotification(
                         context: context,
-                        message: _organizationManager.message!);
-                    Future.delayed(const Duration(seconds: 3), () {
-                      if (!context.mounted) return;
-                      Navigator.pushNamedAndRemoveUntil(
-                          context, '/', (route) => false);
-                    });
+                        message: _organizationManager.message!,
+                      );
+                      Future.delayed(const Duration(seconds: 3), () {
+                        if (!context.mounted) return;
+                        Navigator.pushNamedAndRemoveUntil(
+                          context,
+                          '/',
+                          (route) => false,
+                        );
+                      });
+                    } else {
+                      uiUtilities.actionAlertWidget(
+                        context: context,
+                        alertType: AlertType.error,
+                      );
+                      uiUtilities.alertNotification(
+                        context: context,
+                        message: _organizationManager.message!,
+                      );
+                    }
+                  } else if (_imageFile == null) {
+                    uiUtilities.actionAlertWidget(
+                      context: context,
+                      alertType: AlertType.error,
+                    );
+                    uiUtilities.alertNotification(
+                      context: context,
+                      message: 'Image cannot be Empty!',
+                    );
                   } else {
                     uiUtilities.actionAlertWidget(
-                        context: context, alertType: AlertType.error);
+                      context: context,
+                      alertType: AlertType.error,
+                    );
                     uiUtilities.alertNotification(
-                        context: context,
-                        message: _organizationManager.message!);
+                      context: context,
+                      message: 'Fields cannot be Empty!',
+                    );
                   }
-                } else {
-                  uiUtilities.actionAlertWidget(
-                      context: context, alertType: AlertType.error);
-                  uiUtilities.alertNotification(
-                      context: context, message: 'Fields cannot be Empty!');
-                }
-              },
-              style: TextButton.styleFrom(
+                },
+                style: TextButton.styleFrom(
                   backgroundColor: customRedColor,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
-                  )),
-              child: Text(
-                'Create Organization',
-                style: Theme.of(context)
-                    .textTheme
-                    .labelLarge!
-                    .copyWith(color: Colors.white),
+                  ),
+                ),
+                child: Text(
+                  'Create Organization',
+                  style: Theme.of(
+                    context,
+                  ).textTheme.labelLarge!.copyWith(color: Colors.white),
+                ),
               ),
-            )
-          ],
+            ],
+          ),
         ),
-      )),
+      ),
     );
   }
 }

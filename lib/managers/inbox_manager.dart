@@ -36,41 +36,61 @@ class InboxManager with ChangeNotifier {
       inbox.Inbox? i;
       int? userId = await _localStorage.getId();
       Data? userInfo = await _localStorage.getUserInfo();
-      await _inboxService.getInboxRequest(userId: userId!).then((response) {
-        int statusCode = response.statusCode;
-        Map<String, dynamic> body = json.decode(response.body);
+      if (userId == null) {
+        return null;
+      }
+      await _inboxService
+          .getInboxRequest(userId: userId)
+          .then((response) {
+            int statusCode = response.statusCode;
+            Map<String, dynamic> body = json.decode(response.body);
 
-        setMessage(body['message']);
-        setisLoading(false);
-        if (statusCode == 200) {
-          i = inbox.Inbox.fromJson(body);
-          Iterable<inbox.Datum> searchData = i!.data!.where((element) {
-            if (query == 'Assigned to me' || query == 'All') {
-              return element.userId == userId;
-            } else if (query == 'Assigned to team') {
-              return element.team == userInfo.team;
+            setMessage(body['message']);
+            setisLoading(false);
+            if (statusCode == 200) {
+              final inboxData = inbox.Inbox.fromJson(body);
+
+              // Check if data is not null before filtering
+              if (inboxData.data != null) {
+                Iterable<inbox.Datum> searchData = inboxData.data!.where((
+                  element,
+                ) {
+                  if (query == 'Assigned to me' || query == 'All') {
+                    return element.userId == userId;
+                  } else if (query == 'Assigned to team') {
+                    return element.team == userInfo.team;
+                  } else {
+                    return false;
+                  }
+                });
+
+                i = inbox.Inbox(
+                  data: searchData.toList(),
+                  message: inboxData.message,
+                  status: inboxData.status,
+                );
+              } else {
+                // If data is null, return the inbox as is
+                i = inboxData;
+              }
             } else {
-              return false;
+              i = null;
             }
-          });
-
-          i = inbox.Inbox(
-              data: searchData.toList(),
-              message: i!.message,
-              status: i!.status);
-        } else {
-          i = null;
-        }
-      }).catchError((onError) {
-        _logger.d(onError);
-        i = null;
-        setMessage('$onError');
-        setisLoading(false);
-      }).timeout(const Duration(seconds: 60), onTimeout: () {
-        i = null;
-        setMessage('Timeout! Check your internet connection.');
-        setisLoading(false);
-      });
+          })
+          .catchError((onError) {
+            _logger.d(onError);
+            i = null;
+            setMessage('$onError');
+            setisLoading(false);
+          })
+          .timeout(
+            const Duration(seconds: 60),
+            onTimeout: () {
+              i = null;
+              setMessage('Timeout! Check your internet connection.');
+              setisLoading(false);
+            },
+          );
       return i;
     } catch (e) {
       _logger.d(e);
@@ -82,86 +102,107 @@ class InboxManager with ChangeNotifier {
 
   Future<Comment?> getInboxComments({required int inboxId}) async {
     Comment? c;
-    await _inboxService.getInboxCommentRequest(inbox: inboxId).then((response) {
-      int statusCode = response.statusCode;
-      Map<String, dynamic> body = json.decode(response.body);
-      setMessage(body['message']);
-      setisLoading(false);
-      if (statusCode == 200) {
-        c = Comment.fromJson(body);
-      } else {
-        c = null;
-      }
-    }).catchError((onError) {
-      c = null;
-      setMessage('$onError');
-      setisLoading(false);
-    }).timeout(const Duration(seconds: 60), onTimeout: () {
-      c = null;
-      setMessage('Timeout! Check your internet connection.');
-      setisLoading(false);
-    });
+    await _inboxService
+        .getInboxCommentRequest(inbox: inboxId)
+        .then((response) {
+          int statusCode = response.statusCode;
+          Map<String, dynamic> body = json.decode(response.body);
+          setMessage(body['message']);
+          setisLoading(false);
+          if (statusCode == 200) {
+            c = Comment.fromJson(body);
+          } else {
+            c = null;
+          }
+        })
+        .catchError((onError) {
+          c = null;
+          setMessage('$onError');
+          setisLoading(false);
+        })
+        .timeout(
+          const Duration(seconds: 60),
+          onTimeout: () {
+            c = null;
+            setMessage('Timeout! Check your internet connection.');
+            setisLoading(false);
+          },
+        );
     return c;
   }
 
-  Future<bool> submitInboxComment(
-      {required int inboxId, required String comment}) async {
+  Future<bool> submitInboxComment({
+    required int inboxId,
+    required String comment,
+  }) async {
     bool isSent = true;
     await _inboxService
         .submitInboxCommentRequest(inbox: inboxId, comment: comment)
         .then((response) {
-      int statusCode = response.statusCode;
-      Map<String, dynamic> body = json.decode(response.body);
-      setMessage(body['message']);
-      setisLoading(false);
-      if (statusCode == 201) {
-        isSent = true;
-      } else {
-        isSent = false;
-      }
-    }).catchError((onError) {
-      isSent = false;
-      setMessage('$onError');
-      setisLoading(false);
-    }).timeout(const Duration(seconds: 60), onTimeout: () {
-      isSent = false;
-      setMessage('Timeout! Check your internet connection.');
-      setisLoading(false);
-    });
+          int statusCode = response.statusCode;
+          Map<String, dynamic> body = json.decode(response.body);
+          setMessage(body['message']);
+          setisLoading(false);
+          if (statusCode == 201) {
+            isSent = true;
+          } else {
+            isSent = false;
+          }
+        })
+        .catchError((onError) {
+          isSent = false;
+          setMessage('$onError');
+          setisLoading(false);
+        })
+        .timeout(
+          const Duration(seconds: 60),
+          onTimeout: () {
+            isSent = false;
+            setMessage('Timeout! Check your internet connection.');
+            setisLoading(false);
+          },
+        );
     return isSent;
   }
 
-  Future<bool> submitInbox(
-      {required String title, required String message}) async {
+  Future<bool> submitInbox({
+    required String title,
+    required String message,
+  }) async {
     bool isSent = true;
     int? userId = await _localStorage.getId();
     Data? userInfo = await _localStorage.getUserInfo();
     await _inboxService
         .submitInboxRequest(
-            title: title,
-            message: message,
-            team: userInfo.team!,
-            userId: userId!)
+          title: title,
+          message: message,
+          team: userInfo.team!,
+          userId: userId!,
+        )
         .then((response) {
-      int statusCode = response.statusCode;
-      Map<String, dynamic> body = json.decode(response.body);
-      setMessage(body['message']);
-      setisLoading(false);
-      if (statusCode == 201) {
-        isSent = true;
-      } else {
-        isSent = false;
-      }
-    }).catchError((onError) {
-  
-      isSent = false;
-      setMessage('$onError');
-      setisLoading(false);
-    }).timeout(const Duration(seconds: 60), onTimeout: () {
-      isSent = false;
-      setMessage('Timeout! Check your internet connection.');
-      setisLoading(false);
-    });
+          int statusCode = response.statusCode;
+          Map<String, dynamic> body = json.decode(response.body);
+          setMessage(body['message']);
+          setisLoading(false);
+          if (statusCode == 201) {
+            isSent = true;
+          } else {
+            isSent = false;
+          }
+        })
+        .catchError((onError) {
+          isSent = false;
+          setMessage('$onError');
+          setisLoading(false);
+        })
+        .timeout(
+          const Duration(seconds: 60),
+          onTimeout: () {
+            isSent = false;
+            setMessage('Timeout! Check your internet connection.');
+            setisLoading(false);
+          },
+        );
     return isSent;
   }
 }
